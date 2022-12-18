@@ -32,6 +32,10 @@ class MyWidget(QWidget):
         for i in range(NUM_PIXELS):
             self.pixels.append((offset, offset + hPixel * i, hPixel * 3, hPixel))
             
+            
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.change_colors)
+        self.timer.start(int(1000 / 60))
 
         self.setStyleSheet("background-color: black;")
         self.setWindowTitle('WallLight Emulator')
@@ -39,25 +43,24 @@ class MyWidget(QWidget):
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.center()
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
+        self.show()
 
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.change_colors)
-        self.timer.start(int(1000 / 60))
-        
 
     def center(self):
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+        self.show()
 
     def paintEvent(self, event):
+        
         qp = QPainter()
         qp.begin(self)
         for pixels, color in zip(self.pixels, self.colors):
             qp.fillRect(*pixels, color)
         qp.end()
-
+        
 
     def change_colors(self):
         self.outputBuffer = self.engine.getPixelData()
@@ -67,6 +70,10 @@ class MyWidget(QWidget):
             b = int(c[2] * 255) % 256
             self.colors[i].setRgb(r, g, b)
         self.update()
+        
+        
+        
+        
 
 
 if __name__ == '__main__':
