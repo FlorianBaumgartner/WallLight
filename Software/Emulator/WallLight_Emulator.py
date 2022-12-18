@@ -1,10 +1,11 @@
 import time
 import sys
+import signal
 import numpy as np
 from random import randint
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget
 from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt, QTimer
 
 from Engine.Engine import Engine
 
@@ -15,6 +16,7 @@ PIXELS_OFFSET = 50
 FRAME_RATE = 60
 
 NUM_PIXELS = 288
+
 
 class MyWidget(QWidget):
     def __init__(self):
@@ -34,10 +36,20 @@ class MyWidget(QWidget):
         self.setStyleSheet("background-color: black;")
         self.setWindowTitle('WallLight Emulator')
         self.setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT)
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        self.center()
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.change_colors)
         self.timer.start(int(1000 / 60))
+        
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def paintEvent(self, event):
         qp = QPainter()
@@ -46,8 +58,8 @@ class MyWidget(QWidget):
             qp.fillRect(*pixels, color)
         qp.end()
 
+
     def change_colors(self):
-        # Get Pixel data
         self.outputBuffer = self.engine.getPixelData()
         for i, c in enumerate(self.outputBuffer):
             r = int(c[0] * 255) % 256
@@ -58,7 +70,11 @@ class MyWidget(QWidget):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    qtapp = QApplication(sys.argv)
     widget = MyWidget()
+    def signal_handler(sig, frame):
+        widget.close()
+        raise KeyboardInterrupt
+    signal.signal(signal.SIGINT, signal_handler)
     widget.show()
-    sys.exit(app.exec_())
+    sys.exit(qtapp.exec_())

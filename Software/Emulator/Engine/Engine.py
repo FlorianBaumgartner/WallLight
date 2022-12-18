@@ -3,15 +3,15 @@ import sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(__file__))
-from Modules import Function
-from Modules import *
+from Modules import Module, Coefficient, Generator, Function
+
 
 class Engine():
     def __init__(self, pixelcount, framerate):
         self.pixelcount = pixelcount
         self.framerate = framerate
         self.pixels = np.zeros((pixelcount, 6))
-        Function.pixelcount = self.pixelcount
+        Module.pixelcount = self.pixelcount
         
         
         self.t = 0.0
@@ -30,18 +30,18 @@ class Engine():
         self.test_multiplier_cw = Coefficient(10, 1.0)
         self.test_multiplier_am = Coefficient(11, 1.0)
         
-        self.test_sin = Sine(12)
+        self.test_sin = Generator.Sine(12)
         self.test_sin.setParameterInput(0, self.test_const_freq, 0)
         self.test_sin.setParameterInput(1, self.test_const_rep, 0)
         self.test_sin.setParameterInput(2, self.test_const_amplitude, 0)
         self.test_sin.setParameterInput(3, self.test_const_offset, 0)
         self.test_sin.setParameterInput(4, self.test_const_phase, 0)
         
-        self.test_pdf = Pdf(13)
+        self.test_pdf = Function.Pdf(13)
         self.test_pdf.setParameterInput(0, self.test_sin, 0)
         self.test_pdf.setParameterInput(1, self.test_const_var, 0)
         
-        self.test_multiplier = Multiplier(14)
+        self.test_multiplier = Function.Multiplier(14)
         self.test_multiplier.setParameterInput(0, self.test_multiplier_r, 0)
         self.test_multiplier.setParameterInput(1, self.test_multiplier_g, 0)
         self.test_multiplier.setParameterInput(2, self.test_multiplier_b, 0)
