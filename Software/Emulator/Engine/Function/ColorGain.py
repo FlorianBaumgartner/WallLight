@@ -4,7 +4,7 @@ sys.path.append("..")
 from Modules import Function
 
 
-class Multiplier(Function):
+class ColorGain(Function):
     def __init__(self, id):
         super().__init__(id)
         self.parameterInputs.append({"name": "r", "module": None, "sourceIndex" : 0})    # Red Channel

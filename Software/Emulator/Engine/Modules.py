@@ -5,6 +5,13 @@ from glob import glob
 
 class Module():
     pixelcount = 0
+    
+    def getModuleFromId(modules, moduleId):
+        for m in modules:
+            if(m.id == moduleId):
+                return m
+        raise Exception(f"No module with ID: {moduleId} found!")
+    
     def __init__(self, id):
         self.id = id
         self.ready = False
@@ -30,6 +37,15 @@ class Generator(Module):
         super().__init__(id)
         self.parameterInputs.append({"name": "freq", "module": None, "sourceIndex" : 0})
         self.parameterInputs.append({"name": "rep", "module": None, "sourceIndex" : 0})  # -1 mean endless
+        self.parameterOutputs.append({"name": "out", "value": 0.0})
+        
+    def update(self, t):
+        self.ready = all([i["module"].ready for i in self.parameterInputs])
+        return self.ready
+    
+class Modifier(Module):
+    def __init__(self, id):
+        super().__init__(id)
         self.parameterOutputs.append({"name": "out", "value": 0.0})
         
     def update(self, t):
@@ -72,5 +88,5 @@ def addSubmodules(classRef, path):
 
 addSubmodules(Generator, os.path.join(os.path.dirname(__file__), "Generator"))
 addSubmodules(Function, os.path.join(os.path.dirname(__file__), "Function"))
-# addSubmodules(Modifier, os.path.join(os.path.dirname(__file__), "Modifier"))
+addSubmodules(Modifier, os.path.join(os.path.dirname(__file__), "Modifier"))
 

@@ -21,7 +21,11 @@ NUM_PIXELS = 288
 class MyWidget(QWidget):
     def __init__(self):
         super().__init__()
+        
+        path = "Graphs/test_graph.json"
+        
         self.engine = Engine(NUM_PIXELS, FRAME_RATE)
+        self.engine.loadGraph(path)
 
         self.outputBuffer = np.zeros((NUM_PIXELS, 6))        
         self.colors = [QColor(0, 0, 0) for _ in range(NUM_PIXELS)]
@@ -54,7 +58,6 @@ class MyWidget(QWidget):
         self.show()
 
     def paintEvent(self, event):
-        
         qp = QPainter()
         qp.begin(self)
         for pixels, color in zip(self.pixels, self.colors):
@@ -70,10 +73,6 @@ class MyWidget(QWidget):
             b = int(c[2] * 255) % 256
             self.colors[i].setRgb(r, g, b)
         self.update()
-        
-        
-        
-        
 
 
 if __name__ == '__main__':

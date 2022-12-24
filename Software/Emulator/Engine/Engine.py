@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -8,64 +9,44 @@ from Modules import Module, Coefficient, Generator, Function
 
 class Engine():
     def __init__(self, pixelcount, framerate):
-        self.pixelcount = pixelcount
+        Module.pixelcount = pixelcount
         self.framerate = framerate
         self.pixels = np.zeros((pixelcount, 6))
-        Module.pixelcount = self.pixelcount
-        
-        
+        self.output = None
+        self.outputIndex = 0
         self.t = 0.0
         
-        self.test_const_freq = Coefficient(0, 0.25)
-        self.test_const_rep = Coefficient(1, -1)
-        self.test_const_amplitude = Coefficient(2, 0.5)
-        self.test_const_offset = Coefficient(3, 0.5)
-        self.test_const_phase = Coefficient(4, 0.0)
-        self.test_const_var = Coefficient(5, 50)
         
-        self.test_multiplier_r = Coefficient(6, 0.0)
-        self.test_multiplier_g = Coefficient(7, 1.0)
-        self.test_multiplier_b = Coefficient(8, 1.0)
-        self.test_multiplier_ww = Coefficient(9, 1.0)
-        self.test_multiplier_cw = Coefficient(10, 1.0)
-        self.test_multiplier_am = Coefficient(11, 1.0)
-        
-        self.test_sin = Generator.Sine(12)
-        self.test_sin.setParameterInput(0, self.test_const_freq, 0)
-        self.test_sin.setParameterInput(1, self.test_const_rep, 0)
-        self.test_sin.setParameterInput(2, self.test_const_amplitude, 0)
-        self.test_sin.setParameterInput(3, self.test_const_offset, 0)
-        self.test_sin.setParameterInput(4, self.test_const_phase, 0)
-        
-        self.test_pdf = Function.Pdf(13)
-        self.test_pdf.setParameterInput(0, self.test_sin, 0)
-        self.test_pdf.setParameterInput(1, self.test_const_var, 0)
-        
-        self.test_multiplier = Function.Multiplier(14)
-        self.test_multiplier.setParameterInput(0, self.test_multiplier_r, 0)
-        self.test_multiplier.setParameterInput(1, self.test_multiplier_g, 0)
-        self.test_multiplier.setParameterInput(2, self.test_multiplier_b, 0)
-        self.test_multiplier.setParameterInput(3, self.test_multiplier_ww, 0)
-        self.test_multiplier.setParameterInput(4, self.test_multiplier_cw, 0)
-        self.test_multiplier.setParameterInput(5, self.test_multiplier_am, 0)
-        self.test_multiplier.setInput(0, self.test_pdf, 0)
-        
+    def loadGraph(self, path):
+        with open(path, "r") as f:
+            data = json.load(f)
+            name = data["name"]
+            revision = data["revision"]
+            self.modules = []
+            
+            # Add all coefficients objects
+            for coef in data["coefficients"]:
+                self.modules.append(Coefficient(coef["id"], coef["value"]))
                 
-        self.modules = [self.test_const_freq,
-                        self.test_const_rep,
-                        self.test_const_amplitude,
-                        self.test_const_offset,
-                        self.test_const_phase,
-                        self.test_const_var,
-                        self.test_multiplier_r,
-                        self.test_multiplier_g,
-                        self.test_multiplier_b,
-                        self.test_multiplier_ww,
-                        self.test_multiplier_cw,
-                        self.test_multiplier_am,
-                        self.test_sin,
-                        self.test_pdf,
-                        self.test_multiplier]
+            # Add all module objects
+            for module in data["modules"]:
+                classType = globals()[module["type"].split('.')[0]]
+                moduleType = getattr(classType, module["type"].split('.')[-1])
+                self.modules.append(moduleType(module["id"]))
+               
+            # Iterate throu all modules and set parameters and inputs
+            for module in data["modules"]:
+                if "parameter" in module:
+                    for i, param in enumerate(module["parameter"]):
+                        m = Module.getModuleFromId(self.modules, module["id"])
+                        m.setParameterInput(i, Module.getModuleFromId(self.modules, param["id"]), param["index"])
+                if "input" in module:
+                    for i, param in enumerate(module["input"]):
+                        m = Module.getModuleFromId(self.modules, module["id"])
+                        m.setInput(i, Module.getModuleFromId(self.modules, param["id"]), param["index"])
+                    
+            self.output = Module.getModuleFromId(self.modules, data["output"]["id"])
+            self.outputIndex = data["output"]["index"]
         
     
     def getPixelData(self):
@@ -81,13 +62,14 @@ class Engine():
                 allReady = allReady and res
             if allReady:
                 break
-                    
-        # self.test_pdf.mean = self.test_sin.update(t)
-        # self.pixels = self.test_pdf.update(t)
-        self.pixels = self.test_multiplier.outputs[0]["value"]
+
+        self.pixels = self.output.outputs[self.outputIndex]["value"]
 
 
 if __name__ == '__main__':
+    from pathlib import Path
+    
     engine = Engine(288, 60)
+    engine.loadGraph(Path(__file__).parent.parent / "Graphs" / "test_graph.json")
     
     
