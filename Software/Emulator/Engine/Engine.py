@@ -4,16 +4,18 @@ import json
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(__file__))
-from Modules import Module, Coefficient, Generator, Function
+from Modules import Module, Coefficient, Generator, Function, Analyzer
 
 
 class Engine():
     def __init__(self, pixelcount, framerate):
         Module.pixelcount = pixelcount
+        Module.framerate = framerate
         self.framerate = framerate
         self.pixels = np.zeros((pixelcount, 6))
         self.output = None
         self.outputIndex = 0
+        self.modules = []
         self.t = 0.0
         
         
@@ -22,7 +24,6 @@ class Engine():
             data = json.load(f)
             name = data["name"]
             revision = data["revision"]
-            self.modules = []
             
             # Add all coefficients objects
             for coef in data["coefficients"]:
@@ -62,8 +63,11 @@ class Engine():
                 allReady = allReady and res
             if allReady:
                 break
-
         self.pixels = self.output.outputs[self.outputIndex]["value"]
+        
+    def end(self):
+        for i in self.modules:
+            i.end()
 
 
 if __name__ == '__main__':

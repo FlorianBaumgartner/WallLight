@@ -22,7 +22,9 @@ class MyWidget(QWidget):
     def __init__(self):
         super().__init__()
         
-        path = "Graphs/test_graph.json"
+        path = "Graphs/test_graph_analyzer.json"
+        # path = "Graphs/sine_analyzer.json"
+        # path = "Graphs/test_graph.json"
         
         self.engine = Engine(NUM_PIXELS, FRAME_RATE)
         self.engine.loadGraph(path)
@@ -39,7 +41,7 @@ class MyWidget(QWidget):
             
         self.timer = QTimer()
         self.timer.timeout.connect(self.change_colors)
-        self.timer.start(int(1000 / 60))
+        self.timer.start(int(1000 / FRAME_RATE))
 
         self.setStyleSheet("background-color: black;")
         self.setWindowTitle('WallLight Emulator')
@@ -48,6 +50,10 @@ class MyWidget(QWidget):
         self.center()
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
         self.show()
+        
+    def closeEvent(self, event):
+        self.engine.end()
+        event.accept()
 
 
     def center(self):
@@ -76,11 +82,11 @@ class MyWidget(QWidget):
 
 
 if __name__ == '__main__':
-    qtapp = QApplication(sys.argv)
+    app = QApplication(sys.argv)
     widget = MyWidget()
     def signal_handler(sig, frame):
         widget.close()
-        raise KeyboardInterrupt
     signal.signal(signal.SIGINT, signal_handler)
     widget.show()
-    sys.exit(qtapp.exec_())
+    while widget.isVisible():
+        app.processEvents()

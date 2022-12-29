@@ -5,6 +5,7 @@ from glob import glob
 
 class Module():
     pixelcount = 0
+    framerate = 0
     
     def getModuleFromId(modules, moduleId):
         for m in modules:
@@ -20,6 +21,9 @@ class Module():
     
     def update(self, t):
         return self.ready
+    
+    def end(self):
+        pass
     
     def setParameterInput(self, index, source, sourceIndex=0):
         self.parameterInputs[index]["module"] = source
@@ -61,6 +65,15 @@ class Function(Module):
     def setInput(self, index, source, sourceIndex=0):
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
+        
+class Analyzer(Module):
+    def __init__(self, id):
+        super().__init__(id)
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
+        
+    def update(self, t):
+        self.ready = all([i["module"].ready for i in self.parameterInputs])
+        return self.ready
 
 
 def addSubmodules(classRef, path):                                                                         
@@ -89,4 +102,4 @@ def addSubmodules(classRef, path):
 addSubmodules(Generator, os.path.join(os.path.dirname(__file__), "Generator"))
 addSubmodules(Function, os.path.join(os.path.dirname(__file__), "Function"))
 addSubmodules(Modifier, os.path.join(os.path.dirname(__file__), "Modifier"))
-
+addSubmodules(Analyzer, os.path.join(os.path.dirname(__file__), "Analyzer"))
