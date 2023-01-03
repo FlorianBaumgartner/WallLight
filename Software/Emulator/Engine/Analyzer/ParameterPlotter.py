@@ -63,6 +63,7 @@ class ParameterPlotter(Analyzer):
         while ref.widget.graphWidget.isVisible():
             ref.app.processEvents()
         ref.widget.close()
+        ref.app.quit()
         # print("Parameter Plotter run terminated")
             
     def isRunning(self):
