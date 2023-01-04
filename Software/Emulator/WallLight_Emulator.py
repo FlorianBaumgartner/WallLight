@@ -22,8 +22,8 @@ class MyWidget(QWidget):
     def __init__(self):
         super().__init__()
         
-        # path = "Graphs/test_graph_analyzer_dual.json"
-        path = "Graphs/sine_analyzer.json"
+        path = "Graphs/test_graph_analyzer_dual.json"
+        # path = "Graphs/sine_analyzer.json"
         # path = "Graphs/test_graph.json"
         
         self.engine = Engine(NUM_PIXELS, FRAME_RATE)

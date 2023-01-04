@@ -35,7 +35,7 @@ class Engine():
                 moduleType = getattr(classType, module["type"].split('.')[-1])
                 self.modules.append(moduleType(module["id"]))
                
-            # Iterate throu all modules and set parameters and inputs
+            # Iterate through all modules and set parameters and inputs
             for module in data["modules"]:
                 if "parameter" in module:
                     for i, param in enumerate(module["parameter"]):
