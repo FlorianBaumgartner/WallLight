@@ -1,0 +1,93 @@
+{
+	"name": "Rainbow",
+	"revision": "0.1",
+	"coefficients": [
+		{
+			"id": 0,
+			"value": 0.02
+		},
+		{
+			"id": 1,
+			"value": -1.0
+		},
+		{
+			"id": 2,
+			"value": 1.0
+		},
+		{
+			"id": 3,
+			"value": 0.0
+		},
+		{
+			"id": 4,
+			"value": 0.0
+		},
+		{
+			"id": 5,
+			"value": 1.0
+		},
+		{
+			"id": 6,
+			"value": 1.0
+		},
+		{
+			"id": 7,
+			"value": 1.0
+		}
+	],
+	"modules": [
+		{
+			"id": 8,
+			"type": "Generator.Ramp",
+			"parameter": [
+			  {
+					"id": 0,
+					"index": 0
+				},
+				{
+					"id": 1,
+					"index": 0
+				},
+				{
+					"id": 2,
+					"index": 0
+				},
+				{
+					"id": 3,
+					"index": 0
+				},
+				{
+					"id": 4,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 9,
+			"type": "Function.ColorWheel",
+			"parameter": [
+			  {
+					"id": 5,
+					"index": 0
+				},
+				{
+					"id": 8,
+					"index": 0
+				},
+				{
+					"id": 6,
+					"index": 0
+				},
+				{
+					"id": 7,
+					"index": 0
+				}
+			]
+
+		}
+	],
+	"output": {
+		"id": 9,
+		"index": 0
+	}
+}

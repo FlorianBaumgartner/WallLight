@@ -161,7 +161,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.data_line = self.graphWidget.plot([0, 0], [0, 0], pen=self.pen)
         
     def closeEvent(self, event):
-        # print("ParameterPlotter close event")
         event.accept()
 
 if __name__ == '__main__':

@@ -7,40 +7,86 @@ from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtCore import Qt, QTimer
 
-from Engine.Engine import Engine
+sys.path.append("Engine")
+from Engine import Engine
 
 
-WINDOW_WIDTH = 250
-WINDOW_HEIGHT = 1000
-PIXELS_OFFSET = 50
-FRAME_RATE = 60
+class WallLight():
+    WINDOW_WIDTH = 250
+    WINDOW_HEIGHT = 1000
+    PIXELS_OFFSET = 50
+    FRAME_RATE = 60
+    
+    NUM_PIXELS = 288
 
-NUM_PIXELS = 288
+    def __init__(self):
+        self.app = QApplication(sys.argv)
+        self.mainWidget = MainWidget()
+        self.running = False
+        
+        def signal_handler(sig, frame):
+            self.mainWidget.close()
+        signal.signal(signal.SIGINT, signal_handler)
+        
+    def __del__(self):
+        self.stop()
+        
+    def start(self):
+        if self.running:
+            return
+        self.mainWidget.show()
+        
+    def stop(self):
+        if not self.running:
+            return
+        self.app.quit()
+        
+    def isRunning(self):
+        return self.mainWidget.isVisible()
+    
+    def update(self):
+        self.app.processEvents()
+    
+    def run(self):
+        self.start()
+        while self.isRunning():
+            self.update()
+        self.stop()
 
+    def loadGraph(self, path):
+        self.mainWidget.engine.loadGraph(path)
+        
+    def setOutput(self, module, index):
+        self.mainWidget.engine.setOutput(module, index)
+        
+    def addModule(self, module):
+        self.mainWidget.engine.addModule(module)
+     
+    
 
-class WallLight(QWidget):
+class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.engine = Engine(NUM_PIXELS, FRAME_RATE)
+        self.engine = Engine(WallLight.NUM_PIXELS, WallLight.FRAME_RATE)
         
 
-        self.outputBuffer = np.zeros((NUM_PIXELS, 6))        
-        self.colors = [QColor(0, 0, 0) for _ in range(NUM_PIXELS)]
+        self.outputBuffer = np.zeros((WallLight.NUM_PIXELS, 6))        
+        self.colors = [QColor(0, 0, 0) for _ in range(WallLight.NUM_PIXELS)]
         self.pixels = []
-        height = WINDOW_HEIGHT - PIXELS_OFFSET * 2
-        hPixel = int(height / NUM_PIXELS)
-        offset = int((WINDOW_HEIGHT - hPixel * NUM_PIXELS) / 2)
-        for i in range(NUM_PIXELS):
+        height = WallLight.WINDOW_HEIGHT - WallLight.PIXELS_OFFSET * 2
+        hPixel = int(height / WallLight.NUM_PIXELS)
+        offset = int((WallLight.WINDOW_HEIGHT - hPixel * WallLight.NUM_PIXELS) / 2)
+        for i in range(WallLight.NUM_PIXELS):
             self.pixels.append((offset, offset + hPixel * i, hPixel * 3, hPixel))
             
             
         self.timer = QTimer()
         self.timer.timeout.connect(self.change_colors)
-        self.timer.start(int(1000 / FRAME_RATE))
+        self.timer.start(int(1000 / WallLight.FRAME_RATE))
 
         self.setStyleSheet("background-color: black;")
         self.setWindowTitle('WallLight Emulator')
-        self.setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT)
+        self.setGeometry(300, 300, WallLight.WINDOW_WIDTH, WallLight.WINDOW_HEIGHT)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.center()
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
@@ -78,20 +124,15 @@ class WallLight(QWidget):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    wallLight = WallLight()
+    wallLight = WallLight()    
     
+    path = "Graphs/rainbow.json"
     # path = "Graphs/test_graph_analyzer_dual.json"
-    path = "Graphs/sine_analyzer.json"
+    # path = "Graphs/sine_analyzer.json"
     # path = "Graphs/test_graph.json"
     
-    wallLight.engine.loadGraph(path)
- 
-    
-    def signal_handler(sig, frame):
-        wallLight.close()
-    signal.signal(signal.SIGINT, signal_handler)
-    wallLight.show()
-    while wallLight.isVisible():
-        app.processEvents()
-    app.quit()
+    wallLight.loadGraph(path)
+    wallLight.start()
+    while wallLight.isRunning():
+        wallLight.update()
+    wallLight.stop()

@@ -47,9 +47,18 @@ class Engine():
                     for i, param in enumerate(module["input"]):
                         m = Module.getModuleFromId(self.modules, module["id"])
                         m.setInput(i, Module.getModuleFromId(self.modules, param["id"]), param["index"])
-                    
-            self.output = Module.getModuleFromId(self.modules, data["output"]["id"])
-            self.outputIndex = data["output"]["index"]
+             
+            self.setOutput(Module.getModuleFromId(self.modules, data["output"]["id"]), data["output"]["index"])
+     
+
+    def setOutput(self, module, index):
+        self.output = module
+        self.outputIndex = index
+        
+    def addModule(self, module):
+        if type(module) is not list: module = [module]
+        for m in module:
+            self.modules.append(m)
         
     
     def getPixelData(self):
@@ -58,9 +67,9 @@ class Engine():
             if hasattr(m, "isReady"):
                 if not m.isReady():
                     self.t = 0   
-        if not self.graphName:
-            self.t = 0
-            print("Graph not loaded yet")
+        # if not self.graphName:
+        #     self.t = 0
+        #     print("Graph not loaded yet")
             
         self.update(self.t)
         return self.pixels
