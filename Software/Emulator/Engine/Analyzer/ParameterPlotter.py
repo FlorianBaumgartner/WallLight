@@ -17,12 +17,14 @@ class ParameterPlotter(Analyzer):
         self.standaloneT = 0
         self.updateFunction = None
         
-        self.maxTimeWidth = 5
-        self.manualControlTime = 5
+        self.maxSampleTime = 60 * 5          # [s]
+        self.maxTimeWidth = 5                # [s]
+        self.manualControlTime = 5           # [s]
         self.x = []
         self.y = []
         self.yMax = 1.0;
         self.running = False
+        self.ready = False
         
         if self.standalone:
             def signal_handler(sig, frame):
@@ -65,24 +67,38 @@ class ParameterPlotter(Analyzer):
             ref.app.processEvents()
         ref.widget.close()
         ref.app.quit()
-        # print("Parameter Plotter run terminated")
+
             
     def isRunning(self):
         return self.widget.graphWidget.isVisible()
+    
+    def isReady(self):
+        return self.ready
         
     def update(self, t):
         if(Module.framerate == 0):
             return False
+        self.ready = True
         if self.standalone:
             while not self.parameterInputs[0]:
                 print("waiting")
                 time.sleep(0.1)
         if super().update(t) == False:
             return False
+        
         output = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
         self.yMax = max(self.yMax, output)
-        self.x.append(t)
-        self.y.append(output)        
+        if t in self.x:
+            self.y[self.x.index(t)] = output
+            print("Same x value received -> overwrite y")
+        else:
+            self.x.append(t)
+            self.y.append(output)
+        
+        maxSamples = self.maxSampleTime * Module.framerate
+        if(len(self.x) > maxSamples):
+            self.x = self.x[-maxSamples:]
+            self.y = self.y[-maxSamples:]
         
         self.widget.plotItem.setYRange(-self.yMax * 1.2, self.yMax * 1.2, padding=0) 
         if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime):
@@ -96,6 +112,8 @@ class ParameterPlotter(Analyzer):
         if not self.running:
             return
         self.standaloneT += 1 / Module.framerate
+        if not self.isReady():      # Start time increment only when analyzer is ready
+            self.standaloneT = 0
         if self.updateFunction:
             self.updateFunction(self.standaloneT)
     
@@ -156,7 +174,7 @@ if __name__ == '__main__':
     rep = 1
     amp = 0.5
     offset = 0.5
-    phase = -0.5
+    phase = 0
     
     sine = Generator.Sine(0)
     sine.setParameterInput(0, Coefficient(0, freq))
@@ -173,5 +191,6 @@ if __name__ == '__main__':
         plotter.update(t)
 
     plotter.updateFunction = update
+    while not plotter.isReady(): pass    # Wait until plotter is ready
     while plotter.isRunning():
         time.sleep(0.1)

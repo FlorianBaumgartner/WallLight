@@ -18,16 +18,11 @@ FRAME_RATE = 60
 NUM_PIXELS = 288
 
 
-class MyWidget(QWidget):
+class WallLight(QWidget):
     def __init__(self):
         super().__init__()
-        
-        path = "Graphs/test_graph_analyzer_dual.json"
-        # path = "Graphs/sine_analyzer.json"
-        # path = "Graphs/test_graph.json"
-        
         self.engine = Engine(NUM_PIXELS, FRAME_RATE)
-        self.engine.loadGraph(path)
+        
 
         self.outputBuffer = np.zeros((NUM_PIXELS, 6))        
         self.colors = [QColor(0, 0, 0) for _ in range(NUM_PIXELS)]
@@ -52,6 +47,7 @@ class MyWidget(QWidget):
         self.show()
         
     def closeEvent(self, event):
+        self.timer.stop()
         self.engine.end()
         event.accept()
 
@@ -83,11 +79,19 @@ class MyWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    widget = MyWidget()
+    wallLight = WallLight()
+    
+    # path = "Graphs/test_graph_analyzer_dual.json"
+    path = "Graphs/sine_analyzer.json"
+    # path = "Graphs/test_graph.json"
+    
+    wallLight.engine.loadGraph(path)
+ 
+    
     def signal_handler(sig, frame):
-        widget.close()
+        wallLight.close()
     signal.signal(signal.SIGINT, signal_handler)
-    widget.show()
-    while widget.isVisible():
+    wallLight.show()
+    while wallLight.isVisible():
         app.processEvents()
     app.quit()

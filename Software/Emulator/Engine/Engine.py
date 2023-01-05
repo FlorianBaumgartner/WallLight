@@ -17,13 +17,15 @@ class Engine():
         self.outputIndex = 0
         self.modules = []
         self.t = 0.0
+        self.graphName = None
+        self.graphRevision = None
         
         
     def loadGraph(self, path):
         with open(path, "r") as f:
             data = json.load(f)
-            name = data["name"]
-            revision = data["revision"]
+            self.graphName = data["name"]
+            self.graphRevision = data["revision"]
             
             # Add all coefficients objects
             for coef in data["coefficients"]:
@@ -52,6 +54,14 @@ class Engine():
     
     def getPixelData(self):
         self.t += 1 / self.framerate
+        for m in self.modules:
+            if hasattr(m, "isReady"):
+                if not m.isReady():
+                    self.t = 0   
+        if not self.graphName:
+            self.t = 0
+            print("Graph not loaded yet")
+            
         self.update(self.t)
         return self.pixels
     
