@@ -14,8 +14,7 @@ class Mixer(Function):
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         
     def update(self, t):
-        self.ready = all([i["module"].ready for i in self.inputs])
-        if not self.ready:
+        if not super().update(t):
             return False
         
         mix = np.clip(self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"], 0.0, 1.0)

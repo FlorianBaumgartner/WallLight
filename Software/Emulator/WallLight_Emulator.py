@@ -17,7 +17,7 @@ class WallLight():
     PIXELS_OFFSET = 50
     FRAME_RATE = 60
     
-    NUM_PIXELS = 288
+    NUM_PIXELS = 10#288
 
     def __init__(self):
         self.app = QApplication(sys.argv)
@@ -35,6 +35,7 @@ class WallLight():
         if self.running:
             return
         self.mainWidget.show()
+        self.mainWidget.startTimer()
         
     def stop(self):
         if not self.running:
@@ -68,7 +69,7 @@ class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.engine = Engine(WallLight.NUM_PIXELS, WallLight.FRAME_RATE)
-        
+        self.tFps = time.time()
 
         self.outputBuffer = np.zeros((WallLight.NUM_PIXELS, 6))        
         self.colors = [QColor(0, 0, 0) for _ in range(WallLight.NUM_PIXELS)]
@@ -78,12 +79,10 @@ class MainWidget(QWidget):
         offset = int((WallLight.WINDOW_HEIGHT - hPixel * WallLight.NUM_PIXELS) / 2)
         for i in range(WallLight.NUM_PIXELS):
             self.pixels.append((offset, offset + hPixel * i, hPixel * 3, hPixel))
-            
-            
+        
         self.timer = QTimer()
         self.timer.timeout.connect(self.change_colors)
-        self.timer.start(int(1000 / WallLight.FRAME_RATE))
-
+        
         self.setStyleSheet("background-color: black;")
         self.setWindowTitle('WallLight Emulator')
         self.setGeometry(300, 300, WallLight.WINDOW_WIDTH, WallLight.WINDOW_HEIGHT)
@@ -91,6 +90,9 @@ class MainWidget(QWidget):
         self.center()
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
         self.show()
+        
+    def startTimer(self):
+        self.timer.start(int(1000 / WallLight.FRAME_RATE))
         
     def closeEvent(self, event):
         self.timer.stop()
@@ -115,18 +117,24 @@ class MainWidget(QWidget):
 
     def change_colors(self):
         self.outputBuffer = self.engine.getPixelData()
+        self.outputBuffer = np.clip(self.outputBuffer, 0.0, 1.0)    # Constrain values in range from 0.0 ... 1.0
         for i, c in enumerate(self.outputBuffer):
-            r = int(c[0] * 255) % 256
-            g = int(c[1] * 255) % 256
-            b = int(c[2] * 255) % 256
-            self.colors[i].setRgb(r, g, b)
+            r = int(c[0] * 255)
+            g = int(c[1] * 255)
+            b = int(c[2] * 255)
+            self.colors[WallLight.NUM_PIXELS - i - 1].setRgb(r, g, b)
         self.update()
+        
+        # print(f"Real FPS: {1 / (time.time() - self.tFps):.2f}")
+        self.tFps = time.time()
 
 
 if __name__ == '__main__':
     wallLight = WallLight()    
     
-    path = "Graphs/rainbow.json"
+    # path = "Graphs/rect_test.json"
+    path = "Graphs/rect_triangle_test.json"
+    # path = "Graphs/rainbow.json"
     # path = "Graphs/test_graph_analyzer_dual.json"
     # path = "Graphs/sine_analyzer.json"
     # path = "Graphs/test_graph.json"

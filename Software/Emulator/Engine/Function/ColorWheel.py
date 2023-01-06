@@ -15,8 +15,7 @@ class ColorWheel(Function):
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         
     def update(self, t):
-        self.ready = all([i["module"].ready for i in self.inputs])
-        if not self.ready:
+        if not super().update(t):
             return False
         
         freq = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
@@ -30,7 +29,7 @@ class ColorWheel(Function):
             self.outputs[0]["value"][i, 0] = r
             self.outputs[0]["value"][i, 1] = g
             self.outputs[0]["value"][i, 2] = b
-        #┼ TODO: Add Gamma Correction as described in: https://github.com/adafruit/Adafruit_NeoPixel/blob/master/Adafruit_NeoPixel.cpp
+        # TODO: Add Gamma Correction as described in: https://github.com/adafruit/Adafruit_NeoPixel/blob/master/Adafruit_NeoPixel.cpp
         return True
     
     def __hsvToRgb(self, hue, sat, val):

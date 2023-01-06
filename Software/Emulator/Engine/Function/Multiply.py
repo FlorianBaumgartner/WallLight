@@ -12,8 +12,7 @@ class Multiply(Function):
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         
     def update(self, t):
-        self.ready = all([i["module"].ready for i in self.inputs])
-        if not self.ready:
+        if not super().update(t):
             return False
         
         input_a = self.inputs[0]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"]

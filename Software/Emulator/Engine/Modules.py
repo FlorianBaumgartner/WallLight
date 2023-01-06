@@ -66,6 +66,12 @@ class Function(Module):
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
         
+    def update(self, t):
+        parameterInputsReady = all([i["module"].ready for i in self.parameterInputs])
+        inputsReady = all([i["module"].ready for i in self.inputs])
+        self.ready = parameterInputsReady and inputsReady
+        return self.ready
+        
 class Analyzer(Module):
     def __init__(self, id):
         super().__init__(id)
@@ -76,25 +82,21 @@ class Analyzer(Module):
         return self.ready
 
 
-def addSubmodules(classRef, path):                                                                         
+def addSubmodules(classRef, path):    
+    import importlib.util
+                                                                     
     submodules = []
     for file in glob(os.path.join(path, "*.py")):
         name = os.path.splitext(os.path.basename(file))[0]
         if(name == classRef.__name__):
             continue
-        sys.path.append(path) 
-        module = __import__(name)        
-        for member in dir(module):
-            try:
-                attr = getattr(module, member)
-                attr.update
-                if(member in ["Module", "Generator", "Modifier"]):
-                    continue
-                if(member.startswith("__")):
-                    continue
-                submodules.append(attr) if attr not in submodules else submodules
-            except:
-                pass
+        
+        spec = importlib.util.spec_from_file_location(name, os.path.join(path, f"{name}.py"))
+        foo = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(foo)
+        module = getattr(foo, name)        
+        submodules.append(module) if module not in submodules else submodules
+            
     for m in submodules:
         setattr(classRef, m.__name__, m)
     return [m.__name__ for m in submodules]

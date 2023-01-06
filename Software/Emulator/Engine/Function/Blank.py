@@ -10,4 +10,6 @@ class Blank(Function):
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         
     def update(self, t):
+        if not super().update(t):
+            return False
         return True
