@@ -29,12 +29,12 @@ class Rect(Function):
         
         c = np.ones(Function.pixelcount) * low
         for i in range(Function.pixelcount):
-            if((i > int(start * Function.pixelcount)) and (i < int(stop * Function.pixelcount))):
+            if(((i + 0.5) > start * Function.pixelcount) and ((i + 0.5) <= stop * Function.pixelcount)):
                 c[i] = high
             if smooth:
                 startDif = start * Function.pixelcount - i
                 stopDif = stop * Function.pixelcount - i
-                if(startDif >= 0.0 and startDif < 1.0):
+                if(startDif > 0.0 and startDif < 1.0):
                     c[i] = low + (high - low) * startDif
                 if(stopDif >= 0.0 and stopDif < 1.0):
                     c[i] = low + (high - low) * stopDif
@@ -47,22 +47,39 @@ if __name__ == '__main__':
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent.parent.parent))
     from WallLight_Emulator import WallLight
-    from Modules import Coefficient
+    from Modules import Coefficient, Generator, Analyzer
     wallLight = WallLight()
     
-    start = 0.025
-    stop = 0.975
-    low = 0.2
+    freq = 0.1
+    rep = -1.0
+    amplitude = 0.5
+    offset = 0.5
+    phase = 0.0
+    
+    start = 0.0
+    low = 0.0
     high = 1.0
     smooth = 1.0
     
-    rect = Rect(0)
-    rect.setParameterInput(0, Coefficient(1, start))
-    rect.setParameterInput(1, Coefficient(2, stop))
-    rect.setParameterInput(2, Coefficient(3, low))
-    rect.setParameterInput(3, Coefficient(4, high))
-    rect.setParameterInput(4, Coefficient(5, smooth))
+    triangle = Generator.Triangle(0)
+    triangle.setParameterInput(0, Coefficient(2, freq))
+    triangle.setParameterInput(1, Coefficient(3, rep))
+    triangle.setParameterInput(2, Coefficient(4, amplitude))
+    triangle.setParameterInput(3, Coefficient(5, offset))
+    triangle.setParameterInput(4, Coefficient(6, phase))
     
-    wallLight.addModule(rect)
+    
+    rect = Rect(1)
+    rect.setParameterInput(0, Coefficient(7, start))
+    rect.setParameterInput(1, triangle)
+    rect.setParameterInput(2, Coefficient(8, low))
+    rect.setParameterInput(3, Coefficient(9, high))
+    rect.setParameterInput(4, Coefficient(10, smooth))
+    
+    plotter = Analyzer.ParameterPlotter(11)
+    plotter.setParameterInput(0, triangle)
+    
+    
+    wallLight.addModule([triangle, rect, plotter])
     wallLight.setOutput(rect, 0)
     wallLight.run()

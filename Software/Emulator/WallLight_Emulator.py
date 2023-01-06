@@ -17,7 +17,7 @@ class WallLight():
     PIXELS_OFFSET = 50
     FRAME_RATE = 60
     
-    NUM_PIXELS = 10#288
+    NUM_PIXELS = 288
 
     def __init__(self):
         self.app = QApplication(sys.argv)
@@ -78,7 +78,7 @@ class MainWidget(QWidget):
         hPixel = int(height / WallLight.NUM_PIXELS)
         offset = int((WallLight.WINDOW_HEIGHT - hPixel * WallLight.NUM_PIXELS) / 2)
         for i in range(WallLight.NUM_PIXELS):
-            self.pixels.append((offset, offset + hPixel * i, hPixel * 3, hPixel))
+            self.pixels.append((offset, offset + hPixel * i, 20, hPixel))
         
         self.timer = QTimer()
         self.timer.timeout.connect(self.change_colors)
@@ -132,8 +132,9 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
+    path = "Graphs/rainbow_rect.json"
     # path = "Graphs/rect_test.json"
-    path = "Graphs/rect_triangle_test.json"
+    # path = "Graphs/rect_triangle_test.json"
     # path = "Graphs/rainbow.json"
     # path = "Graphs/test_graph_analyzer_dual.json"
     # path = "Graphs/sine_analyzer.json"
