@@ -59,6 +59,12 @@ class Engine():
         if type(module) is not list: module = [module]
         for m in module:
             self.modules.append(m)
+            
+    def updateCoefficient(self, identity, value):
+        m = Module.getModuleFromId(self.modules, identity)
+        if not isinstance(m, Coefficient):
+            raise Exception(f"Module with ID [{identity}] is not a Coefficient")
+        m.updateValue(value)
         
     
     def getPixelData(self):
@@ -66,10 +72,7 @@ class Engine():
         for m in self.modules:
             if hasattr(m, "isReady"):
                 if not m.isReady():
-                    self.t = 0   
-        # if not self.graphName:
-        #     self.t = 0
-        #     print("Graph not loaded yet")
+                    self.t = 0
             
         self.update(self.t)
         return self.pixels

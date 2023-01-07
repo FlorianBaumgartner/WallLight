@@ -34,7 +34,9 @@ class Coefficient(Module):
         super().__init__(id)
         self.parameterOutputs.append({"name": "coefficient", "value": const})
         self.ready = True
-    # TODO: Add possibitlity to update coefficient (interface)
+    
+    def updateValue(self, value):
+        self.parameterOutputs[0]["value"] = value
 
 class Generator(Module):
     def __init__(self, id):

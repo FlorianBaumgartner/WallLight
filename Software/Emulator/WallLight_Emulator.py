@@ -1,5 +1,6 @@
-import time
+import os
 import sys
+import time
 import signal
 import numpy as np
 from random import randint
@@ -7,7 +8,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtCore import Qt, QTimer
 
-sys.path.append("Engine")
+sys.path.append(os.path.join(os.path.dirname(__file__), "Engine"))
 from Engine import Engine
 
 
@@ -59,6 +60,9 @@ class WallLight():
         
     def setOutput(self, module, index):
         self.mainWidget.engine.setOutput(module, index)
+        
+    def updateCoefficient(self, identity, value):
+        self.mainWidget.engine.updateCoefficient(identity, value)
         
     def addModule(self, module):
         self.mainWidget.engine.addModule(module)

@@ -1,0 +1,129 @@
+{
+	"name": "Rect Test",
+	"revision": "0.1",
+	"coefficients": [
+		{
+			"id": 0,
+			"value": 0.0
+		},
+		{
+			"id": 1,
+			"value": 0.0
+		},
+		{
+			"id": 2,
+			"value": 0.0
+		},
+		{
+			"id": 3,
+			"value": 1.0
+		},
+		{
+			"id": 4,
+			"value": 1.0
+		},
+		{
+			"id": 5,
+			"value": 0.0
+		},
+		{
+			"id": 6,
+			"value": 1.0
+		},
+		{
+			"id": 7,
+			"value": 0.0
+		},
+		{
+			"id": 8,
+			"value": 0.0
+		},
+		{
+			"id": 9,
+			"value": 0.0
+		},
+		{
+			"id": 10,
+			"value": 0.0
+		}
+	],
+	"modules": [
+		{
+			"id": 11,
+			"type": "Function.Rect",
+			"parameter": [
+			  {
+					"id": 0,
+					"index": 0
+				},
+				{
+					"id": 1,
+					"index": 0
+				},
+				{
+					"id": 2,
+					"index": 0
+				},
+				{
+					"id": 3,
+					"index": 0
+				},
+				{
+					"id": 4,
+					"index": 0
+				}
+			]
+
+		},
+		{
+			"id": 12,
+			"type": "Function.ColorGain",
+			"parameter": [
+			  {
+					"id": 5,
+					"index": 0
+				},
+				{
+					"id": 6,
+					"index": 0
+				},
+				{
+					"id": 7,
+					"index": 0
+				},
+				{
+					"id": 8,
+					"index": 0
+				},
+				{
+					"id": 9,
+					"index": 0
+				},
+				{
+					"id": 10,
+					"index": 0
+				}
+			],
+			"input": [
+			  {
+					"id": 11,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 13,
+			"type": "Analyzer.ParameterPlotter",
+			"parameter": [
+			  {
+					"id": 1,
+					"index": 0
+				}
+			]
+		}
+	],
+	"output": {
+		"id": 12,
+		"index": 0
+	}
+}
