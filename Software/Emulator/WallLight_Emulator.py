@@ -3,7 +3,6 @@ import sys
 import time
 import signal
 import numpy as np
-from random import randint
 from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtCore import Qt, QTimer
@@ -136,7 +135,8 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
-    path = "Graphs/rainbow_rect.json"
+    path = "Graphs/input_plotter_test.json"
+    # vpath = "Graphs/rainbow_rect.json"
     # path = "Graphs/rect_test.json"
     # path = "Graphs/rect_triangle_test.json"
     # path = "Graphs/rainbow.json"

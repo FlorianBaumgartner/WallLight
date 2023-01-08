@@ -61,6 +61,8 @@ if __name__ == '__main__':
     high = 1.0
     smooth = 1.0
     
+    plotChannel = 0.0
+    
     triangle = Generator.Triangle(0)
     triangle.setParameterInput(0, Coefficient(2, freq))
     triangle.setParameterInput(1, Coefficient(3, rep))
@@ -76,10 +78,14 @@ if __name__ == '__main__':
     rect.setParameterInput(3, Coefficient(9, high))
     rect.setParameterInput(4, Coefficient(10, smooth))
     
-    plotter = Analyzer.ParameterPlotter(11)
-    plotter.setParameterInput(0, triangle)
+    parameterPlotter = Analyzer.ParameterPlotter(11)
+    parameterPlotter.setParameterInput(0, triangle)
+    
+    inputPlotter = Analyzer.InputPlotter(12)
+    inputPlotter.setParameterInput(0, Coefficient(13, plotChannel))
+    inputPlotter.setInput(0, rect)
     
     
-    wallLight.addModule([triangle, rect, plotter])
+    wallLight.addModule([triangle, rect, parameterPlotter, inputPlotter])
     wallLight.setOutput(rect, 0)
     wallLight.run()

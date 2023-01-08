@@ -7,7 +7,7 @@ from Modules import Function
 class ColorWheel(Function):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "frequency", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "cycles", "module": None, "sourceIndex" : 0})
         self.parameterInputs.append({"name": "position", "module": None, "sourceIndex" : 0})
         self.parameterInputs.append({"name": "saturation", "module": None, "sourceIndex" : 0})
         self.parameterInputs.append({"name": "brightness", "module": None, "sourceIndex" : 0})

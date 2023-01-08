@@ -5,16 +5,18 @@ import threading
 import numpy as np
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer
+from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
 sys.path.append("..")
 from Modules import Module, Analyzer
 
 
-class ParameterPlotter(Analyzer):  
+class InputPlotter(Analyzer):  
     def __init__(self, id, standalone=False):
         super().__init__(id)
         
-        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "channel", "module": None, "sourceIndex" : 0})
+        self.inputs.append({"name": "input", "module": None, "sourceIndex" : 0})
         
         self.standalone = standalone
         self.standaloneT = 0
@@ -25,7 +27,8 @@ class ParameterPlotter(Analyzer):
         self.manualControlTime = 5           # [s]
         self.x = []
         self.y = []
-        self.yMax = 1.0;
+        self.yMin = 0.0
+        self.yMax = 1.0
         self.running = False
         self.ready = False
         
@@ -83,32 +86,19 @@ class ParameterPlotter(Analyzer):
             return False
         self.ready = True
         if self.standalone:
-            while not self.parameterInputs[0]:
+            while not self.inputs[0] or not self.parameterInputs[0]:
                 print("waiting")
                 time.sleep(0.1)
         if not super().update(t):
             return False
         
-        output = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        self.yMax = max(self.yMax, output)
-        if t in self.x:
-            self.y[self.x.index(t)] = output
-            print("Same x value received -> overwrite y")
-        else:
-            self.x.append(t)
-            self.y.append(output)
+        channel = int(self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"])
+        output = self.inputs[0]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"][:,channel]
+        self.widget.updateValues(output)
         
-        maxSamples = self.maxSampleTime * Module.framerate
-        if(len(self.x) > maxSamples):
-            self.x = self.x[-maxSamples:]
-            self.y = self.y[-maxSamples:]
-        
-        self.widget.plotItem.setYRange(-self.yMax * 1.2, self.yMax * 1.2, padding=0) 
-        if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime):
-            self.widget.plotItem.setXRange(max(0, t - self.maxTimeWidth), t, padding=0)
-
-        if(len(self.x) > 2):
-            self.widget.data_line.setData(self.x, self.y)
+        self.yMin = min(self.yMin, np.min(output))
+        self.yMax = max(self.yMax, np.max(output))
+        self.widget.plotItem.setYRange(-self.yMin * 1.1 - 0.1, self.yMax * 1.1, padding=0) 
         return True
     
     def standaloneUpdate(self):
@@ -122,66 +112,95 @@ class ParameterPlotter(Analyzer):
     
 
 
-class MainPlotWidget(pg.PlotWidget):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.mouseEventTime = 0
+class LinePlot(pg.GraphicsObject):
+    def __init__(self, color, width):
+        super(LinePlot, self).__init__()
+        self.picture = QtGui.QPicture()
+        self.color = color
+        self.width = width
 
-    def wheelEvent(self,event):
-        super().wheelEvent(event)
-        self.mouseEventTime = time.time()
-    
-    def mouseReleaseEvent(self, event):
-        super().mouseReleaseEvent(event)
-        self.mouseEventTime = time.time()
+    def setData(self, x, y):
+        self.x = x
+        self.y = y
+        self.generate()
 
-    def mousePressEvent(self, event):
-        super().mousePressEvent(event)
-        self.mouseEventTime = time.time()
+    def generate(self):
+        p = QtGui.QPainter(self.picture)
+        p.setPen(pg.mkPen(self.color, width=self.width))
+        for x in self.x:
+            y = self.y[x]
+            if np.abs(y) > 0.01:
+                p.drawLine(QtCore.QPointF(x, 0), QtCore.QPointF(x, y))
+        
+    def paint(self, p, *args):
+        p.drawPicture(0, 0, self.picture)
+
+    def boundingRect(self):
+        return QtCore.QRectF(self.picture.boundingRect())
 
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
-        self.graphWidget = MainPlotWidget()
+        self.graphWidget = pg.plot()
         self.setCentralWidget(self.graphWidget)
-        self.setGeometry(300, 300, 700, 500)
-        self.graphWidget.setBackground('#212124')        
+        self.setGeometry(300, 300, 1920, 500)
+        self.graphWidget.setBackground('#212124')   
+        
+        self.color = (0, 142, 211)
         self.plotItem = self.graphWidget.getPlotItem()
-
         self.plotItem.showGrid(x=True, y=True, alpha=0.3)
         self.plotItem.setMouseEnabled(x=True, y=False)
         self.plotItem.hideButtons()
-       
-        self.pen = pg.mkPen(color=(0, 142, 211), width=3)
-        self.data_line = self.graphWidget.plot([0, 0], [0, 0], pen=self.pen)
         
+        self.x = np.arange(Module.pixelcount)
+        self.y = np.zeros(Module.pixelcount)
+        
+        self.bars = LinePlot(self.color, 3)
+        self.dots = pg.ScatterPlotItem(size=8, brush=pg.mkBrush(self.color), pen=pg.mkPen(None))
+        self.plotItem.addItem(self.bars)
+        self.plotItem.addItem(self.dots)
+    
     def closeEvent(self, event):
         event.accept()
+        
+    def updateValues(self, y):
+        self.y = y
+        self.bars.setData(self.x, self.y)
+        self.dots.setData(self.x, self.y)
+
 
 if __name__ == '__main__':
-    from Modules import Coefficient, Generator
+    from Modules import Coefficient, Generator, Function
     Module.framerate = 60
-    
+    Module.pixelcount = 288
 
-    freq = 1
-    rep = 1
-    amp = 0.5
+    freq = 0.5
+    rep = -1
+    amp = 0.3
     offset = 0.5
     phase = 0
+    variance = 200
+    colorChannel = 0.0
     
     sine = Generator.Sine(0)
-    sine.setParameterInput(0, Coefficient(0, freq))
-    sine.setParameterInput(1, Coefficient(1, rep))
-    sine.setParameterInput(2, Coefficient(2, amp))
-    sine.setParameterInput(3, Coefficient(3, offset))
-    sine.setParameterInput(4, Coefficient(4, phase))
+    sine.setParameterInput(0, Coefficient(1, freq))
+    sine.setParameterInput(1, Coefficient(2, rep))
+    sine.setParameterInput(2, Coefficient(3, amp))
+    sine.setParameterInput(3, Coefficient(4, offset))
+    sine.setParameterInput(4, Coefficient(5, phase))
     
-    plotter = ParameterPlotter(1, standalone=True)
-    plotter.setParameterInput(0, sine, 0)
+    pdf = Function.Pdf(6)
+    pdf.setParameterInput(0, sine)
+    pdf.setParameterInput(1, Coefficient(7, variance))
+    
+    plotter = InputPlotter(8, standalone=True)
+    plotter.setParameterInput(0, Coefficient(9, colorChannel))
+    plotter.setInput(0, pdf)
     
     def update(t):
         sine.update(t)
+        pdf.update(t)
         plotter.update(t)
 
     plotter.updateFunction = update

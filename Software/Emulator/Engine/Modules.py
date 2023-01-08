@@ -77,10 +77,16 @@ class Function(Module):
 class Analyzer(Module):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
+        self.inputs = []
+        
+    def setInput(self, index, source, sourceIndex=0):
+        self.inputs[index]["module"] = source
+        self.inputs[index]["sourceIndex"] = sourceIndex
         
     def update(self, t):
-        self.ready = all([i["module"].ready for i in self.parameterInputs])
+        parameterInputsReady = all([i["module"].ready for i in self.parameterInputs])
+        inputsReady = all([i["module"].ready for i in self.inputs])
+        self.ready = parameterInputsReady and inputsReady
         return self.ready
 
 
