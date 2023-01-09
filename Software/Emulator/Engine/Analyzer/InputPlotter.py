@@ -98,7 +98,7 @@ class InputPlotter(Analyzer):
         
         self.yMin = min(self.yMin, np.min(output))
         self.yMax = max(self.yMax, np.max(output))
-        self.widget.plotItem.setYRange(-self.yMin * 1.1 - 0.1, self.yMax * 1.1, padding=0) 
+        self.widget.plotItem.setYRange(-self.yMin * 1.1 - 0.1, self.yMax * 1.1, padding=0)
         return True
     
     def standaloneUpdate(self):
@@ -160,6 +160,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.dots = pg.ScatterPlotItem(size=8, brush=pg.mkBrush(self.color), pen=pg.mkPen(None))
         self.plotItem.addItem(self.bars)
         self.plotItem.addItem(self.dots)
+        
+        xRange = Module.pixelcount
+        self.plotItem.setXRange(-0.02 * xRange, xRange * 1.02, padding=0)
     
     def closeEvent(self, event):
         event.accept()
