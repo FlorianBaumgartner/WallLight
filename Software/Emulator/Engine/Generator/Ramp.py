@@ -25,9 +25,10 @@ class Ramp(Generator):
         slope *= 1.0 if(start < stop) else -1.0
         
         
-        if(rep >= 0) and ((rep / freq) < t):            # End value always corresponds to t0
-            t = 0
-        output = start + ((t + (phase / (freq * 2))) * slope) % amplitude
+        if(rep >= 0) and ((rep / freq) < t):
+            output = start + (1.0 / freq + (phase / (freq * 2))) * slope
+        else:
+            output = start + ((t + (phase / (freq * 2))) * slope) % amplitude
         self.parameterOutputs[0]["value"] = output
         return True
     
@@ -50,7 +51,7 @@ if __name__ == '__main__':
     ramp.setParameterInput(3, Coefficient(3, stop))
     ramp.setParameterInput(4, Coefficient(4, phase))
     
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
+    plotter = Analyzer.ParameterPlotter(1, autoMove=False, standalone=True)
     plotter.setParameterInput(0, ramp, 0)
     
     def update(t):
@@ -60,6 +61,4 @@ if __name__ == '__main__':
     plotter.updateFunction = update
     while plotter.isRunning():
         time.sleep(0.1)
-    
-    
     

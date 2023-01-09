@@ -11,11 +11,12 @@ from Modules import Module, Analyzer
 
 
 class ParameterPlotter(Analyzer):  
-    def __init__(self, id, standalone=False):
+    def __init__(self, id, autoMove=True, standalone=False):
         super().__init__(id)
         
         self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
         
+        self.autoMove = autoMove
         self.standalone = standalone
         self.standaloneT = 0
         self.updateFunction = None
@@ -104,7 +105,7 @@ class ParameterPlotter(Analyzer):
             self.y = self.y[-maxSamples:]
         
         self.widget.plotItem.setYRange(-self.yMax * 1.2, self.yMax * 1.2, padding=0) 
-        if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime):
+        if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime) and self.autoMove:
             self.widget.plotItem.setXRange(max(0, t - self.maxTimeWidth), t, padding=0)
 
         if(len(self.x) > 2):
