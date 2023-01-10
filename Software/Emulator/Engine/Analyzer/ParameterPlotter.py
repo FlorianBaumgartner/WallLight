@@ -119,7 +119,11 @@ class ParameterPlotter(Analyzer):
         if not self.isReady():      # Start time increment only when analyzer is ready
             self.standaloneT = 0
         if self.updateFunction:
-            self.updateFunction(self.standaloneT)
+            try:
+                self.updateFunction(self.standaloneT)
+            except Exception as e:
+                self.end()
+                print(e)
     
 
 
@@ -164,7 +168,7 @@ if __name__ == '__main__':
     from Modules import Coefficient, Generator
     Module.framerate = 60
     
-
+    enable = 1.0
     freq = 1
     rep = 1
     amp = 0.5
@@ -172,11 +176,12 @@ if __name__ == '__main__':
     phase = 0
     
     sine = Generator.Sine(0)
-    sine.setParameterInput(0, Coefficient(0, freq))
-    sine.setParameterInput(1, Coefficient(1, rep))
-    sine.setParameterInput(2, Coefficient(2, amp))
-    sine.setParameterInput(3, Coefficient(3, offset))
-    sine.setParameterInput(4, Coefficient(4, phase))
+    sine.setParameterInput(0, Coefficient(2, enable))
+    sine.setParameterInput(1, Coefficient(3, freq))
+    sine.setParameterInput(2, Coefficient(4, rep))
+    sine.setParameterInput(3, Coefficient(5, amp))
+    sine.setParameterInput(4, Coefficient(6, offset))
+    sine.setParameterInput(5, Coefficient(7, phase))
     
     plotter = ParameterPlotter(1, standalone=True)
     plotter.setParameterInput(0, sine, 0)

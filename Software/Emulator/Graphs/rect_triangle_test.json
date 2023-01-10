@@ -37,6 +37,10 @@
 		{
 			"id": 8,
 			"value": 1.0
+		},
+		{
+			"id": 11,
+			"value": 1.0
 		}
 	],
 	"modules": [
@@ -44,7 +48,11 @@
 			"id": 9,
 			"type": "Generator.Triangle",
 			"parameter": [
-			  {
+			    {
+					"id": 11,
+					"index": 0
+				},
+			    {
 					"id": 0,
 					"index": 0
 				},

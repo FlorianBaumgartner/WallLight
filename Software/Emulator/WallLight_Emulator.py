@@ -94,12 +94,16 @@ class MainWidget(QWidget):
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
         self.show()
         
+    def end(self):
+        self.close()
+        self.timer.stop()
+        self.engine.end()
+        
     def startTimer(self):
         self.timer.start(int(1000 / WallLight.FRAME_RATE))
         
     def closeEvent(self, event):
-        self.timer.stop()
-        self.engine.end()
+        self.end()
         event.accept()
 
 
@@ -119,7 +123,12 @@ class MainWidget(QWidget):
         
 
     def change_colors(self):
-        self.outputBuffer = self.engine.getPixelData()
+        try:
+            self.outputBuffer = self.engine.getPixelData()
+        except Exception as e:
+            self.end()
+            print(e)
+        
         self.outputBuffer = np.clip(self.outputBuffer, 0.0, 1.0)    # Constrain values in range from 0.0 ... 1.0
         for i, c in enumerate(self.outputBuffer):
             r = int(c[0] * 255)
@@ -135,14 +144,15 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
-    path = "Graphs/input_plotter_test.json"
-    # vpath = "Graphs/rainbow_rect.json"
+    # path = "Graphs/input_plotter_test.json"
+    # path = "Graphs/rainbow_rect.json"
     # path = "Graphs/rect_test.json"
     # path = "Graphs/rect_triangle_test.json"
     # path = "Graphs/rainbow.json"
     # path = "Graphs/test_graph_analyzer_dual.json"
     # path = "Graphs/sine_analyzer.json"
     # path = "Graphs/test_graph.json"
+    path = "Graphs/test_error.json"
     
     wallLight.loadGraph(path)
     wallLight.start()

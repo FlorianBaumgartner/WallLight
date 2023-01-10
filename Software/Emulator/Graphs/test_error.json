@@ -1,5 +1,5 @@
 {
-	"name": "Input Plotter Test",
+	"name": "Test Graph",
 	"revision": "0.1",
 	"coefficients": [
 		{
@@ -28,7 +28,7 @@
 		},
 		{
 			"id": 6,
-			"value": 0.0
+			"value": 1.0
 		},
 		{
 			"id": 7,
@@ -72,11 +72,7 @@
 			"id": 12,
 			"type": "Generator.Sine",
 			"parameter": [
-			  {
-					"id": 19,
-					"index": 0
-				},
-				{
+			    {
 					"id": 0,
 					"index": 0
 				},
@@ -146,10 +142,30 @@
 		},
 		{
 			"id": 14,
-			"type": "Analyzer.InputPlotter",
+			"type": "Function.ColorGain",
 			"parameter": [
 			  {
 					"id": 6,
+					"index": 0
+				},
+				{
+					"id": 7,
+					"index": 0
+				},
+				{
+					"id": 8,
+					"index": 0
+				},
+				{
+					"id": 9,
+					"index": 0
+				},
+				{
+					"id": 10,
+					"index": 0
+				},
+				{
+					"id": 11,
 					"index": 0
 				}
 			],
@@ -162,7 +178,7 @@
 		}
 	],
 	"output": {
-		"id": 13,
+		"id": 14,
 		"index": 0
 	}
 }

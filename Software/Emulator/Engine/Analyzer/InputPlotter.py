@@ -108,7 +108,11 @@ class InputPlotter(Analyzer):
         if not self.isReady():      # Start time increment only when analyzer is ready
             self.standaloneT = 0
         if self.updateFunction:
-            self.updateFunction(self.standaloneT)
+            try:
+                self.updateFunction(self.standaloneT)
+            except Exception as e:
+                self.end()
+                print(e)
     
 
 
@@ -178,8 +182,9 @@ if __name__ == '__main__':
     Module.framerate = 60
     Module.pixelcount = 288
 
+    enable = 1.0
     freq = 0.5
-    rep = -1
+    rep = -1.0
     amp = 0.3
     offset = 0.5
     phase = 0
@@ -187,18 +192,19 @@ if __name__ == '__main__':
     colorChannel = 0.0
     
     sine = Generator.Sine(0)
-    sine.setParameterInput(0, Coefficient(1, freq))
-    sine.setParameterInput(1, Coefficient(2, rep))
-    sine.setParameterInput(2, Coefficient(3, amp))
-    sine.setParameterInput(3, Coefficient(4, offset))
-    sine.setParameterInput(4, Coefficient(5, phase))
+    sine.setParameterInput(0, Coefficient(3, enable))
+    sine.setParameterInput(1, Coefficient(4, freq))
+    sine.setParameterInput(2, Coefficient(5, rep))
+    sine.setParameterInput(3, Coefficient(6, amp))
+    sine.setParameterInput(4, Coefficient(7, offset))
+    sine.setParameterInput(5, Coefficient(8, phase))
     
-    pdf = Function.Pdf(6)
+    pdf = Function.Pdf(1)
     pdf.setParameterInput(0, sine)
-    pdf.setParameterInput(1, Coefficient(7, variance))
+    pdf.setParameterInput(1, Coefficient(9, variance))
     
-    plotter = InputPlotter(8, standalone=True)
-    plotter.setParameterInput(0, Coefficient(9, colorChannel))
+    plotter = InputPlotter(2, standalone=True)
+    plotter.setParameterInput(0, Coefficient(10, colorChannel))
     plotter.setInput(0, pdf)
     
     def update(t):

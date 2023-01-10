@@ -50,6 +50,7 @@ if __name__ == '__main__':
     from Modules import Coefficient, Generator, Analyzer
     wallLight = WallLight()
     
+    enable = 1.0
     freq = 0.1
     rep = -1.0
     amplitude = 0.5
@@ -64,25 +65,26 @@ if __name__ == '__main__':
     plotChannel = 0.0
     
     triangle = Generator.Triangle(0)
-    triangle.setParameterInput(0, Coefficient(2, freq))
-    triangle.setParameterInput(1, Coefficient(3, rep))
-    triangle.setParameterInput(2, Coefficient(4, amplitude))
-    triangle.setParameterInput(3, Coefficient(5, offset))
-    triangle.setParameterInput(4, Coefficient(6, phase))
+    triangle.setParameterInput(0, Coefficient(4, enable))
+    triangle.setParameterInput(1, Coefficient(5, freq))
+    triangle.setParameterInput(2, Coefficient(6, rep))
+    triangle.setParameterInput(3, Coefficient(7, amplitude))
+    triangle.setParameterInput(4, Coefficient(8, offset))
+    triangle.setParameterInput(5, Coefficient(9, phase))
     
     
     rect = Rect(1)
-    rect.setParameterInput(0, Coefficient(7, start))
+    rect.setParameterInput(0, Coefficient(10, start))
     rect.setParameterInput(1, triangle)
-    rect.setParameterInput(2, Coefficient(8, low))
-    rect.setParameterInput(3, Coefficient(9, high))
-    rect.setParameterInput(4, Coefficient(10, smooth))
+    rect.setParameterInput(2, Coefficient(11, low))
+    rect.setParameterInput(3, Coefficient(12, high))
+    rect.setParameterInput(4, Coefficient(13, smooth))
     
-    parameterPlotter = Analyzer.ParameterPlotter(11)
+    parameterPlotter = Analyzer.ParameterPlotter(2)
     parameterPlotter.setParameterInput(0, triangle)
     
-    inputPlotter = Analyzer.InputPlotter(12)
-    inputPlotter.setParameterInput(0, Coefficient(13, plotChannel))
+    inputPlotter = Analyzer.InputPlotter(3)
+    inputPlotter.setParameterInput(0, Coefficient(14, plotChannel))
     inputPlotter.setInput(0, rect)
     
     

@@ -55,6 +55,7 @@ if __name__ == '__main__':
     from Modules import Module, Coefficient, Generator, Analyzer
     Module.framerate = 60
     
+    enable = 1.0
     freq = 1.0
     rep = 1
     start = 0
@@ -64,11 +65,12 @@ if __name__ == '__main__':
     easyType = 9.0
     
     ramp = Generator.Ramp(0)
-    ramp.setParameterInput(0, Coefficient(3, freq))
-    ramp.setParameterInput(1, Coefficient(4, rep))
-    ramp.setParameterInput(2, Coefficient(5, start))
-    ramp.setParameterInput(3, Coefficient(6, stop))
-    ramp.setParameterInput(4, Coefficient(7, phase))
+    ramp.setParameterInput(0, Coefficient(3, enable))
+    ramp.setParameterInput(1, Coefficient(4, freq))
+    ramp.setParameterInput(2, Coefficient(5, rep))
+    ramp.setParameterInput(3, Coefficient(6, start))
+    ramp.setParameterInput(4, Coefficient(7, stop))
+    ramp.setParameterInput(5, Coefficient(8, phase))
     
     easeOut = EaseOut(1)
     easeOut.setParameterInput(0, ramp)

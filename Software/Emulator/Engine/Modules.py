@@ -20,6 +20,17 @@ class Module():
         self.parameterOutputs = []
     
     def update(self, t):
+        try:
+            parameterInputsReady = all([i["module"].ready for i in self.parameterInputs])
+        except:
+            raise Exception(f'Not all parameterInputs of Module "{self.__module__}" (ID: {self.id}) have been defined')
+        inputsReady = True
+        if hasattr(self, "inputs"):
+            try:
+                inputsReady = all([i["module"].ready for i in self.inputs])
+            except:
+                raise Exception(f'Not all inputs of Module "{self.__module__}" (ID: {self.id}) have been defined')
+        self.ready = parameterInputsReady and inputsReady
         return self.ready
     
     def end(self):
@@ -46,10 +57,7 @@ class Generator(Module):
         self.parameterInputs.append({"name": "rep", "module": None, "sourceIndex" : 0})  # -1 mean endless
         self.parameterOutputs.append({"name": "out", "value": 0.0})
         self.enableTime = 0.0
-        
-    def update(self, t):
-        self.ready = all([i["module"].ready for i in self.parameterInputs])
-        return self.ready
+
     
 class Modifier(Module):
     def __init__(self, id):
@@ -69,12 +77,7 @@ class Function(Module):
     def setInput(self, index, source, sourceIndex=0):
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
-        
-    def update(self, t):
-        parameterInputsReady = all([i["module"].ready for i in self.parameterInputs])
-        inputsReady = all([i["module"].ready for i in self.inputs])
-        self.ready = parameterInputsReady and inputsReady
-        return self.ready
+
         
 class Analyzer(Module):
     def __init__(self, id):
@@ -84,12 +87,6 @@ class Analyzer(Module):
     def setInput(self, index, source, sourceIndex=0):
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
-        
-    def update(self, t):
-        parameterInputsReady = all([i["module"].ready for i in self.parameterInputs])
-        inputsReady = all([i["module"].ready for i in self.inputs])
-        self.ready = parameterInputsReady and inputsReady
-        return self.ready
 
 
 def addSubmodules(classRef, path):    

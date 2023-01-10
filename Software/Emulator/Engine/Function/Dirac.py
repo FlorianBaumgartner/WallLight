@@ -43,6 +43,7 @@ if __name__ == '__main__':
     from Modules import Coefficient, Generator, Analyzer
     wallLight = WallLight()
     
+    enable = 1.0
     freq = 0.1
     rep = -1.0
     amplitude = 0.55
@@ -55,19 +56,20 @@ if __name__ == '__main__':
     plotChannel = 0.0
     
     triangle = Generator.Triangle(0)
-    triangle.setParameterInput(0, Coefficient(2, freq))
-    triangle.setParameterInput(1, Coefficient(3, rep))
-    triangle.setParameterInput(2, Coefficient(4, amplitude))
-    triangle.setParameterInput(3, Coefficient(5, offset))
-    triangle.setParameterInput(4, Coefficient(6, phase))
+    triangle.setParameterInput(0, Coefficient(3, enable))
+    triangle.setParameterInput(1, Coefficient(4, freq))
+    triangle.setParameterInput(2, Coefficient(5, rep))
+    triangle.setParameterInput(3, Coefficient(6, amplitude))
+    triangle.setParameterInput(4, Coefficient(7, offset))
+    triangle.setParameterInput(5, Coefficient(8, phase))
     
     dirac = Dirac(1)
     dirac.setParameterInput(0, triangle)
-    dirac.setParameterInput(1, Coefficient(7, weight))
-    dirac.setParameterInput(2, Coefficient(8, smooth))
+    dirac.setParameterInput(1, Coefficient(9, weight))
+    dirac.setParameterInput(2, Coefficient(10, smooth))
     
-    inputPlotter = Analyzer.InputPlotter(9)
-    inputPlotter.setParameterInput(0, Coefficient(10, plotChannel))
+    inputPlotter = Analyzer.InputPlotter(2)
+    inputPlotter.setParameterInput(0, Coefficient(11, plotChannel))
     inputPlotter.setInput(0, dirac)
     
     
