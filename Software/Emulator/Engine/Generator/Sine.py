@@ -9,21 +9,29 @@ class Sine(Generator):
         self.parameterInputs.append({"name": "amplitude", "module": None, "sourceIndex" : 0})
         self.parameterInputs.append({"name": "offset", "module": None, "sourceIndex" : 0})
         self.parameterInputs.append({"name": "phase", "module": None, "sourceIndex" : 0})   # -1 means -180° ... +1 means + 180°  
-
+        
         
     def update(self, t):
         if super().update(t) == False:
             return False
         
-        freq = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        rep = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        amplitude = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
-        offset = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
-        phase = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"]
+        enable = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
+        freq = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
+        rep = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
+        amplitude = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
+        offset = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"]
+        phase = self.parameterInputs[5]["module"].parameterOutputs[self.parameterInputs[5]["sourceIndex"]]["value"]
         phase = (phase + 1.0) % 2.0 - 1.0
           
-        if(rep >= 0) and ((rep / freq) < t):            # End value always corresponds to t0
+        
+        if enable:
+            t -= self.enableTime
+            if(rep >= 0) and ((rep / freq) < t):            # End value always corresponds to t0
+                t = 0
+        else:
+            self.enableTime = t
             t = 0
+            
         x = t * 2 * np.pi * freq - (phase / freq) * np.pi
         output = np.sin(x) * amplitude + offset
         self.parameterOutputs[0]["value"] = output
@@ -34,23 +42,28 @@ if __name__ == '__main__':
     from Modules import Module, Coefficient, Analyzer
     Module.framerate = 60
         
-    freq = 1
-    rep = 1
+    enable = 0.0
+    freq = 1.0
+    rep = 1.0
     amp = 0.5
     offset = 0.5
     phase = -0.5
     
+    enableCoeff = Coefficient(2, enable)
+    
     sine = Generator.Sine(0)
-    sine.setParameterInput(0, Coefficient(0, freq))
-    sine.setParameterInput(1, Coefficient(1, rep))
-    sine.setParameterInput(2, Coefficient(2, amp))
-    sine.setParameterInput(3, Coefficient(3, offset))
-    sine.setParameterInput(4, Coefficient(4, phase))
+    sine.setParameterInput(0, enableCoeff)
+    sine.setParameterInput(1, Coefficient(3, freq))
+    sine.setParameterInput(2, Coefficient(4, rep))
+    sine.setParameterInput(3, Coefficient(5, amp))
+    sine.setParameterInput(4, Coefficient(6, offset))
+    sine.setParameterInput(5, Coefficient(7, phase))
     
     plotter = Analyzer.ParameterPlotter(1, standalone=True)
     plotter.setParameterInput(0, sine, 0)
     
     def update(t):
+        enableCoeff.updateValue(1.0 if((t % 4.0) >= 2.0) else 0.0)
         sine.update(t)
         plotter.update(t)
 

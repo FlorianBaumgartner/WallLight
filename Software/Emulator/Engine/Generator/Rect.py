@@ -16,34 +16,33 @@ class Rect(Generator):
         if super().update(t) == False:
             return False
         
-        freq = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        rep = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        amplitude = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
-        offset = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
-        phase = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"]
-        dutycicle = self.parameterInputs[5]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"]
+        enable = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
+        freq = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
+        rep = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
+        amplitude = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
+        offset = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"]
+        phase = self.parameterInputs[5]["module"].parameterOutputs[self.parameterInputs[5]["sourceIndex"]]["value"]
+        dutycicle = self.parameterInputs[6]["module"].parameterOutputs[self.parameterInputs[6]["sourceIndex"]]["value"]
         phase = (phase + 1.0) % 2.0 - 1.0
-          
-        if(rep >= 0) and ((rep / freq) < t):            # End value always corresponds to t0
+        
+        if enable:
+            t -= self.enableTime
+            if(rep >= 0) and ((rep / freq) < t):            # End value always corresponds to t0
+                t = 0
+        else:
+            self.enableTime = t
             t = 0
+
         output = (1.0 if((t * freq - (phase / (freq * 2))) % 1.0 <  dutycicle) else -1.0) * amplitude + offset
         self.parameterOutputs[0]["value"] = output
         return True
     
 if __name__ == '__main__':
-    import keyboard
-    import matplotlib
-    import matplotlib.pyplot as plt
-    from Modules import Coefficient
+    import time
+    from Modules import Module, Coefficient, Analyzer
+    Module.framerate = 60
     
-    run = True
-    def signal_handler():
-        global run
-        run = False
-    keyboard.add_hotkey('ctrl+c', signal_handler)
-    
-    ramp = Rect(0)
-    
+    enable = 1.0
     freq = 1.0
     rep = -1
     amp = 0.5
@@ -51,28 +50,24 @@ if __name__ == '__main__':
     phase = 0.0
     dutycicle = 0.5
     
-    ramp.setParameterInput(0, Coefficient(0, freq))
-    ramp.setParameterInput(1, Coefficient(1, rep))
-    ramp.setParameterInput(2, Coefficient(2, amp))
-    ramp.setParameterInput(3, Coefficient(3, offset))
-    ramp.setParameterInput(4, Coefficient(4, phase))
-    ramp.setParameterInput(5, Coefficient(5, dutycicle))
+    enableCoeff = Coefficient(2, enable)
     
-    y = []
-    fig, ax = plt.subplots()
-    FRAME_RATE = 60
-    t = 0
-    try:
-        while run:
-            ramp.update(t)
-            out = ramp.parameterOutputs[0]["value"]
-            print(out)
-            y.append(out)
-            ax.plot(range(len(y)), y, 'b-')
-            plt.draw()
-            t += 1 / FRAME_RATE
-            plt.pause(1 / FRAME_RATE)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        matplotlib.pyplot.close()
+    ramp = Rect(0)
+    ramp.setParameterInput(0, Coefficient(2, enable))
+    ramp.setParameterInput(1, Coefficient(3, freq))
+    ramp.setParameterInput(2, Coefficient(4, rep))
+    ramp.setParameterInput(3, Coefficient(5, amp))
+    ramp.setParameterInput(4, Coefficient(6, offset))
+    ramp.setParameterInput(5, Coefficient(7, phase))
+    ramp.setParameterInput(6, Coefficient(8, dutycicle))
+    
+    plotter = Analyzer.ParameterPlotter(1, standalone=True)
+    plotter.setParameterInput(0, ramp, 0)
+    
+    def update(t):
+        ramp.update(t)
+        plotter.update(t)
+
+    plotter.updateFunction = update
+    while plotter.isRunning():
+        time.sleep(0.1)
