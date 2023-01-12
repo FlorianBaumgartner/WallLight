@@ -39,7 +39,7 @@ class Sine(Generator):
     
 if __name__ == '__main__':
     import time
-    from Modules import Module, Coefficient, Analyzer
+    from Modules import Module, Generator, Coefficient, Analyzer
     Module.framerate = 60
         
     enable = 0.0

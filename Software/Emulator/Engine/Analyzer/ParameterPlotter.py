@@ -10,7 +10,7 @@ sys.path.append("..")
 from Modules import Module, Analyzer
 
 
-class ParameterPlotter(Analyzer):  
+class ParameterPlotter(Analyzer):
     def __init__(self, id, autoMove=True, standalone=False):
         super().__init__(id)
         
@@ -90,6 +90,10 @@ class ParameterPlotter(Analyzer):
         if not super().update(t):
             return False
         
+        module = self.parameterInputs[0]
+        moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
+        self.widget.setWindowTitle(f"Parameter Plotter [{self.id}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+        
         output = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
         self.yMax = max(self.yMax, output)
         if t in self.x:
@@ -165,7 +169,7 @@ class MainWindow(QtWidgets.QMainWindow):
         event.accept()
 
 if __name__ == '__main__':
-    from Modules import Coefficient, Generator
+    from Modules import Coefficient, Generator, Analyzer
     Module.framerate = 60
     
     enable = 1.0
@@ -183,7 +187,7 @@ if __name__ == '__main__':
     sine.setParameterInput(4, Coefficient(6, offset))
     sine.setParameterInput(5, Coefficient(7, phase))
     
-    plotter = ParameterPlotter(1, standalone=True)
+    plotter = Analyzer.ParameterPlotter(1, standalone=True)
     plotter.setParameterInput(0, sine, 0)
     
     def update(t):

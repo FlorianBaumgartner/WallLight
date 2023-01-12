@@ -1,0 +1,233 @@
+{
+	"name": "Demo On-Off",
+	"revision": "0.1",
+	"coefficients": [
+    	{
+			"id": 1000,
+			"value": 0.0
+		},
+		{
+			"id": 1001,
+			"value": 2.0
+		},
+		{
+			"id": 1002,
+			"value": 1.0
+		},
+		{
+			"id": 1003,
+			"value": 1.0
+		},
+		{
+			"id": 1004,
+			"value": 0.0
+		},
+		{
+			"id": 1005,
+			"value": 1.0
+		},
+		{
+			"id": 1006,
+			"value": 0.0
+		},
+		{
+			"id": 1007,
+			"value": 3.0
+		},
+		{
+			"id": 1008,
+			"value": 0.0
+		},
+		{
+			"id": 1009,
+			"value": 0.0
+		},
+		{
+			"id": 1010,
+			"value": 1.0
+		},
+		{
+			"id": 1011,
+			"value": 1.0
+		}
+	],
+	"modules": [
+    	{
+			"id": 0,
+			"type": "Modifier.Multiplier",
+			"parameter": [
+			    {
+					"id": 1000,
+					"index": 0
+				},
+				{
+					"id": 1001,
+					"index": 0
+				}
+			]
+		},
+    	{
+			"id": 1,
+			"type": "Modifier.Subtractor",
+			"parameter": [
+			    {
+					"id": 0,
+					"index": 0
+				},
+				{
+					"id": 1002,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 2,
+			"type": "Modifier.Integrator",
+			"parameter": [
+			    {
+					"id": 1,
+					"index": 0
+				},
+				{
+					"id": 1003,
+					"index": 0
+				},
+				{
+					"id": 1004,
+					"index": 0
+				},
+				{
+					"id": 1005,
+					"index": 0
+				},
+				{
+					"id": 1006,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 3,
+			"type": "Modifier.EaseOut",
+			"parameter": [
+			    {
+					"id": 2,
+					"index": 0
+				},
+				{
+					"id": 1007,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 4,
+			"type": "Modifier.EaseIn",
+			"parameter": [
+			    {
+					"id": 2,
+					"index": 0
+				},
+				{
+					"id": 1007,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 5,
+			"type": "Modifier.Switch",
+			"parameter": [
+			    {
+					"id": 4,
+					"index": 0
+				},
+				{
+					"id": 3,
+					"index": 0
+				},
+				{
+					"id": 1000,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 6,
+			"type": "Function.Rect",
+			"parameter": [
+			    {
+					"id": 1008,
+					"index": 0
+				},
+				{
+					"id": 5,
+					"index": 0
+				},
+				{
+					"id": 1009,
+					"index": 0
+				},
+				{
+					"id": 1010,
+					"index": 0
+				},
+				{
+					"id": 1011,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 7,
+			"type": "Function.Brightness",
+			"parameter": [
+			    {
+					"id": 2,
+					"index": 0
+				}
+			],
+			"input": [
+			    {
+					"id": 6,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 5000,
+			"type": "Analyzer.ParameterPlotter",
+			"parameter": [
+			    {
+					"id": 1,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 5001,
+			"type": "Analyzer.ParameterPlotter",
+			"parameter": [
+			    {
+					"id": 2,
+					"index": 0
+				}
+			]
+		},
+		{
+			"id": 5002,
+			"type": "Analyzer.ParameterPlotter",
+			"parameter": [
+			    {
+					"id": 5,
+					"index": 0
+				}
+			]
+		}
+		
+	],
+	"output": {
+		"id": 7,
+		"index": 0
+	}
+}

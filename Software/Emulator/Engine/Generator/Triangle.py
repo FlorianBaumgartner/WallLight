@@ -38,7 +38,7 @@ class Triangle(Generator):
     
 if __name__ == '__main__':
     import time
-    from Modules import Module, Coefficient, Analyzer
+    from Modules import Module, Coefficient, Generator, Analyzer
     Module.framerate = 60
     
     enable = 1.0
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     offset = 0.0
     phase = -0.25
     
-    triangle = Triangle(0)
+    triangle = Generator.Triangle(0)
     triangle.setParameterInput(0, Coefficient(2, enable))
     triangle.setParameterInput(1, Coefficient(3, freq))
     triangle.setParameterInput(2, Coefficient(4, rep))

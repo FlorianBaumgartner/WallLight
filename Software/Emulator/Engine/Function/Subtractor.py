@@ -4,7 +4,7 @@ sys.path.append("..")
 from Modules import Function
 
 
-class Subtract(Function):
+class Subtractor(Function):
     def __init__(self, id):
         super().__init__(id)
         self.inputs.append({"name": "minuend", "module": None, "sourceIndex" : 0})

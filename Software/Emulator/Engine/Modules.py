@@ -18,18 +18,19 @@ class Module():
         self.ready = False
         self.parameterInputs = []
         self.parameterOutputs = []
+        self.superClassType = self.__class__.superClassType   # This will be set in the addSubmodules function
     
     def update(self, t):
         try:
             parameterInputsReady = all([i["module"].ready for i in self.parameterInputs])
         except:
-            raise Exception(f'Not all parameterInputs of Module "{self.__module__}" (ID: {self.id}) have been defined')
+            raise Exception(f'Not all parameterInputs of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) have been defined')
         inputsReady = True
         if hasattr(self, "inputs"):
             try:
                 inputsReady = all([i["module"].ready for i in self.inputs])
             except:
-                raise Exception(f'Not all inputs of Module "{self.__module__}" (ID: {self.id}) have been defined')
+                raise Exception(f'Not all inputs of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) have been defined')
         self.ready = parameterInputsReady and inputsReady
         return self.ready
     
@@ -37,10 +38,13 @@ class Module():
         pass
     
     def setParameterInput(self, index, source, sourceIndex=0):
+        if(source.id == self.id):
+            raise Exception(f'ParameterInput of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
         self.parameterInputs[index]["module"] = source
         self.parameterInputs[index]["sourceIndex"] = sourceIndex
     
 class Coefficient(Module):
+    superClassType = "Coefficient"
     def __init__(self, id, const):
         super().__init__(id)
         self.parameterOutputs.append({"name": "coefficient", "value": const})
@@ -75,6 +79,8 @@ class Function(Module):
         self.outputs = []
 
     def setInput(self, index, source, sourceIndex=0):
+        if(source.id == self.id):
+            raise Exception(f'Input of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
 
@@ -85,6 +91,8 @@ class Analyzer(Module):
         self.inputs = []
         
     def setInput(self, index, source, sourceIndex=0):
+        if(source.id == self.id):
+            raise Exception(f'Input of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
 
@@ -101,14 +109,16 @@ def addSubmodules(classRef, path):
         spec = importlib.util.spec_from_file_location(name, os.path.join(path, f"{name}.py"))
         foo = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(foo)
-        module = getattr(foo, name)        
+        module = getattr(foo, name)  
+        setattr(module, "superClassType", classRef.__name__)
         submodules.append(module) if module not in submodules else submodules
             
     for m in submodules:
         setattr(classRef, m.__name__, m)
     return [m.__name__ for m in submodules]
 
-addSubmodules(Generator, os.path.join(os.path.dirname(__file__), "Generator"))
-addSubmodules(Function, os.path.join(os.path.dirname(__file__), "Function"))
-addSubmodules(Modifier, os.path.join(os.path.dirname(__file__), "Modifier"))
-addSubmodules(Analyzer, os.path.join(os.path.dirname(__file__), "Analyzer"))
+thisFile = os.path.abspath(__file__)
+addSubmodules(Generator, os.path.join(os.path.dirname(thisFile), "Generator"))
+addSubmodules(Function, os.path.join(os.path.dirname(thisFile), "Function"))
+addSubmodules(Modifier, os.path.join(os.path.dirname(thisFile), "Modifier"))
+addSubmodules(Analyzer, os.path.join(os.path.dirname(thisFile), "Analyzer"))

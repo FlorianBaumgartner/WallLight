@@ -186,7 +186,7 @@
 		},
 		{
 			"id": 21,
-			"type": "Function.Multiply",
+			"type": "Function.Multiplier",
 			"parameter": [
 			],
 			"input": [

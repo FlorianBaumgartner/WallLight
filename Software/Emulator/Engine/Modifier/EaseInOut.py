@@ -52,7 +52,7 @@ class EaseInOut(Modifier):
 
 if __name__ == '__main__':
     import time
-    from Modules import Module, Coefficient, Generator, Analyzer
+    from Modules import Module, Coefficient, Generator, Modifier, Analyzer
     Module.framerate = 60
     
     enable = 1.0
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     ramp.setParameterInput(4, Coefficient(7, stop))
     ramp.setParameterInput(5, Coefficient(8, phase))
     
-    easeInOut = EaseInOut(1)
+    easeInOut = Modifier.EaseInOut(1)
     easeInOut.setParameterInput(0, ramp)
     easeInOut.setParameterInput(1, Coefficient(8, easyType))
     

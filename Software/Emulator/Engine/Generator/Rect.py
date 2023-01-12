@@ -39,7 +39,7 @@ class Rect(Generator):
     
 if __name__ == '__main__':
     import time
-    from Modules import Module, Coefficient, Analyzer
+    from Modules import Module, Coefficient, Generator, Analyzer
     Module.framerate = 60
     
     enable = 1.0
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     
     enableCoeff = Coefficient(2, enable)
     
-    ramp = Rect(0)
+    ramp = Generator.Rect(0)
     ramp.setParameterInput(0, Coefficient(2, enable))
     ramp.setParameterInput(1, Coefficient(3, freq))
     ramp.setParameterInput(2, Coefficient(4, rep))

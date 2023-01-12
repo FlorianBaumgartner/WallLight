@@ -60,7 +60,7 @@ if __name__ == '__main__':
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent.parent.parent))
     from WallLight_Emulator import WallLight
-    from Modules import Coefficient
+    from Modules import Coefficient, Function
     wallLight = WallLight()
     
     freq = 1.0
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     sat = 1.0
     bright = 1.0
     
-    colorWheel = ColorWheel(0)
+    colorWheel = Function.ColorWheel(0)
     colorWheel.setParameterInput(0, Coefficient(1, freq))
     colorWheel.setParameterInput(1, Coefficient(2, pos))
     colorWheel.setParameterInput(2, Coefficient(3, sat))

@@ -47,7 +47,7 @@ if __name__ == '__main__':
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent.parent.parent))
     from WallLight_Emulator import WallLight
-    from Modules import Coefficient, Generator, Analyzer
+    from Modules import Coefficient, Generator, Analyzer, Function
     wallLight = WallLight()
     
     enable = 1.0
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     triangle.setParameterInput(5, Coefficient(9, phase))
     
     
-    pulse = Pulse(1)
+    pulse = Function.Pulse(1)
     pulse.setParameterInput(0, Coefficient(10, position))
     pulse.setParameterInput(1, triangle)
     pulse.setParameterInput(2, Coefficient(11, low))

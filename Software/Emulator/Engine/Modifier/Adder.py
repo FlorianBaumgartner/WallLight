@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 from Modules import Modifier
 
-class Add(Modifier):
+class Adder(Modifier):
     def __init__(self, id):
         super().__init__(id)
         self.parameterInputs.append({"name": "input 0", "module": None, "sourceIndex" : 0})

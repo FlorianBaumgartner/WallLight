@@ -144,7 +144,7 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
-    # path = "Graphs/input_plotter_test.json"
+    path = "Graphs/input_plotter_test.json"
     # path = "Graphs/rainbow_rect.json"
     # path = "Graphs/rect_test.json"
     # path = "Graphs/rect_triangle_test.json"
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     # path = "Graphs/test_graph_analyzer_dual.json"
     # path = "Graphs/sine_analyzer.json"
     # path = "Graphs/test_graph.json"
-    path = "Graphs/test_error.json"
+    # path = "Graphs/test_error.json"
     
     wallLight.loadGraph(path)
     wallLight.start()

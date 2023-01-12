@@ -4,7 +4,7 @@ sys.path.append("..")
 from Modules import Function
 
 
-class Multiply(Function):
+class Adder(Function):
     def __init__(self, id):
         super().__init__(id)
         self.inputs.append({"name": "in_a", "module": None, "sourceIndex" : 0})
@@ -18,5 +18,5 @@ class Multiply(Function):
         input_a = self.inputs[0]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"]
         input_b = self.inputs[1]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"]
         
-        self.outputs[0]["value"] = input_a * input_b
+        self.outputs[0]["value"] = input_a + input_b
         return True

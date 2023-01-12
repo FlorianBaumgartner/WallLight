@@ -3,8 +3,8 @@ import sys
 import json
 import numpy as np
 
-sys.path.insert(0, os.path.dirname(__file__))
-from Modules import Module, Coefficient, Generator, Function, Analyzer
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from Modules import Module, Coefficient, Generator, Modifier, Function, Analyzer
 
 
 class Engine():

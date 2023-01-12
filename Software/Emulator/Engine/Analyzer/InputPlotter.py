@@ -96,6 +96,10 @@ class InputPlotter(Analyzer):
         output = self.inputs[0]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"][:,channel]
         self.widget.updateValues(output)
         
+        module = self.inputs[0]
+        moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
+        self.widget.setWindowTitle(f"Input Plotter [{self.id}, Channel: {channel}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+        
         self.yMin = min(self.yMin, np.min(output))
         self.yMax = max(self.yMax, np.max(output))
         self.widget.plotItem.setYRange(-self.yMin * 1.1 - 0.1, self.yMax * 1.1, padding=0)
@@ -178,7 +182,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 if __name__ == '__main__':
-    from Modules import Coefficient, Generator, Function
+    from Modules import Coefficient, Generator, Function, Analyzer
     Module.framerate = 60
     Module.pixelcount = 288
 
@@ -203,7 +207,7 @@ if __name__ == '__main__':
     pdf.setParameterInput(0, sine)
     pdf.setParameterInput(1, Coefficient(9, variance))
     
-    plotter = InputPlotter(2, standalone=True)
+    plotter = Analyzer.InputPlotter(2, standalone=True)
     plotter.setParameterInput(0, Coefficient(10, colorChannel))
     plotter.setInput(0, pdf)
     

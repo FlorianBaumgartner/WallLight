@@ -40,7 +40,7 @@ if __name__ == '__main__':
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent.parent.parent))
     from WallLight_Emulator import WallLight
-    from Modules import Coefficient, Generator, Analyzer
+    from Modules import Coefficient, Generator, Analyzer, Function
     wallLight = WallLight()
     
     enable = 1.0
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     triangle.setParameterInput(4, Coefficient(7, offset))
     triangle.setParameterInput(5, Coefficient(8, phase))
     
-    dirac = Dirac(1)
+    dirac = Function.Dirac(1)
     dirac.setParameterInput(0, triangle)
     dirac.setParameterInput(1, Coefficient(9, weight))
     dirac.setParameterInput(2, Coefficient(10, smooth))
