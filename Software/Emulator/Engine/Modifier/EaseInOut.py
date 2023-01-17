@@ -6,16 +6,16 @@ from Modules import Modifier
 class EaseInOut(Modifier):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "type", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "type", "module": None, "sourceIndex": 0, "default": 0.0})
 
         
     def update(self, t):
         if super().update(t) == False:
             return False
         
-        x = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        easeType = int(self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"] + 0.5)
+        x = self._getParameterValue(0)
+        easeType = int(self._getParameterValue(1) + 0.5)
         
         output = 0
         if(x >= 1.0):

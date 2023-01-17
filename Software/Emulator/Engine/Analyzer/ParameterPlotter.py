@@ -14,7 +14,7 @@ class ParameterPlotter(Analyzer):
     def __init__(self, id, autoMove=True, standalone=False):
         super().__init__(id)
         
-        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
         
         self.autoMove = autoMove
         self.standalone = standalone
@@ -90,11 +90,16 @@ class ParameterPlotter(Analyzer):
         if not super().update(t):
             return False
         
-        module = self.parameterInputs[0]
-        moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
-        self.widget.setWindowTitle(f"Parameter Plotter [{self.id}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+        if self.parameterInputs[0]["module"]:
+            module = self.parameterInputs[0]
+            moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
+            self.widget.setWindowTitle(f"Parameter Plotter [{self.id}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+        else:
+            self.widget.setWindowTitle(f"Parameter Plotter [{self.id}]: Unconnected")
+            return True
+
         
-        output = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
+        output = self._getParameterValue(0)
         self.yMax = max(self.yMax, output)
         if t in self.x:
             self.y[self.x.index(t)] = output

@@ -6,20 +6,20 @@ from Modules import Generator
 class Ramp(Generator):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "start", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "stop", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "phase", "module": None, "sourceIndex" : 0})   # -1 means -180° ... +1 means + 180°  
+        self.parameterInputs.append({"name": "start", "module": None, "sourceIndex" : 0, "default": 0.0})
+        self.parameterInputs.append({"name": "stop", "module": None, "sourceIndex" : 0, "default": 1.0})
+        self.parameterInputs.append({"name": "phase", "module": None, "sourceIndex" : 0, "default": 0.0})   # -1 means -180° ... +1 means + 180°  
         
     def update(self, t):
         if super().update(t) == False:
             return False
         
-        enable = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        freq = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        rep = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
-        start = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
-        stop = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"]
-        phase = self.parameterInputs[5]["module"].parameterOutputs[self.parameterInputs[5]["sourceIndex"]]["value"]
+        enable = self._getParameterValue(0)
+        freq = self._getParameterValue(1)
+        rep = self._getParameterValue(2)
+        start = self._getParameterValue(3)
+        stop = self._getParameterValue(4)
+        phase = self._getParameterValue(5)
         phase = (phase + 1.0) % 2.0 - 1.0           # Phase range: -1.0 ... 1.0
         amplitude = np.abs(start - stop)
         slope = amplitude * freq

@@ -7,14 +7,14 @@ from Modules import Function
 class ColorGain(Function):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "r", "module": None, "sourceIndex" : 0})    # Red Channel
-        self.parameterInputs.append({"name": "g", "module": None, "sourceIndex" : 0})    # Green Channel
-        self.parameterInputs.append({"name": "b", "module": None, "sourceIndex" : 0})    # Blue Channel
-        self.parameterInputs.append({"name": "ww", "module": None, "sourceIndex" : 0})   # Warm-White Channel
-        self.parameterInputs.append({"name": "cw", "module": None, "sourceIndex" : 0})   # Cold-White Channel
-        self.parameterInputs.append({"name": "am", "module": None, "sourceIndex" : 0})   # Amber Channel
+        self.parameterInputs.append({"name": "r", "module": None, "sourceIndex": 0, "default": 1.0})    # Red Channel
+        self.parameterInputs.append({"name": "g", "module": None, "sourceIndex": 0, "default": 1.0})    # Green Channel
+        self.parameterInputs.append({"name": "b", "module": None, "sourceIndex": 0, "default": 1.0})    # Blue Channel
+        self.parameterInputs.append({"name": "ww", "module": None, "sourceIndex": 0, "default": 1.0})   # Warm-White Channel
+        self.parameterInputs.append({"name": "cw", "module": None, "sourceIndex": 0, "default": 1.0})   # Cold-White Channel
+        self.parameterInputs.append({"name": "am", "module": None, "sourceIndex": 0, "default": 1.0})   # Amber Channel
         
-        self.inputs.append({"name": "in", "module": None, "sourceIndex" : 0})
+        self.inputs.append({"name": "in", "module": None, "sourceIndex" : 0, "default": np.zeros((Function.pixelcount, 6))})
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         
     def update(self, t):

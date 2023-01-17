@@ -15,8 +15,8 @@ class InputPlotter(Analyzer):
     def __init__(self, id, standalone=False):
         super().__init__(id)
         
-        self.parameterInputs.append({"name": "channel", "module": None, "sourceIndex" : 0})
-        self.inputs.append({"name": "input", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "channel", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.inputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": np.zeros((Analyzer.pixelcount, 6))})
         
         self.standalone = standalone
         self.standaloneT = 0
@@ -92,13 +92,16 @@ class InputPlotter(Analyzer):
         if not super().update(t):
             return False
         
-        channel = int(self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"])
-        output = self.inputs[0]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"][:,channel]
+        channel = int(self._getParameterValue(0))
+        output = self._getInput(0)[:,channel]
         self.widget.updateValues(output)
         
-        module = self.inputs[0]
-        moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
-        self.widget.setWindowTitle(f"Input Plotter [{self.id}, Channel: {channel}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+        if self.inputs[0]["module"]:
+            module = self.inputs[0]
+            moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
+            self.widget.setWindowTitle(f"Input Plotter [{self.id}, Channel: {channel}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+        else:
+            self.widget.setWindowTitle(f"Input Plotter [{self.id}, Channel: {channel}]: Unconnected")
         
         self.yMin = min(self.yMin, np.min(output))
         self.yMax = max(self.yMax, np.max(output))
@@ -192,7 +195,7 @@ if __name__ == '__main__':
     amp = 0.3
     offset = 0.5
     phase = 0
-    variance = 200
+    variance = 0.01
     colorChannel = 0.0
     
     sine = Generator.Sine(0)

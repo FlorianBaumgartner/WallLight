@@ -7,10 +7,10 @@ from Modules import Function
 class ColorWheel(Function):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "cycles", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "position", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "saturation", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "brightness", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "cycles", "module": None, "sourceIndex": 0, "default": 1.0})
+        self.parameterInputs.append({"name": "position", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "saturation", "module": None, "sourceIndex": 0, "default": 1.0})
+        self.parameterInputs.append({"name": "brightness", "module": None, "sourceIndex": 0, "default": 1.0})
 
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         
@@ -18,13 +18,13 @@ class ColorWheel(Function):
         if not super().update(t):
             return False
         
-        freq = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        pos = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        sat = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
-        bright = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
+        cycles = self._getParameterValue(0)
+        pos = self._getParameterValue(1)
+        sat = self._getParameterValue(2)
+        bright = self._getParameterValue(3)
         
         for i in range(Function.pixelcount):
-            hue = (i / Function.pixelcount) * freq + pos
+            hue = (i / Function.pixelcount) * cycles + pos
             r, g, b = self.__hsvToRgb(hue, sat, bright)
             self.outputs[0]["value"][i, 0] = r
             self.outputs[0]["value"][i, 1] = g

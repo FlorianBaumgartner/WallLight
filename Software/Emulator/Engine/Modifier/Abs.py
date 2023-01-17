@@ -6,12 +6,12 @@ from Modules import Modifier
 class Abs(Modifier):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
         
     def update(self, t):
         if super().update(t) == False:
             return False
         
-        output = np.abs(self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"])
+        output = np.abs(self._getParameterValue(0))
         self.parameterOutputs[0]["value"] = output
         return True

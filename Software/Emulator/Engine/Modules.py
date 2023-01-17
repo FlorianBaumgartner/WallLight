@@ -11,26 +11,33 @@ class Module():
         for m in modules:
             if(m.id == moduleId):
                 return m
-        raise Exception(f"No module with ID: {moduleId} found!")
+        raise Exception(f"ERROR: No module with ID: {moduleId} found!")
     
-    def __init__(self, id):
+    def __init__(self, id, printInfo=True):
         self.id = id
         self.ready = False
+        self.printInfo = printInfo
         self.parameterInputs = []
         self.parameterOutputs = []
-        self.superClassType = self.__class__.superClassType   # This will be set in the addSubmodules function
+        self.superClassType = self.__class__.superClassType     # This will be set in the addSubmodules function
     
     def update(self, t):
-        try:
-            parameterInputsReady = all([i["module"].ready for i in self.parameterInputs])
-        except:
-            raise Exception(f'Not all parameterInputs of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) have been defined')
         inputsReady = True
+        parameterInputsReady = True
+        for n, i in enumerate(self.parameterInputs):
+            if i["module"]:                                     # Check if parameter is connected to module output
+                parameterInputsReady &= i["module"].ready
+            elif self.printInfo:
+                print(f'INFO: ParameterInput "{i["name"]}" [{n}] of "{self.superClassType}.{self.__module__}" (ID: {self.id}) uses default value: {i["default"]}')
+
         if hasattr(self, "inputs"):
-            try:
-                inputsReady = all([i["module"].ready for i in self.inputs])
-            except:
-                raise Exception(f'Not all inputs of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) have been defined')
+            for n, i in enumerate(self.inputs):
+                if i["module"]:                                 # Check if input is connected to module output
+                    inputsReady &= i["module"].ready
+                elif self.printInfo:
+                    print(f'INFO: Input "{i["name"]}" [{n}] of "{self.superClassType}.{self.__module__}" (ID: {self.id}) uses default value (0 vector)')
+
+        self.printInfo = False
         self.ready = parameterInputsReady and inputsReady
         return self.ready
     
@@ -39,10 +46,16 @@ class Module():
     
     def setParameterInput(self, index, source, sourceIndex=0):
         if(source.id == self.id):
-            raise Exception(f'ParameterInput of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
+            raise Exception(f'ERROR: ParameterInput of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
         self.parameterInputs[index]["module"] = source
         self.parameterInputs[index]["sourceIndex"] = sourceIndex
-    
+        
+    def _getParameterValue(self, index):
+        if not self.parameterInputs[index]["module"]:
+            return self.parameterInputs[index]["default"]
+        return self.parameterInputs[index]["module"].parameterOutputs[self.parameterInputs[index]["sourceIndex"]]["value"]
+
+
 class Coefficient(Module):
     superClassType = "Coefficient"
     def __init__(self, id, const):
@@ -56,9 +69,9 @@ class Coefficient(Module):
 class Generator(Module):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "enable", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "freq", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "rep", "module": None, "sourceIndex" : 0})  # -1 mean endless
+        self.parameterInputs.append({"name": "enable", "module": None, "sourceIndex" : 0, "default": 1.0})
+        self.parameterInputs.append({"name": "freq", "module": None, "sourceIndex" : 0, "default": 1.0})
+        self.parameterInputs.append({"name": "rep", "module": None, "sourceIndex" : 0, "default": -1.0})  # -1 mean endless
         self.parameterOutputs.append({"name": "out", "value": 0.0})
         self.enableTime = 0.0
 
@@ -67,10 +80,7 @@ class Modifier(Module):
     def __init__(self, id):
         super().__init__(id)
         self.parameterOutputs.append({"name": "out", "value": 0.0})
-        
-    def update(self, t):
-        self.ready = all([i["module"].ready for i in self.parameterInputs])
-        return self.ready
+
     
 class Function(Module):
     def __init__(self, id):
@@ -80,9 +90,14 @@ class Function(Module):
 
     def setInput(self, index, source, sourceIndex=0):
         if(source.id == self.id):
-            raise Exception(f'Input of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
+            raise Exception(f'ERROR: Input of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
+        
+    def _getInput(self, index):
+        if not self.inputs[index]["module"]:
+            return self.inputs[index]["default"]
+        return self.inputs[index]["module"].outputs[self.inputs[index]["sourceIndex"]]["value"]
 
         
 class Analyzer(Module):
@@ -92,9 +107,14 @@ class Analyzer(Module):
         
     def setInput(self, index, source, sourceIndex=0):
         if(source.id == self.id):
-            raise Exception(f'Input of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
+            raise Exception(f'ERROR: Input of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
         self.inputs[index]["module"] = source
         self.inputs[index]["sourceIndex"] = sourceIndex
+        
+    def _getInput(self, index):
+        if not self.inputs[index]["module"]:
+            return self.inputs[index]["default"]
+        return self.inputs[index]["module"].outputs[self.inputs[index]["sourceIndex"]]["value"]
 
 
 def addSubmodules(classRef, path):    

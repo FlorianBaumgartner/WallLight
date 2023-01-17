@@ -63,7 +63,7 @@ class Engine():
     def updateCoefficient(self, identity, value):
         m = Module.getModuleFromId(self.modules, identity)
         if not isinstance(m, Coefficient):
-            raise Exception(f"Module with ID [{identity}] is not a Coefficient")
+            raise Exception(f"ERROR: Module with ID [{identity}] is not a Coefficient")
         m.updateValue(value)
         
     
@@ -85,6 +85,8 @@ class Engine():
                 allReady = allReady and res
             if allReady:
                 break
+        if not self.output:
+            raise Exception("ERROR: System output is not connected!")
         self.pixels = self.output.outputs[self.outputIndex]["value"]
         
     def end(self):

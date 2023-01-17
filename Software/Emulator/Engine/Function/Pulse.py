@@ -6,11 +6,11 @@ from Modules import Function
 class Pulse(Function):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "position", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "width", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "low", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "high", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "smooth", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "position", "module": None, "sourceIndex": 0, "default": 0.5})
+        self.parameterInputs.append({"name": "width", "module": None, "sourceIndex": 0, "default": 1.0})
+        self.parameterInputs.append({"name": "low", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "high", "module": None, "sourceIndex": 0, "default": 1.0})
+        self.parameterInputs.append({"name": "smooth", "module": None, "sourceIndex": 0, "default": 1.0})
         
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
     
@@ -18,11 +18,11 @@ class Pulse(Function):
         if not super().update(t):
             return False
         
-        position = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        width = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        low = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
-        high = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
-        smooth = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"] >= 0.5
+        position = self._getParameterValue(0)
+        width = self._getParameterValue(1)
+        low = self._getParameterValue(2)
+        high = self._getParameterValue(3)
+        smooth = self._getParameterValue(4) >= 0.5
         
         start = position - width / 2.0
         stop = position + width / 2.0

@@ -6,9 +6,9 @@ from Modules import Function
 class Dirac(Function):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "position", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "weight", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "smooth", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "position", "module": None, "sourceIndex": 0, "default": 0.5})
+        self.parameterInputs.append({"name": "weight", "module": None, "sourceIndex": 0, "default": 1.0})
+        self.parameterInputs.append({"name": "smooth", "module": None, "sourceIndex": 0, "default": 1.0})
         
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
     
@@ -16,20 +16,20 @@ class Dirac(Function):
         if not super().update(t):
             return False
         
-        position = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        weight = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        smooth = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"] >= 0.5
+        position = self._getParameterValue(0)
+        weight = self._getParameterValue(1)
+        smooth = self._getParameterValue(2) >= 0.5
         
         c = np.zeros(Function.pixelcount)
         for i in range(Function.pixelcount):
             if smooth:
-                val = position * Function.pixelcount - i
-                if(val > 0.0 and val < 1.0):
+                val = position * (Function.pixelcount - 1) - i
+                if(val >= 0.0 and val < 1.0):
                     c[i] = weight * (1.0 - val)
                 if(val > -1.0 and val < 0.0):
                     c[i] = weight * (1.0 + val)
             else:
-                if(int(i + 0.5) == int(position * Function.pixelcount)):
+                if(int(i + 0.5) == int(position * (Function.pixelcount - 1))):
                     c[i] = weight
                      
         self.outputs[0]["value"] = np.vstack((c, c, c, c, c, c)).T                                            

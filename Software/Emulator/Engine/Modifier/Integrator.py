@@ -7,25 +7,29 @@ from Modules import Module, Modifier
 class Integrator(Modifier):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "gain", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "min", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "max", "module": None, "sourceIndex" : 0})
-        self.parameterInputs.append({"name": "reset", "module": None, "sourceIndex" : 0})
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "gain", "module": None, "sourceIndex": 0, "default": 1.0})
+        self.parameterInputs.append({"name": "min", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "max", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "reset", "module": None, "sourceIndex": 0, "default": 0.0})
         self.output = 0.0
         
     def update(self, t):
         if super().update(t) == False:
             return False
         
-        inputValue = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        gain = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        minValue = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
-        maxValue = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
-        reset = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"] >= 0.5
+        inputValue = self._getParameterValue(0)
+        gain = self._getParameterValue(1)
+        minValue = self._getParameterValue(2)
+        maxValue = self._getParameterValue(3)
+        reset = self._getParameterValue(4) >= 0.5
         
         self.output += inputValue * (gain / Module.framerate)
-        self.output = np.clip(self.output, minValue, maxValue)
+        
+        if self.parameterInputs[2]["module"]:   # Check if minimum value has been set
+            self.output = max(self.output, minValue)
+        if self.parameterInputs[3]["module"]:   # Check if maximum value has been set
+            self.output = min(self.output, maxValue)
         if reset:
             self.output = 0.0
         
