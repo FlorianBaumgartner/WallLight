@@ -68,25 +68,30 @@
 			"id": 12,
 			"type": "Generator.Sine",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 0,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 1,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 2,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 3,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 4,
 					"id": 4,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -94,25 +99,30 @@
 			"id": 15,
 			"type": "Generator.Sine",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 17,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 1,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 5,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 16,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 4,
 					"id": 17,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -120,13 +130,15 @@
 			"id": 13,
 			"type": "Function.Pdf",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 12,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 15,
-					"index": 0
+					"output": 0
 				}
 			],
 			"input": [
@@ -136,35 +148,42 @@
 			"id": 14,
 			"type": "Function.ColorGain",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 6,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 7,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 8,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 9,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 4,
 					"id": 10,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 5,
 					"id": 11,
-					"index": 0
+					"output": 0
 				}
 			],
 			"input": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 13,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -172,15 +191,16 @@
 			"id": 19,
 			"type": "Analyzer.ParameterPlotter",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 12,
-					"index": 0
+					"output": 0
 				}
 			]
 		}
 	],
 	"output": {
 		"id": 14,
-		"index": 0
+		"output": 0
 	}
 }

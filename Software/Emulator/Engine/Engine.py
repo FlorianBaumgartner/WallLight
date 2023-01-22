@@ -40,15 +40,15 @@ class Engine():
             # Iterate through all modules and set parameters and inputs
             for module in data["modules"]:
                 if "parameter" in module:
-                    for i, param in enumerate(module["parameter"]):
+                    for param in module["parameter"]:
                         m = Module.getModuleFromId(self.modules, module["id"])
-                        m.setParameterInput(i, Module.getModuleFromId(self.modules, param["id"]), param["index"])
+                        m.setParameterInput(param["index"], Module.getModuleFromId(self.modules, param["id"]), param["output"])
                 if "input" in module:
-                    for i, param in enumerate(module["input"]):
+                    for inp in module["input"]:
                         m = Module.getModuleFromId(self.modules, module["id"])
-                        m.setInput(i, Module.getModuleFromId(self.modules, param["id"]), param["index"])
+                        m.setInput(inp["index"], Module.getModuleFromId(self.modules, inp["id"]), inp["output"])
              
-            self.setOutput(Module.getModuleFromId(self.modules, data["output"]["id"]), data["output"]["index"])
+            self.setOutput(Module.getModuleFromId(self.modules, data["output"]["id"]), data["output"]["output"])
      
 
     def setOutput(self, module, index):

@@ -81,28 +81,33 @@
 			"type": "Generator.Ramp",
 			"parameter": [
 			    {
+			        "index": 0,
 					"id": 22,
-					"index": 0
+					"output": 0
 				},
 			    {
+    			    "index": 1,
 					"id": 0,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 1,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 2,
-					"index": 0
+					"output": 0
 				},
-				{
+				{   "index": 4,
 					"id": 3,
-					"index": 0
+					"output": 0
 				},
-				{
+				{   
+    				"index": 5,
 					"id": 4,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -111,28 +116,34 @@
 			"type": "Generator.Sine",
 			"parameter": [
 			    {
+    			    "index": 0,
 					"id": 22,
-					"index": 0
+					"output": 0
 				},
 			    {
+    			    "index": 1,
 					"id": 8,
-					"index": 0
+					"output": 0
 				},
-				{
+				{   
+    				"index": 2,
 					"id": 9,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 10,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 4,
 					"id": 11,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 5,
 					"id": 12,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -140,21 +151,25 @@
 			"id": 19,
 			"type": "Function.ColorWheel",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 5,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 17,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 6,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 7,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -162,25 +177,30 @@
 			"id": 20,
 			"type": "Function.Rect",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 13,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 18,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 14,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 15,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 4,
 					"id": 16,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -190,19 +210,21 @@
 			"parameter": [
 			],
 			"input": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 19,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 20,
-					"index": 0
+					"output": 0
 				}
 			]
 		}
 	],
 	"output": {
 		"id": 21,
-		"index": 0
+		"output": 0
 	}
 }

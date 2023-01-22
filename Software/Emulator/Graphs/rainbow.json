@@ -45,28 +45,34 @@
 			"type": "Generator.Ramp",
 			"parameter": [
 			    {
+    			    "index": 0,
 					"id": 10,
-					"index": 0
+					"output": 0
 				},
 			    {
+    			    "index": 1,
 					"id": 0,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 1,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 2,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 4,
 					"id": 3,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 5,
 					"id": 4,
-					"index": 0
+					"output": 0
 				}
 			]
 		},
@@ -74,21 +80,25 @@
 			"id": 9,
 			"type": "Function.ColorWheel",
 			"parameter": [
-			  {
+			    {
+    			    "index": 0,
 					"id": 5,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 1,
 					"id": 8,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 2,
 					"id": 6,
-					"index": 0
+					"output": 0
 				},
 				{
+    				"index": 3,
 					"id": 7,
-					"index": 0
+					"output": 0
 				}
 			]
 
@@ -96,6 +106,6 @@
 	],
 	"output": {
 		"id": 9,
-		"index": 0
+		"output": 0
 	}
 }

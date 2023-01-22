@@ -21,12 +21,12 @@ class ColorGain(Function):
         if not super().update(t):
             return False
         
-        r = self.parameterInputs[0]["module"].parameterOutputs[self.parameterInputs[0]["sourceIndex"]]["value"]
-        g = self.parameterInputs[1]["module"].parameterOutputs[self.parameterInputs[1]["sourceIndex"]]["value"]
-        b = self.parameterInputs[2]["module"].parameterOutputs[self.parameterInputs[2]["sourceIndex"]]["value"]
-        ww = self.parameterInputs[3]["module"].parameterOutputs[self.parameterInputs[3]["sourceIndex"]]["value"]
-        cw = self.parameterInputs[4]["module"].parameterOutputs[self.parameterInputs[4]["sourceIndex"]]["value"]
-        am = self.parameterInputs[5]["module"].parameterOutputs[self.parameterInputs[5]["sourceIndex"]]["value"]
+        r = self._getParameterValue(0)
+        g = self._getParameterValue(1)
+        b = self._getParameterValue(2)
+        ww = self._getParameterValue(3)
+        cw = self._getParameterValue(4)
+        am = self._getParameterValue(5)
         
         self.outputs[0]["value"] = self.inputs[0]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"] * np.array([r, g, b, ww, cw, am])
         return True
