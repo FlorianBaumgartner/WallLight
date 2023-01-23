@@ -47,8 +47,11 @@ class Module():
     def setParameterInput(self, index, source, sourceIndex=0):
         if(source.id == self.id):
             raise Exception(f'ERROR: ParameterInput of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) must not be connected to itself')
-        self.parameterInputs[index]["module"] = source
-        self.parameterInputs[index]["sourceIndex"] = sourceIndex
+        try:
+            self.parameterInputs[index]["module"] = source
+            self.parameterInputs[index]["sourceIndex"] = sourceIndex
+        except IndexError:
+            raise Exception(f'ERROR: ParameterInput [{index}] of Module "{self.superClassType}.{self.__module__}" (ID: {self.id}) does not exist (Out of range)')
         
     def _getParameterValue(self, index):
         if not self.parameterInputs[index]["module"]:
@@ -102,7 +105,7 @@ class Function(Module):
         
 class Analyzer(Module):
     def __init__(self, id):
-        super().__init__(id)
+        super().__init__(id, printInfo=False)
         self.inputs = []
         
     def setInput(self, index, source, sourceIndex=0):

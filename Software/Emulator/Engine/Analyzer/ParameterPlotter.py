@@ -4,7 +4,9 @@ import signal
 import threading
 import numpy as np
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout, QGridLayout
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import pyqtgraph as pg
 sys.path.append("..")
 from Modules import Module, Analyzer
@@ -14,6 +16,9 @@ class ParameterPlotter(Analyzer):
     def __init__(self, id, autoMove=True, standalone=False):
         super().__init__(id)
         
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
+        self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
         self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
         
         self.autoMove = autoMove
@@ -25,10 +30,11 @@ class ParameterPlotter(Analyzer):
         self.maxTimeWidth = 5                # [s]
         self.manualControlTime = 5           # [s]
         self.x = []
-        self.y = []
+        self.y = [[], [], [], []]
         self.yMax = 1.0;
         self.running = False
         self.ready = False
+        self.legendAdded = [False] * 4
         
         if self.standalone:
             def signal_handler(sig, frame):
@@ -84,41 +90,45 @@ class ParameterPlotter(Analyzer):
             return False
         self.ready = True
         if self.standalone:
-            while not self.parameterInputs[0]:
+            while not any(self.parameterInputs):
                 print("waiting")
                 time.sleep(0.1)
         if not super().update(t):
             return False
         
-        if self.parameterInputs[0]["module"]:
-            module = self.parameterInputs[0]
-            moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
-            self.widget.setWindowTitle(f"Parameter Plotter [{self.id}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+        if any([i["module"] for i in self.parameterInputs]):    # Check if any input is connected to module
+            self.widget.setWindowTitle(f"Parameter Plotter [{self.id}]")
         else:
             self.widget.setWindowTitle(f"Parameter Plotter [{self.id}]: Unconnected")
             return True
-
         
-        output = self._getParameterValue(0)
-        self.yMax = max(self.yMax, output)
-        if t in self.x:
-            self.y[self.x.index(t)] = output
-            print("Same x value received -> overwrite y")
-        else:
-            self.x.append(t)
-            self.y.append(output)
-        
-        maxSamples = self.maxSampleTime * Module.framerate
-        if(len(self.x) > maxSamples):
-            self.x = self.x[-maxSamples:]
-            self.y = self.y[-maxSamples:]
-        
-        self.widget.plotItem.setYRange(-self.yMax * 1.2, self.yMax * 1.2, padding=0) 
-        if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime) and self.autoMove:
-            self.widget.plotItem.setXRange(max(0, t - self.maxTimeWidth), t, padding=0)
-
-        if(len(self.x) > 2):
-            self.widget.data_line.setData(self.x, self.y)
+        for i in range(len(self.widget.data_line)):
+            if not self.parameterInputs[i]["module"]:
+                continue
+            
+            if not self.legendAdded[i]:
+                self.legendAdded[i] = True
+                module = self.parameterInputs[i]
+                moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
+                self.widget.legend.plotItem.legend.addItem(self.widget.legendItem[i], f"{moduleName} [{module['module'].id}] (Output: {module['sourceIndex']})")
+            
+            output = self._getParameterValue(i)
+            self.yMax = max(self.yMax, output)
+            if t not in self.x:
+                self.x.append(t)
+            self.y[i].append(output)
+            
+            maxSamples = self.maxSampleTime * Module.framerate
+            if(len(self.x) > maxSamples):
+                self.x = self.x[-maxSamples:]
+                self.y[i] = self.y[i][-maxSamples:]
+            
+            self.widget.plotItem.setYRange(-self.yMax * 1.2, self.yMax * 1.2, padding=0) 
+            if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime) and self.autoMove:
+                self.widget.plotItem.setXRange(max(0, t - self.maxTimeWidth), t, padding=0)
+    
+            if(len(self.x) > 2):
+                self.widget.data_line[i].setData(self.x, self.y[i])
         return True
     
     def standaloneUpdate(self):
@@ -153,25 +163,73 @@ class MainPlotWidget(pg.PlotWidget):
         super().mousePressEvent(event)
         self.mouseEventTime = time.time()
 
+        
+class CustomLegend(pg.PlotWidget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    def wheelEvent(self,event): pass
+    def mouseReleaseEvent(self, event): pass
+    def mousePressEvent(self, event): pass
+    def mouseMoveEvent(self, event): pass
+
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
+        self.widget = QWidget()
+        self.widget.setStyleSheet('background-color: #212124')
+        
+        
         self.graphWidget = MainPlotWidget()
         self.setCentralWidget(self.graphWidget)
         self.setGeometry(300, 300, 700, 500)
         self.graphWidget.setBackground('#212124')        
         self.plotItem = self.graphWidget.getPlotItem()
-
         self.plotItem.showGrid(x=True, y=True, alpha=0.3)
+        self.plotItem.getAxis('bottom').setGrid(False)             # Disable bottom axis grid, prevent bus as noted here: https://stackoverflow.com/questions/69816567/pyqtgraph-cuts-off-tick-labels-if-showgrid-is-called
+        self.plotItem.showAxis('top')                              # Show top/right axis (and grid, since enabled here)
+        self.plotItem.getAxis('top').setStyle(showValues=False)    # Hide tick labels on top/right
         self.plotItem.setMouseEnabled(x=True, y=False)
         self.plotItem.hideButtons()
        
-        self.pen = pg.mkPen(color=(0, 142, 211), width=3)
-        self.data_line = self.graphWidget.plot([0, 0], [0, 0], pen=self.pen)
+        self.pen = [pg.mkPen(color=(0, 142, 211), width=3),
+                    pg.mkPen(color=(211, 105, 0), width=3),
+                    pg.mkPen(color=(211, 0, 172), width=3),
+                    pg.mkPen(color=(0, 211, 18), width=3)]
+        
+        self.data_line = [self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[0]),
+                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[1]),
+                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[2]),
+                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[3])]
+        
+        self.legendItem = [pg.LegendItem(pen=self.pen[0]),
+                           pg.LegendItem(pen=self.pen[1]),
+                           pg.LegendItem(pen=self.pen[2]),
+                           pg.LegendItem(pen=self.pen[3])]
+        
+        self.legend = CustomLegend()
+        self.legend.setBackground('#212124')    
+        self.legend.setMouseEnabled(x=False, y=False)
+        self.legend.hideButtons()
+        self.legend.setMaximumHeight(45)
+        self.legend.hideAxis('left')
+        self.legend.hideAxis('bottom')
+        self.legend.addLegend()
+        self.legend.plotItem.legend.setColumnCount(2)
+        self.legend.plotItem.legend.anchor((-0.05, 0.15), (0.0, 0.0))
+        
+        
+        self.layout = QVBoxLayout()
+        self.widget.setLayout(self.layout)
+        self.layout.addWidget(self.graphWidget)
+        self.layout.addWidget(self.legend)
+        self.setCentralWidget(self.widget)
+        
         
     def closeEvent(self, event):
         event.accept()
+
 
 if __name__ == '__main__':
     from Modules import Coefficient, Generator, Analyzer
@@ -185,18 +243,28 @@ if __name__ == '__main__':
     phase = 0
     
     sine = Generator.Sine(0)
-    sine.setParameterInput(0, Coefficient(2, enable))
-    sine.setParameterInput(1, Coefficient(3, freq))
-    sine.setParameterInput(2, Coefficient(4, rep))
-    sine.setParameterInput(3, Coefficient(5, amp))
-    sine.setParameterInput(4, Coefficient(6, offset))
-    sine.setParameterInput(5, Coefficient(7, phase))
+    sine.setParameterInput(0, Coefficient(1000, enable))
+    sine.setParameterInput(1, Coefficient(1001, freq))
+    sine.setParameterInput(2, Coefficient(1002, rep))
+    sine.setParameterInput(3, Coefficient(1003, amp))
+    sine.setParameterInput(4, Coefficient(1004, offset))
+    sine.setParameterInput(5, Coefficient(1005, phase))
     
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
+    ramp = Generator.Ramp(1)
+    rect = Generator.Rect(2)
+    triangle = Generator.Triangle(3)
+    
+    plotter = Analyzer.ParameterPlotter(5000, standalone=True)
     plotter.setParameterInput(0, sine, 0)
+    plotter.setParameterInput(1, ramp, 0)
+    plotter.setParameterInput(2, rect, 0)
+    plotter.setParameterInput(3, triangle, 0)
     
     def update(t):
         sine.update(t)
+        ramp.update(t)
+        rect.update(t)
+        triangle.update(t)
         plotter.update(t)
 
     plotter.updateFunction = update
