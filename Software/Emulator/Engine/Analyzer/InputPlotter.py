@@ -94,12 +94,12 @@ class InputPlotter(Analyzer):
         
         channel = int(self._getParameterValue(0))
         output = self._getInput(0)[:,channel]
-        self.widget.updateValues(output)
         
         if self.inputs[0]["module"]:
             module = self.inputs[0]
             moduleName = f"{module['module'].superClassType}.{module['module'].__module__}"
             self.widget.setWindowTitle(f"Input Plotter [{self.id}, Channel: {channel}]: {moduleName} (ID: {module['module'].id}, Output: {module['sourceIndex']})")
+            self.widget.updateValues(output)
         else:
             self.widget.setWindowTitle(f"Input Plotter [{self.id}, Channel: {channel}]: Unconnected")
         
@@ -140,7 +140,7 @@ class LinePlot(pg.GraphicsObject):
         p.setPen(pg.mkPen(self.color, width=self.width))
         for x in self.x:
             y = self.y[x]
-            if np.abs(y) > 0.01:
+            if np.abs(y) > 0.001:
                 p.drawLine(QtCore.QPointF(x, 0), QtCore.QPointF(x, y))
         
     def paint(self, p, *args):
@@ -190,7 +190,7 @@ if __name__ == '__main__':
     Module.pixelcount = 288
 
     enable = 1.0
-    freq = 0.5
+    freq = 0.01
     rep = -1.0
     amp = 0.3
     offset = 0.5
@@ -211,7 +211,7 @@ if __name__ == '__main__':
     pdf.setParameterInput(1, Coefficient(9, variance))
     
     plotter = Analyzer.InputPlotter(2, standalone=True)
-    plotter.setParameterInput(0, Coefficient(10, colorChannel))
+    # plotter.setParameterInput(0, Coefficient(10, colorChannel))
     plotter.setInput(0, pdf)
     
     def update(t):
