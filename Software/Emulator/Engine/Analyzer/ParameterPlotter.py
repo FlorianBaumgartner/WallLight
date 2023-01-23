@@ -31,7 +31,8 @@ class ParameterPlotter(Analyzer):
         self.manualControlTime = 5           # [s]
         self.x = []
         self.y = [[], [], [], []]
-        self.yMax = 1.0;
+        self.yMin = -1.0
+        self.yMax = 1.0
         self.running = False
         self.ready = False
         self.legendAdded = [False] * 4
@@ -113,6 +114,7 @@ class ParameterPlotter(Analyzer):
                 self.widget.legend.plotItem.legend.addItem(self.widget.legendItem[i], f"{moduleName} [{module['module'].id}] (Output: {module['sourceIndex']})")
             
             output = self._getParameterValue(i)
+            self.yMin = min(self.yMin, output)
             self.yMax = max(self.yMax, output)
             if t not in self.x:
                 self.x.append(t)
@@ -123,7 +125,7 @@ class ParameterPlotter(Analyzer):
                 self.x = self.x[-maxSamples:]
                 self.y[i] = self.y[i][-maxSamples:]
             
-            self.widget.plotItem.setYRange(-self.yMax * 1.2, self.yMax * 1.2, padding=0) 
+            self.widget.plotItem.setYRange(self.yMin * 1.2, self.yMax * 1.2, padding=0) 
             if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime) and self.autoMove:
                 self.widget.plotItem.setXRange(max(0, t - self.maxTimeWidth), t, padding=0)
     

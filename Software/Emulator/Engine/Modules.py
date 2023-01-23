@@ -73,8 +73,6 @@ class Generator(Module):
     def __init__(self, id):
         super().__init__(id)
         self.parameterInputs.append({"name": "enable", "module": None, "sourceIndex" : 0, "default": 1.0})
-        self.parameterInputs.append({"name": "freq", "module": None, "sourceIndex" : 0, "default": 1.0})
-        self.parameterInputs.append({"name": "rep", "module": None, "sourceIndex" : 0, "default": -1.0})  # -1 mean endless
         self.parameterOutputs.append({"name": "out", "value": 0.0})
         self.enableTime = 0.0
 

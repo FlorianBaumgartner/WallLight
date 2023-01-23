@@ -1,17 +1,17 @@
 import numpy as np
 import sys
 sys.path.append("..")
-from Modules import Generator
+from Modules import Module, Generator
 
-class Sine(Generator):
+class Dirac(Generator):
     def __init__(self, id):
         super().__init__(id)
         self.parameterInputs.append({"name": "freq", "module": None, "sourceIndex" : 0, "default": 1.0})
         self.parameterInputs.append({"name": "rep", "module": None, "sourceIndex" : 0, "default": -1.0})  # -1 mean endless
-        self.parameterInputs.append({"name": "amplitude", "module": None, "sourceIndex" : 0, "default": 1.0})
+        self.parameterInputs.append({"name": "weight", "module": None, "sourceIndex" : 0, "default": 1.0})
         self.parameterInputs.append({"name": "offset", "module": None, "sourceIndex" : 0, "default": 0.0})
         self.parameterInputs.append({"name": "phase", "module": None, "sourceIndex" : 0, "default": 0.0})   # -1 means -180° ... +1 means + 180°  
-        
+
         
     def update(self, t):
         if super().update(t) == False:
@@ -20,22 +20,29 @@ class Sine(Generator):
         enable = self._getParameterValue(0)
         freq = self._getParameterValue(1)
         rep = self._getParameterValue(2)
-        amplitude = self._getParameterValue(3)
+        weight = self._getParameterValue(3)
         offset = self._getParameterValue(4)
         phase = self._getParameterValue(5)
         phase = (phase + 1.0) % 2.0 - 1.0
-          
+        if phase < 0:
+            phase += 2
         
-        if enable:
-            t -= self.enableTime
-            if(rep >= 0) and ((rep / freq) < t):            # End value always corresponds to t0
-                t = 0
-        else:
+        discreteinterval = max(int(Module.framerate / freq), 1)
+        discretePhaseDelay = int((Module.framerate * phase * 0.5) / freq + 0.5)
+        
+        output = offset
+        if not enable:
             self.enableTime = t
             t = 0
-            
-        x = t * 2 * np.pi * freq - (phase / freq) * np.pi
-        output = np.sin(x) * amplitude + offset
+        else:
+            t -= self.enableTime
+            x = int(t * Module.framerate + 0.5)
+            if x < 0:
+                x += discreteinterval
+            if(x % discreteinterval == discretePhaseDelay):
+                if((rep < 0.0) or (rep / freq) * Module.framerate > x):
+                    output += weight
+
         self.parameterOutputs[0]["value"] = output
         return True
     
@@ -44,29 +51,27 @@ if __name__ == '__main__':
     from Modules import Module, Generator, Coefficient, Analyzer
     Module.framerate = 60
         
-    enable = 0.0
+    enable = 1.0
     freq = 1.0
-    rep = 1.0
-    amp = 0.5
-    offset = 0.5
-    phase = -0.5
+    rep = -1
+    weight = 1.0
+    offset = 0.0
+    phase = 0.0
     
-    enableCoeff = Coefficient(2, enable)
+
+    dirac = Generator.Dirac(0)
+    dirac.setParameterInput(0, Coefficient(2, enable))
+    dirac.setParameterInput(1, Coefficient(3, freq))
+    dirac.setParameterInput(2, Coefficient(4, rep))
+    dirac.setParameterInput(3, Coefficient(5, weight))
+    dirac.setParameterInput(4, Coefficient(6, offset))
+    dirac.setParameterInput(5, Coefficient(7, phase))
     
-    sine = Generator.Sine(0)
-    sine.setParameterInput(0, enableCoeff)
-    sine.setParameterInput(1, Coefficient(3, freq))
-    sine.setParameterInput(2, Coefficient(4, rep))
-    sine.setParameterInput(3, Coefficient(5, amp))
-    sine.setParameterInput(4, Coefficient(6, offset))
-    sine.setParameterInput(5, Coefficient(7, phase))
-    
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
-    plotter.setParameterInput(0, sine, 0)
+    plotter = Analyzer.ParameterPlotter(1, standalone=True, autoMove=True)
+    plotter.setParameterInput(0, dirac, 0)
     
     def update(t):
-        enableCoeff.updateValue(1.0 if((t % 4.0) >= 2.0) else 0.0)
-        sine.update(t)
+        dirac.update(t)
         plotter.update(t)
 
     plotter.updateFunction = update

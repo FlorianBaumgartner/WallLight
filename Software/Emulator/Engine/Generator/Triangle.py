@@ -6,6 +6,8 @@ from Modules import Generator
 class Triangle(Generator):
     def __init__(self, id):
         super().__init__(id)
+        self.parameterInputs.append({"name": "freq", "module": None, "sourceIndex" : 0, "default": 1.0})
+        self.parameterInputs.append({"name": "rep", "module": None, "sourceIndex" : 0, "default": -1.0})  # -1 mean endless
         self.parameterInputs.append({"name": "amplitude", "module": None, "sourceIndex" : 0, "default": 1.0})
         self.parameterInputs.append({"name": "offset", "module": None, "sourceIndex" : 0, "default": 0.0})
         self.parameterInputs.append({"name": "phase", "module": None, "sourceIndex" : 0, "default": 0.0})   # -1 means -180° ... +1 means + 180°  
