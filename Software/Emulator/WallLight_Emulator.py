@@ -144,7 +144,8 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
-    path = "Graphs/generator_dirac_test.json"
+    path = "Graphs/integrate_differentiate_test.json"
+    # path = "Graphs/generator_dirac_test.json"
     # path = "Graphs/input_plotter_test.json"
     # path = "Graphs/rainbow_rect.json"
     # path = "Graphs/rect_test.json"

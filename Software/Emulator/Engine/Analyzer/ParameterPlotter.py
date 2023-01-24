@@ -13,7 +13,7 @@ from Modules import Module, Analyzer
 
 
 class ParameterPlotter(Analyzer):
-    def __init__(self, id, autoMove=True, standalone=False):
+    def __init__(self, id, autoMove=True, standalone=False, stepMode=False):
         super().__init__(id)
         
         self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
@@ -23,6 +23,7 @@ class ParameterPlotter(Analyzer):
         
         self.autoMove = autoMove
         self.standalone = standalone
+        self.stepMode = stepMode
         self.standaloneT = 0
         self.updateFunction = None
         
@@ -48,7 +49,7 @@ class ParameterPlotter(Analyzer):
                 time.sleep(0.1)
          
         else:
-            self.widget = MainWindow()
+            self.widget = MainWindow(stepMode=self.stepMode)
             self.app = QtWidgets.QApplication(sys.argv)
             threading.Thread(target=self.app.exec_).start()
             self.widget.show()
@@ -61,7 +62,7 @@ class ParameterPlotter(Analyzer):
         
     def run(self, ref):
         ref.app = QtWidgets.QApplication(sys.argv)
-        ref.widget = MainWindow()
+        ref.widget = MainWindow(stepMode=self.stepMode)
         ref.widget.show()
         
         self.running = True
@@ -152,6 +153,7 @@ class MainPlotWidget(pg.PlotWidget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.mouseEventTime = 0
+        self.isClicked = False
 
     def wheelEvent(self,event):
         super().wheelEvent(event)
@@ -160,10 +162,17 @@ class MainPlotWidget(pg.PlotWidget):
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)
         self.mouseEventTime = time.time()
+        self.isClicked = False
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
         self.mouseEventTime = time.time()
+        self.isClicked = True
+        
+    def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
+        if self.isClicked:
+            self.mouseEventTime = time.time()
 
         
 class CustomLegend(pg.PlotWidget):
@@ -178,6 +187,7 @@ class CustomLegend(pg.PlotWidget):
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
+        self.plotMode = "right" if kwargs.pop("stepMode", None) else None
         super(MainWindow, self).__init__(*args, **kwargs)
         self.widget = QWidget()
         self.widget.setStyleSheet('background-color: #212124')
@@ -200,10 +210,11 @@ class MainWindow(QtWidgets.QMainWindow):
                     pg.mkPen(color=(211, 0, 172), width=3),
                     pg.mkPen(color=(0, 211, 18), width=3)]
         
-        self.data_line = [self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[0]),
-                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[1]),
-                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[2]),
-                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[3])]
+        
+        self.data_line = [self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[0], stepMode=self.plotMode),
+                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[1], stepMode=self.plotMode),
+                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[2], stepMode=self.plotMode),
+                          self.graphWidget.plot([0, 0], [0, 0], pen=self.pen[3], stepMode=self.plotMode)]
         
         self.legendItem = [pg.LegendItem(pen=self.pen[0]),
                            pg.LegendItem(pen=self.pen[1]),
@@ -256,7 +267,7 @@ if __name__ == '__main__':
     rect = Generator.Rect(2)
     triangle = Generator.Triangle(3)
     
-    plotter = Analyzer.ParameterPlotter(5000, standalone=True)
+    plotter = Analyzer.ParameterPlotter(5000, standalone=True, stepMode=False)
     plotter.setParameterInput(0, sine, 0)
     plotter.setParameterInput(1, ramp, 0)
     plotter.setParameterInput(2, rect, 0)

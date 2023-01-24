@@ -18,13 +18,12 @@ class Integrator(Modifier):
         if super().update(t) == False:
             return False
         
+        
         inputValue = self._getParameterValue(0)
         gain = self._getParameterValue(1)
         minValue = self._getParameterValue(2)
         maxValue = self._getParameterValue(3)
         reset = self._getParameterValue(4) >= 0.5
-        
-        self.output += inputValue * (gain / Module.framerate)
         
         if self.parameterInputs[2]["module"]:   # Check if minimum value has been set
             self.output = max(self.output, minValue)
@@ -34,30 +33,39 @@ class Integrator(Modifier):
             self.output = 0.0
         
         self.parameterOutputs[0]["value"] = self.output
+        self.output += inputValue * (gain / Module.framerate)
         return True
     
 if __name__ == '__main__':
     import time
-    from Modules import Coefficient, Modifier, Analyzer
+    from Modules import Coefficient, Generator, Modifier, Analyzer
     Module.framerate = 60
     
+    freq = 0.1
+    
     inputValue = 1.0
-    gain = 1.0
+    gain = 2 * np.pi * freq
     minValue = 0.0
     maxValue = 1.0
     reset = 0.0
     
-    integrator = Modifier.Integrator(0)
-    integrator.setParameterInput(0, Coefficient(2, inputValue))
+    sine = Generator.Sine(0)
+    sine.setParameterInput(1, Coefficient(1000, freq))        # freq
+    sine.setParameterInput(5, Coefficient(1001, -0.5))        # phase
+    
+    integrator = Modifier.Integrator(1)
+    integrator.setParameterInput(0, sine)
     integrator.setParameterInput(1, Coefficient(3, gain))
-    integrator.setParameterInput(2, Coefficient(4, minValue))
-    integrator.setParameterInput(3, Coefficient(5, maxValue))
+    # integrator.setParameterInput(2, Coefficient(4, minValue))
+    # integrator.setParameterInput(3, Coefficient(5, maxValue))
     integrator.setParameterInput(4, Coefficient(6, reset))
     
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
-    plotter.setParameterInput(0, integrator, 0)
+    plotter = Analyzer.ParameterPlotter(2, standalone=True, autoMove=False, stepMode=True)
+    plotter.setParameterInput(0, sine, 0)
+    plotter.setParameterInput(1, integrator, 0)
     
     def update(t):
+        sine.update(t)
         integrator.update(t)
         plotter.update(t)
 

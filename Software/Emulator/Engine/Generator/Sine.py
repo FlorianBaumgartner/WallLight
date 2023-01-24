@@ -34,7 +34,7 @@ class Sine(Generator):
             self.enableTime = t
             t = 0
             
-        x = t * 2 * np.pi * freq - (phase / freq) * np.pi
+        x = t * 2 * np.pi * freq - phase * np.pi
         output = np.sin(x) * amplitude + offset
         self.parameterOutputs[0]["value"] = output
         return True
@@ -44,12 +44,12 @@ if __name__ == '__main__':
     from Modules import Module, Generator, Coefficient, Analyzer
     Module.framerate = 60
         
-    enable = 0.0
-    freq = 1.0
-    rep = 1.0
-    amp = 0.5
-    offset = 0.5
-    phase = -0.5
+    enable = 1.0
+    freq = 0.1
+    rep = -1.0
+    amp = 1.0
+    offset = 0.0
+    phase = 0.5
     
     enableCoeff = Coefficient(2, enable)
     
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     plotter.setParameterInput(0, sine, 0)
     
     def update(t):
-        enableCoeff.updateValue(1.0 if((t % 4.0) >= 2.0) else 0.0)
+        # enableCoeff.updateValue(1.0 if((t % 4.0) >= 2.0) else 0.0)
         sine.update(t)
         plotter.update(t)
 
