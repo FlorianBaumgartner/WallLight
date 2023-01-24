@@ -37,10 +37,10 @@ if __name__ == '__main__':
     gain = 1.0 / (2.0 * np.pi * freq)
     
     sine = Generator.Sine(0)
-    sine.setParameterInput(1, Coefficient(1000, freq))          # freq
+    sine.setParameterInput(1, Coefficient(1000, freq))         # freq
     
     triangle = Generator.Triangle(10)
-    triangle.setParameterInput(1, Coefficient(1001, 0.1))     # freq
+    triangle.setParameterInput(1, Coefficient(1001, 0.1))      # freq
     triangle.setParameterInput(3, Coefficient(1002, 2.5))      # amplitude
     
     differentiator = Modifier.Differentiator(1)

@@ -35,7 +35,7 @@ class Module():
                 if i["module"]:                                 # Check if input is connected to module output
                     inputsReady &= i["module"].ready
                 elif self.printInfo:
-                    print(f'INFO: Input "{i["name"]}" [{n}] of "{self.superClassType}.{self.__module__}" (ID: {self.id}) uses default value (0 vector)')
+                    print(f'INFO: Input "{i["name"]}" [{n}] of "{self.superClassType}.{self.__module__}" (ID: {self.id}) uses default value: {i["default"][0][0]:.1f} vector')
 
         self.printInfo = False
         self.ready = parameterInputsReady and inputsReady

@@ -105,7 +105,7 @@ class InputPlotter(Analyzer):
         
         self.yMin = min(self.yMin, np.min(output))
         self.yMax = max(self.yMax, np.max(output))
-        self.widget.plotItem.setYRange(-self.yMin * 1.1 - 0.1, self.yMax * 1.1, padding=0)
+        self.widget.plotItem.setYRange(self.yMin * 1.1 - 0.1, self.yMax * 1.1, padding=0)
         return True
     
     def standaloneUpdate(self):
@@ -140,7 +140,7 @@ class LinePlot(pg.GraphicsObject):
         p.setPen(pg.mkPen(self.color, width=self.width))
         for x in self.x:
             y = self.y[x]
-            if np.abs(y) > 0.001:
+            if y > 0.001:       # only draw positive bars
                 p.drawLine(QtCore.QPointF(x, 0), QtCore.QPointF(x, y))
         
     def paint(self, p, *args):

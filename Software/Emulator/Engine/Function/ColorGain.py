@@ -28,5 +28,5 @@ class ColorGain(Function):
         cw = self._getParameterValue(4)
         am = self._getParameterValue(5)
         
-        self.outputs[0]["value"] = self.inputs[0]["module"].outputs[self.inputs[0]["sourceIndex"]]["value"] * np.array([r, g, b, ww, cw, am])
+        self.outputs[0]["value"] = self._getInput(0) * np.array([r, g, b, ww, cw, am])
         return True
