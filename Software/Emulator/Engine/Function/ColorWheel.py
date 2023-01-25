@@ -2,6 +2,7 @@ import numpy as np
 import sys
 sys.path.append("..")
 from Modules import Function
+from Utility import Utility
 
 
 class ColorWheel(Function):
@@ -25,35 +26,12 @@ class ColorWheel(Function):
         
         for i in range(Function.pixelcount):
             hue = (i / Function.pixelcount) * cycles + pos
-            r, g, b = self.__hsvToRgb(hue, sat, bright)
+            r, g, b = Utility.hsvToRgb(hue, sat, bright)
             self.outputs[0]["value"][i, 0] = r
             self.outputs[0]["value"][i, 1] = g
             self.outputs[0]["value"][i, 2] = b
         # TODO: Add Gamma Correction as described in: https://github.com/adafruit/Adafruit_NeoPixel/blob/master/Adafruit_NeoPixel.cpp
         return True
-    
-    def __hsvToRgb(self, hue, sat, val):
-        if sat == 0.0:
-            return val, val, val
-        hue = hue * 6.0
-        if hue == 6.0:
-            hue = 0.0
-        i = int(hue)
-        f = (hue) - i
-        p, q, t = val * (1.0 - sat), val * (1.0 - sat * f), val * (1.0 - sat * (1.0 - f))
-        i %= 6
-        if i == 0:
-            return val, t, p
-        if i == 1:
-            return q, val, p
-        if i == 2:
-            return p, val, t
-        if i == 3:
-            return p, q, val
-        if i == 4:
-            return t, p, val
-        if i == 5:
-            return val, p, q
         
         
 if __name__ == '__main__':
