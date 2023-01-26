@@ -225,26 +225,14 @@
     			    "index": 0,
 					"id": 1,
 					"output": 0
-				}
-			]
-		},
-		{
-			"id": 5001,
-			"type": "Analyzer.ParameterPlotter",
-			"parameter": [
-			    {
-    			    "index": 0,
+				},
+				{
+    			    "index": 1,
 					"id": 2,
 					"output": 0
-				}
-			]
-		},
-		{
-			"id": 5002,
-			"type": "Analyzer.ParameterPlotter",
-			"parameter": [
-			    {    
-    			    "index": 0,
+				},
+				{
+    			    "index": 2,
 					"id": 5,
 					"output": 0
 				}
