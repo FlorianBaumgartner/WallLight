@@ -74,22 +74,15 @@ class Utility():
         return h, s, v
 
 
-    def interpolate(data, tension):
-        # Set start end end points to corner values (avoid empty borders)
-        firstX = -1.0
-        lastX = -1.0
+    def interpolateSpline(data, tension):   # TODO: Check performance -> Currently very slow :(
+        firstX = lastX = -1.0       # Set start end end points to corner values (avoid empty borders)
         for i in range(len(data)):
-            if data[i] >= 0.0:
+            if(data[i] >= 0) and (firstX < 0):
                 firstX = i
-                break
-        for i in range(len(data)):
-            i = len(data) - 1 - i
-            if data[i] >= 0.0:
-                lastX = i
-                break
+            if(data[len(data) - 1 - i] >= 0) and (lastX < 0):
+                lastX = len(data) - 1 - i
         if firstX < 0.0 or lastX < 0.0:
             return np.clip(data, 0.0, 1.0)
-        
         data[0:firstX] = data[firstX]
         data[lastX:] = data[lastX]
         
@@ -163,7 +156,41 @@ class Utility():
                 
         return np.clip(out, 0.0, 1.0)
     
+    
+    def interpolate(data):
+        firstX = lastX = -1.0       # Set start end end points to corner values (avoid empty borders)
+        for i in range(len(data)):
+            if(data[i] >= 0) and (firstX < 0):
+                firstX = i
+            if(data[len(data) - 1 - i] >= 0) and (lastX < 0):
+                lastX = len(data) - 1 - i
+        if firstX < 0.0 or lastX < 0.0:
+            return np.clip(data, 0.0, 1.0)
+        data[0:firstX] = data[firstX]
+        data[lastX:] = data[lastX]
         
+        i = 0
+        while True:
+            if(data[i] >= 0):
+                x0 = i
+                y0 = data[x0]
+                
+            i += 1
+            if(i == len(data)):
+                break
+                
+            if(data[i] >= 0) and x0 < i - 1:
+                x1 = i
+                y1 = data[x1]
+                dx = x1 - x0
+                dy = y1 - y0
+                for xn in range(dx):
+                    data[x0 + xn] = y0 + (dy / dx) * xn
+
+        return np.clip(data, 0.0, 1.0)
+    
+
+
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     
@@ -202,6 +229,7 @@ if __name__ == '__main__':
     original = np.clip(x, 0.0, 1.0)
     plt.plot(original, ".")
     
-    for t in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]:
-        plt.plot(np.clip(Utility.interpolate(x, t), 0.0, 1.0))#, ".-")
+    plt.plot(Utility.interpolate(x))
+    # for t in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]:
+    #     plt.plot(np.clip(Utility.interpolateSpline(x, t), 0.0, 1.0))
     plt.show()
