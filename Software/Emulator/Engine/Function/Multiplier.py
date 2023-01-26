@@ -7,16 +7,16 @@ from Modules import Function
 class Multiplier(Function):
     def __init__(self, id):
         super().__init__(id)
-        self.inputs.append({"name": "in_a", "module": None, "sourceIndex": 0, "default": np.zeros((Function.pixelcount, 6))})
-        self.inputs.append({"name": "in_b", "module": None, "sourceIndex": 0, "default": np.zeros((Function.pixelcount, 6))})
+        self.inputs.append({"name": "input 0", "module": None, "sourceIndex": 0, "default": np.ones((Function.pixelcount, 6))})
+        self.inputs.append({"name": "input 1", "module": None, "sourceIndex": 0, "default": np.ones((Function.pixelcount, 6))})
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         
     def update(self, t):
         if not super().update(t):
             return False
         
-        input_a = self._getInput(0)
-        input_b = self._getInput(1)
+        input0 = self._getInput(0)
+        input1 = self._getInput(1)
         
-        self.outputs[0]["value"] = input_a * input_b
+        self.outputs[0]["value"] = input0 * input1
         return True
