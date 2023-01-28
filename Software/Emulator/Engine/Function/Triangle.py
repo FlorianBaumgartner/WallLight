@@ -31,12 +31,13 @@ class Triangle(Function):
         
         m = (dy / width) * 2.0
         x0 = int(position * Function.pixelcount + 0.5)
+        x0f = x0 - (position * Function.pixelcount)
         c = np.ones(Function.pixelcount) * low
         for i in range(int(width * Function.pixelcount + 0.5)):
             if(0 <= (x0 + i) < Function.pixelcount):
-                c[x0 + i] = high - (m * i) / Function.pixelcount
+                c[x0 + i] = high - (m * (i + x0f)) / Function.pixelcount
             if(0 <= (x0 - i) < Function.pixelcount):
-                c[x0 - i] = high - (m * i) / Function.pixelcount
+                c[x0 - i] = high - (m * (i - x0f)) / Function.pixelcount
         
         if clip:
             c = np.clip(c, 0.0, 1.0)
@@ -58,17 +59,23 @@ if __name__ == '__main__':
     high = 1.0
     clip = 1.0
     
-    triangle = Function.Triangle(0)
-    triangle.setParameterInput(0, Coefficient(1000, position))
+    gen = Generator.Triangle(0)
+    gen.setParameterInput(1, Coefficient(1005, 0.02))
+    gen.setParameterInput(3, Coefficient(1006, 0.1))
+    gen.setParameterInput(4, Coefficient(1007, 0.5))
+    
+    
+    triangle = Function.Triangle(1)
+    triangle.setParameterInput(0, gen) #Coefficient(1000, position))
     triangle.setParameterInput(1, Coefficient(1001, width))
     triangle.setParameterInput(2, Coefficient(1002, low))
     triangle.setParameterInput(3, Coefficient(1003, high))
     triangle.setParameterInput(4, Coefficient(1004, clip))
     
-    inputPlotter = Analyzer.InputPlotter(1)
+    inputPlotter = Analyzer.InputPlotter(2)
     inputPlotter.setInput(0, triangle)
     
     
-    wallLight.addModule([triangle, inputPlotter])
+    wallLight.addModule([gen, triangle, inputPlotter])
     wallLight.setOutput(triangle, 0)
     wallLight.run()

@@ -32,11 +32,12 @@ class Ramp(Function):
         
         m = dy / dx
         x0 = int(min(start, stop) * Function.pixelcount + 0.5)
+        x0f = x0 - (min(start, stop) * Function.pixelcount)
         y0 = 0.0 if m >= 0 else high
         c = np.ones(Function.pixelcount) * low
         for i in range(int(np.abs(dx) * Function.pixelcount + 0.5)):
             if(0 <= (x0 + i) < Function.pixelcount):
-                c[x0 + i] = low + y0 + (m * i) / Function.pixelcount
+                c[x0 + i] = low + y0 + (m * (i + x0f)) / Function.pixelcount
         
         if clip:
             c = np.clip(c, 0.0, 1.0)
@@ -58,17 +59,23 @@ if __name__ == '__main__':
     high = 1.0
     clip = 0.0
     
-    ramp = Function.Ramp(0)
+    gen = Generator.Triangle(0)
+    gen.setParameterInput(1, Coefficient(1005, 0.02))
+    gen.setParameterInput(3, Coefficient(1006, 0.1))
+    gen.setParameterInput(4, Coefficient(1007, 0.5))
+    
+    
+    ramp = Function.Ramp(1)
     ramp.setParameterInput(0, Coefficient(1000, start))
-    ramp.setParameterInput(1, Coefficient(1001, stop))
+    ramp.setParameterInput(1, gen)#ëCoefficient(1001, stop))
     ramp.setParameterInput(2, Coefficient(1002, low))
     ramp.setParameterInput(3, Coefficient(1003, high))
     ramp.setParameterInput(4, Coefficient(1004, clip))
     
-    inputPlotter = Analyzer.InputPlotter(1)
+    inputPlotter = Analyzer.InputPlotter(2)
     inputPlotter.setInput(0, ramp)
     
     
-    wallLight.addModule([ramp, inputPlotter])
+    wallLight.addModule([gen, ramp, inputPlotter])
     wallLight.setOutput(ramp, 0)
     wallLight.run()
