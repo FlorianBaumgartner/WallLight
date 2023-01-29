@@ -28,6 +28,7 @@ if __name__ == '__main__':
     speed = Modifier.Sampler(IdIterator())
     speed.setParameterInput(0, speedNoiseNeg)
     speed.setParameterInput(1, monoflop)
+    speedNeg = Modifier.Multiplier(IdIterator())
     speedNeg.setParameterInput(0, speed)
     speedNeg.setParameterInput(1, Coefficient(IdIterator(), -1.0))
     
