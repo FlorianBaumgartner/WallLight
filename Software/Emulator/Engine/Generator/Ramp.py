@@ -11,6 +11,7 @@ class Ramp(Generator):
         self.parameterInputs.append({"name": "start", "module": None, "sourceIndex" : 0, "default": 0.0})
         self.parameterInputs.append({"name": "stop", "module": None, "sourceIndex" : 0, "default": 1.0})
         self.parameterInputs.append({"name": "phase", "module": None, "sourceIndex" : 0, "default": 0.0})   # -1 means -180° ... +1 means + 180°  
+        self.outputValue = 0.0
         
     def update(self, t):
         if super().update(t) == False:
@@ -27,18 +28,18 @@ class Ramp(Generator):
         slope = amplitude * freq
         slope *= 1.0 if(start < stop) else -1.0
         
-        
+        high = start if slope >= 0 else start * (-1.0)
         if enable:
             t -= self.enableTime
-            if(rep >= 0) and ((rep / freq) < t):            # End value is real end value
-                output = start + (1.0 / freq + (phase / (freq * 2))) * slope
-            else:
-                output = start + ((t + (phase / (freq * 2))) * slope) % amplitude
+            if(t == 0):
+                self.outputValue = start
+            elif(rep < 0) or ((rep / freq) >= t):            # End value is real end value
+                self.outputValue = high + ((t + (phase / (freq * 2))) * slope) % amplitude
         else:
             self.enableTime = t
             t = 0
 
-        self.parameterOutputs[0]["value"] = output
+        self.parameterOutputs[0]["value"] = self.outputValue
         return True
     
 
@@ -50,9 +51,9 @@ if __name__ == '__main__':
     enable = 1.0
     freq = 1.0
     rep = 1.0
-    start = -1.0
-    stop = 1.0
-    phase = -1.0
+    start = 3.0
+    stop = -3.0
+    phase = 0.0
     
     ramp = Generator.Ramp(0)
     ramp.setParameterInput(0, Coefficient(2, enable))

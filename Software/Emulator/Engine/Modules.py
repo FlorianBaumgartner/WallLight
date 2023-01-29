@@ -130,6 +130,14 @@ class Analyzer(Module):
         return self.inputs[index]["module"].outputs[self.inputs[index]["sourceIndex"]]["value"]
 
 
+id = 0
+class IdIterator():
+    def __new__(cls):
+        global id
+        id += 1
+        return id
+
+
 def addSubmodules(classRef, path):    
     import importlib.util
                                                                      

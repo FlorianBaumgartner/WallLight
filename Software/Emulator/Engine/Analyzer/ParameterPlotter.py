@@ -124,7 +124,7 @@ class ParameterPlotter(Analyzer):
             maxSamples = int(self.maxSampleTime * Module.framerate)
             if(len(self.y[i]) > maxSamples):
                 self.x = self.x[-maxSamples:]
-                self.y[i] = self.y[i][-maxSamples:]
+            self.y[i] = self.y[i][-len(self.x):]
             
             self.widget.plotItem.setYRange(self.yMin * 1.2, self.yMax * 1.2, padding=0) 
             if(time.time() - self.widget.graphWidget.mouseEventTime > self.manualControlTime) and self.autoMove:

@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import signal
+import traceback
 import numpy as np
 from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget
 from PyQt5.QtGui import QPainter, QColor
@@ -15,9 +16,9 @@ class WallLight():
     WINDOW_WIDTH = 250
     WINDOW_HEIGHT = 1000
     PIXELS_OFFSET = 50
-    FRAME_RATE = 60
     
-    NUM_PIXELS = 288
+    framerate = 60
+    pixelcount = 288
 
     def __init__(self):
         self.app = QApplication(sys.argv)
@@ -74,16 +75,16 @@ class WallLight():
 class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.engine = Engine(WallLight.NUM_PIXELS, WallLight.FRAME_RATE)
+        self.engine = Engine(WallLight.pixelcount, WallLight.framerate)
         self.tFps = time.time()
 
-        self.outputBuffer = np.zeros((WallLight.NUM_PIXELS, 6))        
-        self.colors = [QColor(0, 0, 0) for _ in range(WallLight.NUM_PIXELS)]
+        self.outputBuffer = np.zeros((WallLight.pixelcount, 6))        
+        self.colors = [QColor(0, 0, 0) for _ in range(WallLight.pixelcount)]
         self.pixels = []
         height = WallLight.WINDOW_HEIGHT - WallLight.PIXELS_OFFSET * 2
-        hPixel = int(height / WallLight.NUM_PIXELS)
-        offset = int((WallLight.WINDOW_HEIGHT - hPixel * WallLight.NUM_PIXELS) / 2)
-        for i in range(WallLight.NUM_PIXELS):
+        hPixel = int(height / WallLight.pixelcount)
+        offset = int((WallLight.WINDOW_HEIGHT - hPixel * WallLight.pixelcount) / 2)
+        for i in range(WallLight.pixelcount):
             self.pixels.append((offset, offset + hPixel * i, 20, hPixel))
         
         self.timer = QTimer()
@@ -103,7 +104,7 @@ class MainWidget(QWidget):
         self.engine.end()
         
     def startTimer(self):
-        self.timer.start(int(1000 / WallLight.FRAME_RATE))
+        self.timer.start(int(1000 / WallLight.framerate))
         
     def closeEvent(self, event):
         self.end()
@@ -130,14 +131,14 @@ class MainWidget(QWidget):
             self.outputBuffer = self.engine.getPixelData()
         except Exception as e:
             self.end()
-            print(e)
+            traceback.print_exc()
         
         self.outputBuffer = np.clip(self.outputBuffer, 0.0, 1.0)    # Constrain values in range from 0.0 ... 1.0
         for i, c in enumerate(self.outputBuffer):
             r = int(c[0] * 255)
             g = int(c[1] * 255)
             b = int(c[2] * 255)
-            self.colors[WallLight.NUM_PIXELS - i - 1].setRgb(r, g, b)
+            self.colors[WallLight.pixelcount - i - 1].setRgb(r, g, b)
         self.update()
         
         # print(f"Real FPS: {1 / (time.time() - self.tFps):.2f}")
@@ -147,8 +148,8 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
-    # path = "Graphs/color_vector_test.json"      # wallLight.updateColorVector(0, np.ones((WallLight.NUM_PIXELS, 6)))
     path = "Graphs/integrate_differentiate_test.json"
+    # path = "Graphs/color_vector_test.json"      # wallLight.updateColorVector(0, np.ones((WallLight.pixelcount, 6)))
     # path = "Graphs/generator_dirac_test.json"
     # path = "Graphs/input_plotter_test.json"
     # path = "Graphs/rainbow_rect.json"

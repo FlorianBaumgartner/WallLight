@@ -7,9 +7,9 @@ from Modules import Generator
 class Random(Generator):
     def __init__(self, id):
         super().__init__(id)
-        self.parameterInputs.append({"name": "min", "module": None, "sourceIndex" : 0, "default": -1.0})
+        self.parameterInputs.append({"name": "min", "module": None, "sourceIndex" : 0, "default": 0.0})
         self.parameterInputs.append({"name": "max", "module": None, "sourceIndex" : 0, "default": 1.0})
-        np.random.seed(seed=int(time.time())) 
+        np.random.seed(seed=int(time.time()) + id) 
         
     def update(self, t):
         if super().update(t) == False:
