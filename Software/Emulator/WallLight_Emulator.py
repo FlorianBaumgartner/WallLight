@@ -63,6 +63,9 @@ class WallLight():
     def updateCoefficient(self, identity, value):
         self.mainWidget.engine.updateCoefficient(identity, value)
         
+    def updateColorVector(self, identity, value):
+        self.mainWidget.engine.updateColorVector(identity, value)
+        
     def addModule(self, module):
         self.mainWidget.engine.addModule(module)
      
@@ -144,6 +147,7 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
+    # path = "Graphs/color_vector_test.json"      # wallLight.updateColorVector(0, np.ones((WallLight.NUM_PIXELS, 6)))
     path = "Graphs/integrate_differentiate_test.json"
     # path = "Graphs/generator_dirac_test.json"
     # path = "Graphs/input_plotter_test.json"

@@ -1,0 +1,19 @@
+{
+	"name": "ColorVector Test",
+	"revision": "0.1",
+	"coefficients": [
+	],
+	"modules": [
+		{
+			"id": 0,
+			"type": "ColorVector",
+			"parameter": [
+			]
+
+		}
+	],
+	"output": {
+		"id": 0,
+		"output": 0
+	}
+}

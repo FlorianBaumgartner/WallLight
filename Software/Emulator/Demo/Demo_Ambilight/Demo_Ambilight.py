@@ -11,12 +11,10 @@ if __name__ == '__main__':
     wallLight.loadGraph("Demo_Ambilight.json")
     wallLight.start()
     
-    pos = 0.9
     
-    width = 100
+    width = 200
     camera = dxcam.create()
-    x = int(camera.width * pos)
-    camera.start(region=(x, 0, x + width, camera.height - 1))
+    camera.start(region=(camera.width - 1 - width, 0, camera.width - 1, camera.height - 1))
     
     try:
         while wallLight.isRunning():
@@ -39,4 +37,5 @@ if __name__ == '__main__':
     finally: 
         wallLight.stop()
         camera.stop()
+        del camera
 

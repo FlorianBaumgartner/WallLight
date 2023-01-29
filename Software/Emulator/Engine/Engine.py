@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from Modules import Module, Coefficient, Generator, Modifier, Function, Analyzer
+from Modules import Module, Coefficient, ColorVector, Generator, Modifier, Function, Analyzer
 
 
 class Engine():
@@ -33,8 +33,9 @@ class Engine():
                 
             # Add all module objects
             for module in data["modules"]:
-                classType = globals()[module["type"].split('.')[0]]
-                moduleType = getattr(classType, module["type"].split('.')[-1])
+                moduleType = classType = globals()[module["type"].split('.')[0]]
+                if(len(module["type"].split('.')) > 1):
+                    moduleType = getattr(classType, module["type"].split('.')[-1])
                 self.modules.append(moduleType(module["id"]))
                
             # Iterate through all modules and set parameters and inputs
@@ -64,6 +65,12 @@ class Engine():
         m = Module.getModuleFromId(self.modules, identity)
         if not isinstance(m, Coefficient):
             raise Exception(f"ERROR: Module with ID [{identity}] is not a Coefficient")
+        m.updateValue(value)
+        
+    def updateColorVector(self, identity, value):
+        m = Module.getModuleFromId(self.modules, identity)
+        if not isinstance(m, ColorVector):
+            raise Exception(f"ERROR: Module with ID [{identity}] is not a ColorVector")
         m.updateValue(value)
         
     

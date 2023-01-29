@@ -69,6 +69,18 @@ class Coefficient(Module):
     def updateValue(self, value):
         self.parameterOutputs[0]["value"] = value
 
+
+class ColorVector(Module):
+    superClassType = "ColorVector"
+    def __init__(self, id):
+        super().__init__(id, printInfo=False)
+        self.outputs = [{"name": "out", "value": np.zeros((Function.pixelcount, 6))}]
+        self.ready = True
+        
+    def updateValue(self, value):
+        self.outputs[0]["value"] = value
+
+
 class Generator(Module):
     def __init__(self, id):
         super().__init__(id)

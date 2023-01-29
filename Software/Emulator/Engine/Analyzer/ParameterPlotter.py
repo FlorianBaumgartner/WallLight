@@ -121,8 +121,8 @@ class ParameterPlotter(Analyzer):
                 self.x.append(t)
             self.y[i].append(output)
             
-            maxSamples = self.maxSampleTime * Module.framerate
-            if(len(self.x) > maxSamples):
+            maxSamples = int(self.maxSampleTime * Module.framerate)
+            if(len(self.y[i]) > maxSamples):
                 self.x = self.x[-maxSamples:]
                 self.y[i] = self.y[i][-maxSamples:]
             
