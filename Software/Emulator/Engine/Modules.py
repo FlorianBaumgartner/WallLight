@@ -14,12 +14,16 @@ class Module():
         raise Exception(f"ERROR: No module with ID: {moduleId} found!")
     
     def __init__(self, id, printInfo=True):
+        self.superClassType = self.__class__.superClassType     # This will be set in the addSubmodules function
         self.id = id
         self.ready = False
         self.printInfo = printInfo
         self.parameterInputs = []
         self.parameterOutputs = []
-        self.superClassType = self.__class__.superClassType     # This will be set in the addSubmodules function
+        
+        if id is None:
+            self.id = Iterator(str(self.superClassType))
+            # TODO: Add to module list
     
     def update(self, t):
         inputsReady = True
@@ -61,20 +65,36 @@ class Module():
 
 class Coefficient(Module):
     superClassType = "Coefficient"
-    def __init__(self, id, const):
+    def __init__(self, *args):
+        id = None
+        value = 0.0
+        if len(args) == 1:
+            value = args[0]
+        if len(args) == 2:
+            id = args[0]
+            value = args[1]
+            
         super().__init__(id)
-        self.parameterOutputs.append({"name": "coefficient", "value": const})
+        self.parameterOutputs.append({"name": "coefficient", "value": value})
         self.ready = True
-    
+          
     def updateValue(self, value):
         self.parameterOutputs[0]["value"] = value
 
 
 class ColorVector(Module):
     superClassType = "ColorVector"
-    def __init__(self, id):
+    def __init__(self, *args):
+        id = None
+        vector = np.zeros((Module.pixelcount, 6))
+        if len(args) == 1:
+            vector = args[0]
+        if len(args) == 2:
+            id = args[0]
+            vector = args[1]
+
         super().__init__(id, printInfo=False)
-        self.outputs = [{"name": "out", "value": np.zeros((Function.pixelcount, 6))}]
+        self.outputs = [{"name": "out", "value": vector}]
         self.ready = True
         
     def updateValue(self, value):
@@ -82,7 +102,7 @@ class ColorVector(Module):
 
 
 class Generator(Module):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "enable", "module": None, "sourceIndex" : 0, "default": 1.0})
         self.parameterOutputs.append({"name": "out", "value": 0.0})
@@ -90,13 +110,13 @@ class Generator(Module):
 
     
 class Modifier(Module):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterOutputs.append({"name": "out", "value": 0.0})
 
     
 class Function(Module):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.inputs = []
         self.outputs = []
@@ -114,7 +134,7 @@ class Function(Module):
 
         
 class Analyzer(Module):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id, printInfo=False)
         self.inputs = []
         
@@ -130,11 +150,21 @@ class Analyzer(Module):
         return self.inputs[index]["module"].outputs[self.inputs[index]["sourceIndex"]]["value"]
 
 
-id = 0
-class IdIterator():
-    def __new__(cls):
-        global id
-        id += 1
+moduleId = 0
+coefficientId = 1000
+AnalyzerId = 5000
+class Iterator():
+    def __new__(cls, moduleType):
+        global moduleId, coefficientId, AnalyzerId
+        if moduleType in ["Coefficient", "ColorVector"]:
+            id = coefficientId
+            coefficientId += 1
+        elif moduleType == "Analyzer":
+            id = AnalyzerId
+            AnalyzerId += 1
+        else:
+            id = moduleId
+            moduleId += 1
         return id
 
 

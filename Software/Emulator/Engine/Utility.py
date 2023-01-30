@@ -3,13 +3,15 @@ import numpy as np
 
 class Utility():
     def hsvToRgb(h, s, v):
-        h = np.array([h]) if isinstance(h, float) else h
-        s = np.array([s]) if isinstance(s, float) else s
-        v = np.array([v]) if isinstance(v, float) else v
+        h = np.mod(np.array([h]) if isinstance(h, float) else h, 1.0)
+        s = np.clip(np.array([s]) if isinstance(s, float) else s, 0.0, 1.0)
+        v = np.clip(np.array([v]) if isinstance(v, float) else v, 0.0, 1.0)
         n = np.size(h)
         r = np.zeros(n)
         g = np.zeros(n)
         b = np.zeros(n)
+        
+        np.mod
         
         for i in range(n):
             if s[i] == 0.0:
@@ -41,9 +43,9 @@ class Utility():
 
     
     def rgbToHsv(r, g, b):
-        r = np.array([r]) if isinstance(r, float) else r
-        g = np.array([g]) if isinstance(g, float) else g
-        b = np.array([b]) if isinstance(b, float) else b
+        r = np.clip(np.array([r]) if isinstance(r, float) else r, 0.0, 1.0)
+        g = np.clip(np.array([g]) if isinstance(g, float) else g, 0.0, 1.0)
+        b = np.clip(np.array([b]) if isinstance(b, float) else b, 0.0, 1.0)
         n = np.size(r)
         h = np.zeros(n)
         s = np.zeros(n)
