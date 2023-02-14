@@ -33,13 +33,15 @@
 #include <Arduino.h>
 #include "console.h"
 #include "utils.h"
+#include "Adafruit_NeoPXL8.h"
 
-
-#define LED               42
-#define BLINK_INTERVAL    200
+#define LED               10
+#define BLINK_INTERVAL    500
 #define WATCHDOG_TIMEOUT  10    // [s]
 
 Utils utils;
+int8_t pins[8] = {17, -1, -1, -1, -1, -1, -1, -1};
+Adafruit_NeoPXL8 leds(70, pins, NEO_GRB);
 
 void setup()
 {
@@ -49,6 +51,14 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize utilities");
   }
+
+  if (!leds.begin())
+  {
+    console.error.println("[MAIN] Could not initialize LEDs");
+  }
+  leds.setBrightness(50);
+  leds.fill(leds.Color(255, 100, 0));
+  leds.show();
 
   console.log.println("OK, Let's go");
 }

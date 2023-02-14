@@ -101,12 +101,6 @@ bool Utils::begin(uint32_t watchdogTimeout, const char* labelName, bool forceFor
     {
       console.warning.println("[UTILS] USB Serial not found!");
     }
-    if(!systemParser.getSsid(ssid, MAX_STRING_LENGTH)){
-      console.warning.println("[UTILS] SSID not found!");
-    }
-    if(!systemParser.getPassword(password, MAX_STRING_LENGTH)){
-      console.warning.println("[UTILS] Password not found!");
-    }
     console.ok.println("[UTILS] System config loading was successful.");
   }
   else

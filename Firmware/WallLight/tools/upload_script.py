@@ -99,6 +99,7 @@ def on_upload(source, target, env):
     dfu = DFU_Reboot()
     firmware_path = str(source[0])
     firmwareFilePathUf2 = firmware_path.rsplit('.', 1)[0] + ".UF2"
+    loader.save(firmware_path, firmwareFilePathUf2)
      
     if DEBUG:
         print(f"USB_SERIAL: {usb_serial}, USB_VID: {usb_vid:04X}, USB_PID: {usb_pid:04X}, COMPARE_SERIAL_NUMBER: {compare_Serial}")
