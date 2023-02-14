@@ -12,7 +12,7 @@ from Modules import Module, Analyzer
 
 
 class InputPlotter(Analyzer):  
-    def __init__(self, id, standalone=False):
+    def __init__(self, id=None, standalone=False):
         super().__init__(id)
         
         self.parameterInputs.append({"name": "channel", "module": None, "sourceIndex": 0, "default": 0.0})

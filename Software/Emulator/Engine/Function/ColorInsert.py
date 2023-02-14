@@ -5,7 +5,7 @@ from Modules import Function
 
 
 class ColorInsert(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "pos", "module": None, "sourceIndex": 0, "default": 0.5})  # Position
         self.parameterInputs.append({"name": "r", "module": None, "sourceIndex": 0, "default": 0.0})    # Red Channel

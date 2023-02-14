@@ -5,7 +5,7 @@ from Modules import Function
 
 
 class ColorGain(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "r", "module": None, "sourceIndex": 0, "default": 0.0})    # Red Channel
         self.parameterInputs.append({"name": "g", "module": None, "sourceIndex": 0, "default": 0.0})    # Green Channel

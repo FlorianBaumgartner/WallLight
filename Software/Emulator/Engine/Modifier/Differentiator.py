@@ -5,7 +5,7 @@ from Modules import Module, Modifier
 
 
 class Differentiator(Modifier):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
         self.parameterInputs.append({"name": "gain", "module": None, "sourceIndex": 0, "default": 1.0})

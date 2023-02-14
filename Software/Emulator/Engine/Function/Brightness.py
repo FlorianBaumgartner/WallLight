@@ -5,7 +5,7 @@ from Modules import Function
 
 
 class Brightness(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "brightness", "module": None, "sourceIndex" : 0, "default": 1.0})
         

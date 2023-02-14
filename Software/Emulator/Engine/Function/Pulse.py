@@ -4,7 +4,7 @@ sys.path.append("..")
 from Modules import Function
 
 class Pulse(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "position", "module": None, "sourceIndex": 0, "default": 0.5})
         self.parameterInputs.append({"name": "width", "module": None, "sourceIndex": 0, "default": 1.0})

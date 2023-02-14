@@ -6,7 +6,7 @@ from Utility import Utility
 
 
 class ColorWheel(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "cycles", "module": None, "sourceIndex": 0, "default": 1.0})
         self.parameterInputs.append({"name": "position", "module": None, "sourceIndex": 0, "default": 0.0})

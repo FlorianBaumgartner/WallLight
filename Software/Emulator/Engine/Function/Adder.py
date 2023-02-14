@@ -5,7 +5,7 @@ from Modules import Function
 
 
 class Adder(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.inputs.append({"name": "input 0", "module": None, "sourceIndex": 0, "default": np.zeros((Function.pixelcount, 6))})
         self.inputs.append({"name": "input 1", "module": None, "sourceIndex": 0, "default": np.zeros((Function.pixelcount, 6))})

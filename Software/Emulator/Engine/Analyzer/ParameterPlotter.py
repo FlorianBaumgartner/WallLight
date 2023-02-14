@@ -13,7 +13,7 @@ from Modules import Module, Analyzer
 
 
 class ParameterPlotter(Analyzer):
-    def __init__(self, id, autoMove=True, standalone=False, stepMode=False):
+    def __init__(self, id=None, autoMove=True, standalone=False, stepMode=False):
         super().__init__(id)
         
         self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})

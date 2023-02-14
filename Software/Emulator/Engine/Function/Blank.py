@@ -5,7 +5,7 @@ from Modules import Function
 
 
 class Blank(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.outputs.append({"name": "out", "value": np.zeros((Function.pixelcount, 6))})
         

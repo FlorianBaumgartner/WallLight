@@ -4,7 +4,7 @@ sys.path.append("..")
 from Modules import Modifier
 
 class Negate(Modifier):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "input", "module": None, "sourceIndex": 0, "default": 0.0})
         self.parameterInputs.append({"name": "enable", "module": None, "sourceIndex": 0, "default": 1.0})

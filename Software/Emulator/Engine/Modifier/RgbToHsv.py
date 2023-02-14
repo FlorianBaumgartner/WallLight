@@ -5,7 +5,7 @@ from Modules import Modifier
 from Utility import Utility
 
 class RgbToHsv(Modifier):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "red", "module": None, "sourceIndex": 0, "default": 0.0})
         self.parameterInputs.append({"name": "green", "module": None, "sourceIndex": 0, "default": 0.0})

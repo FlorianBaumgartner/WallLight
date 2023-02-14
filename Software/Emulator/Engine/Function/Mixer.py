@@ -5,7 +5,7 @@ from Modules import Function
 
 
 class Mixer(Function):
-    def __init__(self, id):
+    def __init__(self, id=None):
         super().__init__(id)
         self.parameterInputs.append({"name": "mix", "module": None, "sourceIndex" : 0, "default": 0.0})
         
