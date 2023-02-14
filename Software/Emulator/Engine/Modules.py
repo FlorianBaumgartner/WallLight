@@ -4,8 +4,10 @@ import os
 from glob import glob
 
 class Module():
+    revision = "0.1"
     pixelcount = 0
     framerate = 0
+    modules = []
     
     def getModuleFromId(modules, moduleId):
         for m in modules:
@@ -23,7 +25,7 @@ class Module():
         
         if id is None:
             self.id = Iterator(str(self.superClassType))
-            # TODO: Add to module list
+            Module.modules.append(self)
     
     def update(self, t):
         inputsReady = True
@@ -45,7 +47,7 @@ class Module():
         self.ready = parameterInputsReady and inputsReady
         return self.ready
     
-    def end(self):
+    def stop(self):
         pass
     
     def setParameterInput(self, index, source, sourceIndex=0):
@@ -75,11 +77,14 @@ class Coefficient(Module):
             value = args[1]
             
         super().__init__(id)
-        self.parameterOutputs.append({"name": "coefficient", "value": value})
+        self.parameterOutputs = [{"name": "coefficient", "value": value}]
         self.ready = True
           
     def updateValue(self, value):
         self.parameterOutputs[0]["value"] = value
+        
+    def getValue(self):
+        return self.parameterOutputs[0]["value"]
 
 
 class ColorVector(Module):

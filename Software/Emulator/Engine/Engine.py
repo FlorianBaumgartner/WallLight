@@ -19,9 +19,18 @@ class Engine():
         self.t = 0.0
         self.graphName = None
         self.graphRevision = None
+        self.graphUpdated = True
+        
+    def __str__(self):
+        s = ""
+        for m in sorted(self.modules, key = lambda x : x.id):
+            s += f"ID: {m.id:4d} {m.superClassType}.{m.__module__}\n"
+        return s
         
         
     def loadGraph(self, path):
+        self.graphUpdated = True
+        self.unloadGraph()
         with open(path, "r") as f:
             data = json.load(f)
             self.graphName = data["name"]
@@ -50,7 +59,54 @@ class Engine():
                         m.setInput(inp["index"], Module.getModuleFromId(self.modules, inp["id"]), inp["output"])
              
             self.setOutput(Module.getModuleFromId(self.modules, data["output"]["id"]), data["output"]["output"])
+
+
+    def unloadGraph(self):
+        if self.graphName:
+            self.graphName = None
+            self.graphRevision = None
+            self.modules = []
+            self.output = None
+            self.outputIndex = 0
+            self.t = 0.0
+            self.graphUpdated = True
+            
      
+    def saveGraph(self, path, name):
+        modules = []
+        coefficients = []
+        for module in self.modules:
+            if type(module) == Coefficient:
+                coefficients.append({"id": module.id, "value": module.getValue()})
+            else:
+                m = {"id": module.id, "type": f"{module.superClassType}.{module.__module__}"}
+                param = []
+                for i, p in enumerate(module.parameterInputs):
+                    if p["module"]:
+                        param.append({"index": i, "id": p["module"].id, "output": p["sourceIndex"]})
+                m["parameter"] = param
+                
+                if hasattr(module, "inputs"):
+                    inputs = []
+                    for i, inp in enumerate(module.inputs):
+                        if inp["module"]:
+                            inputs.append({"index": i, "id": inp["module"].id, "output": inp["sourceIndex"]})
+                    m["input"] = inputs
+                modules.append(m)        
+        
+        output = {"id": self.output.id, "output": self.outputIndex}
+        data = {"name": name,
+                "revision": Module.revision,
+                "coefficients": coefficients,
+                "modules": modules,
+                "output": output}
+        
+        with open(path, "w") as f:
+            json.dump(data, f, indent=4) 
+    
+    
+    def loadModules(self):
+        self.modules = Module.modules
 
     def setOutput(self, module, index):
         self.output = module
@@ -92,13 +148,19 @@ class Engine():
                 allReady = allReady and res
             if allReady:
                 break
-        if not self.output:
-            raise Exception("ERROR: System output is not connected!")
-        self.pixels = self.output.outputs[self.outputIndex]["value"]
+        if self.output:
+            self.pixels = self.output.outputs[self.outputIndex]["value"]
+        else:
+            self.pixels = np.zeros((Module.pixelcount, 6))
+            if self.graphUpdated:
+                print("WARNING: System output is not connected!")
+        self.graphUpdated = False
+            
         
-    def end(self):
+        
+    def stop(self):
         for i in self.modules:
-            i.end()
+            i.stop()
 
 
 if __name__ == '__main__':

@@ -10,6 +10,7 @@ from PyQt5.QtCore import Qt, QTimer
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "Engine"))
 from Engine import Engine
+from Modules import Module
 
 
 class WallLight():
@@ -58,6 +59,15 @@ class WallLight():
     def loadGraph(self, path):
         self.mainWidget.engine.loadGraph(path)
         
+    def saveGraph(self, path, name):
+        self.mainWidget.engine.saveGraph(path, name)
+        
+    def loadModules(self):
+        self.mainWidget.engine.loadModules()
+        
+    def listModules(self):
+        print(self.mainWidget.engine)
+        
     def setOutput(self, module, index):
         self.mainWidget.engine.setOutput(module, index)
         
@@ -69,7 +79,8 @@ class WallLight():
         
     def addModule(self, module):
         self.mainWidget.engine.addModule(module)
-     
+
+
     
 
 class MainWidget(QWidget):
@@ -98,16 +109,16 @@ class MainWidget(QWidget):
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
         self.show()
         
-    def end(self):
+    def stop(self):
         self.close()
         self.timer.stop()
-        self.engine.end()
+        self.engine.stop()
         
     def startTimer(self):
         self.timer.start(int(1000 / WallLight.framerate))
         
     def closeEvent(self, event):
-        self.end()
+        self.stop()
         event.accept()
 
 
@@ -148,14 +159,14 @@ class MainWidget(QWidget):
 if __name__ == '__main__':
     wallLight = WallLight()    
     
-    path = "Graphs/integrate_differentiate_test.json"
+    # path = "Graphs/integrate_differentiate_test.json"
     # path = "Graphs/color_vector_test.json"      # wallLight.updateColorVector(0, np.ones((WallLight.pixelcount, 6)))
     # path = "Graphs/generator_dirac_test.json"
     # path = "Graphs/input_plotter_test.json"
     # path = "Graphs/rainbow_rect.json"
     # path = "Graphs/rect_test.json"
     # path = "Graphs/rect_triangle_test.json"
-    # path = "Graphs/rainbow.json"
+    path = "Graphs/rainbow.json"
     # path = "Graphs/test_graph_analyzer_dual.json"
     # path = "Graphs/sine_analyzer.json"
     # path = "Graphs/test_graph.json"

@@ -30,10 +30,10 @@ class ColorInsert(Function):
         cw = self._getParameterValue(5)
         am = self._getParameterValue(6)
         
-        discretePos = int(pos * (Function.pixelcount - 1) + 0.5)
-    
         self.outputs[0]["value"] = np.copy(self._getInput(0))
-        self.outputs[0]["value"][discretePos] = np.array([r, g, b, ww, cw, am])
+        if(0.0 <= pos <= 1.0):
+            discretePos = int(pos * (Function.pixelcount - 1) + 0.5)
+            self.outputs[0]["value"][discretePos] = np.array([r, g, b, ww, cw, am])
         return True
     
 

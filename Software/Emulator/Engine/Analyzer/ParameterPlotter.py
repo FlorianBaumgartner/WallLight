@@ -55,7 +55,7 @@ class ParameterPlotter(Analyzer):
             self.widget.show()
         
 
-    def end(self):
+    def stop(self):
         self.running = False
         self.widget.close()
         

@@ -1,8 +1,7 @@
 import sys
-import numpy as np
 sys.path.append("../..")
 from WallLight_Emulator import WallLight
-from Modules import *
+from Modules import Coefficient, Generator, Modifier, Function, Analyzer
 
 
 if __name__ == '__main__':
@@ -73,9 +72,14 @@ if __name__ == '__main__':
     plotter.setParameterInput(0, monoflop, 0)
     plotter.setParameterInput(1, ramp, 0)
     
-    wallLight.addModule([noise, monoflop, speedNoise, negNoise, speedNoiseNeg, speed, speedNeg, ramp, widthNoise, width, triangle, hueNoise, hue, hsvToRgb, colorGain, colorSum, plotter])
+    
+    wallLight.loadModules()
     wallLight.setOutput(colorSum, 0)
     wallLight.start()
+    
+    # wallLight.listModules()
+    # print(colorGain.id)
+    wallLight.saveGraph("saved_graph.json", "Test Graph")
     
     
     try:

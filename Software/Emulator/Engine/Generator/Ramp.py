@@ -28,13 +28,12 @@ class Ramp(Generator):
         slope = amplitude * freq
         slope *= 1.0 if(start < stop) else -1.0
         
-        high = start if slope >= 0 else start * (-1.0)
         if enable:
             t -= self.enableTime
             if(t == 0):
                 self.outputValue = start
             elif(rep < 0) or ((rep / freq) >= t):            # End value is real end value
-                self.outputValue = high + ((t + (phase / (freq * 2))) * slope) % amplitude
+                self.outputValue = min(start, stop) + ((t + (phase / (freq * 2))) * slope) % amplitude
         else:
             self.enableTime = t
             t = 0
@@ -51,8 +50,8 @@ if __name__ == '__main__':
     enable = 1.0
     freq = 1.0
     rep = 1.0
-    start = 3.0
-    stop = -3.0
+    start = 0.0
+    stop = 1.0
     phase = 0.0
     
     ramp = Generator.Ramp(0)
