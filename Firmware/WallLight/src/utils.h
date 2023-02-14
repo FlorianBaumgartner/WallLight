@@ -39,13 +39,19 @@
 #define TASK_UTILS_FREQ           10            // [Hz]
 #define MSC_STARTUP_DELAY         3500          // [ms]
 #define DEFAULT_CONFIG_FILE_NAME  "system.json"
+#define MAX_STRING_LENGTH         20
 
 extern FatFileSystem fatfs;
 
 class Utils
 {
   public:
-    Utils(const char* systemConfigFilename = DEFAULT_CONFIG_FILE_NAME) : configFileName(systemConfigFilename) {}
+    Utils(const char* systemConfigFilename = DEFAULT_CONFIG_FILE_NAME) : 
+      configFileName(systemConfigFilename), 
+      serial(), 
+      ssid(), 
+      password(), 
+      mscReady(false) {}
     bool begin(uint32_t watchdogTimeout = 0, const char* labelName = "DRIVE", bool forceFormat = false);
     void startBootloader(void);
     void startWatchdog(uint32_t seconds);
@@ -55,12 +61,16 @@ class Utils
     bool isConnected(void);
     bool format(const char* labelName);
     inline const char* getSerialNumber(void) {return serial;}
+    inline const char* getSsid(void) {return ssid;}
+    inline const char* getPassword(void) {return password;}
     operator bool() const {return mscReady;}
 
   private:
     const char* configFileName;
-    const char* serial = "0";
-    volatile bool mscReady = false;
+    char serial[MAX_STRING_LENGTH];
+    char ssid[MAX_STRING_LENGTH];
+    char password[MAX_STRING_LENGTH];
+    volatile bool mscReady;
 
     static void update(void* pvParameter);
 };

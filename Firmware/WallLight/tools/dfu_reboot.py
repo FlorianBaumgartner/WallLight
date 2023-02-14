@@ -75,10 +75,10 @@ class DFU_Reboot:
                 except Exception:
                     interface += 1
 
-        serial = [i['ser'] for i in devices]
-        dif = set(serial) - set(history)
-        if(dif):
-            return [f"Could not set devices into DFU mode: {dif}"]     
+#        serial = [i['ser'] for i in devices]
+#        dif = set(serial) - set(history)
+#        if(dif):
+#            return [f"Could not set devices into DFU mode: {dif}"]     
         return False
 
 

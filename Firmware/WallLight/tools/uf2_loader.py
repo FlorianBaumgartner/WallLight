@@ -44,7 +44,7 @@ class Namespace:
                 self.__dict__.update(kwargs)
 
 class UF2Loader:
-    def __init__(self, family ="ESP32S3", startAddr=0):
+    def __init__(self, family ="ESP32S2", startAddr=0):
         self.UF2_MAGIC_START0 = 0x0A324655   # "UF2\n"
         self.UF2_MAGIC_START1 = 0x9E5D5157   # Randomly selected
         self.UF2_MAGIC_END    = 0x0AB16F30   # Ditto

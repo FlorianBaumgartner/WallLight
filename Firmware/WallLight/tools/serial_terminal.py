@@ -49,6 +49,7 @@ DEBUG = False
 class Terminal:
     def __init__(self, useTabs, enableCompUsb, enableCompSer, vid, pid, ser, closeWidthVscode=True):
         self.runThread = True
+        self.workingDir = Path(__file__).parent.resolve()
         self.vsCode = closeWidthVscode
         
         self.USE_TABS = useTabs
@@ -107,6 +108,7 @@ class Terminal:
                     continue
                 self.portsBeingOpened.append(p.port)
                 portsToOpen.append(p)
+                time.sleep(1.0)
             availablePorts.sort(key=lambda x: x.ser)
             portsToOpen.sort(key=lambda x: x.ser)
             self.portsBeingOpened = [p for p in self.portsBeingOpened if p not in openPorts]
@@ -128,7 +130,7 @@ class Terminal:
                 print("\n")
                 
             
-            scriptPath = Path(__file__).parent.resolve() / "serial_console.py"
+            scriptPath = self.workingDir / "serial_console.py"
             processResult = []
             try:
                 if self.USE_TABS:
@@ -177,6 +179,7 @@ if __name__ == '__main__':
         usb_serial = ast.literal_eval(sys.argv[6])
         
         if DEBUG:
+            print(f"Working Directory: {working_dir}")
             print(f"USB_SERIAL: {usb_serial}, USB_VID: {usb_vid:04X}, USB_PID: {usb_pid:04X}")
             print(f"COMPARE_SERIAL_NUMBER: {compare_Serial}, COMPARE_VID_PID_CONSOLE: {compare_vid_pid_console}, USE_TABS_CONSOLE: {use_tabs_console}")
     

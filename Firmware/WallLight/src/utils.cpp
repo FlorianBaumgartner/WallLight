@@ -89,17 +89,23 @@ bool Utils::begin(uint32_t watchdogTimeout, const char* labelName, bool forceFor
 
   if(systemParser.loadFile(configFileName))
   {
-    if(systemParser.getUsbVid() != -1)
+    if(!systemParser.getUsbVid(vid))
     {
-      vid = systemParser.getUsbVid();
+      console.warning.println("[UTILS] USB VID not found!");
     }
-    if(systemParser.getUsbPid() != -1)
+    if(!systemParser.getUsbPid(pid))
     {
-      pid = systemParser.getUsbPid();
+      console.warning.println("[UTILS] USB PID not found!");
     }
-    if(strlen(systemParser.getUsbSerial()))
+    if(!systemParser.getUsbSerial(serial, MAX_STRING_LENGTH))
     {
-      serial = systemParser.getUsbSerial();
+      console.warning.println("[UTILS] USB Serial not found!");
+    }
+    if(!systemParser.getSsid(ssid, MAX_STRING_LENGTH)){
+      console.warning.println("[UTILS] SSID not found!");
+    }
+    if(!systemParser.getPassword(password, MAX_STRING_LENGTH)){
+      console.warning.println("[UTILS] Password not found!");
     }
     console.ok.println("[UTILS] System config loading was successful.");
   }

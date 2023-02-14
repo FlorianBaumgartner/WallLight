@@ -41,9 +41,9 @@ class SystemParser {
  public:
   SystemParser(void);
   bool loadFile(const char* path);
-  uint16_t getUsbVid(void);
-  uint16_t getUsbPid(void);
-  const char* getUsbSerial(void);
+  bool getUsbVid(uint16_t& vid);
+  bool getUsbPid(uint16_t& pid);
+  bool getUsbSerial(char* usbSerial, size_t size);
 
  private:
   StaticJsonDocument<MAX_SYSTEM_FILE_SIZE> doc;

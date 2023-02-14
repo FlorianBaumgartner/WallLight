@@ -88,24 +88,23 @@ def installPackages():
         import usb.backend.libusb1
         print("USB Modules successfully installed and imported!")
 
-    try:
-        import win32gui
-    except ModuleNotFoundError:
-        print("Win32 GUI Module not found, try to install it...")
-        import pip
-        def install(package):
-            if hasattr(pip, 'main'):
-                pip.main(['install', package])
-            else:
-                pip._internal.main(['install', package])
+    if sys.platform.startswith('win'):
+        try:
+            import win32gui
+        except ModuleNotFoundError:
+            print("Win32 GUI Module not found, try to install it...")
+            import pip
+            def install(package):
+                if hasattr(pip, 'main'):
+                    pip.main(['install', package])
+                else:
+                    pip._internal.main(['install', package])
 
-        install("pywin32")      # Needs to be installed first
-        install("win32gui")     # TODO: Check if this is working
-        import win32gui
-        print("Win32 GUI Module successfully installed and imported!")
+            install("pywin32")      # Needs to be installed first
+            install("win32gui")     # TODO: Check if this is working
+            import win32gui
+            print("Win32 GUI Module successfully installed and imported!")
 
     print("All needed packages are installed")
     
 installPackages()
-# if __name__ == '__main__':
-#     installPackages()

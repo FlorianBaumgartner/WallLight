@@ -50,8 +50,8 @@ class Port:
 
 class Console(threading.Thread):
     def __init__(self):
-        self.UPDATE_FREQ = 10    # [Hz]
-        self.TIMEOUT     = 6     # [s]
+        self.UPDATE_FREQ = 1    # [Hz]
+        self.TIMEOUT     = 0.1  # [s]
         
         threading.Thread.__init__(self)
         self._data = ""
