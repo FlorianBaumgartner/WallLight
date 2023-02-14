@@ -18,7 +18,7 @@ class WallLight():
     WINDOW_HEIGHT = 1000
     PIXELS_OFFSET = 50
     
-    framerate = 60
+    framerate = 50
     pixelcount = 288
 
     def __init__(self):

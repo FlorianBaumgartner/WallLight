@@ -1,7 +1,7 @@
 /******************************************************************************
-* file    main.cpp
+* file    WallLight.h
 *******************************************************************************
-* brief   Main Program
+* brief   Main class for handling all WallLight related tasks
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -9,7 +9,7 @@
 *******************************************************************************
 * MIT License
 *
-* Copyright (c) 2022 Crelin - Florian Baumgartner
+* Copyright (c) 2023 Crelin - Florian Baumgartner
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -30,52 +30,30 @@
 * SOFTWARE.
 ******************************************************************************/
 
+#ifndef WALLLIGHT_H
+#define WALLLIGHT_H
+
 #include <Arduino.h>
-#include "console.h"
-#include "utils.h"
 
-#include "Engine/WallLight.h"
+#include "Adafruit_NeoPXL8.h"
 
-
-#define LED               10
-#define BLINK_INTERVAL    200
-#define WATCHDOG_TIMEOUT  10    // [s]
-
-
-#define LED_RGB_PIN       17
-#define LED_WWA_PIN       -1
-#define PIXELCOUNT        70
-#define FRAMERATE         50
-
-Utils utils;
-WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN, PIXELCOUNT, FRAMERATE);
-
-void setup()
+class WallLight
 {
-  pinMode(LED, OUTPUT);
-  console.begin();
-  if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
-  {
-    console.error.println("[MAIN] Could not initialize utilities");
-  }
-  if(!wallLight.begin())
-  {
-    console.error.println("[MAIN] Could not initialize WallLight");
-  }
+  public:
+    WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t pixelCount, uint16_t framerate);
+    bool begin(void);
 
-  console.log.println("OK, Let's go");
-}
+    const uint16_t PIXELCOUNT;
+    const uint16_t FRAMERATE;
+    
+  private:
+    const int8_t rgbPin;
+    const int8_t wwaPin;
 
-void loop()
-{
-  utils.feedWatchdog();
- 
-  static int t = 0;
-  if(millis() - t > 1000)
-  {
-    t = millis();
-    console.log.printf("Time: %d\n", t);
-  }
-  digitalWrite(LED, (millis() / BLINK_INTERVAL) & 1);
-  delay(1);
-}
+    int8_t pins[8] = {rgbPin, wwaPin, -1, -1, -1, -1, -1, -1};
+    Adafruit_NeoPXL8 leds = Adafruit_NeoPXL8(PIXELCOUNT, pins, NEO_GRB);
+
+    static void update(void* pvParameter);
+};
+
+#endif

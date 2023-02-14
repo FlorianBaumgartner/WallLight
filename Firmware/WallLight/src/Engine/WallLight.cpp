@@ -1,7 +1,7 @@
 /******************************************************************************
-* file    main.cpp
+* file    WallLight.cpp
 *******************************************************************************
-* brief   Main Program
+* brief   Main class for handling all WallLight related tasks
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -9,7 +9,7 @@
 *******************************************************************************
 * MIT License
 *
-* Copyright (c) 2022 Crelin - Florian Baumgartner
+* Copyright (c) 2023 Crelin - Florian Baumgartner
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -30,52 +30,48 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#include <Arduino.h>
+#include "WallLight.h"
 #include "console.h"
 #include "utils.h"
+#include "freertos/task.h"
 
-#include "Engine/WallLight.h"
-
-
-#define LED               10
-#define BLINK_INTERVAL    200
-#define WATCHDOG_TIMEOUT  10    // [s]
+#define DEBUG_PIN       16
 
 
-#define LED_RGB_PIN       17
-#define LED_WWA_PIN       -1
-#define PIXELCOUNT        70
-#define FRAMERATE         50
-
-Utils utils;
-WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN, PIXELCOUNT, FRAMERATE);
-
-void setup()
+WallLight::WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t pixelCount, uint16_t framerate): rgbPin(rgbPin), wwaPin(wwaPin), PIXELCOUNT(pixelCount), FRAMERATE(framerate)
 {
-  pinMode(LED, OUTPUT);
-  console.begin();
-  if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
-  {
-    console.error.println("[MAIN] Could not initialize utilities");
-  }
-  if(!wallLight.begin())
-  {
-    console.error.println("[MAIN] Could not initialize WallLight");
-  }
-
-  console.log.println("OK, Let's go");
+    
 }
 
-void loop()
+bool WallLight::begin(void)
 {
-  utils.feedWatchdog();
- 
-  static int t = 0;
-  if(millis() - t > 1000)
+  if (!leds.begin())
   {
-    t = millis();
-    console.log.printf("Time: %d\n", t);
+    console.error.println("[WALLLIGHT] Could not initialize LEDs");
   }
-  digitalWrite(LED, (millis() / BLINK_INTERVAL) & 1);
-  delay(1);
+  leds.setBrightness(30);
+  leds.show();
+
+  xTaskCreate(update, "task_walllight", 2048, this, 1, NULL);
+  console.ok.println("[WALLLIGHT] Initialization successfull!");
+  return true;
+}
+
+void WallLight::update(void* pvParameter)
+{
+  WallLight* ref = (WallLight*)pvParameter;
+
+  pinMode(DEBUG_PIN, OUTPUT);
+
+  while(true)
+  {
+    TickType_t task_last_tick = xTaskGetTickCount();
+    digitalWrite(DEBUG_PIN, !digitalRead(DEBUG_PIN));
+
+    ref->leds.fill(ref->leds.Color(255, (millis() / 10) & 0xFF, 0));
+    ref->leds.show();
+
+    vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / ref->FRAMERATE);
+  }
+  vTaskDelete(NULL);
 }
