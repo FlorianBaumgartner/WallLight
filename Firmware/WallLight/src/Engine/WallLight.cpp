@@ -68,7 +68,7 @@ void WallLight::update(void* pvParameter)
     TickType_t task_last_tick = xTaskGetTickCount();
     digitalWrite(DEBUG_PIN, !digitalRead(DEBUG_PIN));
 
-    ref->leds.fill(ref->leds.Color(255, (millis() / 10) & 0xFF, 0));
+    ref->leds.fill(ref->leds.Color(100, 0, (millis() / 10) & 0xFF));
     ref->leds.show();
 
     vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / ref->FRAMERATE);
