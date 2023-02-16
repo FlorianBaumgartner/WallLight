@@ -62,6 +62,7 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize WallLight");
   }
+  wallLight.loadGraph("rect_triangle_test.json");
 
   console.log.println("OK, Let's go");
 }

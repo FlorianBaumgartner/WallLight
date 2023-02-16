@@ -53,24 +53,45 @@ bool WallLight::begin(void)
   leds.show();
 
   xTaskCreate(update, "task_walllight", 2048, this, 1, NULL);
-  console.ok.println("[WALLLIGHT] Initialization successfull!");
+  console.ok.println("[WALLLIGHT] Initialization successfull.");
   return true;
+}
+
+bool WallLight::loadGraph(const char* path, uint8_t engineIndex)
+{
+  engineIndex &= 0x01;
+  console.log.printf("[WALLLIGHT] Loading graph from file: '%s' to Engine %d\n", path, engineIndex);
+  return engine[engineIndex].loadGraph(path);
 }
 
 void WallLight::update(void* pvParameter)
 {
   WallLight* ref = (WallLight*)pvParameter;
 
-  pinMode(DEBUG_PIN, OUTPUT);
-
   while(true)
   {
     TickType_t task_last_tick = xTaskGetTickCount();
-    digitalWrite(DEBUG_PIN, !digitalRead(DEBUG_PIN));
 
-    ref->leds.fill(ref->leds.Color(100, 0, (millis() / 10) & 0xFF));
+    LedVector* pixels = ref->engine[0].getPixelData();     // TODO: Make dynamic
+    if(pixels->value)
+    {
+      for(int i = 0; i < ref->PIXELCOUNT; i++)
+      {
+        uint_fast8_t r = uint_fast8_t(constrain(pixels->value[0][i] * 255.0, 0.0, 255.0));
+        uint_fast8_t g = uint_fast8_t(constrain(pixels->value[1][i] * 255.0, 0.0, 255.0));
+        uint_fast8_t b = uint_fast8_t(constrain(pixels->value[2][i] * 255.0, 0.0, 255.0));
+        uint_fast8_t w = uint_fast8_t(constrain(pixels->value[3][i] * 255.0, 0.0, 255.0));
+        uint_fast8_t c = uint_fast8_t(constrain(pixels->value[4][i] * 255.0, 0.0, 255.0));
+        uint_fast8_t a = uint_fast8_t(constrain(pixels->value[5][i] * 255.0, 0.0, 255.0));
+        ref->leds.setPixelColor(i, ref->leds.Color(r, g, b));
+        ref->leds.setPixelColor(i + ref->PIXELCOUNT, ref->leds.Color(w, c, a));
+      }
+    }
+    else
+    {
+      ref->leds.fill();
+    }
     ref->leds.show();
-
     vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / ref->FRAMERATE);
   }
   vTaskDelete(NULL);

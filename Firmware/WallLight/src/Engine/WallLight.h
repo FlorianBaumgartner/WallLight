@@ -35,13 +35,16 @@
 
 #include <Arduino.h>
 
+#include "Engine.h"
 #include "Adafruit_NeoPXL8.h"
+
 
 class WallLight
 {
   public:
     WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t pixelCount, uint16_t framerate);
     bool begin(void);
+    bool loadGraph(const char* path, uint8_t engineIndex = 0);
 
     const uint16_t PIXELCOUNT;
     const uint16_t FRAMERATE;
@@ -49,9 +52,10 @@ class WallLight
   private:
     const int8_t rgbPin;
     const int8_t wwaPin;
-
     int8_t pins[8] = {rgbPin, wwaPin, -1, -1, -1, -1, -1, -1};
     Adafruit_NeoPXL8 leds = Adafruit_NeoPXL8(PIXELCOUNT, pins, NEO_GRB);
+
+    Engine engine[2] = {Engine(PIXELCOUNT, FRAMERATE), Engine(PIXELCOUNT, FRAMERATE)};
 
     static void update(void* pvParameter);
 };
