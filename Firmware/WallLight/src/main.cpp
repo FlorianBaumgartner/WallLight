@@ -44,11 +44,9 @@
 
 #define LED_RGB_PIN       17
 #define LED_WWA_PIN       -1
-#define PIXELCOUNT        70
-#define FRAMERATE         50
 
 Utils utils;
-WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN, PIXELCOUNT, FRAMERATE);
+WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN);
 
 void setup()
 {
@@ -72,7 +70,7 @@ void loop()
   utils.feedWatchdog();
  
   static int t = 0;
-  if(millis() - t > 1000)
+  if(millis() - t > 5000)
   {
     t = millis();
     console.log.printf("Time: %d\n", t);

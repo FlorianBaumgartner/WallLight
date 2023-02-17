@@ -34,29 +34,20 @@
 #define MODULES_H
 
 #include <Arduino.h>
+#include "WallLightConfig.h"
 
-class LedVector
+class LedVector: public WallLightConfig
 {
   private:
-    const uint16_t PIXELCOUNT;
-    const uint16_t COLORCOUNT;
     bool allocated = false;
 
   public:
     float** value = nullptr;
-    LedVector(uint16_t pixelCount, uint16_t colorCount, bool allocateMemory = false): PIXELCOUNT(pixelCount), COLORCOUNT(colorCount), allocated(allocateMemory)
+    LedVector(bool allocateMemory = false)
     {
-      if(allocated)
+      if(allocateMemory)
       {
-        value = new float*[COLORCOUNT];
-        for(int i = 0; i < COLORCOUNT; i++) 
-        {
-          value[i] = new float[PIXELCOUNT];
-          for(int j = 0; j < PIXELCOUNT; j++)
-          {
-            value[i][j] = 0.0;
-          }
-        }
+        allocate();
       }
     }
     ~LedVector()
@@ -71,12 +62,29 @@ class LedVector
         value = nullptr;
       }
     }
+    void allocate(void)
+    {
+      if(!allocated)
+      {
+        allocated = true;
+        value = new float*[COLORCOUNT];
+        for(int i = 0; i < COLORCOUNT; i++) 
+        {
+          value[i] = new float[PIXELCOUNT];
+          for(int j = 0; j < PIXELCOUNT; j++)
+          {
+            value[i][j] = 0.0;
+          }
+        }
+      }
+    }
 };
 
-class Module
+class Module: public WallLightConfig
 {
   public:
     Module(int32_t id);
+    // void setId(int32_t id) const {id = id;};
 
     const char* revision = "0.1";       // TODO: Make dynamic
     const int32_t id;
@@ -100,10 +108,9 @@ class Module
 class Coefficient: public Module
 {
   public:
-    Coefficient();
+    Coefficient(int32_t id, float value = 0.0): Module(id), value(value) {}
     void setValue(float value) {value = value;};
     float getValue(void) {return value;};
-
   private:
     float value = 0.0;
 };

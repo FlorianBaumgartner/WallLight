@@ -35,7 +35,9 @@
 #include "console.h"
 #include "ArduinoJson.h"
 
-Engine::Engine(uint16_t pixelCount, uint16_t framerate): PIXELCOUNT(pixelCount), FRAMERATE(framerate)
+#define ENGINE_VERBOSE true
+
+Engine::Engine()
 {
 
 }
@@ -65,6 +67,38 @@ bool Engine::loadGraph(const char* path)
   graphRevisionMajor = int(atof(doc["revision"].as<const char*>()));
   graphRevisionMinor = int(atof(doc["revision"].as<const char*>()) * 10.0) % 10;
   console.log.printf("[ENGINE] Loading graph: '%s', Revision: %d.%d\n", graphName, graphRevisionMajor, graphRevisionMinor);
+
+  JsonArray coefficients = doc["coefficients"].as<JsonArray>();
+  JsonArray mainModules = doc["modules"].as<JsonArray>();
+  uint32_t coefficientCount = coefficients.size();
+  uint32_t mainModuleCount = mainModules.size();
+  moduleCount = coefficientCount + mainModuleCount;
+  modules = new Module*[moduleCount];
+  console.log.printf("[ENGINE] Coefficient count: %d, MainModule count: %d, Totally allocated Modules: %d\n", coefficientCount, mainModuleCount, moduleCount);
+
+  for(int i = 0; i < coefficientCount; i++)
+  {
+    int32_t id = coefficients[i]["id"];
+    float value = coefficients[i]["value"];
+    #if ENGINE_VERBOSE
+      console.print("[ENGINE] Add "); console[COLOR_YELLOW_BOLD].print("Coefficient"); console.printf(" with id %d, value: %f\n", id, value);
+    #endif
+    modules[i] = new Coefficient(id, value);
+  }
+
+  for(int i = 0; i < mainModuleCount; i++)
+  {
+    int32_t id = mainModules[i]["id"];
+    char classType[MODULE_TYPE_LENGTH];
+    strncpy(classType, mainModules[i]["type"].as<const char*>(), MODULE_TYPE_LENGTH);
+    char* moduleType = strtok(classType, ".");
+    moduleType = strtok(nullptr, ".");
+
+    #if ENGINE_VERBOSE
+      console.print("[ENGINE] Add "); console[COLOR_MAGENTA_BOLD].print(classType); console.print('.'); console[COLOR_YELLOW_BOLD].print(moduleType); console.printf(" with id %d\n", id);
+    #endif
+  }
+
 
   output.value[0][0] = 1.0;
   output.value[1][1] = 1.0;

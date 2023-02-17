@@ -37,10 +37,10 @@
 #include "Modules.h"
 
 
-class Engine
+class Engine: public WallLightConfig
 {
   public:
-    Engine(uint16_t pixelCount, uint16_t framerate);
+    Engine();
     bool loadGraph(const char* path);
     void unloadGraph(void);
     bool updateCoefficient(int32_t id, float value);
@@ -50,11 +50,9 @@ class Engine
     bool setOutput(const Module* module);
     bool update(float t);
 
-    const uint16_t FRAMERATE;
-    const uint16_t PIXELCOUNT;
-    const uint16_t COLORCOUNT = 6;
-    
-    LedVector output = LedVector(PIXELCOUNT, COLORCOUNT, true);     // TODO: Remove allocation
+    static const int MODULE_TYPE_LENGTH = 50;
+
+    LedVector output = LedVector(true);     // TODO: Remove allocation
     uint32_t outputIndex = 0;
     float t = 0.0;
 
@@ -62,7 +60,7 @@ class Engine
     char graphRevisionMajor = 0, graphRevisionMinor = 0;
     bool graphLoaded = false;
 
-    Module* modules = nullptr;
+    Module** modules = nullptr;
     uint32_t moduleCount = 0;
 };
 

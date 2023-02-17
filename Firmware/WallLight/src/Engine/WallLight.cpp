@@ -38,7 +38,7 @@
 #define DEBUG_PIN       16
 
 
-WallLight::WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t pixelCount, uint16_t framerate): rgbPin(rgbPin), wwaPin(wwaPin), PIXELCOUNT(pixelCount), FRAMERATE(framerate)
+WallLight::WallLight(int8_t rgbPin, int8_t wwaPin): rgbPin(rgbPin), wwaPin(wwaPin)
 {
     
 }

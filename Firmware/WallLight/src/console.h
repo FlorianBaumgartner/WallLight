@@ -82,7 +82,8 @@
 #define DISABLE_MODULE_LEVEL            dummy
 
 
-enum ConsoleColor {COLOR_DEFAULT, COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE};
+enum ConsoleColor {COLOR_DEFAULT, COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE,
+                   COLOR_DEFAULT_BOLD, COLOR_BLACK_BOLD, COLOR_RED_BOLD, COLOR_GREEN_BOLD, COLOR_YELLOW_BOLD, COLOR_BLUE_BOLD, COLOR_MAGENTA_BOLD, COLOR_CYAN_BOLD, COLOR_WHITE_BOLD};
 
 class ConsoleStatus: public Stream
 {
@@ -107,15 +108,15 @@ class ConsoleStatus: public Stream
     {
       switch(color)
       {
-        case COLOR_DEFAULT: backgroundColor = CONSOLE_BACKGROUND_DEFAULT; break;
-        case COLOR_BLACK:   backgroundColor = CONSOLE_BACKGROUND_BLACK;   break;
-        case COLOR_RED:     backgroundColor = CONSOLE_BACKGROUND_RED;     break;
-        case COLOR_GREEN:   backgroundColor = CONSOLE_BACKGROUND_GREEN;   break;
-        case COLOR_YELLOW:  backgroundColor = CONSOLE_BACKGROUND_YELLOW;  break;
-        case COLOR_BLUE:    backgroundColor = CONSOLE_BACKGROUND_BLUE;    break;
-        case COLOR_MAGENTA: backgroundColor = CONSOLE_BACKGROUND_MAGENTA; break;
-        case COLOR_CYAN:    backgroundColor = CONSOLE_BACKGROUND_CYAN;    break;
-        case COLOR_WHITE:   backgroundColor = CONSOLE_BACKGROUND_WHITE;   break;
+        case COLOR_DEFAULT:       backgroundColor = CONSOLE_BACKGROUND_DEFAULT;       break;
+        case COLOR_BLACK:         backgroundColor = CONSOLE_BACKGROUND_BLACK;         break;
+        case COLOR_RED:           backgroundColor = CONSOLE_BACKGROUND_RED;           break;
+        case COLOR_GREEN:         backgroundColor = CONSOLE_BACKGROUND_GREEN;         break;
+        case COLOR_YELLOW:        backgroundColor = CONSOLE_BACKGROUND_YELLOW;        break;
+        case COLOR_BLUE:          backgroundColor = CONSOLE_BACKGROUND_BLUE;          break;
+        case COLOR_MAGENTA:       backgroundColor = CONSOLE_BACKGROUND_MAGENTA;       break;
+        case COLOR_CYAN:          backgroundColor = CONSOLE_BACKGROUND_CYAN;          break;
+        case COLOR_WHITE:         backgroundColor = CONSOLE_BACKGROUND_WHITE;         break;
       }
       return *this;
     }
@@ -219,15 +220,24 @@ class Console: public Stream
     {
       switch(color)
       {
-        case COLOR_DEFAULT: custom.textColor = CONSOLE_COLOR_DEFAULT; break;
-        case COLOR_BLACK:   custom.textColor = CONSOLE_COLOR_BLACK;   break;
-        case COLOR_RED:     custom.textColor = CONSOLE_COLOR_RED;     break;
-        case COLOR_GREEN:   custom.textColor = CONSOLE_COLOR_GREEN;   break;
-        case COLOR_YELLOW:  custom.textColor = CONSOLE_COLOR_YELLOW;  break;
-        case COLOR_BLUE:    custom.textColor = CONSOLE_COLOR_BLUE;    break;
-        case COLOR_MAGENTA: custom.textColor = CONSOLE_COLOR_MAGENTA; break;
-        case COLOR_CYAN:    custom.textColor = CONSOLE_COLOR_CYAN;    break;
-        case COLOR_WHITE:   custom.textColor = CONSOLE_COLOR_WHITE;   break;
+        case COLOR_DEFAULT:       custom.textColor = CONSOLE_COLOR_DEFAULT;       break;
+        case COLOR_BLACK:         custom.textColor = CONSOLE_COLOR_BLACK;         break;
+        case COLOR_RED:           custom.textColor = CONSOLE_COLOR_RED;           break;
+        case COLOR_GREEN:         custom.textColor = CONSOLE_COLOR_GREEN;         break;
+        case COLOR_YELLOW:        custom.textColor = CONSOLE_COLOR_YELLOW;        break;
+        case COLOR_BLUE:          custom.textColor = CONSOLE_COLOR_BLUE;          break;
+        case COLOR_MAGENTA:       custom.textColor = CONSOLE_COLOR_MAGENTA;       break;
+        case COLOR_CYAN:          custom.textColor = CONSOLE_COLOR_CYAN;          break;
+        case COLOR_WHITE:         custom.textColor = CONSOLE_COLOR_WHITE;         break;
+        case COLOR_DEFAULT_BOLD:  custom.textColor = CONSOLE_COLOR_BOLD_DEFAULT;  break;
+        case COLOR_BLACK_BOLD:    custom.textColor = CONSOLE_COLOR_BOLD_BLACK;    break;
+        case COLOR_RED_BOLD:      custom.textColor = CONSOLE_COLOR_BOLD_RED;      break;
+        case COLOR_GREEN_BOLD:    custom.textColor = CONSOLE_COLOR_BOLD_GREEN;    break;
+        case COLOR_YELLOW_BOLD:   custom.textColor = CONSOLE_COLOR_BOLD_YELLOW;   break;
+        case COLOR_BLUE_BOLD:     custom.textColor = CONSOLE_COLOR_BOLD_BLUE;     break;
+        case COLOR_MAGENTA_BOLD:  custom.textColor = CONSOLE_COLOR_BOLD_MAGENTA;  break;
+        case COLOR_CYAN_BOLD:     custom.textColor = CONSOLE_COLOR_BOLD_CYAN;     break;
+        case COLOR_WHITE_BOLD:    custom.textColor = CONSOLE_COLOR_BOLD_WHITE;    break;
       }
       return custom;
     }

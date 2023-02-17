@@ -1,15 +1,15 @@
 /******************************************************************************
-* file    utils.h
+* file    Config.h
 *******************************************************************************
-* brief   General utilities for file system support, MSC, configuration, etc.
+* brief   Configuration of WallLight acts as base class
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2022-08-02
+* date    2023-02-16
 *******************************************************************************
 * MIT License
 *
-* Copyright (c) 2022 Crelin - Florian Baumgartner
+* Copyright (c) 2023 Crelin - Florian Baumgartner
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -29,49 +29,19 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 ******************************************************************************/
-#pragma once
+
+#ifndef WALLIGHT_CONFIG_H
+#define WALLIGHT_CONFIG_H
 
 #include <Arduino.h>
-#include "SdFat.h"
 
-
-#define BOOT_BUTTON               0
-#define TASK_UTILS_FREQ           10            // [Hz]
-#define MSC_STARTUP_DELAY         3500          // [ms]
-#define DEFAULT_CONFIG_FILE_NAME  "system.json"
-#define MAX_STRING_LENGTH         20
-
-extern FatFileSystem fatfs;
-typedef File32 File;
-
-class Utils
+class WallLightConfig
 {
   public:
-    Utils(const char* systemConfigFilename = DEFAULT_CONFIG_FILE_NAME) : 
-      configFileName(systemConfigFilename), 
-      serial(), 
-      ssid(), 
-      password(), 
-      mscReady(false) {}
-    bool begin(uint32_t watchdogTimeout = 0, const char* labelName = "DRIVE", bool forceFormat = false);
-    void startBootloader(void);
-    void startWatchdog(uint32_t seconds);
-    void feedWatchdog(void);
-    bool getBootButtonSTate(void) {return !digitalRead(BOOT_BUTTON);}
-    bool isUpdated(bool clearFlag = true);
-    bool isConnected(void);
-    bool format(const char* labelName);
-    inline const char* getSerialNumber(void) {return serial;}
-    inline const char* getSsid(void) {return ssid;}
-    inline const char* getPassword(void) {return password;}
-    operator bool() const {return mscReady;}
+    static const uint16_t PIXELCOUNT = 70;
+    static const uint16_t COLORCOUNT = 6;
+    static const uint16_t FRAMERATE  = 50;
 
-  private:
-    const char* configFileName;
-    char serial[MAX_STRING_LENGTH];
-    char ssid[MAX_STRING_LENGTH];
-    char password[MAX_STRING_LENGTH];
-    volatile bool mscReady;
-
-    static void update(void* pvParameter);
 };
+
+#endif

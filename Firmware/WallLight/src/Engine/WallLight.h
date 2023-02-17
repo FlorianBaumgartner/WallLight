@@ -37,17 +37,15 @@
 
 #include "Engine.h"
 #include "Adafruit_NeoPXL8.h"
+#include "WallLightConfig.h"
 
 
-class WallLight
+class WallLight: public WallLightConfig
 {
   public:
-    WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t pixelCount, uint16_t framerate);
+    WallLight(int8_t rgbPin, int8_t wwaPin);
     bool begin(void);
     bool loadGraph(const char* path, uint8_t engineIndex = 0);
-
-    const uint16_t PIXELCOUNT;
-    const uint16_t FRAMERATE;
     
   private:
     const int8_t rgbPin;
@@ -55,7 +53,7 @@ class WallLight
     int8_t pins[8] = {rgbPin, wwaPin, -1, -1, -1, -1, -1, -1};
     Adafruit_NeoPXL8 leds = Adafruit_NeoPXL8(PIXELCOUNT, pins, NEO_GRB);
 
-    Engine engine[2] = {Engine(PIXELCOUNT, FRAMERATE), Engine(PIXELCOUNT, FRAMERATE)};
+    Engine engine[2] = {Engine(), Engine()};
 
     static void update(void* pvParameter);
 };
