@@ -37,16 +37,16 @@
 #include "../Module.h"
 #include "../../console.h"
 
+#include "FunctionRect.h"
+
 
 static Function* allocateFunction(const char* name, int32_t id)
 {
   Function* module = nullptr;
-  if(false){}
-  /*
-  if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
+  if(strcmp(name, FunctionRect::MODULE_NAME) == 0)
   {
-    module = (Function*) new GeneratorTriangle(id);
-  }*/
+    module = (Function*) new FunctionRect(id);
+  }
   else
   {
     console.error.printf("[FUNCTION] Module '%s' is not supported!\n", name);

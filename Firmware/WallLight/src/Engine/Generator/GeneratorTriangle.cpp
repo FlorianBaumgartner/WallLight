@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    Generator.Trangle.cpp
+* file    GeneratorTrangle.cpp
 *******************************************************************************
 * brief   Triangle Generator
 *******************************************************************************
@@ -34,6 +34,32 @@
 
 bool GeneratorTriangle::update(float t)
 {
+  // TODO: Check if all sources are avilable (modules that are connect have output state ready)
 
+  bool enable = getParameterValue(0) >= 0.5;
+  float freq =  getParameterValue(1);
+  float rep =  getParameterValue(2);
+  float amplitude =  getParameterValue(3);
+  float offset =  getParameterValue(4);
+  float phase =  getParameterValue(5);
+  phase = fmod((phase + 1.0), 2.0) - 1.0;
+
+  if(enable)
+  {
+    t -= enableTime;
+    if(rep > 0.0 && ((rep / freq) < t))
+    {
+      t = 0;
+    }
+  }
+  else
+  {
+    enableTime = t;
+    t = 0;
+  }
+
+  float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
+  float output = (x - 0.5) * 2 * amplitude + offset;
+  setParameterOutput(0, output);
   return true;
 }

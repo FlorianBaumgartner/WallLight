@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    Generator.Trangle.h
+* file    GeneratorTrangle.h
 *******************************************************************************
 * brief   Triangle Generator
 *******************************************************************************
@@ -42,6 +42,16 @@ class GeneratorTriangle: public virtual Generator
     static constexpr const char* MODULE_NAME = "Triangle";
     GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
     bool update(float t);
+
+  private:
+    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
+                                    Parameter("freq", 1.0),
+                                    Parameter("rep", -1.0),
+                                    Parameter("amplitude", 1.0),
+                                    Parameter("offset", 0.0),
+                                    Parameter("phase", 0.0)};
+
+    const uint32_t parameterInputCount = sizeof(parameterInputs) / sizeof(Parameter);
 };
 
 

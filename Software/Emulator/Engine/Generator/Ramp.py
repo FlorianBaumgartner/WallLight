@@ -17,7 +17,7 @@ class Ramp(Generator):
         if super().update(t) == False:
             return False
         
-        enable = self._getParameterValue(0)
+        enable = self._getParameterValue(0) >= 0.5
         freq = self._getParameterValue(1)
         rep = self._getParameterValue(2)
         start = self._getParameterValue(3)

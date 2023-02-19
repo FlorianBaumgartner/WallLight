@@ -15,7 +15,7 @@ class Random(Generator):
         if super().update(t) == False:
             return False
         
-        enable = self._getParameterValue(0)
+        enable = self._getParameterValue(0) >= 0.5
         minimum = self._getParameterValue(1)
         maximum = self._getParameterValue(2)
         

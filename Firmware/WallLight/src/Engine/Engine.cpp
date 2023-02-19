@@ -67,7 +67,13 @@ bool Engine::loadGraph(const char* path)
   graphRevisionMajor = int(atof(doc["revision"].as<const char*>()));
   graphRevisionMinor = int(atof(doc["revision"].as<const char*>()) * 10.0) % 10;
   console.log.printf("[ENGINE] Loading graph: '%s', Revision: %d.%d\n", graphName, graphRevisionMajor, graphRevisionMinor);
+  if((graphRevisionMajor * 10 + graphRevisionMinor) > (Module::revision.major * 10 + Module::revision.minor))
+  {
+    console.warning.println("[ENGINE] Graph has has newer revsion than officially supported, try loading anyway");
+  }
 
+
+  bool moduleError = false;
   JsonArray coefficients = doc["coefficients"].as<JsonArray>();
   JsonArray mainModules = doc["modules"].as<JsonArray>();
   uint32_t coefficientCount = coefficients.size();
@@ -118,7 +124,8 @@ bool Engine::loadGraph(const char* path)
     }
     else
     {
-      console.warning.printf("[ENGINE] Module type '%s' is not supported\n", classType);
+      console.warning.printf("[ENGINE] Module class type '%s' is not supported\n", classType);
+      moduleError = true;
       continue;
     }
     if(module)
@@ -128,12 +135,13 @@ bool Engine::loadGraph(const char* path)
     else
     {
       console.error.printf("[ENGINE] Could not allocate Module '%s.%s'\n", classType, moduleType);
+      moduleError = true;
       continue;
     }
     
 
     #if ENGINE_VERBOSE
-      console.print("[ENGINE] Add "); console[color].print(classType); console.print('.'); console[COLOR_YELLOW_BOLD].print(moduleType); console.printf(" with id %d\n", id);
+      console.print("[ENGINE] Add "); module->printName(); console.printf(" with id %d\n", id);
     #endif
   }
 
@@ -147,7 +155,14 @@ bool Engine::loadGraph(const char* path)
   output.value[1][3] = 1.0;
   output.value[2][3] = 1.0;
 
-  console.ok.println("[ENGINE] Graph loading was successful.");
+  if(!moduleError)
+  {
+    console.ok.println("[ENGINE] Graph loading was successful.");
+  }
+  else
+  {
+    console.warning.println("[ENGINE] Not all modules could be loaded");
+  }
   file.close();
-  return true;
+  return !moduleError;
 }
