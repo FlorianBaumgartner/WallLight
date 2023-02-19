@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    Engine.h
+* file    Generator.Trangle.h
 *******************************************************************************
-* brief   Graph Engine that runs in background
+* brief   Triangle Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-16
+* date    2023-02-18
 *******************************************************************************
 * MIT License
 *
@@ -30,41 +30,18 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef TRIANGLE_GENERATOR_H
+#define TRIANGLE_GENERATOR_H
 
 #include <Arduino.h>
-#include "Module.h"
-#include "Generator/Generator.h"
-#include "Modifier/Modifier.h"
-#include "Function/Function.h"
+#include "../Module.h"
 
-
-class Engine: public WallLightConfig
+class GeneratorTriangle: public virtual Generator
 {
   public:
-    Engine();
-    bool loadGraph(const char* path);
-    void unloadGraph(void);
-    bool updateCoefficient(int32_t id, float value);
-    LedVector* getPixelData(void) {return &output;};
-
-  private:
-    bool setOutput(const Module* module);
+    static constexpr const char* MODULE_NAME = "Triangle";
+    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
     bool update(float t);
-
-    static const int MODULE_TYPE_LENGTH = 50;
-
-    LedVector output = LedVector(true);     // TODO: Remove allocation
-    uint32_t outputIndex = 0;
-    float t = 0.0;
-
-    char graphName[30] = "";
-    char graphRevisionMajor = 0, graphRevisionMinor = 0;
-    bool graphLoaded = false;
-
-    Module** modules = nullptr;
-    uint32_t moduleCount = 0;
 };
 
 

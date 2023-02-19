@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    Module.h
+* file    Modules.h
 *******************************************************************************
 * brief   Graph Modul superclasses
 *******************************************************************************
@@ -83,10 +83,13 @@ class LedVector: public WallLightConfig
 class Module: public WallLightConfig
 {
   public:
-    Module(int32_t id);
-    // void setId(int32_t id) const {id = id;};
+    enum ModuleClass {MODULE_COEFFICIENT, MODULE_GENERATOR, MODULE_MODIFIER, MODULE_FUNCTION};
+
+    Module(int32_t id, ModuleClass moduleClass, const char* moduleName = nullptr): id(id), moduleClass(moduleClass), moduleName(moduleName) {}
 
     const char* revision = "0.1";       // TODO: Make dynamic
+    const ModuleClass moduleClass;
+    const char* moduleName;
     const int32_t id;
     bool ready = false;
     float* parameterInputs = nullptr;
@@ -96,7 +99,7 @@ class Module: public WallLightConfig
 
 //   protected:
 
-    bool update(float t);
+    virtual bool update(float t) = 0;
     bool setParameterInput(int32_t id, Module &source, uint32_t sourceIndex = 0);
 
 
@@ -108,12 +111,41 @@ class Module: public WallLightConfig
 class Coefficient: public Module
 {
   public:
-    Coefficient(int32_t id, float value = 0.0): Module(id), value(value) {}
+    Coefficient(int32_t id, float value = 0.0): Module(id, MODULE_COEFFICIENT, "Coefficient"), value(value) {}
     void setValue(float value) {value = value;};
     float getValue(void) {return value;};
+    bool update(float t) {return true;}
   private:
     float value = 0.0;
 };
 
+class Generator: public Module
+{
+  public:
+    Generator(int32_t id, const char* moduleName): Module(id, MODULE_GENERATOR, moduleName) {}
+  private:
+    float enabledTime = 0.0;
+};
+
+class Modifier: public Module
+{
+  public:
+    Modifier(int32_t id, const char* moduleName): Module(id, MODULE_MODIFIER, moduleName) {}
+  private:
+    
+};
+
+class Function: public Module
+{
+  public:
+    Function(int32_t id, const char* moduleName): Module(id, MODULE_FUNCTION, moduleName) {}
+    LedVector** inputs = nullptr;
+    LedVector** outputs = nullptr;
+    uint32_t inputCount = 0;
+    uint32_t outputCount = 0;
+    
+  private:
+    
+};
 
 #endif

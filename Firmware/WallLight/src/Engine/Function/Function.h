@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    Engine.h
+* file    Function.h
 *******************************************************************************
-* brief   Graph Engine that runs in background
+* brief   List of all Function Modules
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-16
+* date    2023-02-18
 *******************************************************************************
 * MIT License
 *
@@ -30,42 +30,28 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef FUNCTION_H
+#define FUNCTION_H
 
 #include <Arduino.h>
-#include "Module.h"
-#include "Generator/Generator.h"
-#include "Modifier/Modifier.h"
-#include "Function/Function.h"
+#include "../Module.h"
+#include "../../console.h"
 
 
-class Engine: public WallLightConfig
+static Function* allocateFunction(const char* name, int32_t id)
 {
-  public:
-    Engine();
-    bool loadGraph(const char* path);
-    void unloadGraph(void);
-    bool updateCoefficient(int32_t id, float value);
-    LedVector* getPixelData(void) {return &output;};
-
-  private:
-    bool setOutput(const Module* module);
-    bool update(float t);
-
-    static const int MODULE_TYPE_LENGTH = 50;
-
-    LedVector output = LedVector(true);     // TODO: Remove allocation
-    uint32_t outputIndex = 0;
-    float t = 0.0;
-
-    char graphName[30] = "";
-    char graphRevisionMajor = 0, graphRevisionMinor = 0;
-    bool graphLoaded = false;
-
-    Module** modules = nullptr;
-    uint32_t moduleCount = 0;
-};
-
+  Function* module = nullptr;
+  if(false){}
+  /*
+  if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
+  {
+    module = (Function*) new GeneratorTriangle(id);
+  }*/
+  else
+  {
+    console.error.printf("[FUNCTION] Module '%s' is not supported!\n", name);
+  }
+  return module;
+}
 
 #endif

@@ -80,24 +80,64 @@ bool Engine::loadGraph(const char* path)
   {
     int32_t id = coefficients[i]["id"];
     float value = coefficients[i]["value"];
-    #if ENGINE_VERBOSE
-      console.print("[ENGINE] Add "); console[COLOR_YELLOW_BOLD].print("Coefficient"); console.printf(" with id %d, value: %f\n", id, value);
-    #endif
     modules[i] = new Coefficient(id, value);
+    #if ENGINE_VERBOSE
+      console.print("[ENGINE] Add "); console[COLOR_YELLOW_BOLD].print("Coefficient"); console.printf(" with id %d, value: %.2f\n", id, value);
+    #endif
   }
 
   for(int i = 0; i < mainModuleCount; i++)
   {
+    int index = i + coefficientCount;
     int32_t id = mainModules[i]["id"];
     char classType[MODULE_TYPE_LENGTH];
     strncpy(classType, mainModules[i]["type"].as<const char*>(), MODULE_TYPE_LENGTH);
     char* moduleType = strtok(classType, ".");
     moduleType = strtok(nullptr, ".");
 
+    ConsoleColor color;
+    Module* module = nullptr;
+    Module::ModuleClass moduleClass;
+    if(strncmp(classType, "Generator", MODULE_TYPE_LENGTH) == 0)
+    {
+      moduleClass = Module::MODULE_GENERATOR;
+      color = COLOR_BLUE_BOLD;
+      module = allocateGenerator(moduleType, id);
+    }
+    else if(strncmp(classType, "Modifier", MODULE_TYPE_LENGTH) == 0)
+    {
+      moduleClass = Module::MODULE_MODIFIER;
+      color = COLOR_GREEN_BOLD;
+      module = allocateModifier(moduleType, id);
+    }
+    else if(strncmp(classType, "Function", MODULE_TYPE_LENGTH) == 0)
+    {
+      moduleClass = Module::MODULE_FUNCTION;
+      color = COLOR_MAGENTA_BOLD;
+      module = allocateFunction(moduleType, id);
+    }
+    else
+    {
+      console.warning.printf("[ENGINE] Module type '%s' is not supported\n", classType);
+      continue;
+    }
+    if(module)
+    {
+      modules[index] = module;
+    }
+    else
+    {
+      console.error.printf("[ENGINE] Could not allocate Module '%s.%s'\n", classType, moduleType);
+      continue;
+    }
+    
+
     #if ENGINE_VERBOSE
-      console.print("[ENGINE] Add "); console[COLOR_MAGENTA_BOLD].print(classType); console.print('.'); console[COLOR_YELLOW_BOLD].print(moduleType); console.printf(" with id %d\n", id);
+      console.print("[ENGINE] Add "); console[color].print(classType); console.print('.'); console[COLOR_YELLOW_BOLD].print(moduleType); console.printf(" with id %d\n", id);
     #endif
   }
+
+
 
 
   output.value[0][0] = 1.0;

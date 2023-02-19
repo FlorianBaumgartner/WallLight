@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    Module.cpp
+* file    Generator.h
 *******************************************************************************
-* brief   Graph Modul superclasses
+* brief   List of all Generator Modules
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-16
+* date    2023-02-18
 *******************************************************************************
 * MIT License
 *
@@ -30,11 +30,28 @@
 * SOFTWARE.
 ******************************************************************************/
 
+#ifndef GENERATOR_H
+#define GENERATOR_H
 
-#include "Modules.h"
-#include "console.h"
+#include <Arduino.h>
+#include "../Module.h"
+#include "../../console.h"
 
-Module::Module(int32_t id): id(id)
+#include "GeneratorTriangle.h"
+
+
+static Generator* allocateGenerator(const char* name, int32_t id)
 {
-
+  Generator* module = nullptr;
+  if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
+  {
+    module = (Generator*) new GeneratorTriangle(id);
+  }
+  else
+  {
+    console.error.printf("[GENERATOR] Module '%s' is not supported!\n", name);
+  }
+  return module;
 }
+
+#endif

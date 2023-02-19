@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    Engine.h
+* file    Generator.Trangle.cpp
 *******************************************************************************
-* brief   Graph Engine that runs in background
+* brief   Triangle Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-16
+* date    2023-02-18
 *******************************************************************************
 * MIT License
 *
@@ -30,42 +30,10 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef ENGINE_H
-#define ENGINE_H
+#include "GeneratorTriangle.h"
 
-#include <Arduino.h>
-#include "Module.h"
-#include "Generator/Generator.h"
-#include "Modifier/Modifier.h"
-#include "Function/Function.h"
-
-
-class Engine: public WallLightConfig
+bool GeneratorTriangle::update(float t)
 {
-  public:
-    Engine();
-    bool loadGraph(const char* path);
-    void unloadGraph(void);
-    bool updateCoefficient(int32_t id, float value);
-    LedVector* getPixelData(void) {return &output;};
 
-  private:
-    bool setOutput(const Module* module);
-    bool update(float t);
-
-    static const int MODULE_TYPE_LENGTH = 50;
-
-    LedVector output = LedVector(true);     // TODO: Remove allocation
-    uint32_t outputIndex = 0;
-    float t = 0.0;
-
-    char graphName[30] = "";
-    char graphRevisionMajor = 0, graphRevisionMinor = 0;
-    bool graphLoaded = false;
-
-    Module** modules = nullptr;
-    uint32_t moduleCount = 0;
-};
-
-
-#endif
+  return true;
+}

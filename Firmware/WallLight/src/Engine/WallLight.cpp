@@ -75,6 +75,8 @@ void WallLight::update(void* pvParameter)
     LedVector* pixels = ref->engine[0].getPixelData();     // TODO: Make dynamic
     if(pixels->value)
     {
+      pixels->value[0][0] = (float)(millis() % 1000) / 1000.0;  // TODO: Remove!
+
       for(int i = 0; i < ref->PIXELCOUNT; i++)
       {
         uint_fast8_t r = uint_fast8_t(constrain(pixels->value[0][i] * 255.0, 0.0, 255.0));
