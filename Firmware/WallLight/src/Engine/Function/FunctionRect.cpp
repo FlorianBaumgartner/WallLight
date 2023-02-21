@@ -34,6 +34,50 @@
 
 bool FunctionRect::update(float t)
 {
+  if(!Function::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+  {
+    return false;
+  }
+
+  float position = getParameterValue(0);
+  float width = getParameterValue(1);
+  float low = getParameterValue(2);
+  float high = getParameterValue(3);
+  bool clip = getParameterValue(4) >= 0.5;
+
+  if(width == 0.0)
+  {
+    outputs[0].fill(low);
+    return true;
+  }
+
+  float dy = high - low;
+  float m = (dy / width) * 2.0;
+  int32_t x0 = int32_t(position * Module::PIXELCOUNT + 0.5);
+  float x0f = x0 - (position * Module::PIXELCOUNT);
+
+  outputs[0].fill(low);
+  for(int i = 0; i < int(width * Module::PIXELCOUNT + 0.5); i++)
+  {
+    if(0 <= (x0 + i) < Module::PIXELCOUNT)
+    {
+      float v = high - (m * (i + x0f)) / float(Module::PIXELCOUNT);
+      if(clip)
+      {
+        v = constrain(v, 0.0, 1.0);
+      }
+      outputs[0].fillPixel(x0 + i, v);
+    }
+    if(0 <= (x0 - i) < Module::PIXELCOUNT)
+    {
+      float v = high - (m * (i - x0f)) / float(Module::PIXELCOUNT);
+      if(clip)
+      {
+        v = constrain(v, 0.0, 1.0);
+      }
+      outputs[0].fillPixel(x0 - i, v);
+    }
+  }
 
   return true;
 }

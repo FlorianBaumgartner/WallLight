@@ -46,11 +46,11 @@ class LedVector: public WallLightConfig
 
   public:
     float** value = nullptr;
-    LedVector(bool allocateMemory = false)
+    LedVector(bool allocateMemory = false, float defaultValue = 0.0)
     {
       if(allocateMemory)
       {
-        allocate();
+        allocate(defaultValue);
       }
     }
     ~LedVector()
@@ -65,7 +65,7 @@ class LedVector: public WallLightConfig
         value = nullptr;
       }
     }
-    void allocate(void)
+    void allocate(float defaultValue = 0.0)
     {
       if(!allocated)
       {
@@ -76,8 +76,28 @@ class LedVector: public WallLightConfig
           value[i] = new float[PIXELCOUNT];
           for(int j = 0; j < PIXELCOUNT; j++)
           {
-            value[i][j] = 0.0;
+            value[i][j] = defaultValue;
           }
+        }
+      }
+    }
+    void fill(float vectorValue = 0.0)
+    {
+      for(int i = 0; i < COLORCOUNT; i++) 
+      {
+        for(int j = 0; j < PIXELCOUNT; j++)
+        {
+          value[i][j] = vectorValue;
+        }
+      }
+    }
+    void fillPixel(uint16_t pos, float val)
+    {
+      if(val < COLORCOUNT)
+      {
+        for(int i = 0; i < COLORCOUNT; i++)
+        {
+          value[i][pos] = val;
         }
       }
     }

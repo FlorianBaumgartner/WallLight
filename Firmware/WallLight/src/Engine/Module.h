@@ -45,18 +45,17 @@ class Module: public WallLightConfig
     struct Revision{int16_t major; int16_t minor;};
     static constexpr const Revision revision = {.major = 0, .minor = 1};     // TODO: Get from global configuration
 
-    Module(int32_t id, ModuleClass moduleClass, const char* moduleName = nullptr): id(id), moduleClass(moduleClass), moduleName(moduleName) {}
+    Module(int32_t id, ModuleClass moduleClass, const char* moduleName = nullptr, bool printInfo = true): id(id), moduleClass(moduleClass), moduleName(moduleName), printInfo(printInfo) {}
 
     const ModuleClass moduleClass;
     const char* moduleName;
     const int32_t id;
     bool ready = false;
+    bool printInfo;
     Parameter* parameterInputs = nullptr;
     Parameter* parameterOutputs = nullptr;
     const uint32_t parameterInputCount = 0;
     const uint32_t parameterOutputCount = 0;
-
-//   protected:
 
     void printName()
       {
@@ -86,10 +85,12 @@ class Module: public WallLightConfig
                                moduleClass, moduleName, sourceIndex);
         }
       }
-      // TODO: Enable via verbose flag
-      console.log.printf("[MODULE] INFO: Input ""%s"" [%d] of ", parameterInputs[index].name, index); 
-      printName();     
-      console.log.printf(" (ID: %d) uses default value: %.2f\n", id, parameterInputs[index].value);     
+      if(printInfo)
+      {
+        console.log.printf("[MODULE] INFO: Input ""%s"" [%d] of ", parameterInputs[index].name, index); 
+        printName();     
+        console.log.printf(" (ID: %d) uses default value: %.2f\n", id, parameterInputs[index].value);     
+      }
       return parameterInputs[index].value;    // Default value of input parameter itself
     }
 
@@ -105,6 +106,19 @@ class Module: public WallLightConfig
       return false;
     }
 
+    bool getParameterStatus(void)
+    {
+      bool status = true;
+      for(int i = 0; i < parameterInputCount; i++)
+      {
+        if(parameterInputs[i].module)
+        {
+          status &= parameterInputs[i].module->ready;
+        }
+      }
+      return status;
+    }
+
   private:
     
     
@@ -116,7 +130,7 @@ class Coefficient: public Module
     Coefficient(int32_t id, float value = 0.0): Module(id, MODULE_COEFFICIENT, "Coefficient"), value(value) {}
     void setValue(float value) {value = value;};
     float getValue(void) {return value;};
-    bool update(float t) {return true;}
+    bool update(float t) {return ready = true;}
   private:
     float value = 0.0;
 };
@@ -125,6 +139,12 @@ class Generator: public Module
 {
   public:
     Generator(int32_t id, const char* moduleName): Module(id, MODULE_GENERATOR, moduleName) {}
+    bool update(float t)
+    {
+      bool parameterStatus = getParameterStatus();
+      printInfo = false;
+      return parameterStatus;
+    }
   protected:
     float enableTime = 0.0;
 };
@@ -133,6 +153,12 @@ class Modifier: public Module
 {
   public:
     Modifier(int32_t id, const char* moduleName): Module(id, MODULE_MODIFIER, moduleName) {}
+    bool update(float t)
+    {
+      bool parameterStatus = getParameterStatus();
+      printInfo = false;
+      return parameterStatus;
+    }
   private:
     
 };
@@ -145,6 +171,26 @@ class Function: public Module
     Vector* outputs = nullptr;
     const uint32_t inputCount = 0;
     const uint32_t outputCount = 0;
+
+    bool getInputStatus(void)
+    {
+      bool status = true;
+      for(int i = 0; i < inputCount; i++)
+      {
+        if(inputs[i].module)
+        {
+          status &= inputs[i].module->ready;
+        }
+      }
+      return status;
+    }
+    bool update(float t)
+    {
+      bool parameterStatus = getParameterStatus();
+      bool inputStatus = getInputStatus();
+      printInfo = false;
+      return parameterStatus & inputStatus;
+    }
     
   private:
     

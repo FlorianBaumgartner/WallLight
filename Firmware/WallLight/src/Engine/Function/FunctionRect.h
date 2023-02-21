@@ -42,6 +42,17 @@ class FunctionRect: public virtual Function
     static constexpr const char* MODULE_NAME = "Rect";
     FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
     bool update(float t);
+  
+  private:
+    Parameter parameterInputs[5] = {Parameter("position", 0.5),
+                                    Parameter("width", 1.0),
+                                    Parameter("low", 0.0),
+                                    Parameter("high", 1.0),
+                                    Parameter("clip", 1.0)};
+                                    
+    const uint32_t parameterInputCount = sizeof(parameterInputs) / sizeof(Parameter);
+    LedVector outputs[1] = {LedVector(true)};           // Always allocate output vector
+    const uint32_t outputCount = sizeof(outputs) / sizeof(LedVector);
 };
 
 

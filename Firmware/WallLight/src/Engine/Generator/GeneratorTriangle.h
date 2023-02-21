@@ -50,8 +50,10 @@ class GeneratorTriangle: public virtual Generator
                                     Parameter("amplitude", 1.0),
                                     Parameter("offset", 0.0),
                                     Parameter("phase", 0.0)};
-
+    
+    Parameter parameterOutputs[1] = {Parameter("output")};
     const uint32_t parameterInputCount = sizeof(parameterInputs) / sizeof(Parameter);
+    const uint32_t parameterOutputCount = sizeof(parameterOutputs) / sizeof(Parameter);
 };
 
 

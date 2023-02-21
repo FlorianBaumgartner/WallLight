@@ -34,14 +34,17 @@
 
 bool GeneratorTriangle::update(float t)
 {
-  // TODO: Check if all sources are avilable (modules that are connect have output state ready)
+  if(!Generator::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+  {
+    return false;
+  }
 
   bool enable = getParameterValue(0) >= 0.5;
-  float freq =  getParameterValue(1);
-  float rep =  getParameterValue(2);
-  float amplitude =  getParameterValue(3);
-  float offset =  getParameterValue(4);
-  float phase =  getParameterValue(5);
+  float freq = getParameterValue(1);
+  float rep = getParameterValue(2);
+  float amplitude = getParameterValue(3);
+  float offset = getParameterValue(4);
+  float phase = getParameterValue(5);
   phase = fmod((phase + 1.0), 2.0) - 1.0;
 
   if(enable)
