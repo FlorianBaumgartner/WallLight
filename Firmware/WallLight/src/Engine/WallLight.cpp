@@ -49,7 +49,7 @@ bool WallLight::begin(void)
   {
     console.error.println("[WALLLIGHT] Could not initialize LEDs");
   }
-  leds.setBrightness(30);
+  leds.setBrightness(10);
   leds.show();
 
   xTaskCreate(update, "task_walllight", 2048, this, 1, NULL);
@@ -67,29 +67,43 @@ bool WallLight::loadGraph(const char* path, uint8_t engineIndex)
 void WallLight::update(void* pvParameter)
 {
   WallLight* ref = (WallLight*)pvParameter;
+  bool updateStatus = true;
+  bool printOnce = true;
 
   while(true)
   {
     TickType_t task_last_tick = xTaskGetTickCount();
 
-    LedVector* pixels = ref->engine[0].getPixelData();     // TODO: Make dynamic
-    if(pixels->value)
+    bool outputValid = false;
+    if(updateStatus)
     {
-      pixels->value[0][0] = (float)(millis() % 1000) / 1000.0;  // TODO: Remove!
-
-      for(int i = 0; i < ref->PIXELCOUNT; i++)
+      updateStatus = ref->engine[0].update((float)millis() / 1000.0);        // TODO: Get time from dedicated time source
+    }
+    else if(printOnce)
+    {
+      console.error.println("[WALLLIGHT] Error occured while updating graph");
+      printOnce = false;
+    }
+    LedVector* pixels = ref->engine[0].getPixelData();      // TODO: Make dynamic
+    if(pixels && updateStatus)                              // Check if output is connected to module
+    {
+      if(pixels->value)                                     // Check if led vector of output module is allocated
       {
-        uint_fast8_t r = uint_fast8_t(constrain(pixels->value[0][i] * 255.0, 0.0, 255.0));
-        uint_fast8_t g = uint_fast8_t(constrain(pixels->value[1][i] * 255.0, 0.0, 255.0));
-        uint_fast8_t b = uint_fast8_t(constrain(pixels->value[2][i] * 255.0, 0.0, 255.0));
-        uint_fast8_t w = uint_fast8_t(constrain(pixels->value[3][i] * 255.0, 0.0, 255.0));
-        uint_fast8_t c = uint_fast8_t(constrain(pixels->value[4][i] * 255.0, 0.0, 255.0));
-        uint_fast8_t a = uint_fast8_t(constrain(pixels->value[5][i] * 255.0, 0.0, 255.0));
-        ref->leds.setPixelColor(i, ref->leds.Color(r, g, b));
-        ref->leds.setPixelColor(i + ref->PIXELCOUNT, ref->leds.Color(w, c, a));
+        outputValid = true;
+        for(int i = 0; i < ref->PIXELCOUNT; i++)
+        {
+          uint_fast8_t r = uint_fast8_t(constrain(pixels->value[0][i] * 255.0, 0.0, 255.0));
+          uint_fast8_t g = uint_fast8_t(constrain(pixels->value[1][i] * 255.0, 0.0, 255.0));
+          uint_fast8_t b = uint_fast8_t(constrain(pixels->value[2][i] * 255.0, 0.0, 255.0));
+          uint_fast8_t w = uint_fast8_t(constrain(pixels->value[3][i] * 255.0, 0.0, 255.0));
+          uint_fast8_t c = uint_fast8_t(constrain(pixels->value[4][i] * 255.0, 0.0, 255.0));
+          uint_fast8_t a = uint_fast8_t(constrain(pixels->value[5][i] * 255.0, 0.0, 255.0));
+          ref->leds.setPixelColor(i, ref->leds.Color(r, g, b));
+          ref->leds.setPixelColor(i + ref->PIXELCOUNT, ref->leds.Color(w, c, a));
+        }
       }
     }
-    else
+    if(!outputValid)
     {
       ref->leds.fill();
     }

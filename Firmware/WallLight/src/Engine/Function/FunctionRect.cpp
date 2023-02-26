@@ -32,50 +32,50 @@
 
 #include "FunctionRect.h"
 
-bool FunctionRect::update(float t)
+bool FunctionRect::update(float time)
 {
+  if(t == time)                // Only calculate module content if time has updated
+  {
+    return true;
+  }
   if(!Function::update(t))     // Check if all sources are available (modules that are connected have output value ready)
   {
     return false;
   }
+  t = time;
 
-  float position = getParameterValue(0);
-  float width = getParameterValue(1);
+  float start = getParameterValue(0);
+  float stop = getParameterValue(1);
   float low = getParameterValue(2);
   float high = getParameterValue(3);
-  bool clip = getParameterValue(4) >= 0.5;
+  bool smooth = getParameterValue(4) >= 0.5;
 
-  if(width == 0.0)
+  if(start > stop)
   {
-    outputs[0].fill(low);
-    return true;
+    float temp = start;
+    start = stop;
+    stop = temp;
   }
 
-  float dy = high - low;
-  float m = (dy / width) * 2.0;
-  int32_t x0 = int32_t(position * Module::PIXELCOUNT + 0.5);
-  float x0f = x0 - (position * Module::PIXELCOUNT);
-
-  outputs[0].fill(low);
-  for(int i = 0; i < int(width * Module::PIXELCOUNT + 0.5); i++)
+  outputs[0].value.fill(low);
+  for(int i = 0; i < Module::PIXELCOUNT; i++)
   {
-    if(0 <= (x0 + i) < Module::PIXELCOUNT)
+    if(((i + 0.5) > start * Module::PIXELCOUNT) && ((i + 0.5) <= stop * Module::PIXELCOUNT))
     {
-      float v = high - (m * (i + x0f)) / float(Module::PIXELCOUNT);
-      if(clip)
-      {
-        v = constrain(v, 0.0, 1.0);
-      }
-      outputs[0].fillPixel(x0 + i, v);
+      outputs[0].value.fillPixel(i, high);
     }
-    if(0 <= (x0 - i) < Module::PIXELCOUNT)
+    if(smooth)
     {
-      float v = high - (m * (i - x0f)) / float(Module::PIXELCOUNT);
-      if(clip)
+      float startDif = start * Module::PIXELCOUNT - (float)i;
+      float stopDif = stop * Module::PIXELCOUNT - (float)i;
+      if((startDif > 0.0) && (startDif < 1.0))
       {
-        v = constrain(v, 0.0, 1.0);
+        outputs[0].value.fillPixel(i, low + (high - low) * startDif);
       }
-      outputs[0].fillPixel(x0 - i, v);
+      if((stopDif >= 0.0) && (stopDif < 1.0))
+      {
+        outputs[0].value.fillPixel(i, low + (high - low) * stopDif);
+      }
     }
   }
 

@@ -45,105 +45,147 @@ class Module: public WallLightConfig
     struct Revision{int16_t major; int16_t minor;};
     static constexpr const Revision revision = {.major = 0, .minor = 1};     // TODO: Get from global configuration
 
-    Module(int32_t id, ModuleClass moduleClass, const char* moduleName = nullptr, bool printInfo = true): id(id), moduleClass(moduleClass), moduleName(moduleName), printInfo(printInfo) {}
+    Module(int32_t id, ModuleClass moduleClass, const char* moduleName = nullptr, bool printInfo = true): id(id), moduleClass(moduleClass), moduleName(moduleName), printInfo(printInfo)
+    {
+      switch(moduleClass)
+      {
+        case MODULE_COEFFICIENT: className = "Coefficient"; break;
+        case MODULE_GENERATOR:   className = "Generator"; break;
+        case MODULE_MODIFIER:    className = "Modifier"; break;
+        case MODULE_FUNCTION:    className = "Function"; break;
+        default:                 className = "Unknown"; break;
+      }
+    }
 
     const ModuleClass moduleClass;
+    const char* className;
     const char* moduleName;
     const int32_t id;
     bool ready = false;
+    bool error = false;
     bool printInfo;
-    Parameter* parameterInputs = nullptr;
-    Parameter* parameterOutputs = nullptr;
-    const uint32_t parameterInputCount = 0;
-    const uint32_t parameterOutputCount = 0;
+    float t = NAN;
 
     void printName()
+    {
+      ConsoleColor color;
+      switch(moduleClass)
       {
-        if(moduleClass == MODULE_GENERATOR) console[COLOR_BLUE_BOLD].print("Generator");
-        else if(moduleClass == MODULE_MODIFIER) console[COLOR_GREEN_BOLD].print("Modifier");
-        else if(moduleClass == MODULE_FUNCTION) console[COLOR_MAGENTA_BOLD].print("Function");
-        else console[COLOR_DEFAULT_BOLD].print("Unknown");
+        case MODULE_COEFFICIENT: color = COLOR_YELLOW_BOLD; break;
+        case MODULE_GENERATOR:   color = COLOR_BLUE_BOLD; break;
+        case MODULE_MODIFIER:    color = COLOR_GREEN_BOLD; break;
+        case MODULE_FUNCTION:    color = COLOR_MAGENTA_BOLD; break;
+        default:                 color = COLOR_DEFAULT_BOLD; break;
+      }
+      console[color].print(className);
+      if(moduleClass != MODULE_COEFFICIENT)
+      {
         console.print('.'); console[COLOR_YELLOW_BOLD].print(moduleName);
       }
+    }
 
-    virtual bool update(float t) = 0;
-    bool setParameterInput(int32_t id, Module &source, uint32_t sourceIndex = 0);
+    virtual bool update(float time) = 0;
+    bool setParameterInput(uint16_t index, Module* source, uint32_t sourceIndex = 0)
+    {
+      if(index < getParameterInputCount())
+      {
+        Parameter* parameter = getParameterInput(index);
+        if(parameter)
+        {
+          parameter->module = source;
+          parameter->sourceIndex = sourceIndex;
+          return true;
+        }
+      }
+      console.error.printf("[MODULE] Could not set parameter input of '%s.%s' [sourceIndex: %d] (Module not correctly initialized or value out of bound)\n", className, moduleName, sourceIndex);
+      return false;
+    }
 
   protected:
+    virtual Parameter* getParameterInput(uint16_t index) {return nullptr;}
+    virtual Parameter* getParameterOutput(uint16_t index) {return nullptr;}
+    virtual uint32_t getParameterInputCount() {return 0;}
+    virtual uint32_t getParameterOutputCount() {return 0;}
+
     float getParameterValue(uint32_t index)
     {
-      if(parameterInputs[index].module)   // Check if module exits
+      if(getParameterInput(index)->module)   // Check if module exits
       {
-        uint32_t sourceIndex = parameterInputs[index].sourceIndex;    // Get parameterOutput index of source module
-        if(parameterInputs[index].module->parameterOutputs && (parameterInputs[index].module->parameterOutputCount > sourceIndex))
+        uint32_t outputCount = getParameterInput(index)->module->getParameterOutputCount();
+        uint32_t sourceIndex = getParameterInput(index)->sourceIndex;    // Get parameterOutput index of source module
+        if(outputCount > sourceIndex)
         {
-          return parameterInputs[index].module->parameterOutputs[sourceIndex].value;
+          return getParameterInput(index)->module->getParameterOutput(sourceIndex)->value;
         }
         else
         {
-          console.error.printf("[MODULE] Could not get parameter value of Module '%s.%s' [sourceIndex: %d] (Module not correctly initialized or value out of bound)\n",
-                               moduleClass, moduleName, sourceIndex);
+          error = true;
+          console.error.printf("[MODULE] Could not get parameter value of '%s.%s' (source index out of bound: %d of max: %d)\n", className, moduleName, sourceIndex, outputCount);                   
         }
+      }
+      else
+      {
+        error = true;
+        console.error.printf("[MODULE] Could not access parameter inputs '%d' of '%s.%s' (Module not correctly initialized)\n", index, className, moduleName);
       }
       if(printInfo)
       {
-        console.log.printf("[MODULE] INFO: Input ""%s"" [%d] of ", parameterInputs[index].name, index); 
+        console.log.printf("[MODULE] INFO: Input ""%s"" [%d] of ", getParameterInput(index)->name, index); 
         printName();     
-        console.log.printf(" (ID: %d) uses default value: %.2f\n", id, parameterInputs[index].value);     
+        console.log.printf(" (ID: %d) uses default value: %.2f\n", id, getParameterInput(index)->value);     
       }
-      return parameterInputs[index].value;    // Default value of input parameter itself
+      return getParameterInput(index)->value;    // Default value of input parameter itself
     }
 
     bool setParameterOutput(uint32_t index, float value)
     {
-      if(parameterOutputCount > index)
+      if(getParameterOutputCount() > index)
       {
-        parameterOutputs[index].value = value;
+        getParameterOutput(index)->value = value;
         return true;
       }
       console.error.printf("[MODULE] Could not set parameter output value of Module '%s.%s' (output parameter index [%d] is out of bound [Max Size: %d])\n",
-                           moduleClass, moduleName, index, parameterOutputCount);
+                           className, moduleName, index, getParameterOutputCount());
       return false;
     }
 
     bool getParameterStatus(void)
     {
       bool status = true;
-      for(int i = 0; i < parameterInputCount; i++)
+      for(int i = 0; i < getParameterInputCount(); i++)
       {
-        if(parameterInputs[i].module)
+        if(getParameterInput(i)->module)
         {
-          status &= parameterInputs[i].module->ready;
+          status &= getParameterInput(i)->module->ready;
         }
       }
       return status;
-    }
-
-  private:
-    
-    
+    }    
+  
 };
 
 class Coefficient: public Module
 {
   public:
-    Coefficient(int32_t id, float value = 0.0): Module(id, MODULE_COEFFICIENT, "Coefficient"), value(value) {}
-    void setValue(float value) {value = value;};
-    float getValue(void) {return value;};
-    bool update(float t) {return ready = true;}
+    Coefficient(int32_t id, float defaultValue = 0.0): Module(id, MODULE_COEFFICIENT, "Coefficient") {value[0].value = defaultValue;}
+    void setValue(float v) {value[0].value = v;};
+    float getValue(void) {return value[0].value;};
+    bool update(float time) {return ready = true;}
+    Parameter* getParameterOutput(uint16_t index) {return &value[0];}
+    uint32_t getParameterOutputCount() {return 1;}
   private:
-    float value = 0.0;
+    Parameter value[1] = {Parameter("output")};
 };
 
 class Generator: public Module
 {
   public:
     Generator(int32_t id, const char* moduleName): Module(id, MODULE_GENERATOR, moduleName) {}
-    bool update(float t)
+    bool update(float time)
     {
-      bool parameterStatus = getParameterStatus();
+      ready = getParameterStatus();
       printInfo = false;
-      return parameterStatus;
+      return ready;
     }
   protected:
     float enableTime = 0.0;
@@ -153,11 +195,11 @@ class Modifier: public Module
 {
   public:
     Modifier(int32_t id, const char* moduleName): Module(id, MODULE_MODIFIER, moduleName) {}
-    bool update(float t)
+    bool update(float time)
     {
-      bool parameterStatus = getParameterStatus();
+      ready = getParameterStatus();
       printInfo = false;
-      return parameterStatus;
+      return ready;
     }
   private:
     
@@ -167,31 +209,95 @@ class Function: public Module
 {
   public:
     Function(int32_t id, const char* moduleName): Module(id, MODULE_FUNCTION, moduleName) {}
-    Vector* inputs = nullptr;
-    Vector* outputs = nullptr;
-    const uint32_t inputCount = 0;
-    const uint32_t outputCount = 0;
+    virtual Vector* getInput(uint16_t index) = 0;
+    virtual Vector* getOutput(uint16_t index) = 0;
+    virtual uint32_t getInputCount() = 0;
+    virtual uint32_t getOutputCount() = 0;
 
     bool getInputStatus(void)
     {
       bool status = true;
-      for(int i = 0; i < inputCount; i++)
+      for(int i = 0; i < getInputCount(); i++)
       {
-        if(inputs[i].module)
+        if(getInput(i)->module)
         {
-          status &= inputs[i].module->ready;
+          status &= getInput(i)->module->ready;
         }
       }
       return status;
     }
-    bool update(float t)
+    bool update(float time)
     {
-      bool parameterStatus = getParameterStatus();
-      bool inputStatus = getInputStatus();
+      ready = getParameterStatus() && getInputStatus();
       printInfo = false;
-      return parameterStatus & inputStatus;
+      return ready;
     }
+    bool setInput(uint16_t index, Module* source, uint32_t sourceIndex = 0)
+    {
+      if(index < getInputCount())
+      {
+        Vector* input = getInput(index);
+        if(input)
+        {
+          input->module = source;
+          input->sourceIndex = sourceIndex;
+          return true;
+        }
+      }
+      console.error.printf("[MODULE] Could not set input of '%s.%s' [sourceIndex: %d] (Module not correctly initialized or value out of bound)\n", className, moduleName, sourceIndex);
+      return false;
+    } 
+
     
+  protected:
+    LedVector* getInputValue(uint32_t index)
+    {
+      if(getInput(index)->module)   // Check if module exits
+      {
+        if(getInput(index)->module->moduleClass == MODULE_FUNCTION)
+        {
+          uint32_t sourceIndex = getInput(index)->sourceIndex;    // Get output index of source module
+          if(((Function*)(getInput(index)->module))->getOutputCount() > sourceIndex)
+          {
+            return &((Function*)(getInput(index)->module))->getOutput(sourceIndex)->value;
+          }
+          else
+          {
+            error = true;
+            console.error.printf("[MODULE] Could not get input value of '%s.%s' [sourceIndex: %d] (Module not correctly initialized or value out of bound)\n", className, moduleName, sourceIndex);                   
+          }
+        }
+        else
+        {
+          error = true;
+          console.error.printf("[MODULE] Requested Module '%s.%s' is not of type 'Function' and has no Vector Outputs\n", className, moduleName);
+        }
+      }
+      else
+      {
+        error = true;
+        console.error.printf("[MODULE] Could not access inputs of '%s.%s' (Module not correctly initialized)\n", className, moduleName);
+      }
+      if(printInfo)
+      {
+        console.log.printf("[MODULE] INFO: Input ""%s"" [%d] of ", getInput(index)->name, index); 
+        printName();     
+        console.log.printf(" (ID: %d) uses default value: %.2f\n", id, getInput(index)->value);     
+      }
+      return &getInput(index)->value;    // Default value of input parameter itself
+    }
+
+    bool setOutput(uint32_t index, LedVector* value)
+    {
+      if(getOutputCount() > index)
+      {
+        getOutput(index)->value = value;
+        return true;
+      }
+      console.error.printf("[MODULE] Could not set output value of '%s.%s' (output parameter index [%d] is out of bound [Max Size: %d])\n",
+                           className, moduleName, index, getOutputCount());
+      return false;
+    }
   private:
     
 };

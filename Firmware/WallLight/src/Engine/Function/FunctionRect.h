@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    FunctionRect.cpp
+* file    FunctionRect.h
 *******************************************************************************
 * brief   Rectangle Function
 *******************************************************************************
@@ -40,19 +40,33 @@ class FunctionRect: public virtual Function
 {
   public:
     static constexpr const char* MODULE_NAME = "Rect";
-    FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
-    bool update(float t);
-  
+    FunctionRect(int32_t id): Function(id, MODULE_NAME)
+    {
+      outputs[0].allocate();        // Always allocate an output vector fot this module
+    }
+    bool update(float time);
+
+    inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
+    inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
+    inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
+    inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
+
+    inline Vector* getInput(uint16_t index) {return (index < (sizeof(inputs) / sizeof(Vector)))? &inputs[index] : nullptr;}
+    inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
+    inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
+    inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
+
   private:
-    Parameter parameterInputs[5] = {Parameter("position", 0.5),
-                                    Parameter("width", 1.0),
+    Parameter parameterInputs[5] = {Parameter("start", 0.0),
+                                    Parameter("stop", 1.0),
                                     Parameter("low", 0.0),
                                     Parameter("high", 1.0),
-                                    Parameter("clip", 1.0)};
-                                    
-    const uint32_t parameterInputCount = sizeof(parameterInputs) / sizeof(Parameter);
-    LedVector outputs[1] = {LedVector(true)};           // Always allocate output vector
-    const uint32_t outputCount = sizeof(outputs) / sizeof(LedVector);
+                                    Parameter("smooth", 1.0)};
+
+    Parameter parameterOutputs [0] = {};                                
+
+    Vector inputs[0] = {};
+    Vector outputs[1] = {Vector("output", 0.0)};
 };
 
 

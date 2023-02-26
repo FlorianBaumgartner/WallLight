@@ -39,7 +39,7 @@
 
 #define LED               10
 #define BLINK_INTERVAL    200
-#define WATCHDOG_TIMEOUT  10    // [s]
+#define WATCHDOG_TIMEOUT  30    // [s]
 
 
 #define LED_RGB_PIN       17
@@ -60,7 +60,8 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize WallLight");
   }
-  wallLight.loadGraph("rect_triangle_test.json");
+  // wallLight.loadGraph("rect_triangle_test.json");
+  wallLight.loadGraph("rect_triangle_color_test.json");
 
   console.log.println("OK, Let's go");
 }

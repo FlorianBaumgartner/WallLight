@@ -65,21 +65,25 @@ class LedVector: public WallLightConfig
         value = nullptr;
       }
     }
-    void allocate(float defaultValue = 0.0)
+    bool allocate(float defaultValue = 0.0)
     {
+      bool status = true;
       if(!allocated)
       {
         allocated = true;
         value = new float*[COLORCOUNT];
+        status &= (value != nullptr);
         for(int i = 0; i < COLORCOUNT; i++) 
         {
           value[i] = new float[PIXELCOUNT];
+          status &= (value[i] != nullptr);
           for(int j = 0; j < PIXELCOUNT; j++)
           {
             value[i][j] = defaultValue;
           }
         }
       }
+      return status;
     }
     void fill(float vectorValue = 0.0)
     {
@@ -119,9 +123,11 @@ class Vector
     Vector(const char* name, float defaultValue = 0.0, Module* module = nullptr, uint32_t sourceIndex = 0): name(name), defaultValue(defaultValue), module(module), sourceIndex(sourceIndex) {}
     const char* name;
     float defaultValue;   // Acts as vector constant, TODO: needs to be initialized
-    LedVector* value;
+    LedVector value;
     Module* module;
     uint32_t sourceIndex;
+
+    bool allocate(float defaultValue = 0.0) {return value.allocate(defaultValue);}
 };
 
 #endif

@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorTrangle.h
+* file    FunctionTriangle.cpp
 *******************************************************************************
-* brief   Triangle Generator
+* brief   Triangle Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2023-02-19
 *******************************************************************************
 * MIT License
 *
@@ -30,34 +30,59 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TRIANGLE_GENERATOR_H
-#define TRIANGLE_GENERATOR_H
+#include "FunctionTriangle.h"
 
-#include <Arduino.h>
-#include "../Module.h"
-
-class GeneratorTriangle: public virtual Generator
+bool FunctionTriangle::update(float time)
 {
-  public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
-    bool update(float time);
+  if(t == time)                // Only calculate module content if time has updated
+  {
+    return true;
+  }
+  if(!Function::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+  {
+    return false;
+  }
+  t = time;
 
-    inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
-    inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
-    inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
-    inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
+  float position = getParameterValue(0);
+  float width = getParameterValue(1);
+  float low = getParameterValue(2);
+  float high = getParameterValue(3);
+  bool clip = getParameterValue(4) >= 0.5;
 
-  private:
-    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
-                                    Parameter("freq", 1.0),
-                                    Parameter("rep", -1.0),
-                                    Parameter("amplitude", 1.0),
-                                    Parameter("offset", 0.0),
-                                    Parameter("phase", 0.0)};
-    
-    Parameter parameterOutputs[1] = {Parameter("output")};
-};
+  if(width == 0.0)
+  {
+    outputs[0].value.fill(low);
+    return true;
+  }
 
+  float dy = high - low;
+  float m = (dy / width) * 2.0;
+  int32_t x0 = int32_t(position * Module::PIXELCOUNT + 0.5);
+  float x0f = x0 - (position * Module::PIXELCOUNT);
 
-#endif
+  outputs[0].value.fill(low);
+  for(int i = 0; i < int(width * Module::PIXELCOUNT + 0.5); i++)
+  {
+    if(0 <= (x0 + i) < Module::PIXELCOUNT)
+    {
+      float v = high - (m * (i + x0f)) / float(Module::PIXELCOUNT);
+      if(clip)
+      {
+        v = constrain(v, 0.0, 1.0);
+      }
+      outputs[0].value.fillPixel(x0 + i, v);
+    }
+    if(0 <= (x0 - i) < Module::PIXELCOUNT)
+    {
+      float v = high - (m * (i - x0f)) / float(Module::PIXELCOUNT);
+      if(clip)
+      {
+        v = constrain(v, 0.0, 1.0);
+      }
+      outputs[0].value.fillPixel(x0 - i, v);
+    }
+  }
+
+  return true;
+}

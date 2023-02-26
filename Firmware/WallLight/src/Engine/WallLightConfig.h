@@ -38,7 +38,7 @@
 class WallLightConfig
 {
   public:
-    static const uint16_t PIXELCOUNT = 70;
+    enum LED_COLOR {LED_R, LED_G, LED_B, LED_WW, LED_CW, LED_AM, PIXELCOUNT};
     static const uint16_t COLORCOUNT = 6;
     static const uint16_t FRAMERATE  = 50;
 

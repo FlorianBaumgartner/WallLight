@@ -38,6 +38,8 @@
 #include "../../console.h"
 
 #include "FunctionRect.h"
+#include "FunctionTriangle.h"
+#include "FunctionColorGain.h"
 
 
 static Function* allocateFunction(const char* name, int32_t id)
@@ -46,6 +48,14 @@ static Function* allocateFunction(const char* name, int32_t id)
   if(strcmp(name, FunctionRect::MODULE_NAME) == 0)
   {
     module = (Function*) new FunctionRect(id);
+  }
+  else if(strcmp(name, FunctionTriangle::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionTriangle(id);
+  }
+  else if(strcmp(name, FunctionColorGain::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionColorGain(id);
   }
   else
   {

@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorTrangle.h
+* file    FunctionColorGain.cpp
 *******************************************************************************
-* brief   Triangle Generator
+* brief   Color Gain Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2023-02-23
 *******************************************************************************
 * MIT License
 *
@@ -30,34 +30,39 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TRIANGLE_GENERATOR_H
-#define TRIANGLE_GENERATOR_H
+#include "FunctionColorGain.h"
 
-#include <Arduino.h>
-#include "../Module.h"
-
-class GeneratorTriangle: public virtual Generator
+bool FunctionColorGain::update(float time)
 {
-  public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
-    bool update(float time);
+  if(t == time)                // Only calculate module content if time has updated
+  {
+    return true;
+  }
+  if(!Function::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+  {
+    return false;
+  }
+  t = time;
 
-    inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
-    inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
-    inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
-    inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
+  float r = getParameterValue(0);
+  float g = getParameterValue(1);
+  float b = getParameterValue(2);
+  float ww = getParameterValue(3);
+  float cw = getParameterValue(4);
+  float am = getParameterValue(5);
 
-  private:
-    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
-                                    Parameter("freq", 1.0),
-                                    Parameter("rep", -1.0),
-                                    Parameter("amplitude", 1.0),
-                                    Parameter("offset", 0.0),
-                                    Parameter("phase", 0.0)};
-    
-    Parameter parameterOutputs[1] = {Parameter("output")};
-};
+/*  LedVector* vector = getInputValue(0);
+  setOutput(0, vector);
 
-
-#endif
+  for(int i = 0; i < PIXELCOUNT; i++)
+  {
+    vector->value[LED_R][i] *= r;
+    vector->value[LED_G][i] *= g;
+    vector->value[LED_B][i] *= b;
+    vector->value[LED_WW][i] *= ww;
+    vector->value[LED_CW][i] *= cw;
+    vector->value[LED_AM][i] *= am;
+  }
+  */
+  return true;
+}

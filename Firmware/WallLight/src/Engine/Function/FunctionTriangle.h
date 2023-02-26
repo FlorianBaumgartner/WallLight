@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorTrangle.h
+* file    FunctionTriangle.h
 *******************************************************************************
-* brief   Triangle Generator
+* brief   Triangle Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2023-02-19
 *******************************************************************************
 * MIT License
 *
@@ -30,17 +30,20 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TRIANGLE_GENERATOR_H
-#define TRIANGLE_GENERATOR_H
+#ifndef FUNCTION_TRIANGLE_H
+#define FUNCTION_TRIANGLE_H
 
 #include <Arduino.h>
 #include "../Module.h"
 
-class GeneratorTriangle: public virtual Generator
+class FunctionTriangle: public virtual Function
 {
   public:
     static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
+    FunctionTriangle(int32_t id): Function(id, MODULE_NAME)
+    {
+      outputs[0].allocate();        // Always allocate an output vector fot this module
+    }
     bool update(float time);
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
@@ -48,15 +51,22 @@ class GeneratorTriangle: public virtual Generator
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
     inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
 
+    inline Vector* getInput(uint16_t index) {return (index < (sizeof(inputs) / sizeof(Vector)))? &inputs[index] : nullptr;}
+    inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
+    inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
+    inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
+
   private:
-    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
-                                    Parameter("freq", 1.0),
-                                    Parameter("rep", -1.0),
-                                    Parameter("amplitude", 1.0),
-                                    Parameter("offset", 0.0),
-                                    Parameter("phase", 0.0)};
-    
-    Parameter parameterOutputs[1] = {Parameter("output")};
+    Parameter parameterInputs[5] = {Parameter("position", 0.5),
+                                    Parameter("width", 1.0),
+                                    Parameter("low", 0.0),
+                                    Parameter("high", 1.0),
+                                    Parameter("clip", 1.0)};
+
+    Parameter parameterOutputs [0] = {};                                
+
+    Vector inputs[0] = {};
+    Vector outputs[1] = {Vector("output", 0.0)};
 };
 
 

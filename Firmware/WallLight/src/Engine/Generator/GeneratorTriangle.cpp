@@ -32,12 +32,17 @@
 
 #include "GeneratorTriangle.h"
 
-bool GeneratorTriangle::update(float t)
+bool GeneratorTriangle::update(float time)
 {
+  if(t == time)                 // Only calculate module content if time has updated
+  {
+    return true;
+  }
   if(!Generator::update(t))     // Check if all sources are available (modules that are connected have output value ready)
   {
     return false;
   }
+  t = time;
 
   bool enable = getParameterValue(0) >= 0.5;
   float freq = getParameterValue(1);

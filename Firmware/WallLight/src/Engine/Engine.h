@@ -47,16 +47,17 @@ class Engine: public WallLightConfig
     bool loadGraph(const char* path);
     void unloadGraph(void);
     bool updateCoefficient(int32_t id, float value);
-    LedVector* getPixelData(void) {return &output;};
+    LedVector* getPixelData(void) {return (output)? &output->value : nullptr;}
+    bool update(float t);
 
   private:
-    bool setOutput(const Module* module);
-    bool update(float t);
+    bool setOutput(const Module* module, uint16_t index = 0);
+    Module* getModuleFromId(int32_t moduleId);
 
     static const int MODULE_TYPE_LENGTH = 50;
 
-    LedVector output = LedVector(true);     // TODO: Remove allocation
-    uint32_t outputIndex = 0;
+    Vector* output = nullptr;
+    uint16_t outputIndex = 0;
     float t = 0.0;
 
     char graphName[30] = "";

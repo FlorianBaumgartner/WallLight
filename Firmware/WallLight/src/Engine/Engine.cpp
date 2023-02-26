@@ -72,7 +72,7 @@ bool Engine::loadGraph(const char* path)
     console.warning.println("[ENGINE] Graph has has newer revsion than officially supported, try loading anyway");
   }
 
-
+  bool moduleWarning = false;
   bool moduleError = false;
   JsonArray coefficients = doc["coefficients"].as<JsonArray>();
   JsonArray mainModules = doc["modules"].as<JsonArray>();
@@ -80,6 +80,10 @@ bool Engine::loadGraph(const char* path)
   uint32_t mainModuleCount = mainModules.size();
   moduleCount = coefficientCount + mainModuleCount;
   modules = new Module*[moduleCount];
+  for(int i = 0; i < moduleCount; i++)
+  {
+    modules[i] = nullptr;
+  }
   console.log.printf("[ENGINE] Coefficient count: %d, MainModule count: %d, Totally allocated Modules: %d\n", coefficientCount, mainModuleCount, moduleCount);
 
   for(int i = 0; i < coefficientCount; i++)
@@ -125,7 +129,7 @@ bool Engine::loadGraph(const char* path)
     else
     {
       console.warning.printf("[ENGINE] Module class type '%s' is not supported\n", classType);
-      moduleError = true;
+      moduleWarning = true;
       continue;
     }
     if(module)
@@ -135,34 +139,177 @@ bool Engine::loadGraph(const char* path)
     else
     {
       console.error.printf("[ENGINE] Could not allocate Module '%s.%s'\n", classType, moduleType);
-      moduleError = true;
+      moduleWarning = true;
       continue;
     }
     
-
     #if ENGINE_VERBOSE
       console.print("[ENGINE] Add "); module->printName(); console.printf(" with id %d\n", id);
     #endif
   }
 
-
-
-
-  output.value[0][0] = 1.0;
-  output.value[1][1] = 1.0;
-  output.value[2][2] = 1.0;
-  output.value[0][3] = 1.0;
-  output.value[1][3] = 1.0;
-  output.value[2][3] = 1.0;
-
-  if(!moduleError)
+  for(int i = 0; i < mainModuleCount; i++)
   {
-    console.ok.println("[ENGINE] Graph loading was successful.");
+    int index = i + coefficientCount;
+    for (JsonVariant parameter : mainModules[i]["parameter"].as<JsonArray>())
+    {
+      uint16_t parameterIndex = parameter["index"].as<unsigned int>();
+      int32_t id = parameter["id"].as<signed int>();
+      uint32_t outputIndex = parameter["output"].as<unsigned int>();
+      bool status = false;
+      if(modules[index])
+      {
+        Module* sourceModule = getModuleFromId(id);
+        if(sourceModule)
+        {
+          status = modules[index]->setParameterInput(parameterIndex, sourceModule, outputIndex);
+          #if ENGINE_VERBOSE
+            console.printf("[ENGINE] Connect parameter input '%d' of ", parameterIndex); modules[index]->printName();
+            console.printf(" [ID: %d] to ", modules[index]->id); sourceModule->printName(); console.printf(" [ID: %d], Output index: %d\n", sourceModule->id, outputIndex);
+          #endif
+        } 
+      }
+      if(!status)
+      {
+        console.error.printf("[ENGINE] Error occured while setting Parameter '%d' of %s\n", parameterIndex, mainModules[i]["type"].as<const char*>());
+        moduleError = true;
+      }
+    }
+
+    // TODO: Check if module needs to allocate output buffer
+
+    if(mainModules[i].containsKey("input"))
+    {
+      for (JsonVariant input : mainModules[i]["input"].as<JsonArray>())
+      {
+        uint16_t inputIndex = input["index"].as<unsigned int>();
+        int32_t id = input["id"].as<signed int>();
+        uint32_t outputIndex = input["output"].as<unsigned int>();
+        bool status = false;
+        if(modules[index])
+        {
+          Module* sourceModule = getModuleFromId(id);
+          if(sourceModule)
+          {
+            if(sourceModule->moduleClass == Module::MODULE_FUNCTION)
+            {
+              status = ((Function*)modules[index])->setInput(inputIndex, sourceModule, outputIndex);
+              #if ENGINE_VERBOSE
+                console.printf("[ENGINE] Connect input '%d' of ", inputIndex); modules[index]->printName();
+                console.printf(" [ID: %d] to ", modules[index]->id); sourceModule->printName(); console.printf(" [ID: %d], Output index: %d\n", sourceModule->id, outputIndex);
+              #endif
+            }
+            else
+            {
+              console.error.println("[ENGINE] Module contains inputs but is not of class type 'Function'");
+              moduleError = true;
+            }
+          } 
+        }
+        if(!status)
+        {
+          console.error.printf("[ENGINE] Error occured while setting Input '%d' of %s\n", inputIndex, mainModules[i]["type"].as<const char*>());
+          moduleError = true;
+        }
+      }
+    }
+  }
+
+  int32_t outputId = doc["output"]["id"].as<signed int>();
+  outputIndex = doc["output"]["output"].as<unsigned int>();
+  Module* outputModule = getModuleFromId(outputId);
+  if(outputModule)
+  {
+    if(outputModule->moduleClass == Module::MODULE_FUNCTION)
+    {
+      output = ((Function*)outputModule)->getOutput(outputIndex);
+      if(output)
+      {
+        console.print("[ENGINE] Connect system output to "); outputModule->printName(); console.printf(" [ID: %d] with output index: %d\n", outputId, outputIndex);
+      }
+      else
+      {
+        console.error.printf("[ENGINE] Output of '%s.%s' [ID: %d] is not allocated\n", outputModule->className, outputModule->moduleName, outputId); 
+        moduleError = true;
+      }
+    }
+    else
+    {
+      console.error.printf("[ENGINE] System output is connected to '%s.%s' [ID: %d] which is not of type 'Function'\n", outputModule->className, outputModule->moduleName, outputId); 
+      moduleError = true;
+    }
   }
   else
   {
+    console.error.printf("[ENGINE] Could not connect system output (Module with ID: %d not available)\n", outputId); 
+    moduleError = true;
+  }
+
+  if(moduleWarning)
+  {
     console.warning.println("[ENGINE] Not all modules could be loaded");
   }
+  if(moduleError)
+  {
+    console.error.println("[ENGINE] Graph loading failed.");
+  }
+  else
+  {
+    console.ok.println("[ENGINE] Graph loading was successful.");
+  }
   file.close();
+  graphLoaded = true;
   return !moduleError;
 }
+
+bool Engine::setOutput(const Module* module, uint16_t index)
+{
+
+
+  return true;
+}
+
+Module* Engine::getModuleFromId(int32_t moduleId)
+{
+  for(int i = 0; i < moduleCount; i++)
+  {
+    if(modules[i])
+    {
+      if(modules[i]->id == moduleId)
+      {
+        return modules[i];
+      }
+    }
+  }
+  console.error.printf("[ENGINE] No module found with ID: %d\n", moduleId);
+  return nullptr;
+}
+
+bool Engine::update(float t)
+{
+  int temp = 0;
+  while(graphLoaded)
+  {
+    bool allReady = true;
+    for(int i = 0; i < moduleCount; i++)
+    {
+      if(modules[i])
+      {
+        allReady &= modules[i]->update(t);
+        if(modules[i]->error)
+        {
+          return false;
+        }
+      }
+    }
+    if(allReady)
+    {
+      return true;
+    }
+    
+    temp++;
+    if(temp > 50) break;    // TODO: Remove
+  }
+  return true;              // TODO: Set to false
+}
+
