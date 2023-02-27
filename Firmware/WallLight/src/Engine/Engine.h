@@ -39,6 +39,8 @@
 #include "Modifier/Modifier.h"
 #include "Function/Function.h"
 
+#include "../console.h"
+
 
 class Engine: public WallLightConfig
 {
@@ -47,7 +49,7 @@ class Engine: public WallLightConfig
     bool loadGraph(const char* path);
     void unloadGraph(void);
     bool updateCoefficient(int32_t id, float value);
-    LedVector* getPixelData(void) {return (output)? &output->value : nullptr;}
+    LedVector* getPixelData(void) {return (output && graphLoaded)? output->value : nullptr;}
     bool update(float t);
 
   private:

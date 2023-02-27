@@ -19,6 +19,8 @@
         "istream": "cpp",
         "ostream": "cpp",
         "tuple": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp"
     }
 }

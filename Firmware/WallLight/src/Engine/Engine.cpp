@@ -225,7 +225,9 @@ bool Engine::loadGraph(const char* path)
       output = ((Function*)outputModule)->getOutput(outputIndex);
       if(output)
       {
-        console.print("[ENGINE] Connect system output to "); outputModule->printName(); console.printf(" [ID: %d] with output index: %d\n", outputId, outputIndex);
+        console.log.print("[ENGINE] Connect system output to "); outputModule->printName(); console.printf(" [ID: %d] with output index: %d\n", outputId, outputIndex);
+        console.log.printf("[ENGINE] Output name: %s\n", output->name);
+        console.flush();
       }
       else
       {
@@ -308,8 +310,12 @@ bool Engine::update(float t)
     }
     
     temp++;
-    if(temp > 50) break;    // TODO: Remove
+    if(temp > 100)
+    {
+      console.warning.println("[ENGINE] Not all modules are ready, abort updating!");
+      return false;
+    }
   }
-  return true;              // TODO: Set to false
+  return true;
 }
 

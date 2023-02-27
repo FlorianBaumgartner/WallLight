@@ -37,10 +37,12 @@
 #include "Engine/WallLight.h"
 
 
+#define BUTTON            47
 #define LED               10
 #define BLINK_INTERVAL    200
 #define WATCHDOG_TIMEOUT  30    // [s]
 
+#define LOAD_DIRECTLY     true
 
 #define LED_RGB_PIN       17
 #define LED_WWA_PIN       -1
@@ -48,8 +50,12 @@
 Utils utils;
 WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN);
 
+// const char* file = "rect_triangle_test.json";
+const char* file = "rect_triangle_color_test.json";
+
 void setup()
 {
+  pinMode(BUTTON, INPUT_PULLUP);
   pinMode(LED, OUTPUT);
   console.begin();
   if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
@@ -60,8 +66,10 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize WallLight");
   }
-  // wallLight.loadGraph("rect_triangle_test.json");
-  wallLight.loadGraph("rect_triangle_color_test.json");
+  if(LOAD_DIRECTLY)
+  {
+    wallLight.loadGraph(file);
+  }
 
   console.log.println("OK, Let's go");
 }
@@ -69,6 +77,19 @@ void setup()
 void loop()
 {
   utils.feedWatchdog();
+
+  static bool loaded = false;
+  static bool btnOld = false, btnNew = false;
+  btnOld = btnNew; btnNew = !digitalRead(BUTTON);
+  if(!btnOld && btnNew)
+  {
+    console.log.println("[MAIN] Button pressed!");
+    if(!loaded && !LOAD_DIRECTLY)
+    {
+      loaded = true;
+      wallLight.loadGraph(file);
+    }
+  }
  
   static int t = 0;
   if(millis() - t > 5000)
@@ -77,5 +98,5 @@ void loop()
     console.log.printf("Time: %d\n", t);
   }
   digitalWrite(LED, (millis() / BLINK_INTERVAL) & 1);
-  delay(1);
+  delay(10);
 }

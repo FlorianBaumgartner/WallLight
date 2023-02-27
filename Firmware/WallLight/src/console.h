@@ -203,7 +203,8 @@ class Console: public Stream
     bool begin(unsigned long baud, uint32_t config=SERIAL_8N1, int8_t rxPin=-1, int8_t txPin=-1, bool invert=false, unsigned long timeout_ms = 20000UL, uint8_t rxfifo_full_thrhd = 112);    // Used for HardwareSerial
     void end(void);
     void enable(bool state) {enabled = state;}
-    void flush(void) {readIdx = writeIdx;}
+    void flush(void) {while(readIdx != writeIdx) sleep(0.01);}
+    void clear(void) {readIdx = writeIdx;}
     void printTimestamp(void);        // TODO: Add possibillity to add string as parameter
     void enableColors(bool state)
     {

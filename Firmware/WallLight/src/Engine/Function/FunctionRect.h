@@ -38,13 +38,22 @@
 
 class FunctionRect: public virtual Function
 {
+  private:
+    Parameter parameterInputs[5] = {Parameter("start", 0.0),
+                                    Parameter("stop", 1.0),
+                                    Parameter("low", 0.0),
+                                    Parameter("high", 1.0),
+                                    Parameter("smooth", 1.0)};
+
+    Parameter parameterOutputs [0] = {};                                
+
+    Vector inputs[0] = {};
+    LedVector outputVectors[1] = {LedVector(true)};     // Always allocate an output vector for this module 
+    Vector outputs[1] = {Vector("output rect", &outputVectors[0])};    
+    
   public:
     static constexpr const char* MODULE_NAME = "Rect";
-    FunctionRect(int32_t id): Function(id, MODULE_NAME)
-    {
-      outputs[0].allocate();        // Always allocate an output vector fot this module
-    }
-    bool update(float time);
+    FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
@@ -56,17 +65,63 @@ class FunctionRect: public virtual Function
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
 
-  private:
-    Parameter parameterInputs[5] = {Parameter("start", 0.0),
-                                    Parameter("stop", 1.0),
-                                    Parameter("low", 0.0),
-                                    Parameter("high", 1.0),
-                                    Parameter("smooth", 1.0)};
+    bool update(float time)
+    {
+      if(t == time)                // Only calculate module content if time has updated
+      {
+        return true;
+      }
+      if(!Function::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+      {
+        return false;
+      }
+      t = time;
 
-    Parameter parameterOutputs [0] = {};                                
+      float start = getParameterValue(0);
+      float stop = getParameterValue(1);
+      float low = getParameterValue(2);
+      float high = getParameterValue(3);
+      bool smooth = getParameterValue(4) >= 0.5;
+      LedVector* output = getOutputValue(0);
 
-    Vector inputs[0] = {};
-    Vector outputs[1] = {Vector("output", 0.0)};
+      if(start > stop)
+      {
+        float temp = start;
+        start = stop;
+        stop = temp;
+      }
+      
+      if(output)
+      {
+        if(output->value)
+        {
+          output->fill(low);
+          for(int i = 0; i < Module::PIXELCOUNT; i++)
+          {
+            if(((i + 0.5) > start * Module::PIXELCOUNT) && ((i + 0.5) <= stop * Module::PIXELCOUNT))
+            {
+              output->fillPixel(i, high);
+            }
+            if(smooth)
+            {
+              float startDif = start * Module::PIXELCOUNT - (float)i;
+              float stopDif = stop * Module::PIXELCOUNT - (float)i;
+              if((startDif > 0.0) && (startDif < 1.0))
+              {
+                output->fillPixel(i, low + (high - low) * startDif);
+              }
+              if((stopDif >= 0.0) && (stopDif < 1.0))
+              {
+                output->fillPixel(i, low + (high - low) * stopDif);
+              }
+            }
+          }
+        }
+        else error = true;
+      }
+      else error = true;
+      return done();
+    }
 };
 
 

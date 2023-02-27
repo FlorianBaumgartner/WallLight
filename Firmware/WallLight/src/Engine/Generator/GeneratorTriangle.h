@@ -38,16 +38,6 @@
 
 class GeneratorTriangle: public virtual Generator
 {
-  public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
-    bool update(float time);
-
-    inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
-    inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
-    inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
-    inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
-
   private:
     Parameter parameterInputs[6] = {Parameter("enable", 1.0),
                                     Parameter("freq", 1.0),
@@ -57,6 +47,54 @@ class GeneratorTriangle: public virtual Generator
                                     Parameter("phase", 0.0)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
+
+  public:
+    static constexpr const char* MODULE_NAME = "Triangle";
+    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
+    inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
+    inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
+    inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
+    inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
+
+    bool update(float time)
+    {
+      if(t == time)                 // Only calculate module content if time has updated
+      {
+        return true;
+      }
+      if(!Generator::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+      {
+        return false;
+      }
+      t = time;
+
+      bool enable = getParameterValue(0) >= 0.5;
+      float freq = getParameterValue(1);
+      float rep = getParameterValue(2);
+      float amplitude = getParameterValue(3);
+      float offset = getParameterValue(4);
+      float phase = getParameterValue(5);
+      phase = fmod((phase + 1.0), 2.0) - 1.0;
+
+      if(enable)
+      {
+        t -= enableTime;
+        if(rep > 0.0 && ((rep / freq) < t))
+        {
+          t = 0;
+        }
+      }
+      else
+      {
+        enableTime = t;
+        t = 0;
+      }
+
+      float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
+      float output = (x - 0.5) * 2 * amplitude + offset;
+      setParameterOutput(0, output);
+      return done();
+    }
 };
 
 

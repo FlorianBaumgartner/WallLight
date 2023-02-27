@@ -120,14 +120,13 @@ class Parameter
 class Vector
 {
   public:
-    Vector(const char* name, float defaultValue = 0.0, Module* module = nullptr, uint32_t sourceIndex = 0): name(name), defaultValue(defaultValue), module(module), sourceIndex(sourceIndex) {}
+    Vector(const char* name, LedVector* defaultValue = nullptr, Module* module = nullptr, uint32_t sourceIndex = 0): name(name), value(defaultValue), module(module), sourceIndex(sourceIndex) {}
     const char* name;
-    float defaultValue;   // Acts as vector constant, TODO: needs to be initialized
-    LedVector value;
+    LedVector* value;
     Module* module;
     uint32_t sourceIndex;
 
-    bool allocate(float defaultValue = 0.0) {return value.allocate(defaultValue);}
+    bool allocate(float defaultValue = 0.0) {return value->allocate(defaultValue);}
 };
 
 #endif

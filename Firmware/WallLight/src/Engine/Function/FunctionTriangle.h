@@ -38,13 +38,22 @@
 
 class FunctionTriangle: public virtual Function
 {
+  private:
+    Parameter parameterInputs[5] = {Parameter("position", 0.5),
+                                    Parameter("width", 1.0),
+                                    Parameter("low", 0.0),
+                                    Parameter("high", 1.0),
+                                    Parameter("clip", 1.0)};
+
+    Parameter parameterOutputs [0] = {};                                
+
+    Vector inputs[0] = {};
+    LedVector outputVectors[1] = {LedVector(true, 0.0)};     // Always allocate an output vector for this module
+    Vector outputs[1] = {Vector("output rect", &outputVectors[0])};  
+  
   public:
     static constexpr const char* MODULE_NAME = "Triangle";
-    FunctionTriangle(int32_t id): Function(id, MODULE_NAME)
-    {
-      outputs[0].allocate();        // Always allocate an output vector fot this module
-    }
-    bool update(float time);
+    FunctionTriangle(int32_t id): Function(id, MODULE_NAME) {}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
@@ -56,17 +65,68 @@ class FunctionTriangle: public virtual Function
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
 
-  private:
-    Parameter parameterInputs[5] = {Parameter("position", 0.5),
-                                    Parameter("width", 1.0),
-                                    Parameter("low", 0.0),
-                                    Parameter("high", 1.0),
-                                    Parameter("clip", 1.0)};
+    bool update(float time)
+    {
+      if(t == time)                // Only calculate module content if time has updated
+      {
+        return true;
+      }
+      if(!Function::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+      {
+        return false;
+      }
+      t = time;
 
-    Parameter parameterOutputs [0] = {};                                
+      float position = getParameterValue(0);
+      float width = getParameterValue(1);
+      float low = getParameterValue(2);
+      float high = getParameterValue(3);
+      bool clip = getParameterValue(4) >= 0.5;
+      LedVector* output = getOutputValue(0);
 
-    Vector inputs[0] = {};
-    Vector outputs[1] = {Vector("output", 0.0)};
+      if(output)
+      {
+        if(output->value)
+        {
+          if(width == 0.0)
+          {
+            output->fill(low);
+            return done();
+          }
+
+          float dy = high - low;
+          float m = (dy / width) * 2.0;
+          int32_t x0 = int32_t(position * Module::PIXELCOUNT + 0.5);
+          float x0f = x0 - (position * Module::PIXELCOUNT);
+
+          output->fill(low);
+          for(int i = 0; i < int(width * Module::PIXELCOUNT + 0.5); i++)
+          {
+            if(0 <= (x0 + i) < Module::PIXELCOUNT)
+            {
+              float v = high - (m * (i + x0f)) / float(Module::PIXELCOUNT);
+              if(clip)
+              {
+                v = constrain(v, 0.0, 1.0);
+              }
+              output->fillPixel(x0 + i, v);
+            }
+            if(0 <= (x0 - i) < Module::PIXELCOUNT)
+            {
+              float v = high - (m * (i - x0f)) / float(Module::PIXELCOUNT);
+              if(clip)
+              {
+                v = constrain(v, 0.0, 1.0);
+              }
+              output->fillPixel(x0 - i, v);
+            }
+          }
+        }
+        else error = true;
+      }
+      else error = true;
+      return done();
+    }
 };
 
 

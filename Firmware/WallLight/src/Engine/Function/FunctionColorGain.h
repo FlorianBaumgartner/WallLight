@@ -38,13 +38,23 @@
 
 class FunctionColorGain: public virtual Function
 {
+  private:
+    Parameter parameterInputs[6] = {Parameter("r", 0.0),
+                                    Parameter("g", 0.0),
+                                    Parameter("b", 0.0),
+                                    Parameter("ww", 0.0),
+                                    Parameter("cw", 0.0),
+                                    Parameter("am", 0.0)};
+
+    Parameter parameterOutputs [0] = {};   
+
+    Vector inputs[1] = {Vector("input")};
+    LedVector outputVectors[1] = {LedVector(false)};
+    Vector outputs[1] = {Vector("output color", &outputVectors[0])};    // TODO: Change name
+
   public:
     static constexpr const char* MODULE_NAME = "ColorGain";
-    FunctionColorGain(int32_t id): Function(id, MODULE_NAME)
-    {
-      outputs[0].allocate();        // Always allocate an output vector fot this module
-    }
-    bool update(float time);
+    FunctionColorGain(int32_t id): Function(id, MODULE_NAME) {}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
@@ -56,18 +66,46 @@ class FunctionColorGain: public virtual Function
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
 
-  private:
-    Parameter parameterInputs[6] = {Parameter("r", 0.5),
-                                    Parameter("g", 1.0),
-                                    Parameter("b", 0.0),
-                                    Parameter("ww", 1.0),
-                                    Parameter("cw", 1.0),
-                                    Parameter("am", 1.0)};
+    bool update(float time)
+    {
+      if(t == time)                // Only calculate module content if time has updated
+      {
+        return true;
+      }
+      if(!Function::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+      {
+        return false;
+      }
+      t = time;
 
-    Parameter parameterOutputs [0] = {};                                
+      float r = getParameterValue(0);
+      float g = getParameterValue(1);
+      float b = getParameterValue(2);
+      float ww = getParameterValue(3);
+      float cw = getParameterValue(4);
+      float am = getParameterValue(5);
+      LedVector* output = getInputValue(0);
 
-    Vector inputs[1] = {Vector("input", 0.0)};
-    Vector outputs[1] = {Vector("output", 0.0)};
+      if(output)
+      {
+        setOutput(0, output);
+        if(output->value)
+        {
+          for(int i = 0; i < PIXELCOUNT; i++)
+          {
+            output->value[LED_R][i] *= r;
+            output->value[LED_G][i] *= g;
+            output->value[LED_B][i] *= b;
+            output->value[LED_WW][i] *= ww;
+            output->value[LED_CW][i] *= cw;
+            output->value[LED_AM][i] *= am;
+          }
+        }
+        else error = true;
+      }
+      else error = true;
+      return done();
+    }
 };
 
 
