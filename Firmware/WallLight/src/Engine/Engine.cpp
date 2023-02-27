@@ -59,9 +59,11 @@ bool Engine::loadGraph(const char* path)
   if(error)
   {
     file.close();
+    doc.clear();
     console.error.printf("[ENGINE] Failed to pasre JSON file, using default configuration: %d\n", error);
     return false;
   }
+  file.close();
 
   strncpy(graphName, doc["name"].as<const char*>(), sizeof(graphName));
   graphRevisionMajor = int(atof(doc["revision"].as<const char*>()));
@@ -226,8 +228,6 @@ bool Engine::loadGraph(const char* path)
       if(output)
       {
         console.log.print("[ENGINE] Connect system output to "); outputModule->printName(); console.printf(" [ID: %d] with output index: %d\n", outputId, outputIndex);
-        console.log.printf("[ENGINE] Output name: %s\n", output->name);
-        console.flush();
       }
       else
       {
@@ -259,7 +259,7 @@ bool Engine::loadGraph(const char* path)
   {
     console.ok.println("[ENGINE] Graph loading was successful.");
   }
-  file.close();
+  doc.clear();
   graphLoaded = true;
   return !moduleError;
 }
