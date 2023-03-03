@@ -48,8 +48,8 @@ class FunctionRect: public virtual Function
     Parameter parameterOutputs [0] = {};                                
 
     Vector inputs[0] = {};
-    LedVector outputVectors[1] = {LedVector(true)};     // Always allocate an output vector for this module 
-    Vector outputs[1] = {Vector("output rect", &outputVectors[0])};    
+    LedVector outputVectors[1] = {LedVector()};     
+    Vector outputs[1] = {Vector("output", &outputVectors[0])};  
     
   public:
     static constexpr const char* MODULE_NAME = "Rect";
@@ -59,11 +59,15 @@ class FunctionRect: public virtual Function
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
     inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
-
     inline Vector* getInput(uint16_t index) {return (index < (sizeof(inputs) / sizeof(Vector)))? &inputs[index] : nullptr;}
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
+    bool init(bool allocateVector = false)
+    {
+      getOutput(0)->allocate(0.0);    // Always allocate an output vector for this module 
+      return initialized = true;
+    }
 
     bool update(float time)
     {
@@ -82,7 +86,6 @@ class FunctionRect: public virtual Function
       float low = getParameterValue(2);
       float high = getParameterValue(3);
       bool smooth = getParameterValue(4) >= 0.5;
-      LedVector* output = getOutputValue(0);
 
       if(start > stop)
       {
@@ -91,38 +94,37 @@ class FunctionRect: public virtual Function
         stop = temp;
       }
       
-      if(output)
+      LedVector* output = getOutputValue(0);
+      if(LedVector::checkValid(output))
       {
-        if(output->value)
+        output->fill(low);
+        for(int i = 0; i < Module::PIXELCOUNT; i++)
         {
-          output->fill(low);
-          for(int i = 0; i < Module::PIXELCOUNT; i++)
+          if(((i + 0.5) > start * Module::PIXELCOUNT) && ((i + 0.5) <= stop * Module::PIXELCOUNT))
           {
-            if(((i + 0.5) > start * Module::PIXELCOUNT) && ((i + 0.5) <= stop * Module::PIXELCOUNT))
+            output->fillPixel(i, high);
+          }
+          if(smooth)
+          {
+            float startDif = start * Module::PIXELCOUNT - (float)i;
+            float stopDif = stop * Module::PIXELCOUNT - (float)i;
+            if((startDif > 0.0) && (startDif < 1.0))
             {
-              output->fillPixel(i, high);
+              output->fillPixel(i, low + (high - low) * startDif);
             }
-            if(smooth)
+            if((stopDif >= 0.0) && (stopDif < 1.0))
             {
-              float startDif = start * Module::PIXELCOUNT - (float)i;
-              float stopDif = stop * Module::PIXELCOUNT - (float)i;
-              if((startDif > 0.0) && (startDif < 1.0))
-              {
-                output->fillPixel(i, low + (high - low) * startDif);
-              }
-              if((stopDif >= 0.0) && (stopDif < 1.0))
-              {
-                output->fillPixel(i, low + (high - low) * stopDif);
-              }
+              output->fillPixel(i, low + (high - low) * stopDif);
             }
           }
         }
-        else error = true;
       }
       else error = true;
       return done();
     }
 };
 
-
+#ifdef log
+  #undef log
+#endif
 #endif

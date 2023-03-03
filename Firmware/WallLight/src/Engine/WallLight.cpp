@@ -52,7 +52,7 @@ bool WallLight::begin(void)
   leds.setBrightness(10);
   leds.show();
 
-  xTaskCreate(update, "task_walllight", 8192, this, 1, NULL);       // TODO: Check if stack size is enough
+  xTaskCreate(update, "task_walllight", 16384, this, 1, NULL);       // TODO: Check if stack size is enough
   console.ok.println("[WALLLIGHT] Initialization successfull.");
   return true;
 }

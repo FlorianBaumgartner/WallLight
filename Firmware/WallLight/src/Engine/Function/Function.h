@@ -40,6 +40,7 @@
 #include "FunctionRect.h"
 #include "FunctionTriangle.h"
 #include "FunctionColorGain.h"
+#include "FunctionAdder.h"
 
 
 static Function* allocateFunction(const char* name, int32_t id)
@@ -56,6 +57,10 @@ static Function* allocateFunction(const char* name, int32_t id)
   else if(strcmp(name, FunctionColorGain::MODULE_NAME) == 0)
   {
     module = (Function*) new FunctionColorGain(id);
+  }
+  else if(strcmp(name, FunctionAdder::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionAdder(id);
   }
   else
   {

@@ -36,6 +36,8 @@
 #include <Arduino.h>
 #include "../Module.h"
 
+#define log   DISABLE_MODULE_LEVEL
+
 class FunctionColorGain: public virtual Function
 {
   private:
@@ -49,8 +51,9 @@ class FunctionColorGain: public virtual Function
     Parameter parameterOutputs [0] = {};   
 
     Vector inputs[1] = {Vector("input")};
-    LedVector outputVectors[1] = {LedVector(false)};
-    Vector outputs[1] = {Vector("output color", &outputVectors[0])};    // TODO: Change name
+    LedVector outputVectors[1] = {LedVector()};
+    Vector outputs[1] = {Vector("output", &outputVectors[0])};
+    LedVector* input = nullptr;
 
   public:
     static constexpr const char* MODULE_NAME = "ColorGain";
@@ -60,11 +63,31 @@ class FunctionColorGain: public virtual Function
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
     inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
-
     inline Vector* getInput(uint16_t index) {return (index < (sizeof(inputs) / sizeof(Vector)))? &inputs[index] : nullptr;}
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
+
+    bool init(bool allocateVector = false)
+    {
+      input = getInputValue(0);
+      if(!LedVector::checkValid(input))   // If no input is connected, allocate output vector
+      {
+        allocateVector = true;
+        console.warning.println("[FUNCTION_COLOR_GAIN] No input connected");
+      }
+      if(allocateVector)
+      {
+        getOutput(0)->allocate(0.0);
+        setOutput(0, getOutputValue(0));
+        console.log.println("[FUNCTION_COLOR_GAIN] Allocate local output buffer");
+      }
+      else
+      {
+        setOutput(0, input);
+      }
+      return initialized = true;
+    }
 
     bool update(float time)
     {
@@ -84,29 +107,26 @@ class FunctionColorGain: public virtual Function
       float ww = getParameterValue(3);
       float cw = getParameterValue(4);
       float am = getParameterValue(5);
-      LedVector* output = getInputValue(0);
 
-      if(output)
+      LedVector* output = getOutputValue(0);
+      if(LedVector::checkValid(output) && LedVector::checkValid(input))
       {
-        setOutput(0, output);
-        if(output->value)
+        for(int i = 0; i < PIXELCOUNT; i++)
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
-          {
-            output->value[LED_R][i] *= r;
-            output->value[LED_G][i] *= g;
-            output->value[LED_B][i] *= b;
-            output->value[LED_WW][i] *= ww;
-            output->value[LED_CW][i] *= cw;
-            output->value[LED_AM][i] *= am;
-          }
+          output->value[LED_R][i] = input->value[LED_R][i] * r;
+          output->value[LED_G][i] = input->value[LED_G][i] * g;
+          output->value[LED_B][i] = input->value[LED_B][i] * b;
+          output->value[LED_WW][i] = input->value[LED_WW][i] * ww;
+          output->value[LED_CW][i] = input->value[LED_CW][i] * cw;
+          output->value[LED_AM][i] = input->value[LED_AM][i] * am;
         }
-        else error = true;
       }
       else error = true;
       return done();
     }
 };
 
-
+#ifdef log
+  #undef log
+#endif
 #endif

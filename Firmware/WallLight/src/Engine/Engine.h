@@ -54,7 +54,9 @@ class Engine: public WallLightConfig
 
   private:
     bool setOutput(const Module* module, uint16_t index = 0);
+    uint16_t getInputConnectionCount(Function* function, uint16_t index);
     Module* getModuleFromId(int32_t moduleId);
+    
 
     static const int MODULE_TYPE_LENGTH = 50;
 

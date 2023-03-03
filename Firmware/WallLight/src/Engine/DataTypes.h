@@ -97,13 +97,22 @@ class LedVector: public WallLightConfig
     }
     void fillPixel(uint16_t pos, float val)
     {
-      if(val < COLORCOUNT)
+      if(pos < PIXELCOUNT)
       {
         for(int i = 0; i < COLORCOUNT; i++)
         {
           value[i][pos] = val;
         }
       }
+    }
+
+    static bool checkValid(const LedVector* vector)
+    {
+      if(vector)
+      {
+        return vector->value != nullptr;
+      }
+      return false;
     }
 };
 
@@ -120,13 +129,18 @@ class Parameter
 class Vector
 {
   public:
-    Vector(const char* name, LedVector* defaultValue = nullptr, Module* module = nullptr, uint32_t sourceIndex = 0): name(name), value(defaultValue), module(module), sourceIndex(sourceIndex) {}
+    Vector(const char* name, LedVector* defaultValue = nullptr, Module* module = nullptr, uint32_t sourceIndex = 0): name(name), value(defaultValue), module(module), sourceIndex(sourceIndex), allocated(false) {}
     const char* name;
     LedVector* value;
     Module* module;
     uint32_t sourceIndex;
+    bool allocated;
 
-    bool allocate(float defaultValue = 0.0) {return value->allocate(defaultValue);}
+    bool allocate(float defaultValue = 0.0)
+    {
+      allocated = value->allocate(defaultValue);
+      return allocated;
+    }
 };
 
 #endif

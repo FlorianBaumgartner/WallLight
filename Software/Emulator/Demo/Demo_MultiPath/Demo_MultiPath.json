@@ -1,0 +1,128 @@
+{
+    "name": "Demo Multi-Path",
+    "revision": "0.1",
+    "coefficients": [
+        {
+            "id": 1000,
+            "value": 0.5
+        },
+        {
+            "id": 1001,
+            "value": 0.5
+        },
+        {
+            "id": 1002,
+            "value": 0.5
+        },
+        {
+            "id": 1003,
+            "value": 0.5
+        },
+        {
+            "id": 1004,
+            "value": 0.5
+        }
+    ],
+    "modules": [
+        {
+            "id": 0,
+            "type": "Generator.Triangle",
+            "parameter": [
+                {
+                    "index": 3,
+                    "id": 1000,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1001,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1002,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "type": "Generator.Triangle",
+            "parameter": [
+                {
+                    "index": 3,
+                    "id": 1003,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1004,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "type": "Function.Rect",
+            "parameter": [],
+            "input": []
+        },
+        {
+            "id": 3,
+            "type": "Function.ColorGain",
+            "parameter": [
+                {
+                    "index": 0,
+                    "id": 0,
+                    "output": 0
+                }
+            ],
+            "input": [
+                {
+                    "index": 0,
+                    "id": 2,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "type": "Function.ColorGain",
+            "parameter": [
+                {
+                    "index": 2,
+                    "id": 1,
+                    "output": 0
+                }
+            ],
+            "input": [
+                {
+                    "index": 0,
+                    "id": 2,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "type": "Function.Adder",
+            "parameter": [],
+            "input": [
+                {
+                    "index": 0,
+                    "id": 3,
+                    "output": 0
+                },
+                {
+                    "index": 1,
+                    "id": 4,
+                    "output": 0
+                }
+            ]
+        }
+    ],
+    "output": {
+        "id": 5,
+        "output": 0
+    }
+}

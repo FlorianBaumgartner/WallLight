@@ -46,6 +46,7 @@ class WallLight: public WallLightConfig
     WallLight(int8_t rgbPin, int8_t wwaPin);
     bool begin(void);
     bool loadGraph(const char* path, uint8_t engineIndex = 0);
+    void setBrightness(uint8_t brightness) {leds.setBrightness(brightness);}
     
   private:
     const int8_t rgbPin;

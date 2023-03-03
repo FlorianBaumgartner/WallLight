@@ -58,8 +58,12 @@ class Module: public WallLightConfig
     }
 
     virtual bool update(float time) = 0;
+    virtual Parameter* getParameterInput(uint16_t index) = 0;
+    virtual Parameter* getParameterOutput(uint16_t index) = 0;
+    virtual uint32_t getParameterInputCount() = 0;
+    virtual uint32_t getParameterOutputCount() = 0;
 
-    void printName()
+    void printName() const
     {
       ConsoleColor color;
       switch(moduleClass)
@@ -103,11 +107,6 @@ class Module: public WallLightConfig
     float t = NAN;
 
   protected:
-    virtual Parameter* getParameterInput(uint16_t index) = 0;
-    virtual Parameter* getParameterOutput(uint16_t index) = 0;
-    virtual uint32_t getParameterInputCount() = 0;
-    virtual uint32_t getParameterOutputCount() = 0;
-
     float getParameterValue(uint32_t index)
     {
       Parameter* parameter = getParameterInput(index);
@@ -221,6 +220,7 @@ class Function: public Module
     virtual Vector* getOutput(uint16_t index) = 0;
     virtual uint32_t getInputCount() = 0;
     virtual uint32_t getOutputCount() = 0;
+    virtual bool init(bool allocateVector = false) = 0;
 
     bool getInputStatus(void)
     {
@@ -238,7 +238,7 @@ class Function: public Module
     bool update(float time)
     {
       ready = getParameterStatus() && getInputStatus();
-      return ready;
+      return ready && initialized;
     }
 
     bool setInput(uint16_t index, Module* source, uint32_t sourceIndex = 0)
@@ -259,6 +259,8 @@ class Function: public Module
 
     
   protected:
+    bool initialized = false;
+
     LedVector* getInputValue(uint32_t index)
     {
       Vector* input = getInput(index);
@@ -295,7 +297,7 @@ class Function: public Module
       }
       error = true;
       console.error.printf("[MODULE] Could not access input of '%s.%s' (index out of bound: %d of max: %d)\n", className, moduleName, index, getInputCount());
-      return nullptr;   // TODO: This will lead to system crash -.-
+      return nullptr;
     }
 
     LedVector* getOutputValue(uint32_t index)

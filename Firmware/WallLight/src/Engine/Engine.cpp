@@ -178,8 +178,6 @@ bool Engine::loadGraph(const char* path)
       }
     }
 
-    // TODO: Check if module needs to allocate output buffer
-
     if(mainModules[i].containsKey("input"))
     {
       for (JsonVariant input : mainModules[i]["input"].as<JsonArray>())
@@ -217,31 +215,34 @@ bool Engine::loadGraph(const char* path)
     }
   }
 
+  for(int i = 0; i < moduleCount; i++)
+  {
+    if(modules[i])
+    {
+      if(modules[i]->moduleClass == Module::MODULE_FUNCTION)
+      {
+        Function* function = (Function*)modules[i];
+        bool deepCopy = false;
+        for(int p = 0; p < function->getInputCount(); p++)
+        {
+          if(getInputConnectionCount(function, p) > 1)
+          {
+            deepCopy = true;
+          }
+        }
+        if(deepCopy)
+        {
+          console.print("[ENGINE] Make deep copy of "); modules[i]->printName(); console.printf(" [ID: %d]\n", modules[i]->id);
+        }
+        function->init(deepCopy);    // Check if output buffer needs to be allocated
+      }
+    }
+  }
+
   int32_t outputId = doc["output"]["id"].as<signed int>();
   outputIndex = doc["output"]["output"].as<unsigned int>();
   Module* outputModule = getModuleFromId(outputId);
-  if(outputModule)
-  {
-    if(outputModule->moduleClass == Module::MODULE_FUNCTION)
-    {
-      output = ((Function*)outputModule)->getOutput(outputIndex);
-      if(output)
-      {
-        console.log.print("[ENGINE] Connect system output to "); outputModule->printName(); console.printf(" [ID: %d] with output index: %d\n", outputId, outputIndex);
-      }
-      else
-      {
-        console.error.printf("[ENGINE] Output of '%s.%s' [ID: %d] is not allocated\n", outputModule->className, outputModule->moduleName, outputId); 
-        moduleError = true;
-      }
-    }
-    else
-    {
-      console.error.printf("[ENGINE] System output is connected to '%s.%s' [ID: %d] which is not of type 'Function'\n", outputModule->className, outputModule->moduleName, outputId); 
-      moduleError = true;
-    }
-  }
-  else
+  if(!setOutput(outputModule, outputId))
   {
     console.error.printf("[ENGINE] Could not connect system output (Module with ID: %d not available)\n", outputId); 
     moduleError = true;
@@ -253,22 +254,81 @@ bool Engine::loadGraph(const char* path)
   }
   if(moduleError)
   {
-    console.error.println("[ENGINE] Graph loading failed.");
+    console.error.println("[ENGINE] Graph loading failed -> free all modules.");
+    // TODO: Unload all modules
   }
   else
   {
     console.ok.println("[ENGINE] Graph loading was successful.");
+    graphLoaded = true;
   }
   doc.clear();
-  graphLoaded = true;
   return !moduleError;
 }
 
 bool Engine::setOutput(const Module* module, uint16_t index)
 {
+  if(module)
+  {
+    if(module->moduleClass == Module::MODULE_FUNCTION)
+    {
+      output = ((Function*)module)->getOutput(outputIndex);
+      if(output)
+      {
+        console.log.print("[ENGINE] Connect system output to "); module->printName(); console.printf(" [ID: %d] with output index: %d\n", index, outputIndex);
+        return true;
+      }
+      else
+      {
+        console.error.printf("[ENGINE] Output of '%s.%s' [ID: %d] is not allocated\n", module->className, module->moduleName, index); 
+        return false;
+      }
+    }
+    else
+    {
+      console.error.printf("[ENGINE] System output is connected to '%s.%s' [ID: %d] which is not of type 'Function'\n", module->className, module->moduleName, index); 
+      return false;
+    }
+  }
+  return false;
+}
 
+uint16_t Engine::getInputConnectionCount(Function* function, uint16_t index)
+{
+  if(function)
+  {
+    const Vector* inputVector = function->getInput(index);
+    if(inputVector->module)
+    {
+      int32_t checkId = inputVector->module->id;
+      uint16_t checkOutputIndex = inputVector->sourceIndex;
+      uint16_t count = 0;
 
-  return true;
+      for(int i = 0; i < moduleCount; i++)
+      {
+        const Module* module = modules[i];
+        if(module)
+        {
+          if(module->moduleClass == Module::MODULE_FUNCTION)
+          {
+            Function* function = ((Function*)module);
+            for(int p = 0; p < function->getInputCount(); p++)
+            {
+              if(function->getInput(p)->module)
+              {
+                if(function->getInput(p)->module->id == checkId && checkOutputIndex == p)
+                {
+                  count++;
+                }
+              }
+            }
+          }
+        }
+      }
+      return count;
+    }
+  }
+  return 0;
 }
 
 Module* Engine::getModuleFromId(int32_t moduleId)
