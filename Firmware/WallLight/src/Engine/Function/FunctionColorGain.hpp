@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    FunctionTriangle.h
+* file    FunctionColorGain.hpp
 *******************************************************************************
-* brief   Triangle Function
+* brief   Color Gain Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-19
+* date    2023-02-23
 *******************************************************************************
 * MIT License
 *
@@ -30,30 +30,34 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_TRIANGLE_H
-#define FUNCTION_TRIANGLE_H
+#ifndef FUNCTION_COLOR_GAIN_H
+#define FUNCTION_COLOR_GAIN_H
 
 #include <Arduino.h>
-#include "../Module.h"
+#include "../Module.hpp"
 
-class FunctionTriangle: public virtual Function
+#define log   DISABLE_MODULE_LEVEL
+
+class FunctionColorGain: public virtual Function
 {
   private:
-    Parameter parameterInputs[5] = {Parameter("position", 0.5),
-                                    Parameter("width", 1.0),
-                                    Parameter("low", 0.0),
-                                    Parameter("high", 1.0),
-                                    Parameter("clip", 1.0)};
+    Parameter parameterInputs[6] = {Parameter("r", 0.0),
+                                    Parameter("g", 0.0),
+                                    Parameter("b", 0.0),
+                                    Parameter("ww", 0.0),
+                                    Parameter("cw", 0.0),
+                                    Parameter("am", 0.0)};
 
-    Parameter parameterOutputs [0] = {};                                
+    Parameter parameterOutputs [0] = {};   
 
-    Vector inputs[0] = {};
+    Vector inputs[1] = {Vector("input")};
     LedVector outputVectors[1] = {LedVector()};
     Vector outputs[1] = {Vector("output", &outputVectors[0])};
-  
+    LedVector* input = nullptr;
+
   public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    FunctionTriangle(int32_t id): Function(id, MODULE_NAME) {}
+    static constexpr const char* MODULE_NAME = "ColorGain";
+    FunctionColorGain(int32_t id): Function(id, MODULE_NAME) {}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
@@ -63,9 +67,25 @@ class FunctionTriangle: public virtual Function
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
+
     bool init(bool allocateVector = false)
     {
-      getOutput(0)->allocate(0.0);    // Always allocate an output vector for this module 
+      input = getInputValue(0);
+      if(!LedVector::checkValid(input))   // If no input is connected, allocate output vector
+      {
+        allocateVector = true;
+        console.warning.println("[FUNCTION_COLOR_GAIN] No input connected");
+      }
+      if(allocateVector)
+      {
+        getOutput(0)->allocate(0.0);
+        setOutput(0, getOutputValue(0));
+        console.log.println("[FUNCTION_COLOR_GAIN] Allocate local output buffer");
+      }
+      else
+      {
+        setOutput(0, input);
+      }
       return initialized = true;
     }
 
@@ -81,47 +101,24 @@ class FunctionTriangle: public virtual Function
       }
       t = time;
 
-      float position = getParameterValue(0);
-      float width = getParameterValue(1);
-      float low = getParameterValue(2);
-      float high = getParameterValue(3);
-      bool clip = getParameterValue(4) >= 0.5;
+      float r = getParameterValue(0);
+      float g = getParameterValue(1);
+      float b = getParameterValue(2);
+      float ww = getParameterValue(3);
+      float cw = getParameterValue(4);
+      float am = getParameterValue(5);
 
       LedVector* output = getOutputValue(0);
-      if(LedVector::checkValid(output))
+      if(LedVector::checkValid(output) && LedVector::checkValid(input))
       {
-        if(width == 0.0)
+        for(int i = 0; i < PIXELCOUNT; i++)
         {
-          output->fill(low);
-          return done();
-        }
-
-        float dy = high - low;
-        float m = (dy / width) * 2.0;
-        int32_t x0 = int32_t(position * Module::PIXELCOUNT + 0.5);
-        float x0f = x0 - (position * Module::PIXELCOUNT);
-
-        output->fill(low);
-        for(int i = 0; i < int(width * Module::PIXELCOUNT + 0.5); i++)
-        {
-          if(0 <= (x0 + i) < Module::PIXELCOUNT)
-          {
-            float v = high - (m * (i + x0f)) / float(Module::PIXELCOUNT);
-            if(clip)
-            {
-              v = constrain(v, 0.0, 1.0);
-            }
-            output->fillPixel(x0 + i, v);
-          }
-          if(0 <= (x0 - i) < Module::PIXELCOUNT)
-          {
-            float v = high - (m * (i - x0f)) / float(Module::PIXELCOUNT);
-            if(clip)
-            {
-              v = constrain(v, 0.0, 1.0);
-            }
-            output->fillPixel(x0 - i, v);
-          }
+          output->value[LED_R][i] = input->value[LED_R][i] * r;
+          output->value[LED_G][i] = input->value[LED_G][i] * g;
+          output->value[LED_B][i] = input->value[LED_B][i] * b;
+          output->value[LED_WW][i] = input->value[LED_WW][i] * ww;
+          output->value[LED_CW][i] = input->value[LED_CW][i] * cw;
+          output->value[LED_AM][i] = input->value[LED_AM][i] * am;
         }
       }
       else error = true;

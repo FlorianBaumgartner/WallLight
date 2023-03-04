@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    FunctionColorGain.h
+* file    FunctionRect.hpp
 *******************************************************************************
-* brief   Color Gain Function
+* brief   Rectangle Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-23
+* date    2023-02-19
 *******************************************************************************
 * MIT License
 *
@@ -30,34 +30,30 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_COLOR_GAIN_H
-#define FUNCTION_COLOR_GAIN_H
+#ifndef FUNCTION_RECT_H
+#define FUNCTION_RECT_H
 
 #include <Arduino.h>
-#include "../Module.h"
+#include "../Module.hpp"
 
-#define log   DISABLE_MODULE_LEVEL
-
-class FunctionColorGain: public virtual Function
+class FunctionRect: public virtual Function
 {
   private:
-    Parameter parameterInputs[6] = {Parameter("r", 0.0),
-                                    Parameter("g", 0.0),
-                                    Parameter("b", 0.0),
-                                    Parameter("ww", 0.0),
-                                    Parameter("cw", 0.0),
-                                    Parameter("am", 0.0)};
+    Parameter parameterInputs[5] = {Parameter("start", 0.0),
+                                    Parameter("stop", 1.0),
+                                    Parameter("low", 0.0),
+                                    Parameter("high", 1.0),
+                                    Parameter("smooth", 1.0)};
 
-    Parameter parameterOutputs [0] = {};   
+    Parameter parameterOutputs [0] = {};                                
 
-    Vector inputs[1] = {Vector("input")};
-    LedVector outputVectors[1] = {LedVector()};
-    Vector outputs[1] = {Vector("output", &outputVectors[0])};
-    LedVector* input = nullptr;
-
+    Vector inputs[0] = {};
+    LedVector outputVectors[1] = {LedVector()};     
+    Vector outputs[1] = {Vector("output", &outputVectors[0])};  
+    
   public:
-    static constexpr const char* MODULE_NAME = "ColorGain";
-    FunctionColorGain(int32_t id): Function(id, MODULE_NAME) {}
+    static constexpr const char* MODULE_NAME = "Rect";
+    FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
@@ -67,25 +63,9 @@ class FunctionColorGain: public virtual Function
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
-
     bool init(bool allocateVector = false)
     {
-      input = getInputValue(0);
-      if(!LedVector::checkValid(input))   // If no input is connected, allocate output vector
-      {
-        allocateVector = true;
-        console.warning.println("[FUNCTION_COLOR_GAIN] No input connected");
-      }
-      if(allocateVector)
-      {
-        getOutput(0)->allocate(0.0);
-        setOutput(0, getOutputValue(0));
-        console.log.println("[FUNCTION_COLOR_GAIN] Allocate local output buffer");
-      }
-      else
-      {
-        setOutput(0, input);
-      }
+      getOutput(0)->allocate(0.0);    // Always allocate an output vector for this module 
       return initialized = true;
     }
 
@@ -101,24 +81,42 @@ class FunctionColorGain: public virtual Function
       }
       t = time;
 
-      float r = getParameterValue(0);
-      float g = getParameterValue(1);
-      float b = getParameterValue(2);
-      float ww = getParameterValue(3);
-      float cw = getParameterValue(4);
-      float am = getParameterValue(5);
+      float start = getParameterValue(0);
+      float stop = getParameterValue(1);
+      float low = getParameterValue(2);
+      float high = getParameterValue(3);
+      bool smooth = getParameterValue(4) >= 0.5;
 
-      LedVector* output = getOutputValue(0);
-      if(LedVector::checkValid(output) && LedVector::checkValid(input))
+      if(start > stop)
       {
-        for(int i = 0; i < PIXELCOUNT; i++)
+        float temp = start;
+        start = stop;
+        stop = temp;
+      }
+      
+      LedVector* output = getOutputValue(0);
+      if(LedVector::checkValid(output))
+      {
+        output->fill(low);
+        for(int i = 0; i < Module::PIXELCOUNT; i++)
         {
-          output->value[LED_R][i] = input->value[LED_R][i] * r;
-          output->value[LED_G][i] = input->value[LED_G][i] * g;
-          output->value[LED_B][i] = input->value[LED_B][i] * b;
-          output->value[LED_WW][i] = input->value[LED_WW][i] * ww;
-          output->value[LED_CW][i] = input->value[LED_CW][i] * cw;
-          output->value[LED_AM][i] = input->value[LED_AM][i] * am;
+          if(((i + 0.5) > start * Module::PIXELCOUNT) && ((i + 0.5) <= stop * Module::PIXELCOUNT))
+          {
+            output->fillPixel(i, high);
+          }
+          if(smooth)
+          {
+            float startDif = start * Module::PIXELCOUNT - (float)i;
+            float stopDif = stop * Module::PIXELCOUNT - (float)i;
+            if((startDif > 0.0) && (startDif < 1.0))
+            {
+              output->fillPixel(i, low + (high - low) * startDif);
+            }
+            if((stopDif >= 0.0) && (stopDif < 1.0))
+            {
+              output->fillPixel(i, low + (high - low) * stopDif);
+            }
+          }
         }
       }
       else error = true;

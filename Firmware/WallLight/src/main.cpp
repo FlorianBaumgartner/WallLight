@@ -31,10 +31,10 @@
 ******************************************************************************/
 
 #include <Arduino.h>
-#include "console.h"
-#include "utils.h"
+#include "console.hpp"
+#include "utils.hpp"
 
-#include "Engine/WallLight.h"
+#include "Engine/WallLight.hpp"
 
 
 #define BUTTON            47

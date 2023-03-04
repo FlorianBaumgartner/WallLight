@@ -1,15 +1,15 @@
 /******************************************************************************
-* file    Generator.h
+* file    systemParser.hpp
 *******************************************************************************
-* brief   List of all Generator Modules
+* brief   JSON-File Parser for system configuration
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2022-08-02
 *******************************************************************************
 * MIT License
 *
-* Copyright (c) 2023 Crelin - Florian Baumgartner
+* Copyright (c) 2022 Crelin - Florian Baumgartner
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -30,28 +30,24 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_H
-#define GENERATOR_H
+#pragma once
 
 #include <Arduino.h>
-#include "../Module.h"
-#include "../../console.h"
+#include <ArduinoJson.h>
 
-#include "GeneratorTriangle.h"
+#define MAX_SYSTEM_FILE_SIZE 1 * 1024
 
+class SystemParser {
+ public:
+  SystemParser(void);
+  bool loadFile(const char* path);
+  bool getUsbVid(uint16_t& vid);
+  bool getUsbPid(uint16_t& pid);
+  bool getUsbSerial(char* usbSerial, size_t size);
 
-static Generator* allocateGenerator(const char* name, int32_t id)
-{
-  Generator* module = nullptr;
-  if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
-  {
-    module = (Generator*) new GeneratorTriangle(id);
-  }
-  else
-  {
-    console.error.printf("[GENERATOR] Module '%s' is not supported!\n", name);
-  }
-  return module;
-}
+ private:
+  StaticJsonDocument<MAX_SYSTEM_FILE_SIZE> doc;
+  const char* filePath;
 
-#endif
+  bool saveFile(const char* path = NULL);
+};

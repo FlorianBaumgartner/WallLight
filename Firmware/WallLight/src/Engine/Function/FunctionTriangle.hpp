@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    FunctionAdder.h
+* file    FunctionTriangle.hpp
 *******************************************************************************
-* brief   Adder Function
+* brief   Triangle Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-03-01
+* date    2023-02-19
 *******************************************************************************
 * MIT License
 *
@@ -30,28 +30,30 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_ADDER_H
-#define FUNCTION_ADDER_H
+#ifndef FUNCTION_TRIANGLE_H
+#define FUNCTION_TRIANGLE_H
 
 #include <Arduino.h>
-#include "../Module.h"
+#include "../Module.hpp"
 
-#define log   DISABLE_MODULE_LEVEL
-
-class FunctionAdder: public virtual Function
+class FunctionTriangle: public virtual Function
 {
   private:
-    Parameter parameterInputs[0] = {};
-    Parameter parameterOutputs [0] = {};   
-    Vector inputs[2] = {Vector("input 0"), Vector("input 1")};
+    Parameter parameterInputs[5] = {Parameter("position", 0.5),
+                                    Parameter("width", 1.0),
+                                    Parameter("low", 0.0),
+                                    Parameter("high", 1.0),
+                                    Parameter("clip", 1.0)};
+
+    Parameter parameterOutputs [0] = {};                                
+
+    Vector inputs[0] = {};
     LedVector outputVectors[1] = {LedVector()};
     Vector outputs[1] = {Vector("output", &outputVectors[0])};
-    LedVector* input0 = nullptr;
-    LedVector* input1 = nullptr;
-
+  
   public:
-    static constexpr const char* MODULE_NAME = "Adder";
-    FunctionAdder(int32_t id): Function(id, MODULE_NAME) {}
+    static constexpr const char* MODULE_NAME = "Triangle";
+    FunctionTriangle(int32_t id): Function(id, MODULE_NAME) {}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
@@ -61,36 +63,9 @@ class FunctionAdder: public virtual Function
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
-
     bool init(bool allocateVector = false)
     {
-      input0 = getInputValue(0);
-      input1 = getInputValue(1);
-      if(!allocateVector)
-      {
-        if(LedVector::checkValid(input0))
-        {
-          setOutput(0, input0);
-          console.log.println("[FUNCTION_ADDER] Connect module output to input 0");
-        }
-        else if(LedVector::checkValid(input1))
-        {
-          setOutput(0, input1);
-          console.log.println("[FUNCTION_ADDER] Connect module output to input 1");
-        }
-        else        // No input is connected to module, allocate local output vector
-        {
-          setOutput(0, getOutputValue(0));
-          allocateVector = true;      
-          console.warning.println("[FUNCTION_ADDER] No input connected");
-        }
-      }
-      if(allocateVector)
-      {
-        getOutput(0)->allocate(0.0);
-        setOutput(0, getOutputValue(0));
-        console.log.println("[FUNCTION_ADDER] Allocate local output buffer");
-      }
+      getOutput(0)->allocate(0.0);    // Always allocate an output vector for this module 
       return initialized = true;
     }
 
@@ -106,40 +81,46 @@ class FunctionAdder: public virtual Function
       }
       t = time;
 
+      float position = getParameterValue(0);
+      float width = getParameterValue(1);
+      float low = getParameterValue(2);
+      float high = getParameterValue(3);
+      bool clip = getParameterValue(4) >= 0.5;
+
       LedVector* output = getOutputValue(0);
       if(LedVector::checkValid(output))
       {
-        LedVector* mirrorInput = nullptr;
-        if(getOutput(0)->allocated)
+        if(width == 0.0)
         {
-          if(LedVector::checkValid(input0) && !LedVector::checkValid(input1))       // Only input 0 is available and needs to be copied
-          {
-            mirrorInput = input0;
-          }
-          if(LedVector::checkValid(input1) && !LedVector::checkValid(input0))       // Only input 1 is available and needs to be copied
-          {
-            mirrorInput = input1;
-          }
+          output->fill(low);
+          return done();
         }
 
-        if(mirrorInput)
+        float dy = high - low;
+        float m = (dy / width) * 2.0;
+        int32_t x0 = int32_t(position * Module::PIXELCOUNT + 0.5);
+        float x0f = x0 - (position * Module::PIXELCOUNT);
+
+        output->fill(low);
+        for(int i = 0; i < int(width * Module::PIXELCOUNT + 0.5); i++)
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          if(0 <= (x0 + i) < Module::PIXELCOUNT)
           {
-            for(int c = 0; c < COLORCOUNT; c++)
+            float v = high - (m * (i + x0f)) / float(Module::PIXELCOUNT);
+            if(clip)
             {
-              output->value[c][i] = mirrorInput->value[c][i];                       // Make deep copy of one of the inputs
+              v = constrain(v, 0.0, 1.0);
             }
+            output->fillPixel(x0 + i, v);
           }
-        }
-        else if(LedVector::checkValid(input0) && LedVector::checkValid(input1))     // Check if both inputs available
-        {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          if(0 <= (x0 - i) < Module::PIXELCOUNT)
           {
-            for(int c = 0; c < COLORCOUNT; c++)
+            float v = high - (m * (i - x0f)) / float(Module::PIXELCOUNT);
+            if(clip)
             {
-              output->value[c][i] = input0->value[c][i] + input1->value[c][i];
+              v = constrain(v, 0.0, 1.0);
             }
+            output->fillPixel(x0 - i, v);
           }
         }
       }

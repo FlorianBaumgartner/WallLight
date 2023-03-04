@@ -1,7 +1,7 @@
 /******************************************************************************
-* file    Config.h
+* file    Engine.hpp
 *******************************************************************************
-* brief   Configuration of WallLight acts as base class
+* brief   Graph Engine that runs in background
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -30,17 +30,47 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef WALLIGHT_CONFIG_H
-#define WALLIGHT_CONFIG_H
+#ifndef ENGINE_H
+#define ENGINE_H
 
 #include <Arduino.h>
+#include "Module.hpp"
+#include "Generator/Generator.hpp"
+#include "Modifier/Modifier.hpp"
+#include "Function/Function.hpp"
 
-class WallLightConfig
+#include "../console.hpp"
+
+
+class Engine: public WallLightConfig
 {
   public:
-    enum LED_COLOR {LED_R, LED_G, LED_B, LED_WW, LED_CW, LED_AM, COLORCOUNT};
-    static const uint16_t PIXELCOUNT = 70;
-    static const uint16_t FRAMERATE  = 50;
+    Engine();
+    bool loadGraph(const char* path);
+    void unloadGraph(void);
+    bool updateCoefficient(int32_t id, float value);
+    LedVector* getPixelData(void) {return (output && graphLoaded)? output->value : nullptr;}
+    bool update(float t);
+
+  private:
+    bool setOutput(const Module* module, uint16_t index = 0);
+    uint16_t getInputConnectionCount(Function* function, uint16_t index);
+    Module* getModuleFromId(int32_t moduleId);
+    
+
+    static const int MODULE_TYPE_LENGTH = 50;
+
+    Vector* output = nullptr;
+    uint16_t outputIndex = 0;
+    float t = 0.0;
+
+    char graphName[30] = "";
+    int16_t graphRevisionMajor = 0, graphRevisionMinor = 0;
+    bool graphLoaded = false;
+
+    Module** modules = nullptr;
+    uint32_t moduleCount = 0;
 };
+
 
 #endif

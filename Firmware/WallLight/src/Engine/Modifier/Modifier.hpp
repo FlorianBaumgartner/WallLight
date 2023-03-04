@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    Function.h
+* file    Modifier.hpp
 *******************************************************************************
 * brief   List of all Function Modules
 *******************************************************************************
@@ -30,41 +30,26 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_H
-#define FUNCTION_H
+#ifndef MODIFIER_H
+#define MODIFIER_H
 
 #include <Arduino.h>
-#include "../Module.h"
-#include "../../console.h"
-
-#include "FunctionRect.h"
-#include "FunctionTriangle.h"
-#include "FunctionColorGain.h"
-#include "FunctionAdder.h"
+#include "../Module.hpp"
+#include "../../console.hpp"
 
 
-static Function* allocateFunction(const char* name, int32_t id)
+static Modifier* allocateModifier(const char* name, int32_t id)
 {
-  Function* module = nullptr;
-  if(strcmp(name, FunctionRect::MODULE_NAME) == 0)
+  Modifier* module = nullptr;
+  if(false){}
+  /*
+  if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
   {
-    module = (Function*) new FunctionRect(id);
-  }
-  else if(strcmp(name, FunctionTriangle::MODULE_NAME) == 0)
-  {
-    module = (Function*) new FunctionTriangle(id);
-  }
-  else if(strcmp(name, FunctionColorGain::MODULE_NAME) == 0)
-  {
-    module = (Function*) new FunctionColorGain(id);
-  }
-  else if(strcmp(name, FunctionAdder::MODULE_NAME) == 0)
-  {
-    module = (Function*) new FunctionAdder(id);
-  }
+    module = (Modifier*) new GeneratorTriangle(id);
+  }*/
   else
   {
-    console.error.printf("[FUNCTION] Module '%s' is not supported!\n", name);
+    console.error.printf("[MODIFIER] Module '%s' is not supported!\n", name);
   }
   return module;
 }

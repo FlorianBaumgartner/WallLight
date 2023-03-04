@@ -1,15 +1,15 @@
 /******************************************************************************
-* file    systemParser.h
+* file    Function.hpp
 *******************************************************************************
-* brief   JSON-File Parser for system configuration
+* brief   List of all Function Modules
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2022-08-02
+* date    2023-02-18
 *******************************************************************************
 * MIT License
 *
-* Copyright (c) 2022 Crelin - Florian Baumgartner
+* Copyright (c) 2023 Crelin - Florian Baumgartner
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -30,24 +30,48 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#pragma once
+#ifndef FUNCTION_HPP
+#define FUNCTION_HPP
 
 #include <Arduino.h>
-#include <ArduinoJson.h>
+#include "../Module.hpp"
+#include "../../console.hpp"
 
-#define MAX_SYSTEM_FILE_SIZE 1 * 1024
+#include "FunctionRect.hpp"
+#include "FunctionTriangle.hpp"
+#include "FunctionColorGain.hpp"
+#include "FunctionAdder.hpp"
+#include "FunctionSum.hpp"
 
-class SystemParser {
- public:
-  SystemParser(void);
-  bool loadFile(const char* path);
-  bool getUsbVid(uint16_t& vid);
-  bool getUsbPid(uint16_t& pid);
-  bool getUsbSerial(char* usbSerial, size_t size);
 
- private:
-  StaticJsonDocument<MAX_SYSTEM_FILE_SIZE> doc;
-  const char* filePath;
+static Function* allocateFunction(const char* name, int32_t id)
+{
+  Function* module = nullptr;
+  if(strcmp(name, FunctionRect::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionRect(id);
+  }
+  else if(strcmp(name, FunctionTriangle::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionTriangle(id);
+  }
+  else if(strcmp(name, FunctionColorGain::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionColorGain(id);
+  }
+  else if(strcmp(name, FunctionAdder::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionAdder(id);
+  }
+  else if(strcmp(name, FunctionSum::MODULE_NAME) == 0)
+  {
+    module = (Function*) new FunctionSum(id);
+  }
+  else
+  {
+    console.error.printf("[FUNCTION] Module '%s' is not supported!\n", name);
+  }
+  return module;
+}
 
-  bool saveFile(const char* path = NULL);
-};
+#endif

@@ -30,9 +30,9 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#include "systemParser.h"
-#include "console.h"
-#include "utils.h"
+#include "systemParser.hpp"
+#include "console.hpp"
+#include "utils.hpp"
 #include "USB.h"
 
 SystemParser::SystemParser(void) {}

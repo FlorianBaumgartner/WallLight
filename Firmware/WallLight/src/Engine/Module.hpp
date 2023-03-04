@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    Modules.h
+* file    Modules.hpp
 *******************************************************************************
 * brief   Graph Modul superclasses
 *******************************************************************************
@@ -34,9 +34,9 @@
 #define MODULES_H
 
 #include <Arduino.h>
-#include "../console.h"
-#include "WallLightConfig.h"
-#include "DataTypes.h"
+#include "../console.hpp"
+#include "WallLightConfig.hpp"
+#include "DataTypes.hpp"
 
 class Module: public WallLightConfig
 {

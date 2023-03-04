@@ -30,9 +30,9 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#include "WallLight.h"
-#include "console.h"
-#include "utils.h"
+#include "WallLight.hpp"
+#include "console.hpp"
+#include "utils.hpp"
 #include "freertos/task.h"
 
 #define DEBUG_PIN       16

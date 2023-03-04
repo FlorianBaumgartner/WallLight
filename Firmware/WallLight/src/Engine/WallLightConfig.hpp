@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    WallLight.h
+* file    Config.hpp
 *******************************************************************************
-* brief   Main class for handling all WallLight related tasks
+* brief   Configuration of WallLight acts as base class
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-14
+* date    2023-02-16
 *******************************************************************************
 * MIT License
 *
@@ -30,33 +30,17 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef WALLLIGHT_H
-#define WALLLIGHT_H
+#ifndef WALLIGHT_CONFIG_H
+#define WALLIGHT_CONFIG_H
 
 #include <Arduino.h>
 
-#include "Engine.h"
-#include "Adafruit_NeoPXL8.h"
-#include "WallLightConfig.h"
-
-
-class WallLight: public WallLightConfig
+class WallLightConfig
 {
   public:
-    WallLight(int8_t rgbPin, int8_t wwaPin);
-    bool begin(void);
-    bool loadGraph(const char* path, uint8_t engineIndex = 0);
-    void setBrightness(uint8_t brightness) {leds.setBrightness(brightness);}
-    
-  private:
-    const int8_t rgbPin;
-    const int8_t wwaPin;
-    int8_t pins[8] = {rgbPin, wwaPin, -1, -1, -1, -1, -1, -1};
-    Adafruit_NeoPXL8 leds = Adafruit_NeoPXL8(PIXELCOUNT, pins, NEO_GRB);
-
-    Engine engine[2] = {Engine(), Engine()};
-
-    static void update(void* pvParameter);
+    enum LED_COLOR {LED_R, LED_G, LED_B, LED_WW, LED_CW, LED_AM, COLORCOUNT};
+    static const uint16_t PIXELCOUNT = 70;
+    static const uint16_t FRAMERATE  = 50;
 };
 
 #endif

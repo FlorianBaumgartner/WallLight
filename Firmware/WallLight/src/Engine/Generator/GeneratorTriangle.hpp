@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    GeneratorTrangle.h
+* file    GeneratorTrangle.hpp
 *******************************************************************************
 * brief   Triangle Generator
 *******************************************************************************
@@ -34,7 +34,7 @@
 #define TRIANGLE_GENERATOR_H
 
 #include <Arduino.h>
-#include "../Module.h"
+#include "../Module.hpp"
 
 class GeneratorTriangle: public virtual Generator
 {
@@ -97,5 +97,7 @@ class GeneratorTriangle: public virtual Generator
     }
 };
 
-
+#ifdef log
+  #undef log
+#endif
 #endif

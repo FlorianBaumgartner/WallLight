@@ -30,10 +30,10 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#include "Engine.h"
-#include "utils.h"
-#include "console.h"
 #include "ArduinoJson.h"
+#include "Engine.hpp"
+#include "utils.hpp"
+#include "console.hpp"
 
 #define ENGINE_VERBOSE true
 

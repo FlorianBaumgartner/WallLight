@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    Engine.h
+* file    WallLight.hpp
 *******************************************************************************
-* brief   Graph Engine that runs in background
+* brief   Main class for handling all WallLight related tasks
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-16
+* date    2023-02-14
 *******************************************************************************
 * MIT License
 *
@@ -30,47 +30,33 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef WALLLIGHT_H
+#define WALLLIGHT_H
 
 #include <Arduino.h>
-#include "Module.h"
-#include "Generator/Generator.h"
-#include "Modifier/Modifier.h"
-#include "Function/Function.h"
 
-#include "../console.h"
+#include "Engine.hpp"
+#include "WallLightConfig.hpp"
+#include "Adafruit_NeoPXL8.h"
 
 
-class Engine: public WallLightConfig
+class WallLight: public WallLightConfig
 {
   public:
-    Engine();
-    bool loadGraph(const char* path);
-    void unloadGraph(void);
-    bool updateCoefficient(int32_t id, float value);
-    LedVector* getPixelData(void) {return (output && graphLoaded)? output->value : nullptr;}
-    bool update(float t);
-
-  private:
-    bool setOutput(const Module* module, uint16_t index = 0);
-    uint16_t getInputConnectionCount(Function* function, uint16_t index);
-    Module* getModuleFromId(int32_t moduleId);
+    WallLight(int8_t rgbPin, int8_t wwaPin);
+    bool begin(void);
+    bool loadGraph(const char* path, uint8_t engineIndex = 0);
+    void setBrightness(uint8_t brightness) {leds.setBrightness(brightness);}
     
+  private:
+    const int8_t rgbPin;
+    const int8_t wwaPin;
+    int8_t pins[8] = {rgbPin, wwaPin, -1, -1, -1, -1, -1, -1};
+    Adafruit_NeoPXL8 leds = Adafruit_NeoPXL8(PIXELCOUNT, pins, NEO_GRB);
 
-    static const int MODULE_TYPE_LENGTH = 50;
+    Engine engine[2] = {Engine(), Engine()};
 
-    Vector* output = nullptr;
-    uint16_t outputIndex = 0;
-    float t = 0.0;
-
-    char graphName[30] = "";
-    int16_t graphRevisionMajor = 0, graphRevisionMinor = 0;
-    bool graphLoaded = false;
-
-    Module** modules = nullptr;
-    uint32_t moduleCount = 0;
+    static void update(void* pvParameter);
 };
-
 
 #endif

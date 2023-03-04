@@ -1,7 +1,7 @@
 /******************************************************************************
-* file    Modifier.h
+* file    Generator.hpp
 *******************************************************************************
-* brief   List of all Function Modules
+* brief   List of all Generator Modules
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -30,26 +30,26 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef MODIFIER_H
-#define MODIFIER_H
+#ifndef GENERATOR_H
+#define GENERATOR_H
 
 #include <Arduino.h>
-#include "../Module.h"
-#include "../../console.h"
+#include "../Module.hpp"
+#include "../../console.hpp"
+
+#include "GeneratorTriangle.hpp"
 
 
-static Modifier* allocateModifier(const char* name, int32_t id)
+static Generator* allocateGenerator(const char* name, int32_t id)
 {
-  Modifier* module = nullptr;
-  if(false){}
-  /*
+  Generator* module = nullptr;
   if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
   {
-    module = (Modifier*) new GeneratorTriangle(id);
-  }*/
+    module = (Generator*) new GeneratorTriangle(id);
+  }
   else
   {
-    console.error.printf("[MODIFIER] Module '%s' is not supported!\n", name);
+    console.error.printf("[GENERATOR] Module '%s' is not supported!\n", name);
   }
   return module;
 }

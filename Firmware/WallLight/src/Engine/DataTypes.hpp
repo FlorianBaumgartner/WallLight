@@ -1,5 +1,5 @@
 /******************************************************************************
-* file    DataTypes.h
+* file    DataTypes.hpp
 *******************************************************************************
 * brief   Common Data Types for Modules
 *******************************************************************************
@@ -34,8 +34,8 @@
 #define DATA_TYPES_H
 
 #include <Arduino.h>
-#include "WallLightConfig.h"
-#include "Module.h"
+#include "WallLightConfig.hpp"
+#include "Module.hpp"
 
 class Module;   // Forward declaration of Module
 
@@ -95,7 +95,7 @@ class LedVector: public WallLightConfig
         }
       }
     }
-    void fillPixel(uint16_t pos, float val)
+    bool fillPixel(uint16_t pos, float val)
     {
       if(pos < PIXELCOUNT)
       {
@@ -103,7 +103,24 @@ class LedVector: public WallLightConfig
         {
           value[i][pos] = val;
         }
+        return true;
       }
+      return false;
+    }
+    bool copy(const LedVector* vector)
+    {
+      if(vector)
+      {
+        for(int i = 0; i < COLORCOUNT; i++) 
+        {
+          for(int j = 0; j < PIXELCOUNT; j++)
+          {
+            value[i][j] = vector->value[i][j];      // TODO: Maybe replace with memcopy?
+          }
+        }
+        return true;
+      }
+      return false;
     }
 
     static bool checkValid(const LedVector* vector)
