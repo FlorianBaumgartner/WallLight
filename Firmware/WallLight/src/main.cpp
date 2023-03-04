@@ -42,7 +42,7 @@
 #define BLINK_INTERVAL    200
 #define WATCHDOG_TIMEOUT  30    // [s]
 
-#define LOAD_DIRECTLY     false
+#define LOAD_DIRECTLY     true
 
 #define LED_RGB_PIN       17
 #define LED_WWA_PIN       -1
@@ -52,6 +52,7 @@ WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN);
 
 // const char* file = "rect_triangle_test.json";
 // const char* file = "rect_triangle_color_test.json";
+// const char* file = "Demo_SpeedTest.json";
 const char* file = "Demo_MultiPath.json";
 
 void setup()

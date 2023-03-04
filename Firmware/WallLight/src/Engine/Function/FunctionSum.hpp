@@ -36,7 +36,7 @@
 #include <Arduino.h>
 #include "../Module.hpp"
 
-#define log   DISABLE_MODULE_LEVEL
+// #define log   DISABLE_MODULE_LEVEL
 
 class FunctionSum: public virtual Function
 {

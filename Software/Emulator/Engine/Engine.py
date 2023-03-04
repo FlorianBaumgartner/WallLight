@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import time
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -17,9 +18,11 @@ class Engine():
         self.outputIndex = 0
         self.modules = []
         self.t = 0.0
+        self.t0 = 0.0
         self.graphName = None
         self.graphRevision = None
         self.graphUpdated = True
+        self.graphUpdatedOld = False
         
     def __str__(self):
         s = ""
@@ -131,7 +134,11 @@ class Engine():
         
     
     def getPixelData(self):
-        self.t += 1 / self.framerate
+        # self.t += 1 / self.framerate
+        if(self.graphUpdated and not self.graphUpdatedOld):
+            self.t0 = time.time()
+        self.graphUpdatedOld = self.graphUpdated
+        self.t = time.time() - self.t0
         for m in self.modules:
             if hasattr(m, "isReady"):
                 if not m.isReady():

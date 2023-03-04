@@ -36,6 +36,8 @@
 #include <Arduino.h>
 #include "../Module.hpp"
 
+// #define log   DISABLE_MODULE_LEVEL
+
 class FunctionRect: public virtual Function
 {
   private:
