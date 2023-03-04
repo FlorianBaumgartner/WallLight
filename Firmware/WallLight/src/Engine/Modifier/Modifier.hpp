@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef MODIFIER_H
-#define MODIFIER_H
+#ifndef MODIFIER_HPP
+#define MODIFIER_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"

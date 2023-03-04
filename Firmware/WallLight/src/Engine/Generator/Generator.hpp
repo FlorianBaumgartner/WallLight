@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_H
-#define GENERATOR_H
+#ifndef GENERATOR_HPP
+#define GENERATOR_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"

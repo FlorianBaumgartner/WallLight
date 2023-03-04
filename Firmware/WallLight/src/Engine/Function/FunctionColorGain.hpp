@@ -30,13 +30,13 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_COLOR_GAIN_H
-#define FUNCTION_COLOR_GAIN_H
+#ifndef FUNCTION_COLOR_GAIN_HPP
+#define FUNCTION_COLOR_GAIN_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
-#define log   DISABLE_MODULE_LEVEL
+// #define log   DISABLE_MODULE_LEVEL
 
 class FunctionColorGain: public virtual Function
 {
@@ -68,15 +68,16 @@ class FunctionColorGain: public virtual Function
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
 
-    bool init(bool allocateVector = false)
+    bool init(bool deepCopy = false)
     {
+      checkParameterInputs();               // Iterate over all parameter inputs to check if they are valid
       input = getInputValue(0);
-      if(!LedVector::checkValid(input))   // If no input is connected, allocate output vector
+      if(!LedVector::checkValid(input))     // If no input is connected, allocate output vector
       {
-        allocateVector = true;
+        deepCopy = true;
         console.warning.println("[FUNCTION_COLOR_GAIN] No input connected");
       }
-      if(allocateVector)
+      if(deepCopy)
       {
         getOutput(0)->allocate(0.0);
         setOutput(0, getOutputValue(0));
@@ -86,7 +87,7 @@ class FunctionColorGain: public virtual Function
       {
         setOutput(0, input);
       }
-      return initialized = true;
+      return initDone();
     }
 
     bool update(float time)
@@ -109,20 +110,27 @@ class FunctionColorGain: public virtual Function
       float am = getParameterValue(5);
 
       LedVector* output = getOutputValue(0);
-      if(LedVector::checkValid(output) && LedVector::checkValid(input))
+      if(LedVector::checkValid(output))     
       {
-        for(int i = 0; i < PIXELCOUNT; i++)
+        if(LedVector::checkValid(input))      // Only process data if a valid input is connected (otherwise a 0-vector is directly connected to the output)
         {
-          output->value[LED_R][i] = input->value[LED_R][i] * r;
-          output->value[LED_G][i] = input->value[LED_G][i] * g;
-          output->value[LED_B][i] = input->value[LED_B][i] * b;
-          output->value[LED_WW][i] = input->value[LED_WW][i] * ww;
-          output->value[LED_CW][i] = input->value[LED_CW][i] * cw;
-          output->value[LED_AM][i] = input->value[LED_AM][i] * am;
+          for(int i = 0; i < PIXELCOUNT; i++)
+          {
+            output->value[LED_R][i] = input->value[LED_R][i] * r;
+            output->value[LED_G][i] = input->value[LED_G][i] * g;
+            output->value[LED_B][i] = input->value[LED_B][i] * b;
+            output->value[LED_WW][i] = input->value[LED_WW][i] * ww;
+            output->value[LED_CW][i] = input->value[LED_CW][i] * cw;
+            output->value[LED_AM][i] = input->value[LED_AM][i] * am;
+          }
+        }
+        else
+        {
+          output->fill(0.0);                  // Make sure to overwrite output vector when no input is connected (acts as constant 0-vector source)
         }
       }
       else error = true;
-      return done();
+      return true;
     }
 };
 

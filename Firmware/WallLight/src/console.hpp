@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef CONSOLE_HPP
+#define CONSOLE_HPP
 
 #include <Arduino.h>
 #include "USB.h"

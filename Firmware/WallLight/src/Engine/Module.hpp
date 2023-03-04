@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef MODULES_H
-#define MODULES_H
+#ifndef MODULES_HPP
+#define MODULES_HPP
 
 #include <Arduino.h>
 #include "../console.hpp"
@@ -62,6 +62,7 @@ class Module: public WallLightConfig
     virtual Parameter* getParameterOutput(uint16_t index) = 0;
     virtual uint32_t getParameterInputCount() = 0;
     virtual uint32_t getParameterOutputCount() = 0;
+    virtual bool init(bool deepCopy = false) = 0;
 
     void printName() const
     {
@@ -103,6 +104,7 @@ class Module: public WallLightConfig
     const int32_t id;
     bool ready = false;
     bool error = false;
+    bool initialized = false;
     bool printInfo;
     float t = NAN;
 
@@ -128,7 +130,7 @@ class Module: public WallLightConfig
         }
         if(printInfo)
         {
-          console.printf("[MODULE] INFO: Input \"%s\" '%d' of ", parameter->name, index); 
+          console.printf("[MODULE] INFO: Parameter input \"%s\" '%d' of ", parameter->name, index); 
           printName();     
           console.printf(" [ID: %d] uses default value: %.2f\n", id, parameter->value);
         }
@@ -162,12 +164,21 @@ class Module: public WallLightConfig
         }
       }
       return status;
-    }    
+    }
 
-    bool done(void)
+    void checkParameterInputs(void)
     {
+      for(int i = 0; i < getParameterInputCount(); i++)
+      {
+        getParameterValue(i);   // This forces a message to be printed if a parameter input is not connected and uses default value
+      }
+    }
+
+    bool initDone(void)
+    {
+      initialized = true;
       printInfo = false;
-      return ready;
+      return true;
     }
 };
 
@@ -182,6 +193,7 @@ class Coefficient: public Module
     Parameter* getParameterOutput(uint16_t index) {return &value[0];}
     uint32_t getParameterInputCount() {return 0;}
     uint32_t getParameterOutputCount() {return 1;}
+    bool init(bool deepCopy = false) {return initialized = true;}
   private:
     Parameter value[1] = {Parameter("output")};
 };
@@ -220,7 +232,6 @@ class Function: public Module
     virtual Vector* getOutput(uint16_t index) = 0;
     virtual uint32_t getInputCount() = 0;
     virtual uint32_t getOutputCount() = 0;
-    virtual bool init(bool allocateVector = false) = 0;
 
     bool getInputStatus(void)
     {
@@ -259,8 +270,6 @@ class Function: public Module
 
     
   protected:
-    bool initialized = false;
-
     LedVector* getInputValue(uint32_t index)
     {
       Vector* input = getInput(index);
@@ -291,7 +300,7 @@ class Function: public Module
         {
           console.printf("[MODULE] INFO: Input \"%s\" '%d' of ", input->name, index); 
           printName();     
-          console.printf(" [ID: %d] uses default value\n", id);     
+          console.printf(" [ID: %d] uses default value\n", id);
         }
         return input->value;    // Default value of input parameter itself
       }

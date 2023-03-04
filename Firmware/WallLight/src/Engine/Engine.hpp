@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 
 #include <Arduino.h>
 #include "Module.hpp"
@@ -49,20 +49,30 @@ class Engine: public WallLightConfig
     bool loadGraph(const char* path);
     void unloadGraph(void);
     bool updateCoefficient(int32_t id, float value);
-    LedVector* getPixelData(void) {return (output && graphLoaded)? output->value : nullptr;}
     bool update(float t);
+    LedVector* getPixelData(void)
+    {
+      if(output && graphLoaded)
+      {
+        if(outputIndex < output->getOutputCount())
+        {
+          Vector* outputVector = output->getOutput(outputIndex);
+          if(outputVector)
+          {
+            return outputVector->value;
+          }
+        }
+      }
+      return nullptr;
+    }
+    
 
   private:
     bool setOutput(const Module* module, uint16_t index = 0);
     uint16_t getInputConnectionCount(Function* function, uint16_t index);
     Module* getModuleFromId(int32_t moduleId);
-    
 
     static const int MODULE_TYPE_LENGTH = 50;
-
-    Vector* output = nullptr;
-    uint16_t outputIndex = 0;
-    float t = 0.0;
 
     char graphName[30] = "";
     int16_t graphRevisionMajor = 0, graphRevisionMinor = 0;
@@ -70,6 +80,10 @@ class Engine: public WallLightConfig
 
     Module** modules = nullptr;
     uint32_t moduleCount = 0;
+
+    Function* output = nullptr;
+    uint16_t outputIndex = 0;
+    float t = 0.0;
 };
 
 

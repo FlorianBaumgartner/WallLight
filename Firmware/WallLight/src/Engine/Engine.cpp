@@ -215,18 +215,31 @@ bool Engine::loadGraph(const char* path)
     }
   }
 
+  // Set system output
+  int32_t outputId = doc["output"]["id"].as<signed int>();
+  uint16_t index = doc["output"]["output"].as<unsigned int>();
+  Module* outputModule = getModuleFromId(outputId);
+  if(!setOutput(outputModule, index))
+  {
+    console.error.printf("[ENGINE] Could not connect system output (Module with ID: %d not available)\n", outputId); 
+    moduleError = true;
+  }
+  doc.clear();    // Clear JSON document, as it is nomore used
+
+  // Initialize all modules (allocate output vector buffers if necessary)
   for(int i = 0; i < moduleCount; i++)
   {
     if(modules[i])
     {
+      bool deepCopy = false;
       if(modules[i]->moduleClass == Module::MODULE_FUNCTION)
       {
         Function* function = (Function*)modules[i];
-        bool deepCopy = false;
         for(int p = 0; p < function->getInputCount(); p++)
         {
           if(getInputConnectionCount(function, p) > 1)
           {
+            // TODO: Add console statement
             deepCopy = true;
           }
         }
@@ -234,18 +247,9 @@ bool Engine::loadGraph(const char* path)
         {
           console.print("[ENGINE] Make deep copy of "); modules[i]->printName(); console.printf(" [ID: %d]\n", modules[i]->id);
         }
-        function->init(deepCopy);    // Check if output buffer needs to be allocated
       }
+      modules[i]->init(deepCopy);    // Check if output buffer needs to be allocated
     }
-  }
-
-  int32_t outputId = doc["output"]["id"].as<signed int>();
-  outputIndex = doc["output"]["output"].as<unsigned int>();
-  Module* outputModule = getModuleFromId(outputId);
-  if(!setOutput(outputModule, outputId))
-  {
-    console.error.printf("[ENGINE] Could not connect system output (Module with ID: %d not available)\n", outputId); 
-    moduleError = true;
   }
 
   if(moduleWarning)
@@ -262,7 +266,7 @@ bool Engine::loadGraph(const char* path)
     console.ok.println("[ENGINE] Graph loading was successful.");
     graphLoaded = true;
   }
-  doc.clear();
+  
   return !moduleError;
 }
 
@@ -272,17 +276,10 @@ bool Engine::setOutput(const Module* module, uint16_t index)
   {
     if(module->moduleClass == Module::MODULE_FUNCTION)
     {
-      output = ((Function*)module)->getOutput(outputIndex);
-      if(output)
-      {
-        console.log.print("[ENGINE] Connect system output to "); module->printName(); console.printf(" [ID: %d] with output index: %d\n", index, outputIndex);
-        return true;
-      }
-      else
-      {
-        console.error.printf("[ENGINE] Output of '%s.%s' [ID: %d] is not allocated\n", module->className, module->moduleName, index); 
-        return false;
-      }
+      output = ((Function*)module);
+      outputIndex = index;
+      console.log.print("[ENGINE] Connect system output to "); output->printName(); console.printf(" [ID: %d] with output index: %d\n", output->id, outputIndex);
+      return true;
     }
     else
     {
@@ -316,13 +313,25 @@ uint16_t Engine::getInputConnectionCount(Function* function, uint16_t index)
             {
               if(function->getInput(p)->module)
               {
-                if(function->getInput(p)->module->id == checkId && checkOutputIndex == p)
+                if(function->getInput(p)->module->id == checkId && p == checkOutputIndex)
                 {
                   count++;
                 }
               }
             }
           }
+        }
+      }
+      if(output)
+      {
+        if(output->id == checkId && outputIndex == checkOutputIndex)
+        {
+          count++;
+          #if ENGINE_VERBOSE
+            console.print("[ENGINE] System output is connected to path between modules: ");
+            inputVector->module->printName();
+            console.printf(" [ID: %d] '%d' (deep copy of subsequent module is needed)\n", inputVector->module->id, index);
+          #endif
         }
       }
       return count;

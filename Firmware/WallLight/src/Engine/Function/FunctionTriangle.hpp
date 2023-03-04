@@ -30,11 +30,13 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_TRIANGLE_H
-#define FUNCTION_TRIANGLE_H
+#ifndef FUNCTION_TRIANGLE_HPP
+#define FUNCTION_TRIANGLE_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
+
+// #define log   DISABLE_MODULE_LEVEL
 
 class FunctionTriangle: public virtual Function
 {
@@ -63,10 +65,11 @@ class FunctionTriangle: public virtual Function
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
-    bool init(bool allocateVector = false)
+    bool init(bool deepCopy = false)
     {
+      checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
       getOutput(0)->allocate(0.0);    // Always allocate an output vector for this module 
-      return initialized = true;
+      return initDone();
     }
 
     bool update(float time)
@@ -93,7 +96,7 @@ class FunctionTriangle: public virtual Function
         if(width == 0.0)
         {
           output->fill(low);
-          return done();
+          return true;
         }
 
         float dy = high - low;
@@ -125,7 +128,7 @@ class FunctionTriangle: public virtual Function
         }
       }
       else error = true;
-      return done();
+      return true;
     }
 };
 

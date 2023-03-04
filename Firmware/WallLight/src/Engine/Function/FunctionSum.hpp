@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_SUM_H
-#define FUNCTION_SUM_H
+#ifndef FUNCTION_SUM_HPP
+#define FUNCTION_SUM_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
@@ -61,13 +61,14 @@ class FunctionSum: public virtual Function
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
 
-    bool init(bool allocateVector = false)
+    bool init(bool deepCopy = false)
     {
+      checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
       for(int i = 0; i < getInputCount(); i++)
       {
         input[i] = getInputValue(i);
       }
-      if(!allocateVector)
+      if(!deepCopy)
       {
         bool allUnconnected = true;
         for(int i = 0; i < getInputCount(); i++)
@@ -82,18 +83,17 @@ class FunctionSum: public virtual Function
         }
         if(allUnconnected)
         {
-          setOutput(0, getOutputValue(0));
-          allocateVector = true;      
+          deepCopy = true;      
           console.warning.println("[FUNCTION_SUM] No input connected");
         }
       }
-      if(allocateVector)
+      if(deepCopy)
       {
         getOutput(0)->allocate(0.0);
         setOutput(0, getOutputValue(0));
         console.log.println("[FUNCTION_SUM] Allocate local output buffer");
       }
-      return initialized = true;
+      return initDone();
     }
 
     bool update(float time)
@@ -160,7 +160,7 @@ class FunctionSum: public virtual Function
         }
       }
       else error = true;
-      return done();
+      return true;
     }
 };
 

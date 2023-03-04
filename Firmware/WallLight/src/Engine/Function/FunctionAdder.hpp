@@ -30,13 +30,13 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_ADDER_H
-#define FUNCTION_ADDER_H
+#ifndef FUNCTION_ADDER_HPP
+#define FUNCTION_ADDER_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
-#define log   DISABLE_MODULE_LEVEL
+// #define log   DISABLE_MODULE_LEVEL
 
 class FunctionAdder: public virtual Function
 {
@@ -62,36 +62,36 @@ class FunctionAdder: public virtual Function
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
 
-    bool init(bool allocateVector = false)
+    bool init(bool deepCopy = false)
     {
+      checkParameterInputs();               // Iterate over all parameter inputs to check if they are valid
       input0 = getInputValue(0);
       input1 = getInputValue(1);
-      if(!allocateVector)
+      if(!deepCopy)
       {
         if(LedVector::checkValid(input0))
         {
           setOutput(0, input0);
-          console.log.println("[FUNCTION_ADDER] Connect module output to input 0");
+          console.log.printf("[FUNCTION_ADDER] [ID: %d] Connect module output to input 0\n", id);
         }
         else if(LedVector::checkValid(input1))
         {
           setOutput(0, input1);
-          console.log.println("[FUNCTION_ADDER] Connect module output to input 1");
+          console.log.printf("[FUNCTION_ADDER] [ID: %d] Connect module output to input 1\n", id);
         }
         else        // No input is connected to module, allocate local output vector
         {
-          setOutput(0, getOutputValue(0));
-          allocateVector = true;      
-          console.warning.println("[FUNCTION_ADDER] No input connected");
+          deepCopy = true;      
+          console.warning.printf("[FUNCTION_ADDER] [ID: %d] No input connected\n", id);
         }
       }
-      if(allocateVector)
+      if(deepCopy)
       {
         getOutput(0)->allocate(0.0);
         setOutput(0, getOutputValue(0));
-        console.log.println("[FUNCTION_ADDER] Allocate local output buffer");
+        console.log.printf("[FUNCTION_ADDER] [ID: %d] Allocate local output buffer\n", id);
       }
-      return initialized = true;
+      return initDone();
     }
 
     bool update(float time)
@@ -121,7 +121,6 @@ class FunctionAdder: public virtual Function
             mirrorInput = input1;
           }
         }
-
         if(mirrorInput)
         {
           output->copy(mirrorInput);                                                // Make deep copy of one of the inputs
@@ -138,7 +137,7 @@ class FunctionAdder: public virtual Function
         }
       }
       else error = true;
-      return done();
+      return true;
     }
 };
 

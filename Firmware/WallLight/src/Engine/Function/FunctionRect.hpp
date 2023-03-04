@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_RECT_H
-#define FUNCTION_RECT_H
+#ifndef FUNCTION_RECT_HPP
+#define FUNCTION_RECT_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
@@ -63,10 +63,11 @@ class FunctionRect: public virtual Function
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
-    bool init(bool allocateVector = false)
+    bool init(bool deepCopy = false)
     {
+      checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
       getOutput(0)->allocate(0.0);    // Always allocate an output vector for this module 
-      return initialized = true;
+      return initDone();
     }
 
     bool update(float time)
@@ -120,7 +121,7 @@ class FunctionRect: public virtual Function
         }
       }
       else error = true;
-      return done();
+      return true;
     }
 };
 

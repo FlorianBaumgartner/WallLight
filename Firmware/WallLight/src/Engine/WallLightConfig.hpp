@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef WALLIGHT_CONFIG_H
-#define WALLIGHT_CONFIG_H
+#ifndef WALLIGHT_CONFIG_HPP
+#define WALLIGHT_CONFIG_HPP
 
 #include <Arduino.h>
 

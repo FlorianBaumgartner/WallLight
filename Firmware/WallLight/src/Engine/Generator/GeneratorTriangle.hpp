@@ -30,11 +30,13 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TRIANGLE_GENERATOR_H
-#define TRIANGLE_GENERATOR_H
+#ifndef TRIANGLE_GENERATOR_HPP
+#define TRIANGLE_GENERATOR_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
+
+// #define log   DISABLE_MODULE_LEVEL
 
 class GeneratorTriangle: public virtual Generator
 {
@@ -55,6 +57,11 @@ class GeneratorTriangle: public virtual Generator
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
     inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
+    bool init(bool deepCopy = false)
+    {
+      checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
+      return initDone();
+    }
 
     bool update(float time)
     {
@@ -93,7 +100,7 @@ class GeneratorTriangle: public virtual Generator
       float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
       float output = (x - 0.5) * 2 * amplitude + offset;
       setParameterOutput(0, output);
-      return done();
+      return true;
     }
 };
 

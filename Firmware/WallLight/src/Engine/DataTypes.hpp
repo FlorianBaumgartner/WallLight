@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef DATA_TYPES_H
-#define DATA_TYPES_H
+#ifndef DATA_TYPES_HPP
+#define DATA_TYPES_HPP
 
 #include <Arduino.h>
 #include "WallLightConfig.hpp"
@@ -155,8 +155,12 @@ class Vector
 
     bool allocate(float defaultValue = 0.0)
     {
-      allocated = value->allocate(defaultValue);
-      return allocated;
+      if(value)
+      {
+        allocated = value->allocate(defaultValue);
+        return allocated;
+      }
+      return false;
     }
 };
 
