@@ -41,7 +41,10 @@
 #include "FunctionTriangle.hpp"
 #include "FunctionColorGain.hpp"
 #include "FunctionAdder.hpp"
+#include "FunctionSubtractor.hpp"
+#include "FunctionMultiplier.hpp"
 #include "FunctionSum.hpp"
+#include "FunctionProduct.hpp"
 
 
 static Function* allocateFunction(const char* name, int32_t id)
@@ -63,9 +66,21 @@ static Function* allocateFunction(const char* name, int32_t id)
   {
     module = new FunctionAdder(id);
   }
+  else if(strcmp(name, FunctionSubtractor::MODULE_NAME) == 0)
+  {
+    module = new FunctionSubtractor(id);
+  }
+  else if(strcmp(name, FunctionMultiplier::MODULE_NAME) == 0)
+  {
+    module = new FunctionMultiplier(id);
+  }
   else if(strcmp(name, FunctionSum::MODULE_NAME) == 0)
   {
     module = new FunctionSum(id);
+  }
+  else if(strcmp(name, FunctionProduct::MODULE_NAME) == 0)
+  {
+    module = new FunctionProduct(id);
   }
   else
   {
