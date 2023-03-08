@@ -36,7 +36,7 @@
 #include <Arduino.h>
 #include "../Module.hpp"
 
-// #define log   DISABLE_MODULE_LEVEL
+#define log   DISABLE_MODULE_LEVEL
 
 class FunctionAdder: public virtual Function
 {
@@ -51,9 +51,8 @@ class FunctionAdder: public virtual Function
 
   public:
     static constexpr const char* MODULE_NAME = "Adder";
-    FunctionAdder(int32_t id): Function(id, MODULE_NAME) {console.log.println("[FUNCTION_ADDER] Constructor called");}
-    ~FunctionAdder() {console.log.println("[FUNCTION_ADDER] Destructor called"); deinit();}
-
+    FunctionAdder(int32_t id): Function(id, MODULE_NAME) {}
+    ~FunctionAdder() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}

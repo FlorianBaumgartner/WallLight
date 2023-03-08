@@ -36,7 +36,7 @@
 #include <Arduino.h>
 #include "../Module.hpp"
 
-// #define log   DISABLE_MODULE_LEVEL
+#define log   DISABLE_MODULE_LEVEL
 
 class FunctionRect: public virtual Function
 {
@@ -56,8 +56,7 @@ class FunctionRect: public virtual Function
   public:
     static constexpr const char* MODULE_NAME = "Rect";
     FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
-    ~FunctionRect() {console.log.println("[FunctionRect] Destructor called");}
-
+    ~FunctionRect() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}

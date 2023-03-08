@@ -62,7 +62,6 @@ class LedVector: public WallLightConfig
       bool status = true;
       if(!allocated)
       {
-        allocated = true;
         value = new float*[COLORCOUNT];
         status &= (value != nullptr);
         for(int i = 0; i < COLORCOUNT; i++) 
@@ -74,6 +73,7 @@ class LedVector: public WallLightConfig
             value[i][j] = defaultValue;
           }
         }
+        allocated = status;
       }
       return status;
     }
@@ -83,10 +83,11 @@ class LedVector: public WallLightConfig
       {
         for(int i = 0; i < COLORCOUNT; i++)
         {
-          delete[] value[i];
+          delete value[i];
         }
         delete[] value;
         value = nullptr;
+        allocated = false;
       }
     }
     void fill(float vectorValue = 0.0)
@@ -161,7 +162,6 @@ class Vector
     {
       if(value)
       {
-        console.log.println("ALLOCATE!");
         allocated = value->allocate(defaultValue);
         return allocated;
       }
@@ -172,7 +172,6 @@ class Vector
     {
       if(allocated)
       {
-        console.log.println("FREE!");
         value->free();
         allocated = false;
       }

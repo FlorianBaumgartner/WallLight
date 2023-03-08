@@ -36,7 +36,7 @@
 #include <Arduino.h>
 #include "../Module.hpp"
 
-// #define log   DISABLE_MODULE_LEVEL
+#define log   DISABLE_MODULE_LEVEL
 
 class FunctionSum: public virtual Function
 {
@@ -51,8 +51,7 @@ class FunctionSum: public virtual Function
   public:
     static constexpr const char* MODULE_NAME = "Sum";
     FunctionSum(int32_t id): Function(id, MODULE_NAME) {}
-    ~FunctionSum() {console.log.println("[FunctionSum] Destructor called");}
-
+    ~FunctionSum() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}

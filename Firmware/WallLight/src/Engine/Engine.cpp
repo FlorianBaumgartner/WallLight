@@ -93,13 +93,16 @@ bool Engine::loadGraph(const char* path)
   }
   console.log.printf("[ENGINE] Coefficient count: %d, MainModule count: %d, Totally allocated Modules: %d\n", coefficientCount, mainModuleCount, moduleCount);
 
+  // TODO: Remove after debugging!
+  // console.log.printf("[ENGINE] Module array pointer: 0x%08X\n", modules);
+
   for(int i = 0; i < coefficientCount; i++)
   {
     int32_t id = coefficients[i]["id"];
     float value = coefficients[i]["value"];
     modules[i] = new Coefficient(id, value);
     #if ENGINE_VERBOSE
-      console.print("[ENGINE] Add "); console[COLOR_YELLOW_BOLD].print("Coefficient"); console.printf(" with id %d, value: %.2f\n", id, value);
+      console.print("[ENGINE] Add "); console[COLOR_YELLOW_BOLD].print("Coefficient"); console.printf(" [ID: %d], value: %.2f\n", id, value);
     #endif
   }
 
@@ -151,7 +154,7 @@ bool Engine::loadGraph(const char* path)
     }
     
     #if ENGINE_VERBOSE
-      console.print("[ENGINE] Add "); module->printName(); console.printf(" with id %d\n", id);
+      console.print("[ENGINE] Add "); module->printName(); console.printf(" [ID: %d]\n", id);
     #endif
   }
 
@@ -244,13 +247,19 @@ bool Engine::loadGraph(const char* path)
         {
           if(getInputConnectionCount(function, p) > 1)
           {
-            // TODO: Add console statement
             deepCopy = true;
+            #if ENGINE_VERBOSE
+              console.print("[ENGINE] INFO: Multiple connections found of ");
+              function->getInput(p)->module->printName(); console.printf(" [ID: %d] output '%d' -> ", function->getInput(p)->module->id, function->getInput(p)->sourceIndex);
+              function->printName(); console.printf(" [ID: %d] input '%d'\n", function->id, p);
+            #endif
           }
         }
         if(deepCopy)
         {
-          console.print("[ENGINE] Make deep copy of "); modules[i]->printName(); console.printf(" [ID: %d]\n", modules[i]->id);
+          #if ENGINE_VERBOSE
+            console.print("[ENGINE] INFO: Make deep copy of "); modules[i]->printName(); console.printf(" [ID: %d]\n", modules[i]->id);
+          #endif
         }
       }
       modules[i]->init(deepCopy);    // Check if output buffer needs to be allocated
@@ -264,7 +273,7 @@ bool Engine::loadGraph(const char* path)
   if(moduleError)
   {
     console.error.println("[ENGINE] Graph loading failed -> free all modules.");
-    unloadGraph();                   // TODO: Unload all modules
+    unloadGraph();
   }
   else
   {
@@ -279,12 +288,11 @@ void Engine::unloadGraph(void)
 {
   if(modules)
   {
-    for(int i = 0; i < moduleCount; i++)    // Deinitialize all modules
+    for(int i = 0; i < moduleCount; i++)
     {
       if(modules[i])
       {
-        console.println(modules[i]->moduleName);
-        console.flush();
+        modules[i]->deinit();   // Deinitialize all modules
         delete modules[i];      
       }
     }

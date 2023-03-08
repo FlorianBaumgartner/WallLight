@@ -131,9 +131,9 @@ class Module: public WallLightConfig
         }
         if(printInfo)
         {
-          console.printf("[MODULE] INFO: Parameter input \"%s\" '%d' of ", parameter->name, index); 
+          console.printf("[MODULE] INFO: Parameter input '%d' of ", index); 
           printName();     
-          console.printf(" [ID: %d] uses default value: %.2f\n", id, parameter->value);
+          console.printf(" [ID: %d] \"%s\" uses default value: %.2f\n", id, parameter->name, parameter->value);
         }
         return parameter->value;    // Default value of input parameter itself
       }
@@ -311,9 +311,9 @@ class Function: public Module
         }
         if(printInfo)
         {
-          console.printf("[MODULE] INFO: Input \"%s\" '%d' of ", input->name, index); 
+          console.printf("[MODULE] INFO: Input '%d' of ", index); 
           printName();     
-          console.printf(" [ID: %d] uses default value\n", id);
+          console.printf(" [ID: %d] \"%s\" uses default value\n", id, input->name);
         }
         return input->value;    // Default value of input parameter itself
       }

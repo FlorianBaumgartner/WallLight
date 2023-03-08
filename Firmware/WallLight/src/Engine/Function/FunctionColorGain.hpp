@@ -36,7 +36,7 @@
 #include <Arduino.h>
 #include "../Module.hpp"
 
-// #define log   DISABLE_MODULE_LEVEL
+#define log   DISABLE_MODULE_LEVEL
 
 class FunctionColorGain: public virtual Function
 {
@@ -58,8 +58,7 @@ class FunctionColorGain: public virtual Function
   public:
     static constexpr const char* MODULE_NAME = "ColorGain";
     FunctionColorGain(int32_t id): Function(id, MODULE_NAME) {}
-    ~FunctionColorGain() {console.log.println("[FunctionColorGain] Destructor called"); deinit();}
-
+    ~FunctionColorGain() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
