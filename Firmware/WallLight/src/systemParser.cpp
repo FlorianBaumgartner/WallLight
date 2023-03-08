@@ -119,6 +119,23 @@ bool SystemParser::getUsbSerial(char* usbSerial, size_t size)
 }
 
 /**
+ * @brief Get the global LED brightness
+ * 
+ * @param value uint8_t reference to the brightness value
+ * @return true on success
+ * @return false on error
+ */
+bool SystemParser::getLedBrightness(uint8_t& value)
+{
+  if(doc.containsKey("led_brightness"))
+  {
+    value = (uint8_t)doc["led_brightness"].as<unsigned int>();
+    return true;
+  }
+  return false; 
+}
+
+/**
  * @brief Save the current loaded system config as a file
  *
  * @param path to location

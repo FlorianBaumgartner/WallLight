@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorTrangle.hpp
+* file    GeneratorDirac.hpp
 *******************************************************************************
-* brief   Triangle Generator
+* brief   Dirac Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2023-03-08
 *******************************************************************************
 * MIT License
 *
@@ -30,30 +30,30 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_TRIANGLE_HPP
-#define GENERATOR_TRIANGLE_HPP
+#ifndef GENERATOR_DIRAC_HPP
+#define GENERATOR_DIRAC_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class GeneratorTriangle: public virtual Generator
+class GeneratorDirac: public virtual Generator
 {
   private:
     Parameter parameterInputs[6] = {Parameter("enable", 1.0),
                                     Parameter("freq", 1.0),
                                     Parameter("rep", -1.0),
-                                    Parameter("amplitude", 1.0),
+                                    Parameter("weight", 1.0),
                                     Parameter("offset", 0.0),
                                     Parameter("phase", 0.0)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
 
   public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
-    ~GeneratorTriangle() {}
+    static constexpr const char* MODULE_NAME = "Dirac";
+    GeneratorDirac(int32_t id): Generator(id, MODULE_NAME) {}
+    ~GeneratorDirac() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -79,17 +79,33 @@ class GeneratorTriangle: public virtual Generator
       bool enable = getParameterValue(0) >= 0.5;
       float freq = getParameterValue(1);
       float rep = getParameterValue(2);
-      float amplitude = getParameterValue(3);
+      float weight = getParameterValue(3);
       float offset = getParameterValue(4);
       float phase = getParameterValue(5);
       phase = fmod((phase + 1.0), 2.0) - 1.0;
+      if(phase < 0.0)
+      {
+        phase += 2.0;
+      }
 
+      int discreteinterval = max((int)((float)FRAMERATE / freq), 1);
+      int discretePhaseDelay = (int)(((float)FRAMERATE * phase * 0.5) / freq + 0.5);
+
+      float output = 0.0;
       if(enable)
       {
         t -= enableTime;
-        if(rep > 0.0 && ((rep / freq) < t))
+        int x = (int)(t * (float)FRAMERATE + 0.5);
+        if(x < 0)
         {
-          t = 0;
+          x += discreteinterval;
+        }
+        if(x % discreteinterval == discretePhaseDelay)
+        {
+          if((rep < 0.0) || (rep / freq) * (float)FRAMERATE > x)
+          {
+            output += weight;
+          }
         }
       }
       else
@@ -97,9 +113,7 @@ class GeneratorTriangle: public virtual Generator
         enableTime = t;
         t = 0;
       }
-
-      float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
-      float output = (x - 0.5) * 2 * amplitude + offset;
+      
       setParameterOutput(0, output);
       return true;
     }

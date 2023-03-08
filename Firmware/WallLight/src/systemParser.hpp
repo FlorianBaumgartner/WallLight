@@ -44,6 +44,7 @@ class SystemParser {
   bool getUsbVid(uint16_t& vid);
   bool getUsbPid(uint16_t& pid);
   bool getUsbSerial(char* usbSerial, size_t size);
+  bool getLedBrightness(uint8_t& value);
 
  private:
   StaticJsonDocument<MAX_SYSTEM_FILE_SIZE> doc;

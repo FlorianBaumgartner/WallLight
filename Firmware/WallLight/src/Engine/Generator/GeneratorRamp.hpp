@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorTrangle.hpp
+* file    GeneratorRamp.hpp
 *******************************************************************************
-* brief   Triangle Generator
+* brief   Ramp Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2023-03-08
 *******************************************************************************
 * MIT License
 *
@@ -30,30 +30,31 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_TRIANGLE_HPP
-#define GENERATOR_TRIANGLE_HPP
+#ifndef GENERATOR_RAMP_HPP
+#define GENERATOR_RAMP_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class GeneratorTriangle: public virtual Generator
+class GeneratorRamp: public virtual Generator
 {
   private:
     Parameter parameterInputs[6] = {Parameter("enable", 1.0),
                                     Parameter("freq", 1.0),
                                     Parameter("rep", -1.0),
-                                    Parameter("amplitude", 1.0),
-                                    Parameter("offset", 0.0),
+                                    Parameter("start", 0.0),
+                                    Parameter("stop", 1.0),
                                     Parameter("phase", 0.0)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
+    float outputValue = 0.0;
 
   public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
-    ~GeneratorTriangle() {}
+    static constexpr const char* MODULE_NAME = "Ramp";
+    GeneratorRamp(int32_t id): Generator(id, MODULE_NAME) {}
+    ~GeneratorRamp() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -79,17 +80,23 @@ class GeneratorTriangle: public virtual Generator
       bool enable = getParameterValue(0) >= 0.5;
       float freq = getParameterValue(1);
       float rep = getParameterValue(2);
-      float amplitude = getParameterValue(3);
-      float offset = getParameterValue(4);
+      float start = getParameterValue(3);
+      float stop = getParameterValue(4);
       float phase = getParameterValue(5);
       phase = fmod((phase + 1.0), 2.0) - 1.0;
+      float amplitude = fabs(start - stop);
+      float slope = amplitude * freq * ((start < stop)? 1.0 : -1.0);
 
       if(enable)
       {
         t -= enableTime;
-        if(rep > 0.0 && ((rep / freq) < t))
+        if(t == 0.0)
         {
-          t = 0;
+          outputValue = start;
+        }
+        else if ((rep < 0.0) || ((rep / freq) >= t))
+        {
+          outputValue = min(start, stop) + fmod(((t + (phase / (freq * 2.0))) * slope), amplitude);
         }
       }
       else
@@ -98,9 +105,7 @@ class GeneratorTriangle: public virtual Generator
         t = 0;
       }
 
-      float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
-      float output = (x - 0.5) * 2 * amplitude + offset;
-      setParameterOutput(0, output);
+      setParameterOutput(0, outputValue);
       return true;
     }
 };

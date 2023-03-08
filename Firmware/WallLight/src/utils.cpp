@@ -101,6 +101,10 @@ bool Utils::begin(uint32_t watchdogTimeout, const char* labelName, bool forceFor
     {
       console.warning.println("[UTILS] USB Serial not found!");
     }
+    if(!systemParser.getLedBrightness(ledBrightness))
+    {
+      console.warning.println("[UTILS] LED Brightness not found!");
+    }
     console.ok.println("[UTILS] System config loading was successful.");
   }
   else

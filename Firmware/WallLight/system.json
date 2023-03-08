@@ -1,5 +1,6 @@
 {
 	"usb_serial":"0",
 	"usb_vid":"0x239A",
-	"usb_pid":"0x80AB"
+	"usb_pid":"0x80AB",
+	"led_brightness": 30
 }

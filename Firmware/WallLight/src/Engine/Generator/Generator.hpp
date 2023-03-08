@@ -37,15 +37,39 @@
 #include "../Module.hpp"
 #include "../../console.hpp"
 
+#include "GeneratorSine.hpp"
+#include "GeneratorRect.hpp"
+#include "GeneratorRamp.hpp"
 #include "GeneratorTriangle.hpp"
-
+#include "GeneratorDirac.hpp"
+#include "GeneratorRandom.hpp"
 
 static Generator* allocateGenerator(const char* name, int32_t id)
 {
   Generator* module = nullptr;
-  if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
+  if(strcmp(name, GeneratorSine::MODULE_NAME) == 0)
+  {
+    module = new GeneratorSine(id);
+  }
+  else if(strcmp(name, GeneratorRect::MODULE_NAME) == 0)
+  {
+    module = new GeneratorRect(id);
+  }
+  else if(strcmp(name, GeneratorRamp::MODULE_NAME) == 0)
+  {
+    module = new GeneratorRamp(id);
+  }
+  else if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
   {
     module = new GeneratorTriangle(id);
+  }
+  else if(strcmp(name, GeneratorDirac::MODULE_NAME) == 0)
+  {
+    module = new GeneratorDirac(id);
+  }
+  else if(strcmp(name, GeneratorRandom::MODULE_NAME) == 0)
+  {
+    module = new GeneratorRandom(id);
   }
   else
   {

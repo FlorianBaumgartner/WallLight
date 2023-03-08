@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorTrangle.hpp
+* file    GeneratorSine.hpp
 *******************************************************************************
-* brief   Triangle Generator
+* brief   Sine Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2023-03-08
 *******************************************************************************
 * MIT License
 *
@@ -30,15 +30,15 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_TRIANGLE_HPP
-#define GENERATOR_TRIANGLE_HPP
+#ifndef GENERATOR_SINE_HPP
+#define GENERATOR_SINE_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class GeneratorTriangle: public virtual Generator
+class GeneratorSine: public virtual Generator
 {
   private:
     Parameter parameterInputs[6] = {Parameter("enable", 1.0),
@@ -51,9 +51,9 @@ class GeneratorTriangle: public virtual Generator
     Parameter parameterOutputs[1] = {Parameter("output")};
 
   public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
-    ~GeneratorTriangle() {}
+    static constexpr const char* MODULE_NAME = "Sine";
+    GeneratorSine(int32_t id): Generator(id, MODULE_NAME) {}
+    ~GeneratorSine() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -98,8 +98,8 @@ class GeneratorTriangle: public virtual Generator
         t = 0;
       }
 
-      float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
-      float output = (x - 0.5) * 2 * amplitude + offset;
+      float x = t * 2.0 * PI * freq - phase * PI;
+      float output = sinf(x) * amplitude + offset;
       setParameterOutput(0, output);
       return true;
     }

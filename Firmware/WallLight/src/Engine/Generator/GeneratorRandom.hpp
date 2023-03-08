@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorTrangle.hpp
+* file    GeneratorRandom.hpp
 *******************************************************************************
-* brief   Triangle Generator
+* brief   Random Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-18
+* date    2023-03-08
 *******************************************************************************
 * MIT License
 *
@@ -30,30 +30,28 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_TRIANGLE_HPP
-#define GENERATOR_TRIANGLE_HPP
+#ifndef GENERATOR_RANDOM_HPP
+#define GENERATOR_RANDOM_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
+#include "bootloader_random.h"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class GeneratorTriangle: public virtual Generator
+class GeneratorRandom: public virtual Generator
 {
   private:
-    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
-                                    Parameter("freq", 1.0),
-                                    Parameter("rep", -1.0),
-                                    Parameter("amplitude", 1.0),
-                                    Parameter("offset", 0.0),
-                                    Parameter("phase", 0.0)};
+    Parameter parameterInputs[3] = {Parameter("enable", 1.0),
+                                    Parameter("min", 0.0),
+                                    Parameter("max", 1.0)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
 
   public:
-    static constexpr const char* MODULE_NAME = "Triangle";
-    GeneratorTriangle(int32_t id): Generator(id, MODULE_NAME) {}
-    ~GeneratorTriangle() {}
+    static constexpr const char* MODULE_NAME = "Random";
+    GeneratorRandom(int32_t id): Generator(id, MODULE_NAME) {}
+    ~GeneratorRandom() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -61,6 +59,7 @@ class GeneratorTriangle: public virtual Generator
     bool init(bool deepCopy = false)
     {
       checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
+      bootloader_random_enable();     // Enable True Random Number Generator of ESP32 SoC
       return initDone();
     }
 
@@ -77,29 +76,14 @@ class GeneratorTriangle: public virtual Generator
       t = time;
 
       bool enable = getParameterValue(0) >= 0.5;
-      float freq = getParameterValue(1);
-      float rep = getParameterValue(2);
-      float amplitude = getParameterValue(3);
-      float offset = getParameterValue(4);
-      float phase = getParameterValue(5);
-      phase = fmod((phase + 1.0), 2.0) - 1.0;
+      float minimum = getParameterValue(1);
+      float maximum = getParameterValue(2);
 
-      if(enable)
+      float output = ((float)esp_random() / (float)UINT32_MAX) * fabs(maximum - minimum) + minimum;
+      if(!enable)
       {
-        t -= enableTime;
-        if(rep > 0.0 && ((rep / freq) < t))
-        {
-          t = 0;
-        }
+        output = 0.0;
       }
-      else
-      {
-        enableTime = t;
-        t = 0;
-      }
-
-      float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
-      float output = (x - 0.5) * 2 * amplitude + offset;
       setParameterOutput(0, output);
       return true;
     }
