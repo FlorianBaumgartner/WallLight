@@ -64,6 +64,13 @@ bool WallLight::loadGraph(const char* path, uint8_t engineIndex)
   return engine[engineIndex].loadGraph(path);
 }
 
+void WallLight::unloadGraph(uint8_t engineIndex)
+{
+  engineIndex &= 0x01;
+  console.log.printf("[WALLLIGHT] Unloading graph from Engine %d pending...\n", engineIndex);
+  unloadingGraphPending[engineIndex] = true;
+}
+
 void WallLight::update(void* pvParameter)
 {
   WallLight* ref = (WallLight*)pvParameter;
@@ -74,39 +81,47 @@ void WallLight::update(void* pvParameter)
   {
     TickType_t task_last_tick = xTaskGetTickCount();
 
-    bool outputValid = false;
-    if(updateStatus)
+    if(ref->unloadingGraphPending[0])
     {
-      updateStatus = ref->engine[0].update((float)millis() / 1000.0);        // TODO: Get time from dedicated time source
+      ref->unloadingGraphPending[0] = false;
+      console.log.printf("[WALLLIGHT] Unloading graph from Engine %d\n", 0);
+      ref->engine[0].unloadGraph();
     }
-    else if(printOnce)
+    if(ref->engine[0].isReady())                                                  // Check if graph is loaded 
     {
-      console.error.println("[WALLLIGHT] Error occured while updating graph");
-      printOnce = false;
-    }
-    LedVector* pixels = ref->engine[0].getPixelData();      // TODO: Make dynamic
-    if(pixels && updateStatus)                              // Check if output is connected to module
-    {
-      if(pixels->value)                                     // Check if led vector of output module is allocated
+      bool updateStatus = ref->engine[0].update((float)millis() / 1000.0);        // TODO: Get time from dedicated time source
+      if(updateStatus)
       {
-        outputValid = true;
-        for(int i = 0; i < ref->PIXELCOUNT; i++)
+        LedVector* pixels = ref->engine[0].getPixelData();      // TODO: Make dynamic
+        if(pixels && updateStatus)                              // Check if output is connected to module
         {
-          uint_fast8_t r = uint_fast8_t(constrain(pixels->value[0][i] * 255.0, 0.0, 255.0));
-          uint_fast8_t g = uint_fast8_t(constrain(pixels->value[1][i] * 255.0, 0.0, 255.0));
-          uint_fast8_t b = uint_fast8_t(constrain(pixels->value[2][i] * 255.0, 0.0, 255.0));
-          uint_fast8_t w = uint_fast8_t(constrain(pixels->value[3][i] * 255.0, 0.0, 255.0));
-          uint_fast8_t c = uint_fast8_t(constrain(pixels->value[4][i] * 255.0, 0.0, 255.0));
-          uint_fast8_t a = uint_fast8_t(constrain(pixels->value[5][i] * 255.0, 0.0, 255.0));
-          ref->leds.setPixelColor(i, ref->leds.Color(r, g, b));
-          ref->leds.setPixelColor(i + ref->PIXELCOUNT, ref->leds.Color(w, c, a));
+          if(pixels->value)                                     // Check if led vector of output module is allocated
+          {
+            for(int i = 0; i < ref->PIXELCOUNT; i++)
+            {
+              uint_fast8_t r = uint_fast8_t(constrain(pixels->value[0][i] * 255.0, 0.0, 255.0));
+              uint_fast8_t g = uint_fast8_t(constrain(pixels->value[1][i] * 255.0, 0.0, 255.0));
+              uint_fast8_t b = uint_fast8_t(constrain(pixels->value[2][i] * 255.0, 0.0, 255.0));
+              uint_fast8_t w = uint_fast8_t(constrain(pixels->value[3][i] * 255.0, 0.0, 255.0));
+              uint_fast8_t c = uint_fast8_t(constrain(pixels->value[4][i] * 255.0, 0.0, 255.0));
+              uint_fast8_t a = uint_fast8_t(constrain(pixels->value[5][i] * 255.0, 0.0, 255.0));
+              ref->leds.setPixelColor(i, ref->leds.Color(r, g, b));
+              ref->leds.setPixelColor(i + ref->PIXELCOUNT, ref->leds.Color(w, c, a));
+            }
+          }
         }
       }
+      else
+      {
+        console.error.println("[WALLLIGHT] Error occured while updating graph");
+        ref->engine[0].unloadGraph();
+      }
     }
-    if(!outputValid)
+    else
     {
       ref->leds.fill();
     }
+    
     ref->leds.show();
     vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / ref->FRAMERATE);
   }

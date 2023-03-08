@@ -55,6 +55,8 @@ WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN);
 // const char* file = "Demo_SpeedTest.json";
 const char* file = "Demo_MultiPath.json";
 
+bool loaded = LOAD_DIRECTLY;
+
 void setup()
 {
   pinMode(BUTTON, INPUT_PULLUP);
@@ -68,7 +70,7 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize WallLight");
   }
-  if(LOAD_DIRECTLY)
+  if(loaded)
   {
     wallLight.loadGraph(file);
   }
@@ -80,16 +82,20 @@ void loop()
 {
   utils.feedWatchdog();
 
-  static bool loaded = false;
   static bool btnOld = false, btnNew = false;
   btnOld = btnNew; btnNew = !digitalRead(BUTTON);
   if(!btnOld && btnNew)
   {
     console.log.println("[MAIN] Button pressed!");
-    if(!loaded && !LOAD_DIRECTLY)
+    if(!loaded)
     {
-      loaded = true;
       wallLight.loadGraph(file);
+      loaded = true;
+    }
+    else
+    {
+      wallLight.unloadGraph();
+      loaded = false;
     }
   }
  

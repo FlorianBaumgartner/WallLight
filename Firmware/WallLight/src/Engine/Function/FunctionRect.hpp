@@ -56,6 +56,7 @@ class FunctionRect: public virtual Function
   public:
     static constexpr const char* MODULE_NAME = "Rect";
     FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
+    ~FunctionRect() {console.log.println("[FunctionRect] Destructor called");}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}

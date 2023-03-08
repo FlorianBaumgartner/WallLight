@@ -49,23 +49,23 @@ static Function* allocateFunction(const char* name, int32_t id)
   Function* module = nullptr;
   if(strcmp(name, FunctionRect::MODULE_NAME) == 0)
   {
-    module = (Function*) new FunctionRect(id);
+    module = new FunctionRect(id);
   }
   else if(strcmp(name, FunctionTriangle::MODULE_NAME) == 0)
   {
-    module = (Function*) new FunctionTriangle(id);
+    module = new FunctionTriangle(id);
   }
   else if(strcmp(name, FunctionColorGain::MODULE_NAME) == 0)
   {
-    module = (Function*) new FunctionColorGain(id);
+    module = new FunctionColorGain(id);
   }
   else if(strcmp(name, FunctionAdder::MODULE_NAME) == 0)
   {
-    module = (Function*) new FunctionAdder(id);
+    module = new FunctionAdder(id);
   }
   else if(strcmp(name, FunctionSum::MODULE_NAME) == 0)
   {
-    module = (Function*) new FunctionSum(id);
+    module = new FunctionSum(id);
   }
   else
   {

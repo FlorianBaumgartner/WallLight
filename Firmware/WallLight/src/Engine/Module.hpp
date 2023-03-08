@@ -56,13 +56,14 @@ class Module: public WallLightConfig
         default:                 className = "Unknown"; break;
       }
     }
-
+    virtual ~Module() {}
     virtual bool update(float time) = 0;
     virtual Parameter* getParameterInput(uint16_t index) = 0;
     virtual Parameter* getParameterOutput(uint16_t index) = 0;
     virtual uint32_t getParameterInputCount() = 0;
     virtual uint32_t getParameterOutputCount() = 0;
     virtual bool init(bool deepCopy = false) = 0;
+    virtual bool deinit(void) = 0;
 
     void printName() const
     {
@@ -194,6 +195,7 @@ class Coefficient: public Module
     uint32_t getParameterInputCount() {return 0;}
     uint32_t getParameterOutputCount() {return 1;}
     bool init(bool deepCopy = false) {return initialized = true;}
+    bool deinit(void) {return initialized = false;}
   private:
     Parameter value[1] = {Parameter("output")};
 };
@@ -202,6 +204,7 @@ class Generator: public Module
 {
   public:
     Generator(int32_t id, const char* moduleName): Module(id, MODULE_GENERATOR, moduleName) {}
+    bool deinit(void) {return initialized = false;}
     bool update(float time)
     {
       ready = getParameterStatus();
@@ -215,6 +218,7 @@ class Modifier: public Module
 {
   public:
     Modifier(int32_t id, const char* moduleName): Module(id, MODULE_MODIFIER, moduleName) {}
+    bool deinit(void) {return initialized = false;}
     bool update(float time)
     {
       ready = getParameterStatus();
@@ -232,6 +236,15 @@ class Function: public Module
     virtual Vector* getOutput(uint16_t index) = 0;
     virtual uint32_t getInputCount() = 0;
     virtual uint32_t getOutputCount() = 0;
+
+    bool deinit(void)
+    {
+      for(int i = 0; i < getOutputCount(); i++)
+      {
+        getOutput(i)->free();       // Free all allocated output vectors (unallocated vactors are ignored)
+      }
+      return initialized = false;
+    }
 
     bool getInputStatus(void)
     {

@@ -45,7 +45,7 @@ static Generator* allocateGenerator(const char* name, int32_t id)
   Generator* module = nullptr;
   if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
   {
-    module = (Generator*) new GeneratorTriangle(id);
+    module = new GeneratorTriangle(id);
   }
   else
   {

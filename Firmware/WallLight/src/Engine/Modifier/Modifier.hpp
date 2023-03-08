@@ -45,7 +45,7 @@ static Modifier* allocateModifier(const char* name, int32_t id)
   /*
   if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
   {
-    module = (Modifier*) new GeneratorTriangle(id);
+    module = new GeneratorTriangle(id);
   }*/
   else
   {

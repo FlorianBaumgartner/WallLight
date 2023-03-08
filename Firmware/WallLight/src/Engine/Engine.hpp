@@ -48,6 +48,7 @@ class Engine: public WallLightConfig
     Engine();
     bool loadGraph(const char* path);
     void unloadGraph(void);
+    bool isReady(void) {return graphLoaded;}
     bool updateCoefficient(int32_t id, float value);
     bool update(float t);
     LedVector* getPixelData(void)

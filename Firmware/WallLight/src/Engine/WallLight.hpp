@@ -46,6 +46,7 @@ class WallLight: public WallLightConfig
     WallLight(int8_t rgbPin, int8_t wwaPin);
     bool begin(void);
     bool loadGraph(const char* path, uint8_t engineIndex = 0);
+    void unloadGraph(uint8_t engineIndex = 0);
     void setBrightness(uint8_t brightness) {leds.setBrightness(brightness);}
     
   private:
@@ -55,6 +56,7 @@ class WallLight: public WallLightConfig
     Adafruit_NeoPXL8 leds = Adafruit_NeoPXL8(PIXELCOUNT, pins, NEO_GRB);
 
     Engine engine[2] = {Engine(), Engine()};
+    bool unloadingGraphPending[2] = {false, false};
 
     static void update(void* pvParameter);
 };

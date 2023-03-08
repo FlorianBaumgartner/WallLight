@@ -51,6 +51,7 @@ class FunctionSum: public virtual Function
   public:
     static constexpr const char* MODULE_NAME = "Sum";
     FunctionSum(int32_t id): Function(id, MODULE_NAME) {}
+    ~FunctionSum() {console.log.println("[FunctionSum] Destructor called");}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}

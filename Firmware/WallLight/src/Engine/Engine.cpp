@@ -44,6 +44,11 @@ Engine::Engine()
 
 bool Engine::loadGraph(const char* path)
 {
+  if(graphLoaded)
+  {
+    console.warning.println("[ENGINE] Graph has already been loaded -> force unloading graph first");
+    unloadGraph();
+  }
   File file = fatfs.open(path);
   if(!file)
   {
@@ -259,7 +264,7 @@ bool Engine::loadGraph(const char* path)
   if(moduleError)
   {
     console.error.println("[ENGINE] Graph loading failed -> free all modules.");
-    // TODO: Unload all modules
+    unloadGraph();                   // TODO: Unload all modules
   }
   else
   {
@@ -268,6 +273,27 @@ bool Engine::loadGraph(const char* path)
   }
   
   return !moduleError;
+}
+
+void Engine::unloadGraph(void)
+{
+  if(modules)
+  {
+    for(int i = 0; i < moduleCount; i++)    // Deinitialize all modules
+    {
+      if(modules[i])
+      {
+        console.println(modules[i]->moduleName);
+        console.flush();
+        delete modules[i];      
+      }
+    }
+    delete [] modules;
+  }
+  modules = nullptr;
+  moduleCount = 0;
+  graphLoaded = false;
+  console.ok.println("[ENGINE] Graph unloading was successful.");
 }
 
 bool Engine::setOutput(const Module* module, uint16_t index)

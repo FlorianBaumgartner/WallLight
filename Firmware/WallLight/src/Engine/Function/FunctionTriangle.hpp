@@ -47,7 +47,7 @@ class FunctionTriangle: public virtual Function
                                     Parameter("high", 1.0),
                                     Parameter("clip", 1.0)};
 
-    Parameter parameterOutputs [0] = {};                                
+    Parameter parameterOutputs[0] = {};                                
 
     Vector inputs[0] = {};
     LedVector outputVectors[1] = {LedVector()};
@@ -56,6 +56,7 @@ class FunctionTriangle: public virtual Function
   public:
     static constexpr const char* MODULE_NAME = "Triangle";
     FunctionTriangle(int32_t id): Function(id, MODULE_NAME) {}
+    ~FunctionTriangle() {console.log.println("[FunctionTriangle] Destructor called"); outputVectors[0].free();}
 
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}

@@ -16,7 +16,7 @@ if __name__ == '__main__':
     triangleGenerator2.setParameterInput(3, Coefficient(0.5))
     triangleGenerator2.setParameterInput(4, Coefficient(0.5))
     
-    functionTriangle = Function.Rect()
+    functionTriangle = Function.Triangle()
     
     colorGain1 = Function.ColorGain()
     colorGain1.setParameterInput(0, triangleGenerator1)
