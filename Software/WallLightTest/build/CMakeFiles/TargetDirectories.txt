@@ -1,0 +1,3 @@
+C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest.dir
+C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/ZERO_CHECK.dir

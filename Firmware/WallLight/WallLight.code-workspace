@@ -1,33 +1,19 @@
 {
 	"folders": [
 		{
+			"name": "WallLight",
 			"path": "."
 		}
 	],
 	"settings": {
 		"files.associations": {
 			"array": "cpp",
-			"deque": "cpp",
-			"string": "cpp",
-			"unordered_map": "cpp",
-			"unordered_set": "cpp",
-			"vector": "cpp",
-			"string_view": "cpp",
-			"initializer_list": "cpp",
 			"*.tcc": "cpp",
-			"random": "cpp",
-			"sdkconfig.h": "c",
-			"tusb_option.h": "c",
-			"wiring_private.h": "c",
-			"utility": "cpp",
-			"sstream": "cpp",
-			"functional": "cpp",
+			"memory": "cpp",
 			"istream": "cpp",
-			"ostream": "cpp",
+			"functional": "cpp",
 			"tuple": "cpp",
-			"type_traits": "cpp",
-			"optional": "cpp",
-			"system_error": "cpp"
+			"utility": "cpp"
 		}
 	}
 }

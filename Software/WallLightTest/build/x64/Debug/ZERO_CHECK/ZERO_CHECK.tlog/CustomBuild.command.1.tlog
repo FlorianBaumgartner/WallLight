@@ -1,0 +1,10 @@
+^C:\USERS\ADMIN\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\TEST\WALLLIGHTTEST\BUILD\CMAKEFILES\5D90E2A7F12F8FDE981F36E419161D06\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest -BC:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

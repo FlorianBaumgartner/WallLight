@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\build\walllighttest_autogen\mocs_compilation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\build\walllighttest_autogen\EWIEGA46WW\qrc_resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\build\CMakeFiles\53e789138ee46adbdbab4d05fdcc0390\qrc_resources.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\mainwindow.ui" />
+    <None Include="C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\resources.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{FC9EFF80-CB7A-318E-A446-575AE0934C41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{03AE0713-B0D0-322B-B531-B3C94FF6873A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

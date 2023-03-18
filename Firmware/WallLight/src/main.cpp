@@ -53,9 +53,9 @@ WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN);
 // const char* file = "rect_triangle_test.json";
 // const char* file = "rect_triangle_color_test.json";
 // const char* file = "Demo_SpeedTest.json";
-// const char* file = "Demo_MultiPath.json";
+const char* file = "Demo_MultiPath.json";
 // const char* file = "Animation_Matrix.json";
-const char* file = "Demo_ModuleTest_Generator.json";
+// const char* file = "Demo_ModuleTest_Generator.json";
 
 bool loaded = LOAD_DIRECTLY;
 
