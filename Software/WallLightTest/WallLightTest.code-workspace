@@ -7,7 +7,12 @@
 	"settings": {
 		"files.associations": {
 			"qpainter": "cpp",
-			"qthread": "cpp"
+			"qthread": "cpp",
+			"ios": "cpp",
+			"iterator": "cpp",
+			"memory": "cpp",
+			"ostream": "cpp",
+			"xlocale": "cpp"
 		}
 	}
 }

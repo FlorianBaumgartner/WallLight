@@ -1,11 +1,6 @@
 #include "WallLightTest.h"
 #include "ui_WallLightTest.h"
 
-#include "../../Firmware/WallLight/src/Engine/DataTypes.hpp"
-// #include "../../Firmware/WallLight/src/console.hpp"
-
-#include "../../Firmware/WallLight/src/demo.hpp"
-
 #include "Arduino/console.hpp"
 
 
@@ -25,11 +20,9 @@ WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
   timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &WallLightTest::changeColors);
-  timer->start(1000);
+  timer->start(1000 / FRAMERATE);
 
   console.printf("Console Test %d\n", 10);
-  Demo demo;
-  demo.test();
 }
 
 WallLightTest::~WallLightTest()
@@ -47,7 +40,8 @@ void WallLightTest::on_actionExit_triggered()
 
 void WallLightTest::changeColors(void)
 {
-  printf("Test\n");
+  output.fill(0.5); // update output from test environment
+  ui->centralWidget->update();
 }
 
 void WallLightTest::paintEvent(QPaintEvent *event)
@@ -56,11 +50,13 @@ void WallLightTest::paintEvent(QPaintEvent *event)
   int hPixel = int(height / PIXELCOUNT);
   int offset = int((WINDOW_HEIGHT - hPixel * PIXELCOUNT) / 2);
   
-
   QPainter painter(pixmap);
   for (int i = 0; i < PIXELCOUNT; i++)
   {
-    painter.fillRect(offset, offset + hPixel * i, 20, hPixel, QColor(0, 255, 0));
+    uint8_t r = constrain(output.value[WallLightConfig::LED_R][i], 0.0, 1.0) * 255;
+    uint8_t g = constrain(output.value[WallLightConfig::LED_G][i], 0.0, 1.0) * 255;
+    uint8_t b = constrain(output.value[WallLightConfig::LED_B][i], 0.0, 1.0) * 255;
+    painter.fillRect(offset, offset + hPixel * i, 20, hPixel, QColor(r, g, b));
   }
   painter.end();
 

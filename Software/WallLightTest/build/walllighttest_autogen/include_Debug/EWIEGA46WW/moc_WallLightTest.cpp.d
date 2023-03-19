@@ -1,4 +1,6 @@
 C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Debug/EWIEGA46WW/moc_WallLightTest.cpp: C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/QDateTime \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/QThread \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/QTimer \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qalgorithms.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qarraydata.h \
@@ -12,7 +14,13 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qconfig.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qcontainerfwd.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qcontainertools_impl.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qcoreapplication.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qcoreevent.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qdatastream.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qdatetime.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qdeadlinetimer.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qelapsedtimer.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qeventloop.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qflags.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qglobal.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qglobalstatic.h \
@@ -22,7 +30,9 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qiterator.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qline.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qlist.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qlocale.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qlogging.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qmap.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qmargins.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qmetatype.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qmutex.h \
@@ -52,8 +62,10 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qsysinfo.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qsystemdetection.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qtcore-config.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qthread.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qtimer.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qtypeinfo.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qvariant.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qvarlengtharray.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qvector.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qversiontagging.h \
@@ -66,8 +78,10 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qfont.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qfontinfo.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qfontmetrics.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/qguiapplication.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qicon.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qimage.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/qinputmethod.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qkeysequence.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qmatrix.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpaintdevice.h \
@@ -86,8 +100,10 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qtransform.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qwindowdefs.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qwindowdefs_win.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/QApplication \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/QLabel \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/QMainWindow \
+  C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qapplication.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qframe.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qlabel.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qmainwindow.h \
@@ -95,4 +111,12 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qtabwidget.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qtwidgets-config.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qtwidgetsglobal.h \
-  C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qwidget.h
+  C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qwidget.h \
+  C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/DataTypes.hpp \
+  C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/WallLightConfig.hpp \
+  C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino.h \
+  C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Arduino.h \
+  C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.h \
+  C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Printable.h \
+  C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.h \
+  C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.hpp
