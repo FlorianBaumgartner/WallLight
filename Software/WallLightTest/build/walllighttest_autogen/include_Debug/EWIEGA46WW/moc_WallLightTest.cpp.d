@@ -1,8 +1,10 @@
 C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Debug/EWIEGA46WW/moc_WallLightTest.cpp: C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/QTimer \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qalgorithms.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qarraydata.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qatomic.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qbasicatomic.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qbasictimer.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qbytearray.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qbytearraylist.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qchar.h \
@@ -50,10 +52,14 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qsysinfo.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qsystemdetection.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qtcore-config.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtCore/qtimer.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qtypeinfo.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qvarlengtharray.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qvector.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qversiontagging.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/QColor \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/QPainter \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/QPixmap \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qbrush.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qcolor.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qcursor.h \
@@ -65,19 +71,25 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qkeysequence.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qmatrix.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpaintdevice.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpainter.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpalette.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpen.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpixelformat.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpixmap.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qpolygon.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qregion.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qrgb.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qrgba64.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtGui/qtextoption.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qtgui-config.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qtguiglobal.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qtransform.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qwindowdefs.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtGui/qwindowdefs_win.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/QLabel \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/QMainWindow \
+  C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qframe.h \
+  C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qlabel.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qmainwindow.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qsizepolicy.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qtabwidget.h \

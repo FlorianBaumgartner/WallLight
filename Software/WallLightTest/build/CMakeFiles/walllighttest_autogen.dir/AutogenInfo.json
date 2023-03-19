@@ -76,6 +76,26 @@
 	"HEADERS" : 
 	[
 		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/demo.hpp",
+			"MU",
+			"OEFXS7ZA5H/moc_demo.cpp"
+		],
+		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.h",
+			"MU",
+			"5GIRNRSBHG/moc_Print.cpp"
+		],
+		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.h",
+			"MU",
+			"5GIRNRSBHG/moc_Stream.cpp"
+		],
+		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.hpp",
+			"MU",
+			"5GIRNRSBHG/moc_console.cpp"
+		],
+		[
 			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h",
 			"MU",
 			"EWIEGA46WW/moc_WallLightTest.cpp"
@@ -88,8 +108,16 @@
 	"INCLUDE_DIR_RelWithDebInfo" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_RelWithDebInfo",
 	"INCLUDE_DIR_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Release",
 	"MOC_COMPILATION_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/mocs_compilation.cpp",
-	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB", "WIN32" ],
-	"MOC_DEFINITIONS_Debug" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_WIDGETS_LIB", "WIN32" ],
+	"MOC_DEFINITIONS" : 
+	[
+		"CONSOLE_HPP",
+		"QT_CORE_LIB",
+		"QT_GUI_LIB",
+		"QT_NO_DEBUG",
+		"QT_WIDGETS_LIB",
+		"WIN32"
+	],
+	"MOC_DEFINITIONS_Debug" : [ "CONSOLE_HPP", "QT_CORE_LIB", "QT_GUI_LIB", "QT_WIDGETS_LIB", "WIN32" ],
 	"MOC_DEPEND_FILTERS" : 
 	[
 		[
@@ -133,6 +161,22 @@
 	"SETTINGS_FILE_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_Release.txt",
 	"SOURCES" : 
 	[
+		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/demo.cpp",
+			"MU"
+		],
+		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.cpp",
+			"MU"
+		],
+		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.cpp",
+			"MU"
+		],
+		[
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.cpp",
+			"MU"
+		],
 		[
 			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.cpp",
 			"MU"

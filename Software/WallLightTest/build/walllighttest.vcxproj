@@ -97,12 +97,12 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\include_Debug;C:\Qt\5.15.2\msvc2019_64\include;C:\Qt\5.15.2\msvc2019_64\include\QtWidgets;C:\Qt\5.15.2\msvc2019_64\include\QtGui;C:\Qt\5.15.2\msvc2019_64\include\QtANGLE;C:\Qt\5.15.2\msvc2019_64\include\QtCore;C:\Qt\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
@@ -138,7 +138,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/Debug/walllighttest.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/Debug/walllighttest.pdb</ProgramDataBaseFile>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -155,14 +155,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\include_Release;C:\Qt\5.15.2\msvc2019_64\include;C:\Qt\5.15.2\msvc2019_64\include\QtWidgets;C:\Qt\5.15.2\msvc2019_64\include\QtGui;C:\Qt\5.15.2\msvc2019_64\include\QtANGLE;C:\Qt\5.15.2\msvc2019_64\include\QtCore;C:\Qt\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
@@ -198,7 +198,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/Release/walllighttest.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/Release/walllighttest.pdb</ProgramDataBaseFile>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -215,14 +215,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\include_MinSizeRel;C:\Qt\5.15.2\msvc2019_64\include;C:\Qt\5.15.2\msvc2019_64\include\QtWidgets;C:\Qt\5.15.2\msvc2019_64\include\QtGui;C:\Qt\5.15.2\msvc2019_64\include\QtANGLE;C:\Qt\5.15.2\msvc2019_64\include\QtCore;C:\Qt\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
@@ -258,7 +258,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/MinSizeRel/walllighttest.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/MinSizeRel/walllighttest.pdb</ProgramDataBaseFile>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -276,12 +276,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CONSOLE_HPP;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest;C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\include_RelWithDebInfo;C:\Qt\5.15.2\msvc2019_64\include;C:\Qt\5.15.2\msvc2019_64\include\QtWidgets;C:\Qt\5.15.2\msvc2019_64\include\QtGui;C:\Qt\5.15.2\msvc2019_64\include\QtANGLE;C:\Qt\5.15.2\msvc2019_64\include\QtCore;C:\Qt\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
@@ -317,7 +317,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/RelWithDebInfo/walllighttest.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/RelWithDebInfo/walllighttest.pdb</ProgramDataBaseFile>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -479,12 +479,16 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\mocs_compilation.cpp" />
-    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\main.cpp" />
-    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\WallLightTest.cpp" />
     <None Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\WallLightTest.ui">
     </None>
     <None Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\resources.qrc">
     </None>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\main.cpp" />
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\WallLightTest.cpp" />
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\Arduino\console.cpp" />
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\Arduino\Print.cpp" />
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\Arduino\Stream.cpp" />
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Firmware\WallLight\src\demo.cpp" />
     <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\EWIEGA46WW\qrc_resources.cpp" />
   </ItemGroup>
   <ItemGroup>

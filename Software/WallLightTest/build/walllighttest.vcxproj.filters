@@ -10,6 +10,18 @@
     <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\WallLightTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\Arduino\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\Arduino\Print.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\Arduino\Stream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Firmware\WallLight\src\demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\EWIEGA46WW\qrc_resources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

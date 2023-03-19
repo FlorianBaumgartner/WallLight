@@ -35,7 +35,6 @@
 
 #include <Arduino.h>
 #include "WallLightConfig.hpp"
-#include "Module.hpp"
 
 class Module;   // Forward declaration of Module
 

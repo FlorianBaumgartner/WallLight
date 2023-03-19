@@ -19,7 +19,10 @@ set(CMAKE_AUTORCC ON)
 #endif(NOT CMAKE_PREFIX_PATH AND NOT Qt5Widgets_DIR)
 
 # Add a compiler flag
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")   #  -Wall
+
+# Link with console subsystem
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:CONSOLE")
 
 # Make this a GUI application on Windows
 if(WIN32)
@@ -29,8 +32,24 @@ endif()
 # Find the QtWidgets library
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
+# Inlude all .cpp files from firmware directory
+file(GLOB FIRMWARE_SRC_ENGINE "../../Firmware/WallLight/src/engine/*.cpp")
+
 # Tell CMake to create the walllighttest executable
-add_executable(walllighttest main.cpp WallLightTest.cpp WallLightTest.ui resources.qrc)
+add_executable(walllighttest WallLightTest.ui resources.qrc
+${FIRMWARE_SRC}
+  main.cpp
+  WallLightTest.cpp
+  Arduino/console.cpp
+  Arduino/print.cpp
+  Arduino/Stream.cpp
+  ../../Firmware/WallLight/src/demo.cpp
+)
+
+# target_include_directories(walllighttest PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../Firmware/WallLight/src/)
 
 # Add the Qt5 Widgets for linking
 target_link_libraries(walllighttest Qt5::Widgets)
+
+
+add_compile_definitions(CONSOLE_HPP)
