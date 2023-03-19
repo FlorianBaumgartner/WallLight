@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest
+# Install script for directory: C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

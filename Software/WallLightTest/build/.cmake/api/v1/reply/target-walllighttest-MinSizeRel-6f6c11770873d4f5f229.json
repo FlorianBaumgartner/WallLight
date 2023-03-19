@@ -70,14 +70,14 @@
 			"includes" : 
 			[
 				{
-					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build"
 				},
 				{
-					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/include_MinSizeRel"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_MinSizeRel"
 				},
 				{
 					"backtrace" : 2,
@@ -216,12 +216,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "mainwindow.cpp",
+			"path" : "WallLightTest.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "mainwindow.ui",
+			"path" : "WallLightTest.ui",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -239,7 +239,7 @@
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "build/CMakeFiles/53e789138ee46adbdbab4d05fdcc0390/qrc_resources.cpp.rule",
+			"path" : "build/CMakeFiles/70375aecde2c6c163f7a475f14a78b27/qrc_resources.cpp.rule",
 			"sourceGroupIndex" : 2
 		}
 	],

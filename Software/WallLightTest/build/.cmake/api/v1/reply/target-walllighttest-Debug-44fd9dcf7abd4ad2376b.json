@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "RelWithDebInfo/walllighttest.exe"
+			"path" : "Debug/walllighttest.exe"
 		},
 		{
-			"path" : "RelWithDebInfo/walllighttest.pdb"
+			"path" : "Debug/walllighttest.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -45,7 +45,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc -Wall /MD /Zi /O2 /Ob1 /DNDEBUG"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc -Wall /MDd /Zi /Ob0 /Od /RTC1"
 				}
 			],
 			"defines" : 
@@ -60,24 +60,20 @@
 				},
 				{
 					"backtrace" : 2,
-					"define" : "QT_NO_DEBUG"
-				},
-				{
-					"backtrace" : 2,
 					"define" : "QT_WIDGETS_LIB"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build"
 				},
 				{
-					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/include_RelWithDebInfo"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Debug"
 				},
 				{
 					"backtrace" : 2,
@@ -132,7 +128,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc -Wall /MD /Zi /O2 /Ob1 /DNDEBUG",
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc -Wall /MDd /Zi /Ob0 /Od /RTC1",
 				"role" : "flags"
 			},
 			{
@@ -141,19 +137,19 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\Qt5Widgets.lib",
+				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\Qt5Widgetsd.lib",
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\Qt5Gui.lib",
+				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\Qt5Guid.lib",
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\Qt5Core.lib",
+				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\Qt5Cored.lib",
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\qtmain.lib",
+				"fragment" : "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\qtmaind.lib",
 				"role" : "libraries"
 			},
 			{
@@ -216,12 +212,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "mainwindow.cpp",
+			"path" : "WallLightTest.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "mainwindow.ui",
+			"path" : "WallLightTest.ui",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -239,7 +235,7 @@
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "build/CMakeFiles/53e789138ee46adbdbab4d05fdcc0390/qrc_resources.cpp.rule",
+			"path" : "build/CMakeFiles/70375aecde2c6c163f7a475f14a78b27/qrc_resources.cpp.rule",
 			"sourceGroupIndex" : 2
 		}
 	],

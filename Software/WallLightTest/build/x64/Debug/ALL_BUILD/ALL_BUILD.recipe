@@ -7,6 +7,9 @@
     <ProjectOutput>
       <FullPath>C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\Debug\walllighttest.exe</FullPath>
     </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\x64\Debug\ALL_BUILD</FullPath>
+    </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
   <SatelliteDlls />

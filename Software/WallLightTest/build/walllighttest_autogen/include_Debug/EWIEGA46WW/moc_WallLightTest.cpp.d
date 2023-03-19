@@ -1,4 +1,4 @@
-C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Debug/EWIEGA46WW/moc_mainwindow.cpp: C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/mainwindow.h \
+C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Debug/EWIEGA46WW/moc_WallLightTest.cpp: C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qalgorithms.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qarraydata.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtCore/qatomic.h \

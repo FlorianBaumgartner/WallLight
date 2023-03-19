@@ -1,16 +1,16 @@
 {
-	"BUILD_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen",
-	"CMAKE_BINARY_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build",
-	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest",
+	"BUILD_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest",
 	"CMAKE_EXECUTABLE" : "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
 	"CMAKE_LIST_FILES" : 
 	[
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/CMakeLists.txt",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeSystem.cmake",
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/CMakeLists.txt",
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeSystem.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeSystemSpecificInitialize.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCCompiler.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCXXCompiler.cmake",
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCCompiler.cmake",
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCXXCompiler.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeSystemSpecificInformation.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeGenericSystem.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeInitializeConfigs.cmake",
@@ -22,7 +22,7 @@
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Platform/Windows-MSVC-C.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Platform/Windows-MSVC.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeRCCompiler.cmake",
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeRCCompiler.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeRCInformation.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeCommonLanguageInclude.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeCXXInformation.cmake",
@@ -68,26 +68,26 @@
 		"C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
 		"C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeParseArguments.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/resources.qrc"
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/resources.qrc"
 	],
-	"CMAKE_SOURCE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest",
+	"CMAKE_SOURCE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest",
 	"DEP_FILE" : "",
 	"DEP_FILE_RULE_NAME" : "",
 	"HEADERS" : 
 	[
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/mainwindow.h",
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h",
 			"MU",
-			"EWIEGA46WW/moc_mainwindow.cpp"
+			"EWIEGA46WW/moc_WallLightTest.cpp"
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/include",
-	"INCLUDE_DIR_Debug" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/include_Debug",
-	"INCLUDE_DIR_MinSizeRel" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/include_MinSizeRel",
-	"INCLUDE_DIR_RelWithDebInfo" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/include_RelWithDebInfo",
-	"INCLUDE_DIR_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/include_Release",
-	"MOC_COMPILATION_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/walllighttest_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include",
+	"INCLUDE_DIR_Debug" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Debug",
+	"INCLUDE_DIR_MinSizeRel" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_MinSizeRel",
+	"INCLUDE_DIR_RelWithDebInfo" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_RelWithDebInfo",
+	"INCLUDE_DIR_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include_Release",
+	"MOC_COMPILATION_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB", "WIN32" ],
 	"MOC_DEFINITIONS_Debug" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_WIDGETS_LIB", "WIN32" ],
 	"MOC_DEPEND_FILTERS" : 
@@ -99,8 +99,8 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest",
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
+		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest",
 		"C:/Qt/5.15.2/msvc2019_64/include",
 		"C:/Qt/5.15.2/msvc2019_64/include/QtWidgets",
 		"C:/Qt/5.15.2/msvc2019_64/include/QtGui",
@@ -117,28 +117,28 @@
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : true,
 	"PARALLEL" : 4,
-	"PARSE_CACHE_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache.txt",
-	"PARSE_CACHE_FILE_Debug" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_Debug.txt",
-	"PARSE_CACHE_FILE_MinSizeRel" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_MinSizeRel.txt",
-	"PARSE_CACHE_FILE_RelWithDebInfo" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_RelWithDebInfo.txt",
-	"PARSE_CACHE_FILE_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_Release.txt",
+	"PARSE_CACHE_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE_Debug" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_Debug.txt",
+	"PARSE_CACHE_FILE_MinSizeRel" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_MinSizeRel.txt",
+	"PARSE_CACHE_FILE_RelWithDebInfo" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_RelWithDebInfo.txt",
+	"PARSE_CACHE_FILE_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache_Release.txt",
 	"QT_MOC_EXECUTABLE" : "C:/Qt/5.15.2/msvc2019_64/bin/moc.exe",
 	"QT_UIC_EXECUTABLE" : "C:/Qt/5.15.2/msvc2019_64/bin/uic.exe",
 	"QT_VERSION_MAJOR" : 5,
 	"QT_VERSION_MINOR" : 15,
-	"SETTINGS_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed.txt",
-	"SETTINGS_FILE_Debug" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_Debug.txt",
-	"SETTINGS_FILE_MinSizeRel" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_MinSizeRel.txt",
-	"SETTINGS_FILE_RelWithDebInfo" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_RelWithDebInfo.txt",
-	"SETTINGS_FILE_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_Release.txt",
+	"SETTINGS_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE_Debug" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_Debug.txt",
+	"SETTINGS_FILE_MinSizeRel" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_MinSizeRel.txt",
+	"SETTINGS_FILE_RelWithDebInfo" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_RelWithDebInfo.txt",
+	"SETTINGS_FILE_Release" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed_Release.txt",
 	"SOURCES" : 
 	[
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/main.cpp",
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/mainwindow.cpp",
+			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/main.cpp",
 			"MU"
 		]
 	],

@@ -1,16 +1,16 @@
-^C:\USERS\ADMIN\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\TEST\WALLLIGHTTEST\BUILD\CMAKEFILES\53E789138EE46ADBDBAB4D05FDCC0390\QRC_RESOURCES.CPP.RULE
+^C:\USERS\ADMIN\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\WALLLIGHTTEST\BUILD\CMAKEFILES\70375AECDE2C6C163F7A475F14A78B27\QRC_RESOURCES.CPP.RULE
 setlocal
-cd C:\Users\Admin\GoogleDrive\WallLight\Software\Test\WallLightTest\build
+cd C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Debug
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Debug
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Release
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Release
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json MinSizeRel
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json MinSizeRel
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json RelWithDebInfo
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json RelWithDebInfo
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
@@ -18,9 +18,9 @@ endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd
-^C:\USERS\ADMIN\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\TEST\WALLLIGHTTEST\CMAKELISTS.TXT
+^C:\USERS\ADMIN\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\WALLLIGHTTEST\CMAKELISTS.TXT
 setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest -BC:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build --check-stamp-file C:/Users/Admin/GoogleDrive/WallLight/Software/Test/WallLightTest/build/CMakeFiles/generate.stamp
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest -BC:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build --check-stamp-file C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

@@ -30,7 +30,7 @@ endif()
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 # Tell CMake to create the walllighttest executable
-add_executable(walllighttest main.cpp mainwindow.cpp mainwindow.ui resources.qrc)
+add_executable(walllighttest main.cpp WallLightTest.cpp WallLightTest.ui resources.qrc)
 
 # Add the Qt5 Widgets for linking
 target_link_libraries(walllighttest Qt5::Widgets)
