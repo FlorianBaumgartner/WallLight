@@ -35,7 +35,7 @@ class Rect(Generator):
             self.enableTime = t
             t = 0
 
-        output = (1.0 if((t * freq - (phase / (freq * 2))) % 1.0 <  dutycicle) else -1.0) * amplitude + offset
+        output = (1.0 if((t * freq - (phase / 2.0)) % 1.0 <  dutycicle) else -1.0) * amplitude + offset
         self.parameterOutputs[0]["value"] = output
         return True
     

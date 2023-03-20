@@ -61,12 +61,14 @@ class Utils
     bool format(const char* labelName);
     inline const char* getSerialNumber(void) {return serial;}
     inline uint8_t getLedBrightness() {return ledBrightness;}
+    inline bool isLedRgbw() {return ledRgbw;}
     operator bool() const {return mscReady;}
 
   private:
     const char* configFileName;
     char serial[MAX_STRING_LENGTH];
     uint8_t ledBrightness = 255;
+    bool ledRgbw = false;
     volatile bool mscReady;
 
     static void update(void* pvParameter);

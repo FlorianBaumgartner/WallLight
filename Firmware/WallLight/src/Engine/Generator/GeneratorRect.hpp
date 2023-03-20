@@ -100,7 +100,7 @@ class GeneratorRect: public virtual Generator
         t = 0;
       }
 
-      float output = ((fmod((t * freq - (phase / (freq * 2.0))), 1.0) < dutycicle)? 1.0 : -1.0) * amplitude + offset;
+      float output = ((fmod((t * freq - (phase / 2.0)), 1.0) < dutycicle)? 1.0 : -1.0) * amplitude + offset;
       setParameterOutput(0, output);
       return true;
     }

@@ -105,6 +105,7 @@ bool Utils::begin(uint32_t watchdogTimeout, const char* labelName, bool forceFor
     {
       console.warning.println("[UTILS] LED Brightness not found!");
     }
+    ledRgbw = systemParser.isRgbw();
     console.ok.println("[UTILS] System config loading was successful.");
   }
   else

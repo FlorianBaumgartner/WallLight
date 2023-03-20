@@ -38,19 +38,28 @@
 #define DEBUG_PIN       16
 
 
-WallLight::WallLight(int8_t rgbPin, int8_t wwaPin): rgbPin(rgbPin), wwaPin(wwaPin)
+WallLight::WallLight(int8_t rgbPin, int8_t wwaPin, bool rgbw): rgbPin(rgbPin), wwaPin(wwaPin)
 {
-    
+  if(rgbw)
+  {
+    console.log.println("[WALLLIGHT] RGBW Mode activated.");
+  }
+  leds = new Adafruit_NeoPXL8(PIXELCOUNT, pins, rgbw? NEO_GRBW : NEO_GRB);
+}
+
+WallLight::~WallLight()
+{
+  delete leds;
 }
 
 bool WallLight::begin(void)
 {
-  if (!leds.begin())
+  if (!leds->begin())
   {
     console.error.println("[WALLLIGHT] Could not initialize LEDs");
   }
-  leds.setBrightness(10);
-  leds.show();
+  leds->setBrightness(10);
+  leds->show();
 
   xTaskCreate(update, "task_walllight", 16384, this, 1, NULL);       // TODO: Check if stack size is enough
   console.ok.println("[WALLLIGHT] Initialization successfull.");
@@ -105,8 +114,8 @@ void WallLight::update(void* pvParameter)
               uint_fast8_t w = uint_fast8_t(constrain(pixels->value[3][i] * 255.0, 0.0, 255.0));
               uint_fast8_t c = uint_fast8_t(constrain(pixels->value[4][i] * 255.0, 0.0, 255.0));
               uint_fast8_t a = uint_fast8_t(constrain(pixels->value[5][i] * 255.0, 0.0, 255.0));
-              ref->leds.setPixelColor(i, ref->leds.Color(r, g, b));
-              ref->leds.setPixelColor(i + ref->PIXELCOUNT, ref->leds.Color(w, c, a));
+              ref->leds->setPixelColor(i, ref->leds->Color(r, g, b));
+              ref->leds->setPixelColor(i + ref->PIXELCOUNT, ref->leds->Color(w, c, a));
             }
           }
         }
@@ -119,10 +128,10 @@ void WallLight::update(void* pvParameter)
     }
     else
     {
-      ref->leds.fill();
+      ref->leds->fill();
     }
     
-    ref->leds.show();
+    ref->leds->show();
     vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / ref->FRAMERATE);
   }
   vTaskDelete(NULL);

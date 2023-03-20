@@ -48,7 +48,7 @@
 #define LED_WWA_PIN       -1
 
 Utils utils;
-WallLight wallLight(LED_RGB_PIN, LED_WWA_PIN);
+WallLight* wallLight;
 
 // const char* file = "rect_triangle_test.json";
 // const char* file = "rect_triangle_color_test.json";
@@ -68,15 +68,17 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize utilities");
   }
-  if(!wallLight.begin())
+
+  wallLight = new WallLight(LED_RGB_PIN, LED_WWA_PIN, utils.isLedRgbw());
+  if(!wallLight->begin())
   {
     console.error.println("[MAIN] Could not initialize WallLight");
   }
   if(loaded)
   {
-    wallLight.loadGraph(file);
+    wallLight->loadGraph(file);
   }
-  wallLight.setBrightness(utils.getLedBrightness());
+  wallLight->setBrightness(utils.getLedBrightness());
   console.log.println("OK, Let's go");
 }
 
@@ -91,12 +93,12 @@ void loop()
     console.log.println("[MAIN] Button pressed!");
     if(!loaded)
     {
-      wallLight.loadGraph(file);
+      wallLight->loadGraph(file);
       loaded = true;
     }
     else
     {
-      wallLight.unloadGraph();
+      wallLight->unloadGraph();
       loaded = false;
     }
   }

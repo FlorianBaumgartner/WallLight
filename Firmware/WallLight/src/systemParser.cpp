@@ -135,6 +135,22 @@ bool SystemParser::getLedBrightness(uint8_t& value)
   return false; 
 }
 
+
+/**
+ * @brief Get the global LED brightness
+ * 
+ * @return true if LEDs are RGBW
+ * @return false if not specified
+ */
+bool SystemParser::isRgbw(void)
+{
+  if(doc.containsKey("rgbw"))
+  {
+    return doc["rgbw"].as<bool>();
+  }
+  return false; 
+}
+
 /**
  * @brief Save the current loaded system config as a file
  *

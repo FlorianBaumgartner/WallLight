@@ -243,8 +243,7 @@ class Console: public Stream
 
 
 #ifndef USE_CUSTOM_CONSOLE
-//   extern Console console;
-  static Console console;
+  extern Console console;
 #endif
 
 #endif

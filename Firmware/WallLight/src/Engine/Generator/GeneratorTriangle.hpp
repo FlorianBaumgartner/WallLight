@@ -98,7 +98,7 @@ class GeneratorTriangle: public virtual Generator
         t = 0;
       }
 
-      float x = 1.0 - fabs(fmod((t * freq - (phase / freq)), 1.0) * 2.0 - 1.0);
+      float x = 1.0 - fabs(fmod((t * freq - (phase / 2.0)), 1.0) * 2.0 - 1.0);
       float output = (x - 0.5) * 2 * amplitude + offset;
       setParameterOutput(0, output);
       return true;

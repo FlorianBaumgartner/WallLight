@@ -8,11 +8,13 @@ if __name__ == '__main__':
     wallLight = WallLight()
     
     triangleGenerator1 = Generator.Triangle()
+    triangleGenerator1.setParameterInput(1, Coefficient(0.1))
     triangleGenerator1.setParameterInput(3, Coefficient(0.5))
     triangleGenerator1.setParameterInput(4, Coefficient(0.5))
-    triangleGenerator1.setParameterInput(5, Coefficient(0.5))
+    triangleGenerator1.setParameterInput(5, Coefficient(1.0))
     
     triangleGenerator2 = Generator.Triangle()
+    triangleGenerator2.setParameterInput(1, Coefficient(0.1))
     triangleGenerator2.setParameterInput(3, Coefficient(0.5))
     triangleGenerator2.setParameterInput(4, Coefficient(0.5))
     

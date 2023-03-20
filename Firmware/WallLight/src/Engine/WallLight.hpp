@@ -43,17 +43,18 @@
 class WallLight: public WallLightConfig
 {
   public:
-    WallLight(int8_t rgbPin, int8_t wwaPin);
+    WallLight(int8_t rgbPin, int8_t wwaPin, bool rgbw = false);
+    ~WallLight();
     bool begin(void);
     bool loadGraph(const char* path, uint8_t engineIndex = 0);
     void unloadGraph(uint8_t engineIndex = 0);
-    void setBrightness(uint8_t brightness) {leds.setBrightness(brightness);}
+    void setBrightness(uint8_t brightness) {leds->setBrightness(brightness);}
     
   private:
     const int8_t rgbPin;
     const int8_t wwaPin;
     int8_t pins[8] = {rgbPin, wwaPin, -1, -1, -1, -1, -1, -1};
-    Adafruit_NeoPXL8 leds = Adafruit_NeoPXL8(PIXELCOUNT, pins, NEO_GRB);
+    Adafruit_NeoPXL8* leds;
 
     Engine engine[2] = {Engine(), Engine()};
     bool unloadingGraphPending[2] = {false, false};

@@ -4,7 +4,7 @@
     "coefficients": [
         {
             "id": 1000,
-            "value": 0.5
+            "value": 0.1
         },
         {
             "id": 1001,
@@ -16,10 +16,18 @@
         },
         {
             "id": 1003,
-            "value": 0.5
+            "value": 1.0
         },
         {
             "id": 1004,
+            "value": 0.1
+        },
+        {
+            "id": 1005,
+            "value": 0.5
+        },
+        {
+            "id": 1006,
             "value": 0.5
         }
     ],
@@ -29,18 +37,23 @@
             "type": "Generator.Triangle",
             "parameter": [
                 {
-                    "index": 3,
+                    "index": 1,
                     "id": 1000,
                     "output": 0
                 },
                 {
-                    "index": 4,
+                    "index": 3,
                     "id": 1001,
                     "output": 0
                 },
                 {
-                    "index": 5,
+                    "index": 4,
                     "id": 1002,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1003,
                     "output": 0
                 }
             ]
@@ -50,20 +63,25 @@
             "type": "Generator.Triangle",
             "parameter": [
                 {
+                    "index": 1,
+                    "id": 1004,
+                    "output": 0
+                },
+                {
                     "index": 3,
-                    "id": 1003,
+                    "id": 1005,
                     "output": 0
                 },
                 {
                     "index": 4,
-                    "id": 1004,
+                    "id": 1006,
                     "output": 0
                 }
             ]
         },
         {
             "id": 2,
-            "type": "Function.Triangle",
+            "type": "Function.Rect",
             "parameter": [],
             "input": []
         },

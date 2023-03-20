@@ -33,7 +33,7 @@ class Triangle(Generator):
             self.enableTime = t
             t = 0
         
-        x = 1.0 - np.abs(((t * freq - (phase / freq)) % 1.0) * 2.0 - 1.0)
+        x = 1.0 - np.abs(((t * freq - (phase / 2.0)) % 1.0) * 2.0 - 1.0)
         output = (x - 0.5) * 2 * amplitude + offset
         self.parameterOutputs[0]["value"] = output
         return True
