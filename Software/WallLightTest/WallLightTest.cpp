@@ -23,6 +23,7 @@ WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::
   timer->start(1000 / FRAMERATE);
 
   console.printf("Console Test %d\n", 10);
+  console.ok.println("OK");
 }
 
 WallLightTest::~WallLightTest()
@@ -40,7 +41,8 @@ void WallLightTest::on_actionExit_triggered()
 
 void WallLightTest::changeColors(void)
 {
-  output.fill(0.5); // update output from test environment
+  console.printf("Time: %d\n", millis());
+  output.fill((millis() % 1000) / 1000.0); // update output from test environment
   ui->centralWidget->update();
 }
 

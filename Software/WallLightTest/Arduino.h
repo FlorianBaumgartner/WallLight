@@ -27,7 +27,8 @@ static void sleep(int t)
 
 static int millis(void)
 {
-  return static_cast<int>(QDateTime::currentMSecsSinceEpoch());
+  static qint64 t0 = QDateTime::currentMSecsSinceEpoch();
+  return static_cast<int>(QDateTime::currentMSecsSinceEpoch() - t0);
 }
 
 typedef const char*  esp_event_base_t;
