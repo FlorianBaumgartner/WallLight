@@ -81,8 +81,3 @@ void Console::printStartupMessage(void)
   println("****************************************************");
   println(CONSOLE_LOG);
 }
-
-
-#ifndef USE_CUSTOM_CONSOLE
-  // static Console console = Console();
-#endif

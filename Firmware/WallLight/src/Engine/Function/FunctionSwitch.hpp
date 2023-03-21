@@ -112,7 +112,7 @@ class FunctionSwitch: public virtual Function
       {
         if(switchValue)
         {
-          if(LedVector::checkValid(input1))
+          if(LedVector::checkValid(input1))   // Check if input 1 is connected
           {
             if(getOutput(0)->allocated)
             {
@@ -125,12 +125,12 @@ class FunctionSwitch: public virtual Function
           }
           else
           {
-            output->fill(0.0);
+            output->fill(0.0);                // When no input is connected, force the output to be zero (this can be buffer of input 0 or deep copy of output)
           }
         }
         else
         {
-          if(LedVector::checkValid(input0))
+          if(LedVector::checkValid(input0))   // Check if input 0 is connected
           {
             if(getOutput(0)->allocated)
             {
@@ -143,7 +143,7 @@ class FunctionSwitch: public virtual Function
           }
           else
           {
-            output->fill(0.0);
+            output->fill(0.0);                // When no input is connected, force the output to be zero (this can be buffer of input 1 or deep copy of output)
           }
         }
       }

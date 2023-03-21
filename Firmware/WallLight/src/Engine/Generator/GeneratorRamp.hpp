@@ -96,7 +96,7 @@ class GeneratorRamp: public virtual Generator
         }
         else if ((rep < 0.0) || ((rep / freq) >= t))
         {
-          outputValue = min(start, stop) + fmod(((t + (phase / (freq * 2.0))) * slope), amplitude);
+          outputValue = min(start, stop) + fmod(((t + (phase / 2.0)) * slope), amplitude);
         }
       }
       else

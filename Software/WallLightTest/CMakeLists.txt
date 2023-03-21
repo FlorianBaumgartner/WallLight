@@ -43,7 +43,7 @@ ${FIRMWARE_SRC}
   Arduino/console.cpp
   Arduino/print.cpp
   Arduino/Stream.cpp
-  ../../Firmware/WallLight/src/demo.cpp
+  # ../../Firmware/WallLight/src/demo.cpp
 )
 
 # target_include_directories(walllighttest PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../Firmware/WallLight/src/)
