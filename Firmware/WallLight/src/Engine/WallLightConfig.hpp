@@ -30,17 +30,42 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef WALLIGHT_CONFIG_HPP
-#define WALLIGHT_CONFIG_HPP
+#ifndef WALLLIGHT_CONFIG_HPP
+#define WALLLIGHT_CONFIG_HPP
 
 #include <Arduino.h>
 
 class WallLightConfig
 {
   public:
+    WallLightConfig(uint16_t count = 0, float rate = 0.0)
+    {
+      if(count > 0)
+      {
+        pixelcount(count);
+        framerate(rate);
+      }
+    }
+
     enum LED_COLOR {LED_R, LED_G, LED_B, LED_WW, LED_CW, LED_AM, COLORCOUNT};
-    static const uint16_t PIXELCOUNT = 288; //70;
-    static const uint16_t FRAMERATE  = 50;
+    inline static uint16_t pixelcount(uint16_t c = 0)
+    {
+      static uint16_t count = 0;
+      if(c > 0)
+      {
+        count = c;
+      }
+      return count;
+    }
+    inline static float framerate(float f = 0.0)
+    {
+      static float framerate = 0.0;
+      if(f > 0.0)
+      {
+        framerate = f;
+      }
+      return framerate;
+    }
 };
 
 #endif

@@ -38,13 +38,14 @@
 #define DEBUG_PIN       16
 
 
-WallLight::WallLight(int8_t rgbPin, int8_t wwaPin, bool rgbw): rgbPin(rgbPin), wwaPin(wwaPin)
+WallLight::WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t count, float updaterate, bool rgbw): rgbPin(rgbPin), wwaPin(wwaPin), WallLightConfig(count, updaterate)
 {
   if(rgbw)
   {
     console.log.println("[WALLLIGHT] RGBW Mode activated.");
   }
-  leds = new Adafruit_NeoPXL8(PIXELCOUNT, pins, rgbw? NEO_GRBW : NEO_GRB);
+  console.log.printf("[WALLLIGHT] Initialize WallLight object (LEDCOUNT: %d, FRAMERATE: %.1f)\n", pixelcount(), framerate());
+  leds = new Adafruit_NeoPXL8(pixelcount(), pins, rgbw? NEO_GRBW : NEO_GRB);
 }
 
 WallLight::~WallLight()
@@ -106,7 +107,7 @@ void WallLight::update(void* pvParameter)
         {
           if(pixels->value)                                     // Check if led vector of output module is allocated
           {
-            for(int i = 0; i < ref->PIXELCOUNT; i++)
+            for(int i = 0; i < ref->pixelcount(); i++)
             {
               uint_fast8_t r = uint_fast8_t(constrain(pixels->value[0][i] * 255.0, 0.0, 255.0));
               uint_fast8_t g = uint_fast8_t(constrain(pixels->value[1][i] * 255.0, 0.0, 255.0));
@@ -115,7 +116,7 @@ void WallLight::update(void* pvParameter)
               uint_fast8_t c = uint_fast8_t(constrain(pixels->value[4][i] * 255.0, 0.0, 255.0));
               uint_fast8_t a = uint_fast8_t(constrain(pixels->value[5][i] * 255.0, 0.0, 255.0));
               ref->leds->setPixelColor(i, ref->leds->Color(r, g, b));
-              ref->leds->setPixelColor(i + ref->PIXELCOUNT, ref->leds->Color(w, c, a));
+              ref->leds->setPixelColor(i + ref->pixelcount(), ref->leds->Color(w, c, a));
             }
           }
         }
@@ -132,7 +133,7 @@ void WallLight::update(void* pvParameter)
     }
     
     ref->leds->show();
-    vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / ref->FRAMERATE);
+    vTaskDelayUntil(&task_last_tick, (const TickType_t) (1000.0 / (float)ref->framerate()));
   }
   vTaskDelete(NULL);
 }

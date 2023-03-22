@@ -129,7 +129,7 @@ class FunctionMixer: public virtual Function
         }
         else if(LedVector::checkValid(input0) && LedVector::checkValid(input1))     // Check if both inputs available
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          for(int i = 0; i < pixelcount(); i++)
           {
             for(int c = 0; c < COLORCOUNT; c++)
             {
@@ -139,7 +139,7 @@ class FunctionMixer: public virtual Function
         }
         else if(LedVector::checkValid(input0))                                      // Only input 0 is available
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          for(int i = 0; i < pixelcount(); i++)
           {
             for(int c = 0; c < COLORCOUNT; c++)
             {
@@ -149,7 +149,7 @@ class FunctionMixer: public virtual Function
         }
         else if(LedVector::checkValid(input1))                                      // Only input 1 is available
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          for(int i = 0; i < pixelcount(); i++)
           {
             for(int c = 0; c < COLORCOUNT; c++)
             {

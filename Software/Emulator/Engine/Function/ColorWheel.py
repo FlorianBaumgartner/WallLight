@@ -38,7 +38,7 @@ if __name__ == '__main__':
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent.parent.parent))
     from WallLight_Emulator import WallLight
-    from Modules import Coefficient, Function
+    from Modules import Coefficient, Function, Generator
     wallLight = WallLight()
     
     freq = 1.0
@@ -46,13 +46,18 @@ if __name__ == '__main__':
     sat = 1.0
     bright = 1.0
     
-    colorWheel = Function.ColorWheel(0)
-    colorWheel.setParameterInput(0, Coefficient(1, freq))
-    colorWheel.setParameterInput(1, Coefficient(2, pos))
-    colorWheel.setParameterInput(2, Coefficient(3, sat))
-    colorWheel.setParameterInput(3, Coefficient(4, bright))
+    generator = Generator.Ramp()
+    generator.setParameterInput(1, Coefficient(0.1))
+    generator.setParameterInput(3, Coefficient(-1.0))
+    generator.setParameterInput(4, Coefficient(1.0))
     
-    wallLight.addModule(colorWheel)
+    colorWheel = Function.ColorWheel()
+    colorWheel.setParameterInput(0, Coefficient(freq))
+    colorWheel.setParameterInput(1, generator)
+    colorWheel.setParameterInput(2, Coefficient(sat))
+    colorWheel.setParameterInput(3, Coefficient(bright))
+    
+    wallLight.addModule([generator, colorWheel])
     wallLight.setOutput(colorWheel, 0)
     wallLight.run()
     

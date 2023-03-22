@@ -114,7 +114,7 @@ class FunctionColorGain: public virtual Function
       {
         if(LedVector::checkValid(input))      // Only process data if a valid input is connected (otherwise a 0-vector is directly connected to the output)
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          for(int i = 0; i < pixelcount(); i++)
           {
             output->value[LED_R][i] = input->value[LED_R][i] * r;
             output->value[LED_G][i] = input->value[LED_G][i] * g;

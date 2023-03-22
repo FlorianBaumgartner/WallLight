@@ -135,6 +135,40 @@ bool SystemParser::getLedBrightness(uint8_t& value)
   return false; 
 }
 
+/**
+ * @brief Get the total LED pixel count
+ * 
+ * @param value uint8_t reference to the pixel count value
+ * @return true on success
+ * @return false on error
+ */
+bool SystemParser::getLedCount(uint16_t& value)
+{
+  if(doc.containsKey("led_count"))
+  {
+    value = (uint16_t)doc["led_count"].as<unsigned int>();
+    return true;
+  }
+  return false; 
+}
+
+/**
+ * @brief Get the LED framerate in FPS (Hz)
+ * 
+ * @param value uint8_t reference to the framerate value
+ * @return true on success
+ * @return false on error
+ */
+bool SystemParser::getLedFramerate(float& value)
+{
+  if(doc.containsKey("led_framerate"))
+  {
+    value = doc["led_framerate"].as<float>();
+    return true;
+  }
+  return false; 
+}
+
 
 /**
  * @brief Get the global LED brightness
@@ -142,11 +176,11 @@ bool SystemParser::getLedBrightness(uint8_t& value)
  * @return true if LEDs are RGBW
  * @return false if not specified
  */
-bool SystemParser::isRgbw(void)
+bool SystemParser::isLedRgbw(void)
 {
-  if(doc.containsKey("rgbw"))
+  if(doc.containsKey("led_rgbw"))
   {
-    return doc["rgbw"].as<bool>();
+    return doc["led_rgbw"].as<bool>();
   }
   return false; 
 }

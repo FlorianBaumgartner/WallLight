@@ -65,9 +65,9 @@ class LedVector: public WallLightConfig
         status &= (value != nullptr);
         for(int i = 0; i < COLORCOUNT; i++) 
         {
-          value[i] = new float[PIXELCOUNT];
+          value[i] = new float[pixelcount()];
           status &= (value[i] != nullptr);
-          for(int j = 0; j < PIXELCOUNT; j++)
+          for(int j = 0; j < pixelcount(); j++)
           {
             value[i][j] = defaultValue;
           }
@@ -93,7 +93,7 @@ class LedVector: public WallLightConfig
     {
       for(int i = 0; i < COLORCOUNT; i++) 
       {
-        for(int j = 0; j < PIXELCOUNT; j++)
+        for(int j = 0; j < pixelcount(); j++)
         {
           value[i][j] = vectorValue;
         }
@@ -101,7 +101,7 @@ class LedVector: public WallLightConfig
     }
     bool fillPixel(uint16_t pos, float val)
     {
-      if(pos < PIXELCOUNT)
+      if(pos < pixelcount())
       {
         for(int i = 0; i < COLORCOUNT; i++)
         {
@@ -117,7 +117,7 @@ class LedVector: public WallLightConfig
       {
         for(int i = 0; i < COLORCOUNT; i++) 
         {
-          for(int j = 0; j < PIXELCOUNT; j++)
+          for(int j = 0; j < pixelcount(); j++)
           {
             value[i][j] = vector->value[i][j];      // TODO: Maybe replace with memcopy?
           }

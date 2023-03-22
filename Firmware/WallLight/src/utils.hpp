@@ -61,6 +61,8 @@ class Utils
     bool format(const char* labelName);
     inline const char* getSerialNumber(void) {return serial;}
     inline uint8_t getLedBrightness() {return ledBrightness;}
+    inline uint16_t getLedCount() {return ledCount;}
+    inline float getLedFramerate() {return ledFramerate;}
     inline bool isLedRgbw() {return ledRgbw;}
     operator bool() const {return mscReady;}
 
@@ -68,6 +70,8 @@ class Utils
     const char* configFileName;
     char serial[MAX_STRING_LENGTH];
     uint8_t ledBrightness = 255;
+    uint16_t ledCount = 288;
+    float ledFramerate = 50.0;
     bool ledRgbw = false;
     volatile bool mscReady;
 

@@ -11,14 +11,10 @@ class Utility():
         g = np.zeros(n)
         b = np.zeros(n)
         
-        np.mod
-        
         for i in range(n):
             if s[i] == 0.0:
                 r[i] = v[i]; g[i] = v[i]; b[i] = v[i]
-            h[i] = h[i] * 6.0
-            if h[i] == 6.0:
-                h[i] = 0.0
+            h[i] = (h[i] % 1.0) * 6.0
             j = int(h[i])
             f = (h[i]) - j
             p, q, t = v[i] * (1.0 - s[i]), v[i] * (1.0 - s[i] * f), v[i] * (1.0 - s[i] * (1.0 - f))

@@ -35,6 +35,7 @@
 
 #include <Arduino.h>
 #include "../Module.hpp"
+#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
@@ -82,27 +83,23 @@ class GeneratorDirac: public virtual Generator
       float weight = getParameterValue(3);
       float offset = getParameterValue(4);
       float phase = getParameterValue(5);
-      phase = fmod((phase + 1.0), 2.0) - 1.0;
-      if(phase < 0.0)
-      {
-        phase += 2.0;
-      }
+      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
 
-      int discreteinterval = max((int)((float)FRAMERATE / freq), 1);
-      int discretePhaseDelay = (int)(((float)FRAMERATE * phase * 0.5) / freq + 0.5);
+      int discreteinterval = max((int)(framerate() / freq), 1);
+      int discretePhaseDelay = (int)((framerate() * phase * 0.5) / freq + 0.5);
 
       float output = 0.0;
       if(enable)
       {
         t -= enableTime;
-        int x = (int)(t * (float)FRAMERATE + 0.5);
+        int x = (int)(t * framerate() + 0.5);
         if(x < 0)
         {
           x += discreteinterval;
         }
         if(x % discreteinterval == discretePhaseDelay)
         {
-          if((rep < 0.0) || (rep / freq) * (float)FRAMERATE > x)
+          if((rep < 0.0) || (rep / freq) * framerate() > x)
           {
             output += weight;
           }

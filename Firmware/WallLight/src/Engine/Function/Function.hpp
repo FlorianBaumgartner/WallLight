@@ -40,6 +40,7 @@
 #include "FunctionRect.hpp"
 #include "FunctionTriangle.hpp"
 #include "FunctionColorGain.hpp"
+#include "FunctionColorWheel.hpp"
 #include "FunctionAdder.hpp"
 #include "FunctionSubtractor.hpp"
 #include "FunctionMultiplier.hpp"
@@ -61,6 +62,10 @@ static Function* allocateFunction(const char* name, int32_t id)
   else if(strcmp(name, FunctionColorGain::MODULE_NAME) == 0)
   {
     module = new FunctionColorGain(id);
+  }
+  else if(strcmp(name, FunctionColorWheel::MODULE_NAME) == 0)
+  {
+    module = new FunctionColorWheel(id);
   }
   else if(strcmp(name, FunctionAdder::MODULE_NAME) == 0)
   {

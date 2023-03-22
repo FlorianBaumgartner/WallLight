@@ -101,24 +101,24 @@ class FunctionTriangle: public virtual Function
 
         float dy = high - low;
         float m = (dy / width) * 2.0;
-        int32_t x0 = int32_t(position * Module::PIXELCOUNT + 0.5);
-        float x0f = x0 - (position * Module::PIXELCOUNT);
+        int32_t x0 = int32_t(position * pixelcount() + 0.5);
+        float x0f = x0 - (position * pixelcount());
 
         output->fill(low);
-        for(int i = 0; i < int(width * Module::PIXELCOUNT + 0.5); i++)
+        for(int i = 0; i < int(width * pixelcount() + 0.5); i++)
         {
-          if(0 <= (x0 + i) < Module::PIXELCOUNT)
+          if(0 <= (x0 + i) < pixelcount())
           {
-            float v = high - (m * (i + x0f)) / float(Module::PIXELCOUNT);
+            float v = high - (m * (i + x0f)) / float(pixelcount());
             if(clip)
             {
               v = constrain(v, 0.0, 1.0);
             }
             output->fillPixel(x0 + i, v);
           }
-          if(0 <= (x0 - i) < Module::PIXELCOUNT)
+          if(0 <= (x0 - i) < pixelcount())
           {
-            float v = high - (m * (i - x0f)) / float(Module::PIXELCOUNT);
+            float v = high - (m * (i - x0f)) / float(pixelcount());
             if(clip)
             {
               v = constrain(v, 0.0, 1.0);

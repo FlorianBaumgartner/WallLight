@@ -147,7 +147,7 @@ class FunctionSum: public virtual Function
               }
               else
               {
-                for(int i = 0; i < PIXELCOUNT; i++)
+                for(int i = 0; i < pixelcount(); i++)
                 {
                   for(int c = 0; c < COLORCOUNT; c++)
                   {

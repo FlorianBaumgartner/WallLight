@@ -53,7 +53,8 @@ WallLight* wallLight;
 // const char* file = "rect_triangle_test.json";
 // const char* file = "rect_triangle_color_test.json";
 // const char* file = "Demo_SpeedTest.json";
-const char* file = "Demo_MultiPath.json";
+// const char* file = "Demo_MultiPath.json";
+const char* file = "rainbow.json";
 // const char* file = "Animation_Matrix.json";
 // const char* file = "Demo_ModuleTest_Generator.json";
 
@@ -69,7 +70,7 @@ void setup()
     console.error.println("[MAIN] Could not initialize utilities");
   }
 
-  wallLight = new WallLight(LED_RGB_PIN, LED_WWA_PIN, utils.isLedRgbw());
+  wallLight = new WallLight(LED_RGB_PIN, LED_WWA_PIN, utils.getLedCount(), utils.getLedFramerate(), utils.isLedRgbw());
   if(!wallLight->begin())
   {
     console.error.println("[MAIN] Could not initialize WallLight");

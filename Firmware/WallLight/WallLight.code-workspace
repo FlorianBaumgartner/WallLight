@@ -13,7 +13,10 @@
 			"istream": "cpp",
 			"functional": "cpp",
 			"tuple": "cpp",
-			"utility": "cpp"
+			"utility": "cpp",
+			"chrono": "cpp",
+			"algorithm": "cpp",
+			"cmath": "cpp"
 		}
 	}
 }

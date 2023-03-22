@@ -118,7 +118,7 @@ class FunctionSubtractor: public virtual Function
         }
         else if(!LedVector::checkValid(minuend) && LedVector::checkValid(subtrahend))   // Only subtrahend available menas output = 0 - subtrahend
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          for(int i = 0; i < pixelcount(); i++)
           {
             for(int c = 0; c < COLORCOUNT; c++)
             {
@@ -128,7 +128,7 @@ class FunctionSubtractor: public virtual Function
         }
         else if(LedVector::checkValid(minuend) && LedVector::checkValid(subtrahend))     // Check if both inputs available
         {
-          for(int i = 0; i < PIXELCOUNT; i++)
+          for(int i = 0; i < pixelcount(); i++)
           {
             for(int c = 0; c < COLORCOUNT; c++)
             {

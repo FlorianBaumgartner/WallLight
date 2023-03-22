@@ -35,6 +35,7 @@
 
 #include <Arduino.h>
 #include "../Module.hpp"
+#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
@@ -83,7 +84,7 @@ class GeneratorRamp: public virtual Generator
       float start = getParameterValue(3);
       float stop = getParameterValue(4);
       float phase = getParameterValue(5);
-      phase = fmod((phase + 1.0), 2.0) - 1.0;
+      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
       float amplitude = fabs(start - stop);
       float slope = amplitude * freq * ((start < stop)? 1.0 : -1.0);
 
@@ -96,7 +97,7 @@ class GeneratorRamp: public virtual Generator
         }
         else if ((rep < 0.0) || ((rep / freq) >= t))
         {
-          outputValue = min(start, stop) + fmod(((t + (phase / 2.0)) * slope), amplitude);
+          outputValue = min(start, stop) + Utility::mod(((t + (phase / 2.0)) * slope), amplitude);
         }
       }
       else

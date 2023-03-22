@@ -42,7 +42,7 @@
 #include "../console.hpp"
 
 
-class Engine: public WallLightConfig
+class Engine
 {
   public:
     Engine();

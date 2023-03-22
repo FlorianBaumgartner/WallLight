@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build\CMakeFiles\5f3db48a1522dcc8334b80ab65e5a572\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{DB1B5FAC-818C-3A2B-A536-3B08D238E314}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -35,6 +35,7 @@
 
 #include <Arduino.h>
 #include "../Module.hpp"
+#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
@@ -82,7 +83,7 @@ class GeneratorTriangle: public virtual Generator
       float amplitude = getParameterValue(3);
       float offset = getParameterValue(4);
       float phase = getParameterValue(5);
-      phase = fmod((phase + 1.0), 2.0) - 1.0;
+      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
 
       if(enable)
       {
@@ -98,7 +99,7 @@ class GeneratorTriangle: public virtual Generator
         t = 0;
       }
 
-      float x = 1.0 - fabs(fmod((t * freq - (phase / 2.0)), 1.0) * 2.0 - 1.0);
+      float x = 1.0 - fabs(Utility::mod((t * freq - (phase / 2.0)), 1.0) * 2.0 - 1.0);
       float output = (x - 0.5) * 2 * amplitude + offset;
       setParameterOutput(0, output);
       return true;

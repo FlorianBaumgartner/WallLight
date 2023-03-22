@@ -105,7 +105,15 @@ bool Utils::begin(uint32_t watchdogTimeout, const char* labelName, bool forceFor
     {
       console.warning.println("[UTILS] LED Brightness not found!");
     }
-    ledRgbw = systemParser.isRgbw();
+    if(!systemParser.getLedCount(ledCount))
+    {
+      console.warning.println("[UTILS] LED Count not found!");
+    }
+    if(!systemParser.getLedFramerate(ledFramerate))
+    {
+      console.warning.println("[UTILS] LED Framerate not found!");
+    }
+    ledRgbw = systemParser.isLedRgbw();
     console.ok.println("[UTILS] System config loading was successful.");
   }
   else

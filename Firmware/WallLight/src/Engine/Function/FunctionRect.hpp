@@ -101,16 +101,16 @@ class FunctionRect: public virtual Function
       if(LedVector::checkValid(output))
       {
         output->fill(low);
-        for(int i = 0; i < Module::PIXELCOUNT; i++)
+        for(int i = 0; i < pixelcount(); i++)
         {
-          if(((i + 0.5) > start * Module::PIXELCOUNT) && ((i + 0.5) <= stop * Module::PIXELCOUNT))
+          if(((i + 0.5) > start * pixelcount()) && ((i + 0.5) <= stop * pixelcount()))
           {
             output->fillPixel(i, high);
           }
           if(smooth)
           {
-            float startDif = start * Module::PIXELCOUNT - (float)i;
-            float stopDif = stop * Module::PIXELCOUNT - (float)i;
+            float startDif = start * pixelcount() - (float)i;
+            float stopDif = stop * pixelcount() - (float)i;
             if((startDif > 0.0) && (startDif < 1.0))
             {
               output->fillPixel(i, low + (high - low) * startDif);

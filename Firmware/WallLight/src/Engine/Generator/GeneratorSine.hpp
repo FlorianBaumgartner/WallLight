@@ -35,6 +35,7 @@
 
 #include <Arduino.h>
 #include "../Module.hpp"
+#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
@@ -82,7 +83,7 @@ class GeneratorSine: public virtual Generator
       float amplitude = getParameterValue(3);
       float offset = getParameterValue(4);
       float phase = getParameterValue(5);
-      phase = fmod((phase + 1.0), 2.0) - 1.0;
+      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
 
       if(enable)
       {

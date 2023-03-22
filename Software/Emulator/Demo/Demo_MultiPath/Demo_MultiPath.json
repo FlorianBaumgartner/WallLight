@@ -81,7 +81,7 @@
         },
         {
             "id": 2,
-            "type": "Function.Rect",
+            "type": "Function.Triangle",
             "parameter": [],
             "input": []
         },

@@ -35,6 +35,7 @@
 
 #include <Arduino.h>
 #include "../Module.hpp"
+#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
@@ -84,7 +85,7 @@ class GeneratorRect: public virtual Generator
       float offset = getParameterValue(4);
       float phase = getParameterValue(5);
       float dutycicle = getParameterValue(6);
-      phase = fmod((phase + 1.0), 2.0) - 1.0;
+      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
 
       if(enable)
       {
@@ -100,7 +101,7 @@ class GeneratorRect: public virtual Generator
         t = 0;
       }
 
-      float output = ((fmod((t * freq - (phase / 2.0)), 1.0) < dutycicle)? 1.0 : -1.0) * amplitude + offset;
+      float output = ((Utility::mod((t * freq - (phase / 2.0)), 1.0) < dutycicle)? 1.0 : -1.0) * amplitude + offset;
       setParameterOutput(0, output);
       return true;
     }

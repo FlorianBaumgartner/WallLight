@@ -43,7 +43,7 @@
 class WallLight: public WallLightConfig
 {
   public:
-    WallLight(int8_t rgbPin, int8_t wwaPin, bool rgbw = false);
+    WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t count, float updaterate, bool rgbw = false);
     ~WallLight();
     bool begin(void);
     bool loadGraph(const char* path, uint8_t engineIndex = 0);
