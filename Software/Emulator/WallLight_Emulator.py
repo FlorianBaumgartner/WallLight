@@ -44,6 +44,10 @@ class WallLight():
             return
         self.app.quit()
         
+    def setFramerate(self, framerate):
+        WallLight.framerate = framerate
+        self.mainWidget.setFramerate(framerate)
+        
     def isRunning(self):
         return self.mainWidget.isVisible()
     
@@ -114,6 +118,12 @@ class MainWidget(QWidget):
         self.timer.stop()
         self.engine.stop()
         
+    def setFramerate(self, framerate):
+        self.engine.setFramerate(framerate)
+        self.timer.stop()
+        self.startTimer()
+        
+        
     def startTimer(self):
         self.timer.start(int(1000 / WallLight.framerate))
         
@@ -167,10 +177,10 @@ if __name__ == '__main__':
     # path = "Graphs/rect_test.json"
     # path = "Graphs/rect_triangle_test.json"
     # path = "Graphs/rect_triangle_color_test.json"
-    path = "Graphs/rainbow.json"
+    # path = "Graphs/rainbow.json"
     # path = "Graphs/test_graph_analyzer_dual.json"
     # path = "Graphs/sine_analyzer.json"
-    # path = "Graphs/test_graph.json"
+    path = "Graphs/test_graph.json"
     # path = "Graphs/test_error.json"
     
     wallLight.loadGraph(path)

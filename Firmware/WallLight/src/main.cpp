@@ -54,7 +54,8 @@ WallLight* wallLight;
 // const char* file = "rect_triangle_color_test.json";
 // const char* file = "Demo_SpeedTest.json";
 // const char* file = "Demo_MultiPath.json";
-const char* file = "rainbow.json";
+// const char* file = "rainbow.json";
+const char* file = "Demo_Fire.json";
 // const char* file = "Animation_Matrix.json";
 // const char* file = "Demo_ModuleTest_Generator.json";
 

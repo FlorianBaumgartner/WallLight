@@ -46,6 +46,7 @@
 #include "FunctionMultiplier.hpp"
 #include "FunctionSum.hpp"
 #include "FunctionProduct.hpp"
+#include "FunctionFire.hpp"
 
 
 static Function* allocateFunction(const char* name, int32_t id)
@@ -86,6 +87,10 @@ static Function* allocateFunction(const char* name, int32_t id)
   else if(strcmp(name, FunctionProduct::MODULE_NAME) == 0)
   {
     module = new FunctionProduct(id);
+  }
+  else if(strcmp(name, FunctionFire::MODULE_NAME) == 0)
+  {
+    module = new FunctionFire(id);
   }
   else
   {

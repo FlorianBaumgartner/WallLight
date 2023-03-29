@@ -35,7 +35,7 @@
 
 #include <Arduino.h>
 #include "../Module.hpp"
-#include "bootloader_random.h"
+#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
@@ -59,7 +59,6 @@ class GeneratorRandom: public virtual Generator
     bool init(bool deepCopy = false)
     {
       checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
-      bootloader_random_enable();     // Enable True Random Number Generator of ESP32 SoC
       return initDone();
     }
 
@@ -79,7 +78,7 @@ class GeneratorRandom: public virtual Generator
       float minimum = getParameterValue(1);
       float maximum = getParameterValue(2);
 
-      float output = ((float)esp_random() / (float)UINT32_MAX) * fabs(maximum - minimum) + minimum;
+      float output = Utility::rand() * fabs(maximum - minimum) + minimum;
       if(!enable)
       {
         output = 0.0;

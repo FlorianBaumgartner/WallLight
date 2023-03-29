@@ -147,6 +147,10 @@ class Engine():
         self.update(self.t)
         return self.pixels
     
+    def setFramerate(self, framerate):
+        self.framerate = framerate
+        Module.framerate = framerate
+    
     def update(self, t):
         while True:
             allReady = True

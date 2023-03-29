@@ -48,7 +48,7 @@ if __name__ == '__main__':
     
     generator = Generator.Ramp()
     generator.setParameterInput(1, Coefficient(0.1))
-    generator.setParameterInput(3, Coefficient(-1.0))
+    generator.setParameterInput(3, Coefficient(0.0))
     generator.setParameterInput(4, Coefficient(1.0))
     
     colorWheel = Function.ColorWheel()
