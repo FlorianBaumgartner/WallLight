@@ -19,6 +19,9 @@
     <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\Arduino\Stream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Firmware\WallLight\src\Engine\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\EWIEGA46WW\qrc_resources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

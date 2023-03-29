@@ -33,7 +33,7 @@
 #ifndef MODULES_HPP
 #define MODULES_HPP
 
-#include <Arduino.h>
+#include "Arduino.h"
 #include "../console.hpp"
 #include "WallLightConfig.hpp"
 #include "DataTypes.hpp"
@@ -157,7 +157,7 @@ class Module: public WallLightConfig
     bool getParameterStatus(void)
     {
       bool status = true;
-      for(int i = 0; i < getParameterInputCount(); i++)
+      for(uint32_t i = 0; i < getParameterInputCount(); i++)
       {
         if(getParameterInput(i)->module)
         {
@@ -169,7 +169,7 @@ class Module: public WallLightConfig
 
     void checkParameterInputs(void)
     {
-      for(int i = 0; i < getParameterInputCount(); i++)
+      for(uint32_t i = 0; i < getParameterInputCount(); i++)
       {
         getParameterValue(i);   // This forces a message to be printed if a parameter input is not connected and uses default value
       }
@@ -239,7 +239,7 @@ class Function: public Module
 
     bool deinit(void)
     {
-      for(int i = 0; i < getOutputCount(); i++)
+      for(uint32_t i = 0; i < getOutputCount(); i++)
       {
         getOutput(i)->free();       // Free all allocated output vectors (unallocated vactors are ignored)
       }
@@ -249,7 +249,7 @@ class Function: public Module
     bool getInputStatus(void)
     {
       bool status = true;
-      for(int i = 0; i < getInputCount(); i++)
+      for(uint32_t i = 0; i < getInputCount(); i++)
       {
         if(getInput(i)->module)
         {

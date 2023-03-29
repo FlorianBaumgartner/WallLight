@@ -33,7 +33,7 @@
 #ifndef DATA_TYPES_HPP
 #define DATA_TYPES_HPP
 
-#include <Arduino.h>
+#include "Arduino.h"
 #include "WallLightConfig.hpp"
 
 class Module;   // Forward declaration of Module

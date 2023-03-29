@@ -8,6 +8,8 @@
 #include <QPixmap>
 #include <QLabel>
 
+#include "Test/TestEngine.hpp"
+
 #include "../../Firmware/WallLight/src/Engine/WallLightConfig.hpp"
 #include "../../Firmware/WallLight/src/Engine/DataTypes.hpp"
 
@@ -27,8 +29,8 @@ class WallLightTest : public QMainWindow
     static const int WINDOW_HEIGHT = 1000;
     static const int PIXELS_OFFSET = 50;
         
-    static const int FRAMERATE = WallLightConfig::FRAMERATE;
-    static const int PIXELCOUNT = WallLightConfig::PIXELCOUNT;
+    static const int FRAMERATE = 50;
+    static const int PIXELCOUNT = 288;
 
     
 
@@ -43,7 +45,8 @@ class WallLightTest : public QMainWindow
     QPixmap* pixmap;
     QLabel* label;
 
-    LedVector output = LedVector(true);
+    LedVector* output;
+    bool running = false;
 };
 
 #endif // WALLLIGHT_TEST_H

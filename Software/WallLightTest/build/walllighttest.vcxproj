@@ -92,6 +92,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -150,6 +151,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -210,6 +212,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <Optimization>MinSpace</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -271,6 +274,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -488,6 +492,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\Arduino\console.cpp" />
     <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\Arduino\Print.cpp" />
     <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\Arduino\Stream.cpp" />
+    <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Firmware\WallLight\src\Engine\Utility.cpp" />
     <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\walllighttest_autogen\EWIEGA46WW\qrc_resources.cpp" />
   </ItemGroup>
   <ItemGroup>

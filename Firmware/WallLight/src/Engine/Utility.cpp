@@ -31,7 +31,11 @@
 ******************************************************************************/
 
 #include "Utility.hpp"
-#include "bootloader_random.h"
+#ifdef ESP32
+  #include "bootloader_random.h"
+#else
+  #include <cstdlib>
+#endif
 
 
 void Utility::hsvToRgb(float h, float s, float v, float* r, float* g, float* b)
@@ -97,11 +101,15 @@ void Utility::rgbToHsv(float r, float g, float b, float* h, float* s, float* v)
 
 float Utility::rand(void)
 {
-  static bool initialized = false;
-  if(!initialized)
-  {
-    bootloader_random_enable();     // Enable True Random Number Generator of ESP32 SoC
-    initialized = true;
-  }
-  return (float)esp_random() / (float)UINT32_MAX;
+  #ifdef ESP32
+    static bool initialized = false;
+    if(!initialized)
+    {
+      bootloader_random_enable();     // Enable True Random Number Generator of ESP32 SoC
+      initialized = true;
+    }
+    return (float)esp_random() / (float)UINT32_MAX;
+  #else
+    return (float)std::rand() / (float)RAND_MAX;
+  #endif
 }

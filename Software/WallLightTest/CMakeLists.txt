@@ -33,18 +33,23 @@ endif()
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 # Inlude all .cpp files from firmware directory
-file(GLOB FIRMWARE_SRC_ENGINE "../../Firmware/WallLight/src/engine/*.cpp")
+file(GLOB FIRMWARE_SRC_ENGINE "../../Firmware/WallLight/src/Engine/*.cpp")
 
 # Tell CMake to create the walllighttest executable
 add_executable(walllighttest WallLightTest.ui resources.qrc
-${FIRMWARE_SRC}
+  # ${FIRMWARE_SRC_ENGINE}
   main.cpp
   WallLightTest.cpp
   Arduino/console.cpp
   Arduino/print.cpp
   Arduino/Stream.cpp
+  ../../Firmware/WallLight/src/Engine/Utility.cpp
   # ../../Firmware/WallLight/src/demo.cpp
 )
+
+# Use C++ Version 20
+set(CMAKE_CXX_STANDARD 20)
+target_compile_features(walllighttest PRIVATE cxx_std_20)
 
 # target_include_directories(walllighttest PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../Firmware/WallLight/src/)
 

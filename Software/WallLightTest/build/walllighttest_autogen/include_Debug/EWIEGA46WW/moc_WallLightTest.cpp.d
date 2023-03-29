@@ -113,10 +113,13 @@ C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qtwidgetsglobal.h \
   C:/Qt/5.15.2/msvc2019_64/include/QtWidgets/qwidget.h \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/DataTypes.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Module.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/WallLightConfig.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/console.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino.h \
   C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Arduino.h \
   C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.h \
   C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Printable.h \
   C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.h \
-  C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.hpp
+  C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Test/TestEngine.hpp

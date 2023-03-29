@@ -20,7 +20,7 @@
 #include <QDateTime>
 
 
-static void sleep(int t)
+static void delay(int t)
 {
   QThread::msleep(t);
 }
@@ -49,6 +49,8 @@ class USBCDC
 class HardwareSerial : public USBCDC {};
 
 
+#define min _min
+#define max _max
 #include "Arduino/console.hpp"
 
 #endif

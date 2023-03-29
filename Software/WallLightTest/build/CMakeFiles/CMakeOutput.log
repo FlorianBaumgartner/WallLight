@@ -1,7 +1,7 @@
 The system is: Windows - 10.0.19044 - AMD64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler:  
-Build flags: /DWIN32;/D_WINDOWS;/W3
+Build flags: 
 Id flags:  
 
 The output was:
@@ -9,7 +9,7 @@ The output was:
 Microsoft (R)-Build-Engine, Version 16.9.0+5e4b48a27 für .NET Framework
 Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
 
-Der Buildvorgang wurde am 22.03.2023 10:28:17 gestartet.
+Der Buildvorgang wurde am 29.03.2023 09:52:37 gestartet.
 Projekt "C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\CMakeFiles\3.19.20122902-MSVC_2\CompilerIdC\CompilerIdC.vcxproj" auf Knoten "1" (Standardziele).
 PrepareForBuild:
   Das Verzeichnis "Debug\" wird erstellt.
@@ -35,7 +35,7 @@ Der Buildvorgang wurde erfolgreich ausgeführt.
     0 Warnung(en)
     0 Fehler
 
-Verstrichene Zeit 00:00:01.61
+Verstrichene Zeit 00:00:01.64
 
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -46,7 +46,7 @@ The C compiler identification is MSVC, found in "C:/Users/flori/GoogleDrive/Wall
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler:  
-Build flags: /DWIN32;/D_WINDOWS;/W3;/GR;/EHsc
+Build flags: 
 Id flags:  
 
 The output was:
@@ -54,7 +54,7 @@ The output was:
 Microsoft (R)-Build-Engine, Version 16.9.0+5e4b48a27 für .NET Framework
 Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
 
-Der Buildvorgang wurde am 22.03.2023 10:28:19 gestartet.
+Der Buildvorgang wurde am 29.03.2023 09:52:39 gestartet.
 Projekt "C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\CMakeFiles\3.19.20122902-MSVC_2\CompilerIdCXX\CompilerIdCXX.vcxproj" auf Knoten "1" (Standardziele).
 PrepareForBuild:
   Das Verzeichnis "Debug\" wird erstellt.
@@ -80,7 +80,7 @@ Der Buildvorgang wurde erfolgreich ausgeführt.
     0 Warnung(en)
     0 Fehler
 
-Verstrichene Zeit 00:00:01.38
+Verstrichene Zeit 00:00:01.16
 
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -92,28 +92,28 @@ The CXX compiler identification is MSVC, found in "C:/Users/flori/GoogleDrive/Wa
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_fe5d3.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && Microsoft (R)-Build-Engine, Version 16.9.0+5e4b48a27 für .NET Framework
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_d12a8.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && Microsoft (R)-Build-Engine, Version 16.9.0+5e4b48a27 für .NET Framework
 Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
 
   Microsoft (R) C/C++-Optimierungscompiler Version 19.28.29913 für x64
   Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
   CMakeCCompilerABI.c
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fe5d3.dir\Debug\\" /Fd"cmTC_fe5d3.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\share\cmake-3.19\Modules\CMakeCCompilerABI.c"
-  cmTC_fe5d3.vcxproj -> C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\CMakeFiles\CMakeTmp\Debug\cmTC_fe5d3.exe
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d12a8.dir\Debug\\" /Fd"cmTC_d12a8.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\share\cmake-3.19\Modules\CMakeCCompilerABI.c"
+  cmTC_d12a8.vcxproj -> C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\CMakeFiles\CMakeTmp\Debug\cmTC_d12a8.exe
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_96bdc.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && Microsoft (R)-Build-Engine, Version 16.9.0+5e4b48a27 für .NET Framework
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_34c24.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && Microsoft (R)-Build-Engine, Version 16.9.0+5e4b48a27 für .NET Framework
 Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
 
   Microsoft (R) C/C++-Optimierungscompiler Version 19.28.29913 für x64
   Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
   CMakeCXXCompilerABI.cpp
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_96bdc.dir\Debug\\" /Fd"cmTC_96bdc.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\share\cmake-3.19\Modules\CMakeCXXCompilerABI.cpp"
-  cmTC_96bdc.vcxproj -> C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\CMakeFiles\CMakeTmp\Debug\cmTC_96bdc.exe
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_34c24.dir\Debug\\" /Fd"cmTC_34c24.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\share\cmake-3.19\Modules\CMakeCXXCompilerABI.cpp"
+  cmTC_34c24.vcxproj -> C:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build\CMakeFiles\CMakeTmp\Debug\cmTC_34c24.exe
 
 
 

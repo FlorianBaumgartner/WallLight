@@ -12,7 +12,12 @@
 			"iterator": "cpp",
 			"memory": "cpp",
 			"ostream": "cpp",
-			"xlocale": "cpp"
+			"xlocale": "cpp",
+			"qapplication": "cpp",
+			"algorithm": "cpp",
+			"chrono": "cpp",
+			"limits": "cpp",
+			"utility": "cpp"
 		}
 	}
 }

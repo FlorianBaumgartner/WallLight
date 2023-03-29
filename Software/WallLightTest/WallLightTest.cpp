@@ -1,12 +1,18 @@
 #include "WallLightTest.h"
 #include "ui_WallLightTest.h"
-
 #include "Arduino/console.hpp"
+
+// #include "../../Firmware/WallLight/src/Engine/Utility.hpp"
 
 
 WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::WallLightTest)
 {
   ui->setupUi(this);
+  running = true;
+
+  WallLightConfig::framerate(FRAMERATE);
+  WallLightConfig::pixelcount(PIXELCOUNT);
+  output = new LedVector(true);
 
   ui->centralWidget->setStyleSheet("background-color: black;");
   ui->centralWidget->setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -28,26 +34,33 @@ WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
 WallLightTest::~WallLightTest()
 {
+  running = false;
   delete label;
   delete pixmap;
   delete timer;
   delete ui;
+  delete output;
 }
 
 void WallLightTest::on_actionExit_triggered()
 {
+  running = false;
+  timer->stop();
+  delay(100);
   this->close();
 }
 
 void WallLightTest::changeColors(void)
 {
-  console.printf("Time: %d\n", millis());
-  output.fill((millis() % 1000) / 1000.0); // update output from test environment
+  // console.printf("Time: %f\n", Utility::rand());
+  output->fill((millis() % 1000) / 1000.0); // update output from test environment
   ui->centralWidget->update();
 }
 
 void WallLightTest::paintEvent(QPaintEvent *event)
 {
+  if(!running)
+     return;
   int height = WINDOW_HEIGHT - PIXELS_OFFSET * 2;
   int hPixel = int(height / PIXELCOUNT);
   int offset = int((WINDOW_HEIGHT - hPixel * PIXELCOUNT) / 2);
@@ -55,9 +68,9 @@ void WallLightTest::paintEvent(QPaintEvent *event)
   QPainter painter(pixmap);
   for (int i = 0; i < PIXELCOUNT; i++)
   {
-    uint8_t r = constrain(output.value[WallLightConfig::LED_R][i], 0.0, 1.0) * 255;
-    uint8_t g = constrain(output.value[WallLightConfig::LED_G][i], 0.0, 1.0) * 255;
-    uint8_t b = constrain(output.value[WallLightConfig::LED_B][i], 0.0, 1.0) * 255;
+    uint8_t r = constrain(output->value[WallLightConfig::LED_R][i], 0.0, 1.0) * 255;
+    uint8_t g = constrain(output->value[WallLightConfig::LED_G][i], 0.0, 1.0) * 255;
+    uint8_t b = constrain(output->value[WallLightConfig::LED_B][i], 0.0, 1.0) * 255;
     painter.fillRect(offset, offset + hPixel * i, 20, hPixel, QColor(r, g, b));
   }
   painter.end();
