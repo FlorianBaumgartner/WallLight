@@ -1,0 +1,22 @@
+[
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Ihelloworld_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++  -Wall -g -o CMakeFiles\\helloworld.dir\\helloworld_autogen\\mocs_compilation.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\Testprograms\\Qt-CMake-HelloWorld\\build\\helloworld_autogen\\mocs_compilation.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/helloworld_autogen/mocs_compilation.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Ihelloworld_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++  -Wall -g -o CMakeFiles\\helloworld.dir\\main.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\Testprograms\\Qt-CMake-HelloWorld\\main.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/main.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Ihelloworld_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++  -Wall -g -o CMakeFiles\\helloworld.dir\\mainwindow.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\Testprograms\\Qt-CMake-HelloWorld\\mainwindow.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/mainwindow.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Ihelloworld_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++  -Wall -g -o CMakeFiles\\helloworld.dir\\helloworld_autogen\\EWIEGA46WW\\qrc_resources.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\Testprograms\\Qt-CMake-HelloWorld\\build\\helloworld_autogen\\EWIEGA46WW\\qrc_resources.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp"
+}
+]

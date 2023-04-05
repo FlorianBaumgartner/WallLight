@@ -64,7 +64,7 @@ size_t Console::write(const uint8_t *buffer, size_t size)
 
 void Console::printTimestamp(void)
 {
-  int h = _min(millis() / 3600000, 99);
+  int h = min(millis() / 3600000, 99);
   int m = (millis() / 60000) % 60;
   int s = (millis() / 1000) % 60;
   int ms = millis() % 1000;

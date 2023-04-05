@@ -36,6 +36,8 @@
 #include "Arduino.h"
 
 #include "../../../Firmware/WallLight/src/Engine/Module.hpp"
+// #include "../../../Firmware/WallLight/src/Engine/Function/Function.hpp"
+#include "../../../Firmware/WallLight/src/Engine/Function/FunctionAdder.hpp"
 
 
 class TestEngine

@@ -33,21 +33,20 @@
 #ifndef FUNCTION_ADDER_HPP
 #define FUNCTION_ADDER_HPP
 
-#include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
 class FunctionAdder: public virtual Function
 {
-  private:
-    Parameter parameterInputs[0] = {};
-    Parameter parameterOutputs [0] = {};   
+  private:    
     Vector inputs[2] = {Vector("input 0"), Vector("input 1")};
     LedVector outputVectors[1] = {LedVector()};
     Vector outputs[1] = {Vector("output", &outputVectors[0])};
     LedVector* input0 = nullptr;
     LedVector* input1 = nullptr;
+    Parameter parameterInputs[0] = {};
+    Parameter parameterOutputs[0] = {};
 
   public:
     static constexpr const char* MODULE_NAME = "Adder";

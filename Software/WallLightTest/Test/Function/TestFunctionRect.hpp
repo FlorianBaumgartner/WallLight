@@ -35,27 +35,34 @@
 
 #include "../TestEngine.hpp"
 
-// enable = 1.0
-// freq = 0.1
-// rep = -1.0
-// amplitude = 0.5
-// offset = 0.5
-// phase = 0.0
+void test(void)
+{
+  float enable = 1.0;
+  float freq = 0.1;
+  float rep = -1.0;
+  float amplitude = 0.5;
+  float offset = 0.5;
+  float phase = 0.0;
 
-// start = 0.0
-// low = 0.0
-// high = 1.0
-// smooth = 1.0
+  float start = 0.0;
+  float low = 0.0;
+  float high = 1.0;
+  float smooth = 1.0;
 
-// plotChannel = 0.0
+  // triangle = Generator.Triangle(0)
+  // triangle.setParameterInput(0, Coefficient(4, enable))
+  // triangle.setParameterInput(1, Coefficient(5, freq))
+  // triangle.setParameterInput(2, Coefficient(6, rep))
+  // triangle.setParameterInput(3, Coefficient(7, amplitude))
+  // triangle.setParameterInput(4, Coefficient(8, offset))
+  // triangle.setParameterInput(5, Coefficient(9, phase))
 
-// triangle = Generator.Triangle(0)
-// triangle.setParameterInput(0, Coefficient(4, enable))
-// triangle.setParameterInput(1, Coefficient(5, freq))
-// triangle.setParameterInput(2, Coefficient(6, rep))
-// triangle.setParameterInput(3, Coefficient(7, amplitude))
-// triangle.setParameterInput(4, Coefficient(8, offset))
-// triangle.setParameterInput(5, Coefficient(9, phase))
+
+}
+
+
+
+
 
 
 // rect = Function.Rect(1)

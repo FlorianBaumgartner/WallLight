@@ -1,0 +1,30 @@
+^C:\USERS\FLORI\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\TESTPROGRAMS\QT-CMAKE-HELLOWORLD\BUILD\CMAKEFILES\97E4C85D2A4BA02FB4F924230AC8EA0A\QRC_RESOURCES.CPP.RULE
+setlocal
+cd C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\FLORI\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\TESTPROGRAMS\QT-CMAKE-HELLOWORLD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld -BC:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build --check-stamp-file C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

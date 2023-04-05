@@ -1,0 +1,10 @@
+^C:\USERS\FLORI\GOOGLEDRIVE\WALLLIGHT\SOFTWARE\TESTPROGRAMS\QT-CMAKE-HELLOWORLD\BUILD\CMAKEFILES\2DEE9B5FE2FF07206FC11765D60DF00B\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld -BC:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/helloworld.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

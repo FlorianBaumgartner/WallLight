@@ -44,8 +44,11 @@ size_t Print::write(const uint8_t *buffer, size_t size)
     return n;
 }
 
-// size_t Print::printf(const char *format, ...)
-size_t Print::printf(_Printf_format_string_ const char * format, ...)
+#ifdef __GNUC__
+    size_t Print::printf(const char * format, ...)
+#else
+    size_t Print::printf(_Printf_format_string_ const char * format, ...);
+#endif
 {
     char loc_buf[64];
     char * temp = loc_buf;

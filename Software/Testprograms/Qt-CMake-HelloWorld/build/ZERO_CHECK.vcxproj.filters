@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\build\CMakeFiles\2dee9b5fe2ff07206fc11765d60df00b\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{13C72D67-1C23-362E-8B21-214068A7998A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

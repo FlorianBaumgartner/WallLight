@@ -1,0 +1,22 @@
+{
+	"BUILD_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/helloworld_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld",
+	"CMAKE_SOURCE_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld",
+	"INCLUDE_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/helloworld_autogen/include",
+	"INPUTS" : 
+	[
+		"C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/resources/helloworld-transparent.png"
+	],
+	"LOCK_FILE" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/5.15.2/mingw81_64/bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/resources.qrc",
+	"VERBOSITY" : 0
+}

@@ -1,0 +1,16 @@
+# ninja log v5
+134	336	7023888559955026	helloworld_autogen/timestamp	34c14e3480321dd4
+1503	1607	7023861482919015	helloworld_autogen/EWIEGA46WW/qrc_resources.cpp	b58d245c9d628278
+361	836	7023888564848484	CMakeFiles/helloworld.dir/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp.obj	8a69a69130f67e5b
+355	4034	7023888596882394	CMakeFiles/helloworld.dir/mainwindow.cpp.obj	e6913452afd6155
+343	3668	7023888593186010	CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.obj	5e0586f44bec4ad9
+349	3905	7023888595528710	CMakeFiles/helloworld.dir/main.cpp.obj	de9de44792738cce
+76	190	0	CMakeFiles/clean.additional	59e4439dfb1e1f48
+192	480	0	clean	c8a191b7b0760bdc
+129	1502	7023892485476901	helloworld_autogen/timestamp	34c14e3480321dd4
+1507	1631	7023892486683164	helloworld_autogen/EWIEGA46WW/qrc_resources.cpp	b58d245c9d628278
+1648	2015	7023892490466403	CMakeFiles/helloworld.dir/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp.obj	23befb75ed3b8d8e
+1632	5767	7023892527869901	CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.obj	f3b579acc2fda4d
+1637	6210	7023892532451024	CMakeFiles/helloworld.dir/main.cpp.obj	2285b25afc67f4d4
+1643	6234	7023892532701023	CMakeFiles/helloworld.dir/mainwindow.cpp.obj	660b3e8b87eacb66
+6235	7038	7023892540630289	helloworld.exe	e62bea2397b3e541

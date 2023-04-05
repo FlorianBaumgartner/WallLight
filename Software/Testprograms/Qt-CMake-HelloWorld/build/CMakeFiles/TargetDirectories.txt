@@ -1,0 +1,5 @@
+C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld.dir
+C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/edit_cache.dir
+C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/rebuild_cache.dir
+C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen_timestamp_deps.dir
+C:/Users/flori/GoogleDrive/WallLight/Software/Testprograms/Qt-CMake-HelloWorld/build/CMakeFiles/helloworld_autogen.dir

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\build\helloworld_autogen\mocs_compilation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\build\helloworld_autogen\EWIEGA46WW\qrc_resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\build\CMakeFiles\97e4c85d2a4ba02fb4f924230ac8ea0a\qrc_resources.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\mainwindow.ui" />
+    <None Include="C:\Users\flori\GoogleDrive\WallLight\Software\Testprograms\Qt-CMake-HelloWorld\resources.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{13C72D67-1C23-362E-8B21-214068A7998A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9D969600-E777-3D6C-9179-6D49FF756CD0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
