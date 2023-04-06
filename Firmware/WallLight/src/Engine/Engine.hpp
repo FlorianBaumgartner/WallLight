@@ -46,8 +46,13 @@ class Engine
 {
   public:
     Engine();
-    bool loadGraph(const char* path);
+    #ifdef ESP32
+      bool loadGraph(const char* path);
+    #else
+      bool loadGraph(Module** modules, uint16_t moduleCount);
+    #endif
     void unloadGraph(void);
+    bool setOutput(const Module* module, uint16_t index = 0);
     bool isReady(void) {return graphLoaded;}
     bool updateCoefficient(int32_t id, float value);
     bool update(float t);
@@ -69,7 +74,6 @@ class Engine
     
 
   private:
-    bool setOutput(const Module* module, uint16_t index = 0);
     uint16_t getInputConnectionCount(Function* function, uint16_t index);
     Module* getModuleFromId(int32_t moduleId);
 

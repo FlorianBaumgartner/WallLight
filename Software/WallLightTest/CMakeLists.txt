@@ -44,7 +44,9 @@ add_executable(walllighttest WallLightTest.ui resources.qrc
   Arduino/console.cpp
   Arduino/print.cpp
   Arduino/Stream.cpp
+  Test/TestEngine.cpp
   ../../Firmware/WallLight/src/Engine/Utility.cpp
+  ../../Firmware/WallLight/src/Engine/Engine.cpp
   # ../../Firmware/WallLight/src/demo.cpp
 )
 

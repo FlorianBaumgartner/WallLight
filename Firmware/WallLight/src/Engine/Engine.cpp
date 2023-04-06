@@ -30,10 +30,14 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#include "ArduinoJson.h"
 #include "Engine.hpp"
-#include "utils.hpp"
-#include "console.hpp"
+#include "../console.hpp"
+
+#ifdef ESP32
+  #include "ArduinoJson.h"
+  #include "utils.hpp"
+#endif
+
 
 #define ENGINE_VERBOSE true
 
@@ -42,6 +46,7 @@ Engine::Engine()
 
 }
 
+#ifdef ESP32
 bool Engine::loadGraph(const char* path)
 {
   if(graphLoaded)
@@ -283,6 +288,59 @@ bool Engine::loadGraph(const char* path)
   
   return !moduleError;
 }
+#else
+bool Engine::loadGraph(Module** modules, uint16_t moduleCount)
+{
+  if(graphLoaded)
+  {
+    console.warning.println("[ENGINE] Graph has already been loaded -> force unloading graph first");
+    unloadGraph();
+  }
+
+  // Allocate all modules
+  this->moduleCount = moduleCount;
+  this->modules = new Module*[moduleCount];
+  for(int i = 0; i < this->moduleCount; i++)
+  {
+    this->modules[i] = modules[i];
+  }
+
+// Initialize all modules (allocate output vector buffers if necessary)
+  for(int i = 0; i < moduleCount; i++)
+  {
+    if(modules[i])
+    {
+      bool deepCopy = false;
+      if(modules[i]->moduleClass == Module::MODULE_FUNCTION)
+      {
+        Function* function = (Function*)modules[i];
+        for(int p = 0; p < function->getInputCount(); p++)
+        {
+          if(getInputConnectionCount(function, p) > 1)
+          {
+            deepCopy = true;
+            #if ENGINE_VERBOSE
+              console.print("[ENGINE] INFO: Multiple connections found of ");
+              function->getInput(p)->module->printName(); console.printf(" [ID: %d] output '%d' -> ", function->getInput(p)->module->id, function->getInput(p)->sourceIndex);
+              function->printName(); console.printf(" [ID: %d] input '%d'\n", function->id, p);
+            #endif
+          }
+        }
+        if(deepCopy)
+        {
+          #if ENGINE_VERBOSE
+            console.print("[ENGINE] INFO: Make deep copy of "); modules[i]->printName(); console.printf(" [ID: %d]\n", modules[i]->id);
+          #endif
+        }
+      }
+      modules[i]->init(deepCopy);    // Check if output buffer needs to be allocated
+    }
+  }
+
+  graphLoaded = true;
+  return true;
+}
+#endif
 
 void Engine::unloadGraph(void)
 {

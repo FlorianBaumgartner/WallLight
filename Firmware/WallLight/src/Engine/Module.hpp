@@ -186,7 +186,11 @@ class Module: public WallLightConfig
 class Coefficient: public Module
 {
   public:
-    Coefficient(int32_t id, float defaultValue = 0.0): Module(id, MODULE_COEFFICIENT, "Coefficient") {value[0].value = defaultValue;}
+    Coefficient(int32_t id, float defaultValue = 0.0): Module(id, MODULE_COEFFICIENT, "Coefficient")
+    {
+      value[0].value = defaultValue;
+      init();         // Make sure that ready status is set
+    }
     void setValue(float v) {value[0].value = v;};
     float getValue(void) {return value[0].value;};
     bool update(float time) {return ready = true;}

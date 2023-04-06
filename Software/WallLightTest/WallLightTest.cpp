@@ -4,6 +4,8 @@
 
 // #include "../../Firmware/WallLight/src/Engine/Utility.hpp"
 
+#include "Test/Function/TestFunctionRect.hpp"
+#include "Test/TestEngine.hpp"
 
 WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::WallLightTest)
 {
@@ -30,6 +32,11 @@ WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
   console.printf("Console Test %d\n", 10);
   console.ok.println("OK");
+
+  // TestFunctionrect::test();
+  engine = new Engine();
+  TestFunctionrect::test(engine);
+  // TestEngine testEngine = TestEngine();
 }
 
 WallLightTest::~WallLightTest()
@@ -40,6 +47,7 @@ WallLightTest::~WallLightTest()
   delete timer;
   delete ui;
   delete output;
+  delete engine;
 }
 
 void WallLightTest::on_actionExit_triggered()
@@ -52,8 +60,10 @@ void WallLightTest::on_actionExit_triggered()
 
 void WallLightTest::changeColors(void)
 {
+  engine->update((float)millis() / 1000.0);
+  output = engine->getPixelData();
   // console.printf("Time: %f\n", Utility::rand());
-  output->fill((millis() % 1000) / 1000.0); // update output from test environment
+  // output->fill((millis() % 1000) / 1000.0); // update output from test environment
   ui->centralWidget->update();
 }
 

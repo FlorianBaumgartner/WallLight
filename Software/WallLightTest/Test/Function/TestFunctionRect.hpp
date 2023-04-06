@@ -35,50 +35,52 @@
 
 #include "../TestEngine.hpp"
 
-void test(void)
+class TestFunctionrect : public TestEngine
 {
-  float enable = 1.0;
-  float freq = 0.1;
-  float rep = -1.0;
-  float amplitude = 0.5;
-  float offset = 0.5;
-  float phase = 0.0;
+  public:
+    static bool test(Engine* engine)
+    {
+      Coefficient* enable = new Coefficient(1000, 1.0);
+      Coefficient* freq = new Coefficient(1001, 0.1);
+      Coefficient* rep = new Coefficient(1002, -1.0);
+      Coefficient* amplitude = new Coefficient(1003, 0.5);
+      Coefficient* offset = new Coefficient(1004, 0.5);
+      Coefficient* phase = new Coefficient(1005, 0.0);
 
-  float start = 0.0;
-  float low = 0.0;
-  float high = 1.0;
-  float smooth = 1.0;
+      Coefficient* start = new Coefficient(1006, 0.0);
+      Coefficient* low = new Coefficient(1007, 0.0);
+      Coefficient* high = new Coefficient(1008, 1.0);
+      Coefficient* smooth = new Coefficient(1009, 1.0);
 
-  // triangle = Generator.Triangle(0)
-  // triangle.setParameterInput(0, Coefficient(4, enable))
-  // triangle.setParameterInput(1, Coefficient(5, freq))
-  // triangle.setParameterInput(2, Coefficient(6, rep))
-  // triangle.setParameterInput(3, Coefficient(7, amplitude))
-  // triangle.setParameterInput(4, Coefficient(8, offset))
-  // triangle.setParameterInput(5, Coefficient(9, phase))
+      GeneratorTriangle* triangle = new GeneratorTriangle(0);
+      triangle->setParameterInput(0, enable);
+      triangle->setParameterInput(1, freq);
+      triangle->setParameterInput(2, rep);
+      triangle->setParameterInput(3, amplitude);
+      triangle->setParameterInput(4, offset);
+      triangle->setParameterInput(5, phase);
+
+      FunctionRect* rect = new FunctionRect(1);
+      rect->setParameterInput(0, start);
+      rect->setParameterInput(1, triangle);
+      rect->setParameterInput(2, low);
+      rect->setParameterInput(3, high);
+      rect->setParameterInput(4, smooth);
 
 
-}
+      Module* modules[] = {triangle, rect};
+      if(!engine->loadGraph(modules, sizeof(modules) / sizeof(Module*)))
+      {
+        return false;
+      }
+      if(!engine->setOutput(rect, 0))
+      {
+        return false;
+      }
+      return true;
+    }
 
-
-
-
-
-
-// rect = Function.Rect(1)
-// rect.setParameterInput(0, Coefficient(10, start))
-// rect.setParameterInput(1, triangle)
-// rect.setParameterInput(2, Coefficient(11, low))
-// rect.setParameterInput(3, Coefficient(12, high))
-// rect.setParameterInput(4, Coefficient(13, smooth))
-
-// parameterPlotter = Analyzer.ParameterPlotter(2)
-// parameterPlotter.setParameterInput(0, triangle)
-
-// inputPlotter = Analyzer.InputPlotter(3)
-// inputPlotter.setParameterInput(0, Coefficient(14, plotChannel))
-// inputPlotter.setInput(0, rect)
-
+};
 
 
 #endif

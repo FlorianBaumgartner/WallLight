@@ -91,9 +91,25 @@ build CMakeFiles/walllighttest.dir/Arduino/Stream.cpp.obj: CXX_COMPILER__walllig
   OBJECT_DIR = CMakeFiles\walllighttest.dir
   OBJECT_FILE_DIR = CMakeFiles\walllighttest.dir\Arduino
 
+build CMakeFiles/walllighttest.dir/Test/TestEngine.cpp.obj: CXX_COMPILER__walllighttest_Debug ../Test/TestEngine.cpp || cmake_object_order_depends_target_walllighttest
+  DEFINES = -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles\walllighttest.dir\Test\TestEngine.cpp.obj.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++
+  OBJECT_DIR = CMakeFiles\walllighttest.dir
+  OBJECT_FILE_DIR = CMakeFiles\walllighttest.dir\Test
+
 build CMakeFiles/walllighttest.dir/C_/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp.obj: CXX_COMPILER__walllighttest_Debug C$:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp || cmake_object_order_depends_target_walllighttest
   DEFINES = -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles\walllighttest.dir\C_\Users\flori\GoogleDrive\WallLight\Firmware\WallLight\src\Engine\Utility.cpp.obj.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++
+  OBJECT_DIR = CMakeFiles\walllighttest.dir
+  OBJECT_FILE_DIR = CMakeFiles\walllighttest.dir\C_\Users\flori\GoogleDrive\WallLight\Firmware\WallLight\src\Engine
+
+build CMakeFiles/walllighttest.dir/C_/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.cpp.obj: CXX_COMPILER__walllighttest_Debug C$:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.cpp || cmake_object_order_depends_target_walllighttest
+  DEFINES = -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles\walllighttest.dir\C_\Users\flori\GoogleDrive\WallLight\Firmware\WallLight\src\Engine\Engine.cpp.obj.d
   FLAGS = -g -std=gnu++2a
   INCLUDES = -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++
   OBJECT_DIR = CMakeFiles\walllighttest.dir
@@ -115,7 +131,7 @@ build CMakeFiles/walllighttest.dir/walllighttest_autogen/EWIEGA46WW/qrc_resource
 #############################################
 # Link the executable walllighttest.exe
 
-build walllighttest.exe: CXX_EXECUTABLE_LINKER__walllighttest_Debug CMakeFiles/walllighttest.dir/walllighttest_autogen/mocs_compilation.cpp.obj CMakeFiles/walllighttest.dir/main.cpp.obj CMakeFiles/walllighttest.dir/WallLightTest.cpp.obj CMakeFiles/walllighttest.dir/Arduino/console.cpp.obj CMakeFiles/walllighttest.dir/Arduino/Print.cpp.obj CMakeFiles/walllighttest.dir/Arduino/Stream.cpp.obj CMakeFiles/walllighttest.dir/C_/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp.obj CMakeFiles/walllighttest.dir/walllighttest_autogen/EWIEGA46WW/qrc_resources.cpp.obj | C$:/Qt/5.15.2/mingw81_64/lib/libQt5Widgets.a C$:/Qt/5.15.2/mingw81_64/lib/libQt5Gui.a C$:/Qt/5.15.2/mingw81_64/lib/libQt5Core.a C$:/Qt/5.15.2/mingw81_64/lib/libqtmain.a || walllighttest_autogen walllighttest_autogen_timestamp_deps
+build walllighttest.exe: CXX_EXECUTABLE_LINKER__walllighttest_Debug CMakeFiles/walllighttest.dir/walllighttest_autogen/mocs_compilation.cpp.obj CMakeFiles/walllighttest.dir/main.cpp.obj CMakeFiles/walllighttest.dir/WallLightTest.cpp.obj CMakeFiles/walllighttest.dir/Arduino/console.cpp.obj CMakeFiles/walllighttest.dir/Arduino/Print.cpp.obj CMakeFiles/walllighttest.dir/Arduino/Stream.cpp.obj CMakeFiles/walllighttest.dir/Test/TestEngine.cpp.obj CMakeFiles/walllighttest.dir/C_/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp.obj CMakeFiles/walllighttest.dir/C_/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.cpp.obj CMakeFiles/walllighttest.dir/walllighttest_autogen/EWIEGA46WW/qrc_resources.cpp.obj | C$:/Qt/5.15.2/mingw81_64/lib/libQt5Widgets.a C$:/Qt/5.15.2/mingw81_64/lib/libQt5Gui.a C$:/Qt/5.15.2/mingw81_64/lib/libQt5Core.a C$:/Qt/5.15.2/mingw81_64/lib/libqtmain.a || walllighttest_autogen walllighttest_autogen_timestamp_deps
   FLAGS = -g
   LINK_FLAGS = -mwindows
   LINK_LIBRARIES = C:/Qt/5.15.2/mingw81_64/lib/libQt5Widgets.a  C:/Qt/5.15.2/mingw81_64/lib/libQt5Gui.a  C:/Qt/5.15.2/mingw81_64/lib/libQt5Core.a  C:/Qt/5.15.2/mingw81_64/lib/libqtmain.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32

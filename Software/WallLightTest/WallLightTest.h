@@ -45,6 +45,7 @@ class WallLightTest : public QMainWindow
     QPixmap* pixmap;
     QLabel* label;
 
+    Engine* engine;
     LedVector* output;
     bool running = false;
 };

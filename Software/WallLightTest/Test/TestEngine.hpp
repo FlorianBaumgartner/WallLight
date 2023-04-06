@@ -35,16 +35,21 @@
 
 #include "Arduino.h"
 
+#include "../../../Firmware/WallLight/src/Engine/Engine.hpp"
 #include "../../../Firmware/WallLight/src/Engine/Module.hpp"
-// #include "../../../Firmware/WallLight/src/Engine/Function/Function.hpp"
-#include "../../../Firmware/WallLight/src/Engine/Function/FunctionAdder.hpp"
+#include "../../../Firmware/WallLight/src/Engine/Generator/Generator.hpp"
+#include "../../../Firmware/WallLight/src/Engine/Modifier/Modifier.hpp"
+#include "../../../Firmware/WallLight/src/Engine/Function/Function.hpp"
 
 
 class TestEngine
 {
   public:
-    TestEngine() {}
+    TestEngine();
+      
     ~TestEngine() {}
+
+  protected:
 
   private:
     
