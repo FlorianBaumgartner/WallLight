@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Function
 
 class Pulse(Function):
@@ -35,7 +36,7 @@ class Pulse(Function):
                 startDif = start * Function.pixelcount - i
                 stopDif = stop * Function.pixelcount - i
                 if(startDif > 0.0 and startDif < 1.0):
-                    c[i] = low + (high - low) * startDif
+                    c[i] = low + (high - low) * (1.0 - startDif)
                 if(stopDif >= 0.0 and stopDif < 1.0):
                     c[i] = low + (high - low) * stopDif
         

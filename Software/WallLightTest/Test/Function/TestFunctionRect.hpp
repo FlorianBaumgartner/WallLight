@@ -59,8 +59,8 @@ class TestFunctionRect : public TestEngine
 
       bool status = true;
       Module* modules[] = {triangle, rect};
-      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
       status &= engine->setOutput(rect, 0);
+      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
       return status;
     }
 };

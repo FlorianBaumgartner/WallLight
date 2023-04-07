@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Function
 
 class Pdf(Function):
@@ -17,8 +18,7 @@ class Pdf(Function):
         
         mean = self._getParameterValue(0)
         var = max(np.abs(self._getParameterValue(1)), 0.00001)
-        c = (1 / (np.sqrt(2 * np.pi * var))) * np.exp(-(np.linspace(0.0, 1.0, Function.pixelcount) - mean)**2 / (2 * var))
-        c *= 1 / np.max(c)
+        c = np.exp(-(np.linspace(0.0, 1.0, Function.pixelcount) - mean)**2 / (2 * var))
         self.outputs[0]["value"] = np.vstack((c, c, c, c, c, c)).T                                            
         return True
     

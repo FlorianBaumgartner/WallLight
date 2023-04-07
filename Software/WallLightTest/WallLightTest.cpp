@@ -121,6 +121,10 @@ bool WallLightTest::loadGraph(const char* name)
 
 void WallLightTest::unloadGraph()
 {
+  if(!engine->isReady())    // Check if graph is already unloaded
+  {
+    return;
+  }
   console.log.println("[WALLLIGHT_TEST] Unloading graph from Engine pending...");
   unloadingGraphPending = true;
 }

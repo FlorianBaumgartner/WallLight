@@ -48,7 +48,6 @@ class TestEngine
   public:
     TestEngine(Engine* engine) : engine(engine) {}
     ~TestEngine() {}
-
     bool loadtest(const char* name);
 
   private:

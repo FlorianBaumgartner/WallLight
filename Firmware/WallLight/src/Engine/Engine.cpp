@@ -39,7 +39,7 @@
 #endif
 
 
-#define ENGINE_VERBOSE true
+#define ENGINE_VERBOSE (true && !ESP32)
 
 Engine::Engine()
 {
@@ -405,8 +405,8 @@ uint16_t Engine::getInputConnectionCount(Function* function, uint16_t index)
     const Vector* inputVector = function->getInput(index);
     if(inputVector->module)
     {
-      int32_t checkId = inputVector->module->id;
-      uint16_t checkOutputIndex = inputVector->sourceIndex;
+      int32_t checkId = inputVector->module->id;              // Get ID of connected input module
+      uint16_t checkOutputIndex = inputVector->sourceIndex;   // Get output index of connected module
       uint16_t count = 0;
 
       for(int i = 0; i < moduleCount; i++)
@@ -421,7 +421,8 @@ uint16_t Engine::getInputConnectionCount(Function* function, uint16_t index)
             {
               if(function->getInput(p)->module)
               {
-                if(function->getInput(p)->module->id == checkId && p == checkOutputIndex)
+                uint32_t sourceIndex = function->getInput(p)->sourceIndex;
+                if(function->getInput(p)->module->id == checkId && sourceIndex == checkOutputIndex)
                 {
                   count++;
                 }

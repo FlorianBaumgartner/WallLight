@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    FunctionRect.hpp
+* file    FunctionBrightness.hpp
 *******************************************************************************
-* brief   Rectangle Function
+* brief   Brightness Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-19
+* date    2023-04-07
 *******************************************************************************
 * MIT License
 *
@@ -30,33 +30,27 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_RECT_HPP
-#define FUNCTION_RECT_HPP
+#ifndef FUNCTION_BRIGHTNESS_HPP
+#define FUNCTION_BRIGHTNESS_HPP
 
-#include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class FunctionRect: public virtual Function
+class FunctionBrightness: public virtual Function
 {
-  private:
-    Parameter parameterInputs[5] = {Parameter("start", 0.0),
-                                    Parameter("stop", 1.0),
-                                    Parameter("low", 0.0),
-                                    Parameter("high", 1.0),
-                                    Parameter("smooth", 1.0)};
+  private:    
+    Vector inputs[1] = {Vector("input")};
+    LedVector outputVectors[1] = {LedVector()};
+    Vector outputs[1] = {Vector("output", &outputVectors[0])};
+    LedVector* input = nullptr;
+    Parameter parameterInputs[1] = {Parameter("brightness", 1.0)};
+    Parameter parameterOutputs[0] = {};
 
-    Parameter parameterOutputs [0] = {};                                
-
-    Vector inputs[0] = {};
-    LedVector outputVectors[1] = {LedVector()};     
-    Vector outputs[1] = {Vector("output", &outputVectors[0])};  
-    
   public:
-    static constexpr const char* MODULE_NAME = "Rect";
-    FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
-    ~FunctionRect() {}
+    static constexpr const char* MODULE_NAME = "Brightness";
+    FunctionBrightness(int32_t id): Function(id, MODULE_NAME) {}
+    ~FunctionBrightness() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -65,10 +59,26 @@ class FunctionRect: public virtual Function
     inline Vector* getOutput(uint16_t index) {return (index < (sizeof(outputs) / sizeof(Vector)))? &outputs[index] : nullptr;}
     inline uint32_t getInputCount() {return (sizeof(inputs) / sizeof(Vector));}
     inline uint32_t getOutputCount() {return (sizeof(outputs) / sizeof(Vector));}
+
     bool init(bool deepCopy = false)
     {
-      checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
-      getOutput(0)->allocate(0.0);    // Always allocate an output vector for this module 
+      checkParameterInputs();               // Iterate over all parameter inputs to check if they are valid
+      input = getInputValue(0);
+      if(!LedVector::checkValid(input))     // If no input is connected, allocate output vector
+      {
+        deepCopy = true;
+        console.warning.println("[FUNCTION_BRIGHTNESS] No input connected");
+      }
+      if(deepCopy)
+      {
+        getOutput(0)->allocate(0.0);
+        setOutput(0, getOutputValue(0));
+        console.log.println("[FUNCTION_BRIGHTNESS] Allocate local output buffer");
+      }
+      else
+      {
+        setOutput(0, input);
+      }
       return initDone();
     }
 
@@ -84,42 +94,24 @@ class FunctionRect: public virtual Function
       }
       t = time;
 
-      float start = getParameterValue(0);
-      float stop = getParameterValue(1);
-      float low = getParameterValue(2);
-      float high = getParameterValue(3);
-      bool smooth = getParameterValue(4) >= 0.5;
+      float brightness = constrain(getParameterValue(0), 0.0, 1.0);
 
-      if(start > stop)
-      {
-        float temp = start;
-        start = stop;
-        stop = temp;
-      }
-      
       LedVector* output = getOutputValue(0);
       if(LedVector::checkValid(output))
       {
-        output->fill(low);
-        for(int i = 0; i < pixelcount(); i++)
+        if(LedVector::checkValid(input))     // Check if input is available
         {
-          if(((i + 0.5) > start * pixelcount()) && ((i + 0.5) <= stop * pixelcount()))
+          for(int i = 0; i < pixelcount(); i++)
           {
-            output->fillPixel(i, high);
-          }
-          if(smooth)
-          {
-            float startDif = start * pixelcount() - (float)i;
-            float stopDif = stop * pixelcount() - (float)i;
-            if((startDif > 0.0) && (startDif < 1.0))
+            for(int c = 0; c < COLORCOUNT; c++)
             {
-              output->fillPixel(i, low + (high - low) * (1.0 - startDif));
-            }
-            if((stopDif >= 0.0) && (stopDif < 1.0))
-            {
-              output->fillPixel(i, low + (high - low) * stopDif);
+              output->value[c][i] = input->value[c][i] * brightness;
             }
           }
+        }
+        else
+        {
+          output->fill(0.0);                // Blank output when no input is connected
         }
       }
       else error = true;

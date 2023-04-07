@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    FunctionRect.hpp
+* file    FunctionPdf.hpp
 *******************************************************************************
-* brief   Rectangle Function
+* brief   Power Density Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-19
+* date    2023-04-07
 *******************************************************************************
 * MIT License
 *
@@ -30,22 +30,19 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_RECT_HPP
-#define FUNCTION_RECT_HPP
+#ifndef FUNCTION_PDF_HPP
+#define FUNCTION_PDF_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class FunctionRect: public virtual Function
+class FunctionPdf: public virtual Function
 {
   private:
-    Parameter parameterInputs[5] = {Parameter("start", 0.0),
-                                    Parameter("stop", 1.0),
-                                    Parameter("low", 0.0),
-                                    Parameter("high", 1.0),
-                                    Parameter("smooth", 1.0)};
+    Parameter parameterInputs[2] = {Parameter("mean", 0.5),
+                                    Parameter("variance", 1.0)};
 
     Parameter parameterOutputs [0] = {};                                
 
@@ -54,9 +51,9 @@ class FunctionRect: public virtual Function
     Vector outputs[1] = {Vector("output", &outputVectors[0])};  
     
   public:
-    static constexpr const char* MODULE_NAME = "Rect";
-    FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
-    ~FunctionRect() {}
+    static constexpr const char* MODULE_NAME = "Pdf";
+    FunctionPdf(int32_t id): Function(id, MODULE_NAME) {}
+    ~FunctionPdf() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -84,42 +81,17 @@ class FunctionRect: public virtual Function
       }
       t = time;
 
-      float start = getParameterValue(0);
-      float stop = getParameterValue(1);
-      float low = getParameterValue(2);
-      float high = getParameterValue(3);
-      bool smooth = getParameterValue(4) >= 0.5;
+      float mean = getParameterValue(0);
+      float var = max(getParameterValue(1), 0.00001f);
 
-      if(start > stop)
-      {
-        float temp = start;
-        start = stop;
-        stop = temp;
-      }
-      
       LedVector* output = getOutputValue(0);
       if(LedVector::checkValid(output))
       {
-        output->fill(low);
         for(int i = 0; i < pixelcount(); i++)
         {
-          if(((i + 0.5) > start * pixelcount()) && ((i + 0.5) <= stop * pixelcount()))
-          {
-            output->fillPixel(i, high);
-          }
-          if(smooth)
-          {
-            float startDif = start * pixelcount() - (float)i;
-            float stopDif = stop * pixelcount() - (float)i;
-            if((startDif > 0.0) && (startDif < 1.0))
-            {
-              output->fillPixel(i, low + (high - low) * (1.0 - startDif));
-            }
-            if((stopDif >= 0.0) && (stopDif < 1.0))
-            {
-              output->fillPixel(i, low + (high - low) * stopDif);
-            }
-          }
+          float v = (float)i / (float)(pixelcount() - 1) - mean;
+          float c = exp(-(v * v) / (2.0 * var));
+          output->fillPixel(i, c);
         }
       }
       else error = true;

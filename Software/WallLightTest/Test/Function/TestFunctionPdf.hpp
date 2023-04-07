@@ -1,7 +1,7 @@
 /******************************************************************************
-* file    TestFunctionFire.hpp
+* file    TestFunctionPdf.hpp
 *******************************************************************************
-* brief   Test of Fire Function
+* brief   Test of the Power Density Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -30,28 +30,25 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_FUNCTION_FIRE_HPP
-#define TEST_FUNCTION_FIRE_HPP
+#ifndef TEST_FUNCTION_PDF_HPP
+#define TEST_FUNCTION_PDF_HPP
 
 #include "../TestEngine.hpp"
 
-class TestFunctionFire : public TestEngine
+class TestFunctionPdf : public TestEngine
 {
   public:
-    static constexpr const char* TEST_NAME = "Fire";
+    static constexpr const char* TEST_NAME = "Pdf";
 
     static bool test(Engine* engine)
     {
-      FunctionFire* fire = new FunctionFire(0);
-      fire->setParameterInput(0, new Coefficient(1000, 0.5));           // intensity
-      fire->setParameterInput(1, new Coefficient(1001, 0.85));          // ignition
-      fire->setParameterInput(2, new Coefficient(1002, 0.5));           // cooling
-      fire->setParameterInput(3, new Coefficient(1003, 0.5));           // speed
-      fire->setParameterInput(4, new Coefficient(1004, 0.2));           // acceleration
+      FunctionPdf* pdf = new FunctionPdf(0);
+      pdf->setParameterInput(0, new Coefficient(1000, 0.5));           // mean
+      pdf->setParameterInput(1, new Coefficient(1001, 0.01));          // variance
 
       bool status = true;
-      Module* modules[] = {fire};
-      status &= engine->setOutput(fire, 0);
+      Module* modules[] = {pdf};
+      status &= engine->setOutput(pdf, 0);
       status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
       return status;
     }

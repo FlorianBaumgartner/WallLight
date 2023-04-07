@@ -102,12 +102,12 @@ class FunctionColorGain: public virtual Function
       }
       t = time;
 
-      float r = getParameterValue(0);
-      float g = getParameterValue(1);
-      float b = getParameterValue(2);
-      float ww = getParameterValue(3);
-      float cw = getParameterValue(4);
-      float am = getParameterValue(5);
+      float r = constrain(getParameterValue(0), 0.0, 1.0);
+      float g = constrain(getParameterValue(1), 0.0, 1.0);
+      float b = constrain(getParameterValue(2), 0.0, 1.0);
+      float ww = constrain(getParameterValue(3), 0.0, 1.0);
+      float cw = constrain(getParameterValue(4), 0.0, 1.0);
+      float am = constrain(getParameterValue(5), 0.0, 1.0);
 
       LedVector* output = getOutputValue(0);
       if(LedVector::checkValid(output))     

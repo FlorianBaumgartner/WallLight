@@ -38,6 +38,7 @@
 #include "../../console.hpp"
 
 #include "FunctionRect.hpp"
+#include "FunctionPulse.hpp"
 #include "FunctionTriangle.hpp"
 #include "FunctionColorGain.hpp"
 #include "FunctionColorWheel.hpp"
@@ -46,6 +47,9 @@
 #include "FunctionMultiplier.hpp"
 #include "FunctionSum.hpp"
 #include "FunctionProduct.hpp"
+#include "FunctionSwitch.hpp"
+#include "FunctionBrightness.hpp"
+#include "FunctionPdf.hpp"
 #include "FunctionFire.hpp"
 
 
@@ -55,6 +59,10 @@ static Function* allocateFunction(const char* name, int32_t id)
   if(strcmp(name, FunctionRect::MODULE_NAME) == 0)
   {
     module = new FunctionRect(id);
+  }
+  else if(strcmp(name, FunctionPulse::MODULE_NAME) == 0)
+  {
+    module = new FunctionPulse(id);
   }
   else if(strcmp(name, FunctionTriangle::MODULE_NAME) == 0)
   {
@@ -87,6 +95,18 @@ static Function* allocateFunction(const char* name, int32_t id)
   else if(strcmp(name, FunctionProduct::MODULE_NAME) == 0)
   {
     module = new FunctionProduct(id);
+  }
+  else if(strcmp(name, FunctionSwitch::MODULE_NAME) == 0)
+  {
+    module = new FunctionSwitch(id);
+  }
+  else if(strcmp(name, FunctionBrightness::MODULE_NAME) == 0)
+  {
+    module = new FunctionBrightness(id);
+  }
+  else if(strcmp(name, FunctionPdf::MODULE_NAME) == 0)
+  {
+    module = new FunctionPdf(id);
   }
   else if(strcmp(name, FunctionFire::MODULE_NAME) == 0)
   {

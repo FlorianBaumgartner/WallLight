@@ -1,7 +1,7 @@
 /******************************************************************************
-* file    TestFunctionFire.hpp
+* file    TestFunctionPulse.hpp
 *******************************************************************************
-* brief   Test of Fire Function
+* brief   Test of Pulse Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -30,28 +30,36 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_FUNCTION_FIRE_HPP
-#define TEST_FUNCTION_FIRE_HPP
+#ifndef TEST_FUNCTION_PULSE_HPP
+#define TEST_FUNCTION_PULSE_HPP
 
 #include "../TestEngine.hpp"
 
-class TestFunctionFire : public TestEngine
+class TestFunctionPulse : public TestEngine
 {
   public:
-    static constexpr const char* TEST_NAME = "Fire";
+    static constexpr const char* TEST_NAME = "Pulse";
 
     static bool test(Engine* engine)
     {
-      FunctionFire* fire = new FunctionFire(0);
-      fire->setParameterInput(0, new Coefficient(1000, 0.5));           // intensity
-      fire->setParameterInput(1, new Coefficient(1001, 0.85));          // ignition
-      fire->setParameterInput(2, new Coefficient(1002, 0.5));           // cooling
-      fire->setParameterInput(3, new Coefficient(1003, 0.5));           // speed
-      fire->setParameterInput(4, new Coefficient(1004, 0.2));           // acceleration
+      GeneratorTriangle* triangle = new GeneratorTriangle(0);
+      triangle->setParameterInput(0, new Coefficient(1000, 1.0));       // enable
+      triangle->setParameterInput(1, new Coefficient(1001, 0.1));       // freq
+      triangle->setParameterInput(2, new Coefficient(1002, -1.0));      // rep
+      triangle->setParameterInput(3, new Coefficient(1003, 0.5));       // amplitude
+      triangle->setParameterInput(4, new Coefficient(1004, 0.5));       // offset
+      triangle->setParameterInput(5, new Coefficient(1005, 0.0));       // phase
+
+      FunctionPulse* pulse = new FunctionPulse(1);
+      pulse->setParameterInput(0, new Coefficient(1006, 0.5));           // position
+      pulse->setParameterInput(1, triangle);
+      pulse->setParameterInput(2, new Coefficient(1007, 0.0));           // low
+      pulse->setParameterInput(3, new Coefficient(1008, 1.0));           // high
+      pulse->setParameterInput(4, new Coefficient(1009, 1.0));           // smooth
 
       bool status = true;
-      Module* modules[] = {fire};
-      status &= engine->setOutput(fire, 0);
+      Module* modules[] = {triangle, pulse};
+      status &= engine->setOutput(pulse, 0);
       status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
       return status;
     }

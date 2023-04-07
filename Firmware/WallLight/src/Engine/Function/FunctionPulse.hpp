@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    FunctionRect.hpp
+* file    FunctionPulse.hpp
 *******************************************************************************
-* brief   Rectangle Function
+* brief   Pulse Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-02-19
+* date    2023-04-07
 *******************************************************************************
 * MIT License
 *
@@ -30,19 +30,19 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef FUNCTION_RECT_HPP
-#define FUNCTION_RECT_HPP
+#ifndef FUNCTION_PULSE_HPP
+#define FUNCTION_PULSE_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class FunctionRect: public virtual Function
+class FunctionPulse: public virtual Function
 {
   private:
-    Parameter parameterInputs[5] = {Parameter("start", 0.0),
-                                    Parameter("stop", 1.0),
+    Parameter parameterInputs[5] = {Parameter("position", 0.5),
+                                    Parameter("width", 1.0),
                                     Parameter("low", 0.0),
                                     Parameter("high", 1.0),
                                     Parameter("smooth", 1.0)};
@@ -54,9 +54,9 @@ class FunctionRect: public virtual Function
     Vector outputs[1] = {Vector("output", &outputVectors[0])};  
     
   public:
-    static constexpr const char* MODULE_NAME = "Rect";
-    FunctionRect(int32_t id): Function(id, MODULE_NAME) {}
-    ~FunctionRect() {}
+    static constexpr const char* MODULE_NAME = "Pulse";
+    FunctionPulse(int32_t id): Function(id, MODULE_NAME) {}
+    ~FunctionPulse() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -84,18 +84,14 @@ class FunctionRect: public virtual Function
       }
       t = time;
 
-      float start = getParameterValue(0);
-      float stop = getParameterValue(1);
+      float position = getParameterValue(0);
+      float width = getParameterValue(1);
       float low = getParameterValue(2);
       float high = getParameterValue(3);
       bool smooth = getParameterValue(4) >= 0.5;
 
-      if(start > stop)
-      {
-        float temp = start;
-        start = stop;
-        stop = temp;
-      }
+      float start = position - width / 2.0;
+      float stop = position + width / 2.0;
       
       LedVector* output = getOutputValue(0);
       if(LedVector::checkValid(output))

@@ -36,7 +36,7 @@ class Rect(Function):
                 startDif = start * Function.pixelcount - i
                 stopDif = stop * Function.pixelcount - i
                 if(startDif > 0.0 and startDif < 1.0):
-                    c[i] = low + (high - low) * startDif
+                    c[i] = low + (high - low) * (1.0 - startDif)
                 if(stopDif >= 0.0 and stopDif < 1.0):
                     c[i] = low + (high - low) * stopDif
         

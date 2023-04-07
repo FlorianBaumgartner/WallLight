@@ -118,14 +118,18 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/Function.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionAdder.hpp \
+  C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionBrightness.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorGain.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorWheel.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionFire.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionMultiplier.hpp \
+  C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionPdf.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionProduct.hpp \
+  C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionPulse.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionRect.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionSubtractor.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionSum.hpp \
+  C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionSwitch.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionTriangle.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Generator/Generator.hpp \
   C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Generator/GeneratorDirac.hpp \
