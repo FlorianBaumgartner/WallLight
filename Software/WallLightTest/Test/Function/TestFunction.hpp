@@ -37,11 +37,16 @@
 
 #include "TestFunctionRect.hpp"
 #include "TestFunctionPulse.hpp"
+#include "TestFunctionTriangle.hpp"
+#include "TestFunctionRamp.hpp"
+#include "TestFunctionDirac.hpp"
+#include "TestFunctionBlank.hpp"
 #include "TestFunctionFire.hpp"
 #include "TestFunctionAdder.hpp"
 #include "TestFunctionSwitch.hpp"
 #include "TestFunctionBrightness.hpp"
 #include "TestFunctionPdf.hpp"
+#include "TestFunctionColorInsert.hpp"
 
 
 static bool testFunction(Engine* engine, const char* name)
@@ -53,6 +58,22 @@ static bool testFunction(Engine* engine, const char* name)
   else if(strcmp(name, TestFunctionPulse::TEST_NAME) == 0)
   {
     return TestFunctionPulse::test(engine);
+  }
+  else if(strcmp(name, TestFunctionTriangle::TEST_NAME) == 0)
+  {
+    return TestFunctionTriangle::test(engine);
+  }
+  else if(strcmp(name, TestFunctionRamp::TEST_NAME) == 0)
+  {
+    return TestFunctionRamp::test(engine);
+  }
+  else if(strcmp(name, TestFunctionDirac::TEST_NAME) == 0)
+  {
+    return TestFunctionDirac::test(engine);
+  }
+  else if(strcmp(name, TestFunctionBlank::TEST_NAME) == 0)
+  {
+    return TestFunctionBlank::test(engine);
   }
   else if(strcmp(name, TestFunctionFire::TEST_NAME) == 0)
   {
@@ -73,6 +94,10 @@ static bool testFunction(Engine* engine, const char* name)
   else if(strcmp(name, TestFunctionPdf::TEST_NAME) == 0)
   {
     return TestFunctionPdf::test(engine);
+  }
+  else if(strcmp(name, TestFunctionColorInsert::TEST_NAME) == 0)
+  {
+    return TestFunctionColorInsert::test(engine);
   }
   else
   {

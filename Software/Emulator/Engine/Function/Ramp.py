@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Function
 
 class Ramp(Function):
@@ -53,14 +54,14 @@ if __name__ == '__main__':
     from Modules import Coefficient, Generator, Analyzer, Function
     wallLight = WallLight()
     
-    start = -0.5
+    start = -0.1
     stop = 0.9
     low = 0.0
     high = 1.0
     clip = 0.0
     
     gen = Generator.Triangle(0)
-    gen.setParameterInput(1, Coefficient(1005, 0.02))
+    gen.setParameterInput(1, Coefficient(1005, 0.2))
     gen.setParameterInput(3, Coefficient(1006, 0.1))
     gen.setParameterInput(4, Coefficient(1007, 0.5))
     

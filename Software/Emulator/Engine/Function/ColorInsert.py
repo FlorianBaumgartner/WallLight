@@ -1,6 +1,6 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
 from Modules import Function
 
 

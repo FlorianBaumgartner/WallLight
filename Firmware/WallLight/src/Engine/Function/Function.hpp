@@ -40,7 +40,11 @@
 #include "FunctionRect.hpp"
 #include "FunctionPulse.hpp"
 #include "FunctionTriangle.hpp"
+#include "FunctionRamp.hpp"
+#include "FunctionDirac.hpp"
+#include "FunctionBlank.hpp"
 #include "FunctionColorGain.hpp"
+#include "FunctionColorInsert.hpp"
 #include "FunctionColorWheel.hpp"
 #include "FunctionAdder.hpp"
 #include "FunctionSubtractor.hpp"
@@ -68,9 +72,25 @@ static Function* allocateFunction(const char* name, int32_t id)
   {
     module = new FunctionTriangle(id);
   }
+  else if(strcmp(name, FunctionRamp::MODULE_NAME) == 0)
+  {
+    module = new FunctionRamp(id);
+  }
+  else if(strcmp(name, FunctionDirac::MODULE_NAME) == 0)
+  {
+    module = new FunctionDirac(id);
+  }
+  else if(strcmp(name, FunctionBlank::MODULE_NAME) == 0)
+  {
+    module = new FunctionBlank(id);
+  }
   else if(strcmp(name, FunctionColorGain::MODULE_NAME) == 0)
   {
     module = new FunctionColorGain(id);
+  }
+  else if(strcmp(name, FunctionColorInsert::MODULE_NAME) == 0)
+  {
+    module = new FunctionColorInsert(id);
   }
   else if(strcmp(name, FunctionColorWheel::MODULE_NAME) == 0)
   {
