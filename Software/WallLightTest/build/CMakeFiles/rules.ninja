@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest -BC:\Users\flori\GoogleDrive\WallLight\Software\WallLightTest\build
+  command = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest -BC:\Users\Admin\GoogleDrive\WallLight\Software\WallLightTest\build
   description = Re-running CMake...
   generator = 1
 
@@ -59,7 +59,7 @@ rule CLEAN_ADDITIONAL
 # Rule for cleaning all built files.
 
 rule CLEAN
-  command = C:\Users\flori\AppData\Local\Programs\Python\Python39\Scripts\ninja.exe $FILE_ARG -t clean $TARGETS
+  command = C:\Users\Admin\AppData\Local\Programs\Python\Python39\Scripts\ninja.exe $FILE_ARG -t clean $TARGETS
   description = Cleaning all built files...
 
 
@@ -67,6 +67,6 @@ rule CLEAN
 # Rule for printing all primary targets available.
 
 rule HELP
-  command = C:\Users\flori\AppData\Local\Programs\Python\Python39\Scripts\ninja.exe -t targets
+  command = C:\Users\Admin\AppData\Local\Programs\Python\Python39\Scripts\ninja.exe -t targets
   description = All primary targets available:
 

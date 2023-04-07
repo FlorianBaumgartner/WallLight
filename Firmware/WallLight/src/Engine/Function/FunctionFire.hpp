@@ -142,7 +142,7 @@ class FunctionFire: public virtual Function
       float ignition = getParameterValue(1);
       float cooling = getParameterValue(2);
       float speed = getParameterValue(3);
-      bool acceleration = getParameterValue(4);
+      float acceleration = getParameterValue(4);
 
       LedVector* output = getOutputValue(0);
       if(LedVector::checkValid(output))

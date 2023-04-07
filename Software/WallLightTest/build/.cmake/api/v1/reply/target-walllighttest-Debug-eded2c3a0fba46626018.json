@@ -87,14 +87,14 @@
 			"includes" : 
 			[
 				{
-					"path" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build"
 				},
 				{
-					"path" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include"
+					"path" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include"
 				},
 				{
 					"backtrace" : 2,
@@ -172,7 +172,7 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-mwindows",
+				"fragment" : "-mconsole  -mwindows",
 				"role" : "flags"
 			},
 			{
@@ -300,13 +300,13 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp",
+			"path" : "C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.cpp",
+			"path" : "C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

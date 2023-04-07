@@ -20,20 +20,21 @@ class Fire(Function):
         self.blendTotal = self.blendSelf + self.blendNeighbor1 * 2 + self.blendNeighbor2 * 2
         self.offset = 3
         self.heat = np.zeros(Function.pixelcount + self.offset)
+
         
     def heatMap(self, temperature):
         temperature = max(0.0, min(1.0, temperature)) * 3.0
         if(temperature > 2.0):
             r = 1.0
-            g = 0.8
-            b = (temperature % 1.0) * 0.5
+            g = 0.4
+            b = (temperature % 1.0) * 0.4
         elif(temperature > 1.0):
             r = 1.0
-            g = 0.4 + (temperature % 1.0) * 0.4
+            g = 0.2 + (temperature % 1.0) * 0.2
             b = 0.0
         else:
             r = temperature % 1.0
-            g = (temperature % 1.0) * 0.4
+            g = (temperature % 1.0) * 0.2
             b = 0.0
         return r, g, b
     
@@ -63,7 +64,7 @@ class Fire(Function):
             
         temp = np.zeros_like(self.heat)
         for i in range(Function.pixelcount):
-            self.addHeat(temp, i * (acceleration / 10.0 + 1.0) + 100.0 * (speed / Function.framerate), self.heat[i])
+            self.addHeat(temp, i * (acceleration * 0.1 + 1.0) + 100.0 * (speed / Function.framerate), self.heat[i])
 
         self.heat[0] = temp[0]
         self.heat[1] = temp[1]

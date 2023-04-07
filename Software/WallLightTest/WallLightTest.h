@@ -32,12 +32,12 @@ class WallLightTest : public QMainWindow
     static const int FRAMERATE = 50;
     static const int PIXELCOUNT = 288;
 
-    
+    bool loadGraph(const char* name);
+    void unloadGraph();    
 
   private slots:
     void on_actionExit_triggered();
     void changeColors(void);
-    void paintEvent(QPaintEvent *event);
 
   private:
     Ui::WallLightTest *ui;
@@ -46,8 +46,10 @@ class WallLightTest : public QMainWindow
     QLabel* label;
 
     Engine* engine;
-    LedVector* output;
+    TestEngine* testEngine;
+    LedVector* output = nullptr;
     bool running = false;
+    bool unloadingGraphPending = false;
 };
 
 #endif // WALLLIGHT_TEST_H

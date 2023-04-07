@@ -35,52 +35,34 @@
 
 #include "../TestEngine.hpp"
 
-class TestFunctionrect : public TestEngine
+class TestFunctionRect : public TestEngine
 {
   public:
+    static constexpr const char* TEST_NAME = "Rect";
+
     static bool test(Engine* engine)
     {
-      Coefficient* enable = new Coefficient(1000, 1.0);
-      Coefficient* freq = new Coefficient(1001, 0.1);
-      Coefficient* rep = new Coefficient(1002, -1.0);
-      Coefficient* amplitude = new Coefficient(1003, 0.5);
-      Coefficient* offset = new Coefficient(1004, 0.5);
-      Coefficient* phase = new Coefficient(1005, 0.0);
-
-      Coefficient* start = new Coefficient(1006, 0.0);
-      Coefficient* low = new Coefficient(1007, 0.0);
-      Coefficient* high = new Coefficient(1008, 1.0);
-      Coefficient* smooth = new Coefficient(1009, 1.0);
-
       GeneratorTriangle* triangle = new GeneratorTriangle(0);
-      triangle->setParameterInput(0, enable);
-      triangle->setParameterInput(1, freq);
-      triangle->setParameterInput(2, rep);
-      triangle->setParameterInput(3, amplitude);
-      triangle->setParameterInput(4, offset);
-      triangle->setParameterInput(5, phase);
+      triangle->setParameterInput(0, new Coefficient(1000, 1.0));       // enable
+      triangle->setParameterInput(1, new Coefficient(1001, 0.1));       // freq
+      triangle->setParameterInput(2, new Coefficient(1002, -1.0));      // rep
+      triangle->setParameterInput(3, new Coefficient(1003, 0.5));       // amplitude
+      triangle->setParameterInput(4, new Coefficient(1004, 0.5));       // offset
+      triangle->setParameterInput(5, new Coefficient(1005, 0.0));       // phase
 
       FunctionRect* rect = new FunctionRect(1);
-      rect->setParameterInput(0, start);
+      rect->setParameterInput(0, new Coefficient(1006, 0.0));           // start
       rect->setParameterInput(1, triangle);
-      rect->setParameterInput(2, low);
-      rect->setParameterInput(3, high);
-      rect->setParameterInput(4, smooth);
+      rect->setParameterInput(2, new Coefficient(1007, 0.0));           // low
+      rect->setParameterInput(3, new Coefficient(1008, 1.0));           // high
+      rect->setParameterInput(4, new Coefficient(1009, 1.0));           // smooth
 
-
+      bool status = true;
       Module* modules[] = {triangle, rect};
-      if(!engine->loadGraph(modules, sizeof(modules) / sizeof(Module*)))
-      {
-        return false;
-      }
-      if(!engine->setOutput(rect, 0))
-      {
-        return false;
-      }
-      return true;
+      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
+      status &= engine->setOutput(rect, 0);
+      return status;
     }
-
 };
-
 
 #endif

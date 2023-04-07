@@ -30,23 +30,21 @@ WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::
   connect(timer, &QTimer::timeout, this, &WallLightTest::changeColors);
   timer->start(1000 / FRAMERATE);
 
-  console.printf("Console Test %d\n", 10);
-  console.ok.println("OK");
-
-  // TestFunctionrect::test();
   engine = new Engine();
-  TestFunctionrect::test(engine);
-  // TestEngine testEngine = TestEngine();
+  testEngine = new TestEngine(engine);
+  console.log.println("[WALLLIGHT_TEST] Setup Environment done");
 }
 
 WallLightTest::~WallLightTest()
 {
   running = false;
+  engine->unloadGraph();
+
   delete label;
   delete pixmap;
   delete timer;
   delete ui;
-  delete output;
+  delete testEngine;
   delete engine;
 }
 
@@ -60,32 +58,69 @@ void WallLightTest::on_actionExit_triggered()
 
 void WallLightTest::changeColors(void)
 {
-  engine->update((float)millis() / 1000.0);
-  output = engine->getPixelData();
-  // console.printf("Time: %f\n", Utility::rand());
-  // output->fill((millis() % 1000) / 1000.0); // update output from test environment
-  ui->centralWidget->update();
-}
-
-void WallLightTest::paintEvent(QPaintEvent *event)
-{
-  if(!running)
+    if(!running)
      return;
   int height = WINDOW_HEIGHT - PIXELS_OFFSET * 2;
   int hPixel = int(height / PIXELCOUNT);
   int offset = int((WINDOW_HEIGHT - hPixel * PIXELCOUNT) / 2);
-  
-  QPainter painter(pixmap);
-  for (int i = 0; i < PIXELCOUNT; i++)
-  {
-    uint8_t r = constrain(output->value[WallLightConfig::LED_R][i], 0.0, 1.0) * 255;
-    uint8_t g = constrain(output->value[WallLightConfig::LED_G][i], 0.0, 1.0) * 255;
-    uint8_t b = constrain(output->value[WallLightConfig::LED_B][i], 0.0, 1.0) * 255;
-    painter.fillRect(offset, offset + hPixel * i, 20, hPixel, QColor(r, g, b));
-  }
-  painter.end();
 
+  if(unloadingGraphPending)
+  {
+    unloadingGraphPending = false;
+    console.log.println("[WALLLIGHT_TEST] Unloading graph from Engine");
+    engine->unloadGraph();
+  }
+
+  if(engine->isReady())
+  {
+    output = engine->getPixelData();
+    if(engine->update((float)millis() / 1000.0))
+    {
+      LedVector* pixels = engine->getPixelData();
+      if(pixels)
+      {
+        if(pixels->value)
+        {
+          QPainter painter(pixmap);
+          for (int i = 0; i < PIXELCOUNT; i++)
+          {
+            uint8_t r = constrain(output->value[WallLightConfig::LED_R][i], 0.0, 1.0) * 255;
+            uint8_t g = constrain(output->value[WallLightConfig::LED_G][i], 0.0, 1.0) * 255;
+            uint8_t b = constrain(output->value[WallLightConfig::LED_B][i], 0.0, 1.0) * 255;
+            painter.fillRect(offset, offset + hPixel * (PIXELCOUNT - 1 - i), 20, hPixel, QColor(r, g, b));
+          }
+          painter.end();
+        }
+      }
+      else
+      {
+        console.error.println("[WALLLIGHT_TEST] Error occured while updating graph");
+        engine->unloadGraph();
+      }
+    }
+    else
+    {
+      QPainter painter(pixmap);
+      painter.fillRect(offset, offset + hPixel * (PIXELCOUNT - 1), 20, hPixel, QColor(0, 0, 0));
+      painter.end();
+    }
+  }
+  
   label->setPixmap(*pixmap);
   label->move(0, 0);
   label->show();
+  ui->centralWidget->update();
+}
+
+bool WallLightTest::loadGraph(const char* name)
+{
+  console.log.printf("[WALLLIGHT_TEST] Loading Module test ""%s""\n", name);
+  testEngine->loadtest(name);
+  return true;
+}
+
+void WallLightTest::unloadGraph()
+{
+  console.log.println("[WALLLIGHT_TEST] Unloading graph from Engine pending...");
+  unloadingGraphPending = true;
 }

@@ -336,7 +336,8 @@ bool Engine::loadGraph(Module** modules, uint16_t moduleCount)
       modules[i]->init(deepCopy);    // Check if output buffer needs to be allocated
     }
   }
-
+  
+  console.ok.println("[ENGINE] Graph loading was successful.");
   graphLoaded = true;
   return true;
 }
@@ -350,6 +351,21 @@ void Engine::unloadGraph(void)
     {
       if(modules[i])
       {
+        #ifndef ESP32   // Only for Test Environment -> Delete all connected Coefficiencts of each module
+          for(int p = 0; p < modules[i]->getParameterInputCount(); p++)
+          {
+            if(modules[i]->getParameterInput(p))
+            {
+              if(modules[i]->getParameterInput(p)->module)
+              {
+                if(modules[i]->getParameterInput(p)->module->moduleClass == Module::MODULE_COEFFICIENT)
+                {
+                  delete modules[i]->getParameterInput(p)->module;
+                }
+              }
+            }
+          }
+        #endif
         modules[i]->deinit();   // Deinitialize all modules
         delete modules[i];      
       }

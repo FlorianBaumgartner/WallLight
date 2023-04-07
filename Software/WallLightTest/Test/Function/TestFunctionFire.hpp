@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    TestEngine.hpp
+* file    TestFunctionFire.hpp
 *******************************************************************************
-* brief   Graph Test Engine
+* brief   Test of Fire Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-03-29
+* date    2023-04-07
 *******************************************************************************
 * MIT License
 *
@@ -30,30 +30,31 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_ENGINE_HPP
-#define TEST_ENGINE_HPP
+#ifndef TEST_FUNCTION_FIRE_HPP
+#define TEST_FUNCTION_FIRE_HPP
 
-#include "Arduino.h"
+#include "../TestEngine.hpp"
 
-#include "../../../Firmware/WallLight/src/Engine/Engine.hpp"
-#include "../../../Firmware/WallLight/src/Engine/Module.hpp"
-#include "../../../Firmware/WallLight/src/Engine/Generator/Generator.hpp"
-#include "../../../Firmware/WallLight/src/Engine/Modifier/Modifier.hpp"
-#include "../../../Firmware/WallLight/src/Engine/Function/Function.hpp"
-
-
-
-class TestEngine
+class TestFunctionFire : public TestEngine
 {
   public:
-    TestEngine(Engine* engine) : engine(engine) {}
-    ~TestEngine() {}
+    static constexpr const char* TEST_NAME = "Fire";
 
-    bool loadtest(const char* name);
+    static bool test(Engine* engine)
+    {
+      FunctionFire* fire = new FunctionFire(0);
+      fire->setParameterInput(0, new Coefficient(1000, 0.5));           // intensity
+      fire->setParameterInput(1, new Coefficient(1001, 0.85));          // ignition
+      fire->setParameterInput(2, new Coefficient(1002, 0.5));           // cooling
+      fire->setParameterInput(3, new Coefficient(1003, 0.5));           // speed
+      fire->setParameterInput(4, new Coefficient(1004, 0.2));           // acceleration
 
-  private:
-    Engine* engine;
+      bool status = true;
+      Module* modules[] = {fire};
+      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
+      status &= engine->setOutput(fire, 0);
+      return status;
+    }
 };
-
 
 #endif

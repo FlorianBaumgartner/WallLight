@@ -9,5 +9,9 @@ int main(int argc, char *argv[])
     WallLightTest wallLight;
     wallLight.show();
 
-    return a.exec();
+    wallLight.loadGraph("Function.Fire");
+
+    bool res = a.exec();
+    wallLight.unloadGraph();
+    return res;
 }

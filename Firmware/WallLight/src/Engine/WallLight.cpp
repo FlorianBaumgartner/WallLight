@@ -84,7 +84,6 @@ void WallLight::unloadGraph(uint8_t engineIndex)
 void WallLight::update(void* pvParameter)
 {
   WallLight* ref = (WallLight*)pvParameter;
-  bool updateStatus = true;
   bool printOnce = true;
 
   while(true)
@@ -97,13 +96,12 @@ void WallLight::update(void* pvParameter)
       console.log.printf("[WALLLIGHT] Unloading graph from Engine %d\n", 0);
       ref->engine[0].unloadGraph();
     }
-    if(ref->engine[0].isReady())                                                  // Check if graph is loaded 
-    {
-      bool updateStatus = ref->engine[0].update((float)millis() / 1000.0);        // TODO: Get time from dedicated time source
-      if(updateStatus)
+    if(ref->engine[0].isReady())                                // Check if graph is loaded 
+    {       
+      if(ref->engine[0].update((float)millis() / 1000.0))				// TODO: Get time from dedicated time source
       {
         LedVector* pixels = ref->engine[0].getPixelData();      // TODO: Make dynamic
-        if(pixels && updateStatus)                              // Check if output is connected to module
+        if(pixels)                              								// Check if output is connected to module
         {
           if(pixels->value)                                     // Check if led vector of output module is allocated
           {

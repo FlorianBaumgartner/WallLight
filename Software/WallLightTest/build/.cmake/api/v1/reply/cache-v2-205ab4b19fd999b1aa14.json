@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build"
+			"value" : "c:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -619,7 +619,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest"
+			"value" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -663,7 +663,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Users/flori/AppData/Local/Programs/Python/Python39/Scripts/ninja.exe"
+			"value" : "C:/Users/Admin/AppData/Local/Programs/Python/Python39/Scripts/ninja.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -1287,7 +1287,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build"
+			"value" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build"
 		},
 		{
 			"name" : "walllighttest_SOURCE_DIR",
@@ -1299,7 +1299,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest"
+			"value" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest"
 		}
 	],
 	"kind" : "cache",

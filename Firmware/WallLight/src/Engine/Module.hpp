@@ -191,14 +191,15 @@ class Coefficient: public Module
       value[0].value = defaultValue;
       init();         // Make sure that ready status is set
     }
+    ~Coefficient() {}
     void setValue(float v) {value[0].value = v;};
     float getValue(void) {return value[0].value;};
-    bool update(float time) {return ready = true;}
+    bool update(float time) {return ready;}
     Parameter* getParameterInput(uint16_t index) {return nullptr;}
     Parameter* getParameterOutput(uint16_t index) {return &value[0];}
     uint32_t getParameterInputCount() {return 0;}
     uint32_t getParameterOutputCount() {return 1;}
-    bool init(bool deepCopy = false) {return initialized = true;}
+    bool init(bool deepCopy = false) {return (initialized = ready = true);}
     bool deinit(void) {return initialized = false;}
   private:
     Parameter value[1] = {Parameter("output")};

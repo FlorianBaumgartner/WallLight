@@ -32,8 +32,62 @@
 
 #include "TestEngine.hpp"
 
+#include "Function/TestFunctionRect.hpp"
+#include "Function/TestFunctionFire.hpp"
 
-TestEngine::TestEngine()
+
+bool TestEngine::loadtest(const char* name)
 {
+  char* separator = strchr(name, '.');      // Find the separator symbol '.'
+  if (separator == nullptr)
+  {
+    console.error.printf("[TEST_ENGINE] The desired test name is not correctly formated: %s\n", name);
+    return false;
+  }
+  int prefixLength = separator - name;
+  char* moduleType = separator + 1;
 
+  if(strncmp(name, "Generator", prefixLength) == 0)
+  {
+    if(false)
+    {
+      return true;
+    }
+    else
+    {
+      console.error.printf("[TEST_ENGINE] Generator '%s' is not supported!\n", moduleType);
+    }
+  }
+  else if(strncmp(name, "Modifier", prefixLength) == 0)
+  {
+    if(false)
+    {
+      return true;
+    }
+    else
+    {
+      console.error.printf("[TEST_ENGINE] Modifier '%s' is not supported!\n", moduleType);
+    }
+  }
+  else if(strncmp(name, "Function", prefixLength) == 0)
+  {
+    if(strcmp(moduleType, TestFunctionRect::TEST_NAME) == 0)
+    {
+      return TestFunctionRect::test(engine);
+    }
+    else if(strcmp(moduleType, TestFunctionFire::TEST_NAME) == 0)
+    {
+      return TestFunctionFire::test(engine);
+    }
+    else
+    {
+      console.error.printf("[TEST_ENGINE] Function '%s' is not supported!\n", moduleType);
+    }
+  }
+  else
+  {
+    console.warning.printf("[TEST_ENGINE] Module class type '%s' is not supported\n", name);
+  }
+
+  return false;
 }
