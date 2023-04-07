@@ -47,6 +47,7 @@
 #include "TestFunctionBrightness.hpp"
 #include "TestFunctionPdf.hpp"
 #include "TestFunctionColorInsert.hpp"
+#include "TestFunctionColorInterpolate.hpp"
 
 
 static bool testFunction(Engine* engine, const char* name)
@@ -98,6 +99,10 @@ static bool testFunction(Engine* engine, const char* name)
   else if(strcmp(name, TestFunctionColorInsert::TEST_NAME) == 0)
   {
     return TestFunctionColorInsert::test(engine);
+  }
+  else if(strcmp(name, TestFunctionColorInterpolate::TEST_NAME) == 0)
+  {
+    return TestFunctionColorInterpolate::test(engine);
   }
   else
   {

@@ -156,13 +156,13 @@ class Utility():
     
     
     def interpolate(data):
-        firstX = lastX = -1.0       # Set start end end points to corner values (avoid empty borders)
+        firstX = lastX = -1       # Set start end end points to corner values (avoid empty borders)
         for i in range(len(data)):
             if(data[i] >= 0) and (firstX < 0):
                 firstX = i
             if(data[len(data) - 1 - i] >= 0) and (lastX < 0):
                 lastX = len(data) - 1 - i
-        if firstX < 0.0 or lastX < 0.0:
+        if firstX < 0 or lastX < 0:
             return np.clip(data, 0.0, 1.0)
         data[0:firstX] = data[firstX]
         data[lastX:] = data[lastX]

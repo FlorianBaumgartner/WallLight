@@ -40,6 +40,7 @@ class Utility
   public:
     static void hsvToRgb(float h, float s, float v, float* r, float* g, float* b);
     static void rgbToHsv(float r, float g, float b, float* h, float* s, float* v);
+    static void interpolate(float* input, float* output, uint16_t count);
     static float mod(float a, float b) {return fmod((fmod(a, b) + b), b);}        // Module function that always returns the positive reminder (bahaves equal to the python % operator)
     static float rand(void);
 };

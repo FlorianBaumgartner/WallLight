@@ -45,6 +45,7 @@
 #include "FunctionBlank.hpp"
 #include "FunctionColorGain.hpp"
 #include "FunctionColorInsert.hpp"
+#include "FunctionColorInterpolate.hpp"
 #include "FunctionColorWheel.hpp"
 #include "FunctionAdder.hpp"
 #include "FunctionSubtractor.hpp"
@@ -91,6 +92,10 @@ static Function* allocateFunction(const char* name, int32_t id)
   else if(strcmp(name, FunctionColorInsert::MODULE_NAME) == 0)
   {
     module = new FunctionColorInsert(id);
+  }
+  else if(strcmp(name, FunctionColorInterpolate::MODULE_NAME) == 0)
+  {
+    module = new FunctionColorInterpolate(id);
   }
   else if(strcmp(name, FunctionColorWheel::MODULE_NAME) == 0)
   {

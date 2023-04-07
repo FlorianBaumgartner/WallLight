@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Function
 from Utility import Utility
 
@@ -29,7 +30,7 @@ class ColorInterpolate(Function):
         am = inputVector[:,5]
         
         if mode:
-            mask = np.clip(r + 1, 0.0, 1.0)  
+            mask = np.clip(r + 1.0, 0.0, 1.0)  
             h, s, v = Utility.rgbToHsv(np.clip(r, 0.0, 1.0), np.clip(g, 0.0, 1.0), np.clip(b, 0.0, 1.0))  
             h  = Utility.interpolate((h + 1.0) * mask - 1.0)
             s  = Utility.interpolate((s + 1.0) * mask - 1.0)

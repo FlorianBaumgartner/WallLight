@@ -175,6 +175,7 @@ walllighttest_autogen/timestamp: \
 	C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionBrightness.hpp \
 	C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorGain.hpp \
 	C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorInsert.hpp \
+	C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorInterpolate.hpp \
 	C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorWheel.hpp \
 	C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionDirac.hpp \
 	C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionFire.hpp \
