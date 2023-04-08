@@ -52,6 +52,8 @@
 #include "TestFunctionColorInsert.hpp"
 #include "TestFunctionColorInterpolate.hpp"
 #include "TestFunctionColorBlend.hpp"
+#include "TestFunctionColorGain.hpp"
+#include "TestFunctionColorWheel.hpp"
 #include "TestFunctionSum.hpp"
 #include "TestFunctionProduct.hpp"
 
@@ -125,6 +127,14 @@ static bool testFunction(Engine* engine, const char* name)
   else if(strcmp(name, TestFunctionColorBlend::TEST_NAME) == 0)
   {
     return TestFunctionColorBlend::test(engine);
+  }
+  else if(strcmp(name, TestFunctionColorGain::TEST_NAME) == 0)
+  {
+    return TestFunctionColorGain::test(engine);
+  }
+  else if(strcmp(name, TestFunctionColorWheel::TEST_NAME) == 0)
+  {
+    return TestFunctionColorWheel::test(engine);
   }
   else if(strcmp(name, TestFunctionSum::TEST_NAME) == 0)
   {
