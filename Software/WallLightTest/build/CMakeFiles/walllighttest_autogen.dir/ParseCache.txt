@@ -125,12 +125,14 @@ C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionAdder.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionBlank.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionBrightness.hpp
+ mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorBlend.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorGain.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorInsert.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorInterpolate.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionColorWheel.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionDirac.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionFire.hpp
+ mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionMixer.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionMultiplier.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionPdf.hpp
  mdp:C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Function/FunctionProduct.hpp

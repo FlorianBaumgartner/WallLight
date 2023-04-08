@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    TestFunctionAdder.hpp
+* file    TestFunctionSubtractor.hpp
 *******************************************************************************
-* brief   Test of Adder Function
+* brief   Test of Subtractor Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-07
+* date    2023-04-08
 *******************************************************************************
 * MIT License
 *
@@ -30,15 +30,15 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_FUNCTION_ADDER_HPP
-#define TEST_FUNCTION_ADDER_HPP
+#ifndef TEST_FUNCTION_SUBTRACTOR_HPP
+#define TEST_FUNCTION_SUBTRACTOR_HPP
 
 #include "../TestEngine.hpp"
 
-class TestFunctionAdder : public TestEngine
+class TestFunctionSubtractor : public TestEngine
 {
   public:
-    static constexpr const char* TEST_NAME = "Adder";
+    static constexpr const char* TEST_NAME = "Subtractor";
 
     static bool test(Engine* engine)
     {
@@ -50,17 +50,17 @@ class TestFunctionAdder : public TestEngine
       pdf1->setParameterInput(0, new Coefficient(1002, 0.65));     // mean
       pdf1->setParameterInput(1, new Coefficient(1003, 0.01));     // variance
 
-      FunctionAdder* adder = new FunctionAdder(2);
-      adder->setInput(0, pdf0);
-      adder->setInput(1, pdf1);
+      FunctionSubtractor* subtractor = new FunctionSubtractor(2);
+      subtractor->setInput(0, pdf0);
+      subtractor->setInput(1, pdf1);
 
-      FunctionAdder* adderDemo = new FunctionAdder(3);              // Use this as a dummy to force a deep copy of the inputs
-      adderDemo->setInput(0, pdf0);
-      adderDemo->setInput(1, pdf1);
+      FunctionSubtractor* subtractorDemo = new FunctionSubtractor(3);              // Use this as a dummy to force a deep copy of the inputs
+      subtractorDemo->setInput(0, pdf0);
+      subtractorDemo->setInput(1, pdf1);
 
       bool status = true;
-      Module* modules[] = {pdf0, pdf1, adder, adderDemo};
-      status &= engine->setOutput(adder, 0);
+      Module* modules[] = {pdf0, pdf1, subtractor, subtractorDemo};
+      status &= engine->setOutput(subtractor, 0);
       status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
       return status;
     }

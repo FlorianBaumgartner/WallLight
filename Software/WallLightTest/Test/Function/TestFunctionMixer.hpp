@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    TestFunctionAdder.hpp
+* file    TestFunctionMixer.hpp
 *******************************************************************************
-* brief   Test of Adder Function
+* brief   Test of Mixer Function
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-07
+* date    2023-04-08
 *******************************************************************************
 * MIT License
 *
@@ -30,37 +30,38 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_FUNCTION_ADDER_HPP
-#define TEST_FUNCTION_ADDER_HPP
+#ifndef TEST_FUNCTION_MIXER_HPP
+#define TEST_FUNCTION_MIXER_HPP
 
 #include "../TestEngine.hpp"
 
-class TestFunctionAdder : public TestEngine
+class TestFunctionMixer : public TestEngine
 {
   public:
-    static constexpr const char* TEST_NAME = "Adder";
+    static constexpr const char* TEST_NAME = "Mixer";
 
     static bool test(Engine* engine)
     {
-      FunctionPdf* pdf0 = new FunctionPdf(0);
-      pdf0->setParameterInput(0, new Coefficient(1000, 0.35));     // mean
-      pdf0->setParameterInput(1, new Coefficient(1001, 0.01));     // variance
+      FunctionRect* rect0 = new FunctionRect(0);
+      rect0->setParameterInput(0, new Coefficient(1000, 0.0));          // start
+      rect0->setParameterInput(1, new Coefficient(1001, 0.25));         // stop
 
-      FunctionPdf* pdf1 = new FunctionPdf(1);
-      pdf1->setParameterInput(0, new Coefficient(1002, 0.65));     // mean
-      pdf1->setParameterInput(1, new Coefficient(1003, 0.01));     // variance
+      FunctionRect* rect1 = new FunctionRect(1);
+      rect1->setParameterInput(0, new Coefficient(1002, 0.75));         // start
+      rect1->setParameterInput(1, new Coefficient(1003, 1.0));          // stop
 
-      FunctionAdder* adder = new FunctionAdder(2);
-      adder->setInput(0, pdf0);
-      adder->setInput(1, pdf1);
+      FunctionMixer* mixer = new FunctionMixer(2);
+      mixer->setInput(0, rect0);
+      mixer->setInput(1, rect1);
+      mixer->setParameterInput(0, new Coefficient(1004, 0.3));          // mix
 
-      FunctionAdder* adderDemo = new FunctionAdder(3);              // Use this as a dummy to force a deep copy of the inputs
-      adderDemo->setInput(0, pdf0);
-      adderDemo->setInput(1, pdf1);
+      FunctionMixer* mixerDemo = new FunctionMixer(3);                  // Use this as a dummy to force a deep copy of the inputs
+      mixerDemo->setInput(0, rect0);
+      mixerDemo->setInput(1, rect1);
 
       bool status = true;
-      Module* modules[] = {pdf0, pdf1, adder, adderDemo};
-      status &= engine->setOutput(adder, 0);
+      Module* modules[] = {rect0, rect1, mixer, mixerDemo};
+      status &= engine->setOutput(mixer, 0);
       status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
       return status;
     }

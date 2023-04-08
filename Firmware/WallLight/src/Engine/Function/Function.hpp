@@ -47,12 +47,14 @@
 #include "FunctionColorInsert.hpp"
 #include "FunctionColorInterpolate.hpp"
 #include "FunctionColorWheel.hpp"
+#include "FunctionColorBlend.hpp"
 #include "FunctionAdder.hpp"
 #include "FunctionSubtractor.hpp"
 #include "FunctionMultiplier.hpp"
 #include "FunctionSum.hpp"
 #include "FunctionProduct.hpp"
 #include "FunctionSwitch.hpp"
+#include "FunctionMixer.hpp"
 #include "FunctionBrightness.hpp"
 #include "FunctionPdf.hpp"
 #include "FunctionFire.hpp"
@@ -101,6 +103,10 @@ static Function* allocateFunction(const char* name, int32_t id)
   {
     module = new FunctionColorWheel(id);
   }
+  else if(strcmp(name, FunctionColorBlend::MODULE_NAME) == 0)
+  {
+    module = new FunctionColorBlend(id);
+  }
   else if(strcmp(name, FunctionAdder::MODULE_NAME) == 0)
   {
     module = new FunctionAdder(id);
@@ -124,6 +130,10 @@ static Function* allocateFunction(const char* name, int32_t id)
   else if(strcmp(name, FunctionSwitch::MODULE_NAME) == 0)
   {
     module = new FunctionSwitch(id);
+  }
+  else if(strcmp(name, FunctionMixer::MODULE_NAME) == 0)
+  {
+    module = new FunctionMixer(id);
   }
   else if(strcmp(name, FunctionBrightness::MODULE_NAME) == 0)
   {

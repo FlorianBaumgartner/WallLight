@@ -43,11 +43,17 @@
 #include "TestFunctionBlank.hpp"
 #include "TestFunctionFire.hpp"
 #include "TestFunctionAdder.hpp"
+#include "TestFunctionMultiplier.hpp"
+#include "TestFunctionSubtractor.hpp"
 #include "TestFunctionSwitch.hpp"
+#include "TestFunctionMixer.hpp"
 #include "TestFunctionBrightness.hpp"
 #include "TestFunctionPdf.hpp"
 #include "TestFunctionColorInsert.hpp"
 #include "TestFunctionColorInterpolate.hpp"
+#include "TestFunctionColorBlend.hpp"
+#include "TestFunctionSum.hpp"
+#include "TestFunctionProduct.hpp"
 
 
 static bool testFunction(Engine* engine, const char* name)
@@ -84,9 +90,21 @@ static bool testFunction(Engine* engine, const char* name)
   {
     return TestFunctionAdder::test(engine);
   }
+  else if(strcmp(name, TestFunctionMultiplier::TEST_NAME) == 0)
+  {
+    return TestFunctionMultiplier::test(engine);
+  }
+  else if(strcmp(name, TestFunctionSubtractor::TEST_NAME) == 0)
+  {
+    return TestFunctionSubtractor::test(engine);
+  }
   else if(strcmp(name, TestFunctionSwitch::TEST_NAME) == 0)
   {
     return TestFunctionSwitch::test(engine);
+  }
+  else if(strcmp(name, TestFunctionMixer::TEST_NAME) == 0)
+  {
+    return TestFunctionMixer::test(engine);
   }
   else if(strcmp(name, TestFunctionBrightness::TEST_NAME) == 0)
   {
@@ -103,6 +121,18 @@ static bool testFunction(Engine* engine, const char* name)
   else if(strcmp(name, TestFunctionColorInterpolate::TEST_NAME) == 0)
   {
     return TestFunctionColorInterpolate::test(engine);
+  }
+  else if(strcmp(name, TestFunctionColorBlend::TEST_NAME) == 0)
+  {
+    return TestFunctionColorBlend::test(engine);
+  }
+  else if(strcmp(name, TestFunctionSum::TEST_NAME) == 0)
+  {
+    return TestFunctionSum::test(engine);
+  }
+  else if(strcmp(name, TestFunctionProduct::TEST_NAME) == 0)
+  {
+    return TestFunctionProduct::test(engine);
   }
   else
   {
