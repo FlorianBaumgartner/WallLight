@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Function
 
 
@@ -21,14 +22,37 @@ class Product(Function):
         if not super().update(t):
             return False
         
-        input0 = self._getInput(0)
-        input1 = self._getInput(1)
-        input2 = self._getInput(2)
-        input3 = self._getInput(3)
-        input4 = self._getInput(4)
-        input5 = self._getInput(5)
-        input6 = self._getInput(6)
-        input7 = self._getInput(7)
-        
-        self.outputs[0]["value"] = input0 * input1 * input2 * input3 * input4 * input5 * input6 * input7
+        numConnectedInputs = 0
+        output = np.ones((Function.pixelcount, 6))
+        for i in range(8):
+            output *= self._getInput(i)
+            if(self._checkInputValid(i)):
+                numConnectedInputs += 1
+        if(numConnectedInputs == 0):
+            output = np.zeros((Function.pixelcount, 6))
+        self.outputs[0]["value"] = output
         return True
+    
+    
+if __name__ == '__main__':
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
+    
+    pdf0 = Function.Pdf(0)
+    pdf0.setParameterInput(0, Coefficient(1000, 0.35))
+    pdf0.setParameterInput(1, Coefficient(1001, 0.01))
+                           
+    pdf1 = Function.Pdf(1)
+    pdf1.setParameterInput(0, Coefficient(1002, 0.65))
+    pdf1.setParameterInput(1, Coefficient(1003, 0.01))
+    
+    product = Function.Product(3)
+    product.setInput(0, pdf0)
+    product.setInput(1, pdf1)
+    
+    wallLight.addModule([pdf0, pdf1, product])
+    wallLight.setOutput(product, 0)
+    wallLight.run()

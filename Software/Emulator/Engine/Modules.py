@@ -63,6 +63,9 @@ class Module():
         if not self.parameterInputs[index]["module"]:
             return self.parameterInputs[index]["default"]
         return self.parameterInputs[index]["module"].parameterOutputs[self.parameterInputs[index]["sourceIndex"]]["value"]
+    
+    def _checkParameterValid(self, index):
+        return self.parameterInputs[index]["module"] != None
 
 
 class Coefficient(Module):
@@ -136,6 +139,9 @@ class Function(Module):
         if not self.inputs[index]["module"]:
             return self.inputs[index]["default"]
         return self.inputs[index]["module"].outputs[self.inputs[index]["sourceIndex"]]["value"]
+    
+    def _checkInputValid(self, index):
+        return self.inputs[index]["module"] != None
 
         
 class Analyzer(Module):
@@ -153,6 +159,9 @@ class Analyzer(Module):
         if not self.inputs[index]["module"]:
             return self.inputs[index]["default"]
         return self.inputs[index]["module"].outputs[self.inputs[index]["sourceIndex"]]["value"]
+    
+    def _checkInputValid(self, index):
+        return self.inputs[index]["module"] != None
 
 
 moduleId = 0
