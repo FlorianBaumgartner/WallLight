@@ -107,16 +107,20 @@ class FunctionSubtractor: public virtual Function
         LedVector* mirrorInput = nullptr;
         if(getOutput(0)->allocated)
         {
-          if(LedVector::checkValid(minuend) && !LedVector::checkValid(subtrahend))       // Only minuend is available and needs to be copied
+          if(LedVector::checkValid(minuend) && !LedVector::checkValid(subtrahend))          // Only minuend is available and needs to be copied
           {
             mirrorInput = minuend;
+          }
+          else if(!LedVector::checkValid(minuend) && !LedVector::checkValid(subtrahend))    // No Input is connected -> set output to zero
+          {
+            output->fill(0.0);
           }
         }
         if(mirrorInput)
         {
-          output->copy(mirrorInput);                                                    // Make deep copy of one of the inputs
+          output->copy(mirrorInput);                                                        // Make deep copy of one of the inputs
         }
-        else if(!LedVector::checkValid(minuend) && LedVector::checkValid(subtrahend))   // Only subtrahend available menas output = 0 - subtrahend
+        else if(!LedVector::checkValid(minuend) && LedVector::checkValid(subtrahend))       // Only subtrahend available menas output = 0 - subtrahend
         {
           for(int i = 0; i < pixelcount(); i++)
           {
@@ -126,7 +130,7 @@ class FunctionSubtractor: public virtual Function
             }
           }
         }
-        else if(LedVector::checkValid(minuend) && LedVector::checkValid(subtrahend))     // Check if both inputs available
+        else if(LedVector::checkValid(minuend) && LedVector::checkValid(subtrahend))        // Check if both inputs available
         {
           for(int i = 0; i < pixelcount(); i++)
           {

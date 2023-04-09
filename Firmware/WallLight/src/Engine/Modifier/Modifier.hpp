@@ -37,16 +37,38 @@
 #include "../Module.hpp"
 #include "../../console.hpp"
 
+#include "ModifierAdder.hpp"
+#include "ModifierSubtractor.hpp"
+#include "ModifierMultiplier.hpp"
+#include "ModifierSum.hpp"
+#include "ModifierProduct.hpp"
+
 
 static Modifier* allocateModifier(const char* name, int32_t id)
 {
   Modifier* module = nullptr;
   if(false){}
-  /*
-  if(strcmp(name, GeneratorTriangle::MODULE_NAME) == 0)
+  
+  if(strcmp(name, ModifierAdder::MODULE_NAME) == 0)
   {
-    module = new GeneratorTriangle(id);
-  }*/
+    module = new ModifierAdder(id);
+  }
+  if(strcmp(name, ModifierSubtractor::MODULE_NAME) == 0)
+  {
+    module = new ModifierSubtractor(id);
+  }
+  if(strcmp(name, ModifierMultiplier::MODULE_NAME) == 0)
+  {
+    module = new ModifierMultiplier(id);
+  }
+  if(strcmp(name, ModifierSum::MODULE_NAME) == 0)
+  {
+    module = new ModifierSum(id);
+  }
+  if(strcmp(name, ModifierProduct::MODULE_NAME) == 0)
+  {
+    module = new ModifierProduct(id);
+  }
   else
   {
     console.error.printf("[MODIFIER] Module '%s' is not supported!\n", name);

@@ -102,7 +102,7 @@ class FunctionColorInterpolate: public virtual Function
       LedVector* output = getOutputValue(0);
       if(LedVector::checkValid(output))     
       {
-        if(LedVector::checkValid(input))      // Only process data if a valid input is connected (otherwise a -1.0 vector is directly connected to the output)
+        if(LedVector::checkValid(input))      // Only process data if a valid input is connected (otherwise a 0-vector is directly connected to the output)
         {
           if(mode)
           {
@@ -147,7 +147,7 @@ class FunctionColorInterpolate: public virtual Function
         }
         else
         {
-          output->fill(0.0);                  // Make sure to overwrite output vector when no input is connected (acts as constant -1.0 vector source)
+          output->fill(0.0);                  // Make sure to overwrite output vector when no input is connected (acts as constant 0-vector source)
         }
       }
       else error = true;

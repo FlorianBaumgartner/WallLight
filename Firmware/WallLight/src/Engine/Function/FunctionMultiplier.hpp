@@ -116,9 +116,13 @@ class FunctionMultiplier: public virtual Function
           {
             mirrorInput = input0;
           }
-          if(LedVector::checkValid(input1) && !LedVector::checkValid(input0))       // Only input 1 is available and needs to be copied
+          else if(LedVector::checkValid(input1) && !LedVector::checkValid(input0))  // Only input 1 is available and needs to be copied
           {
             mirrorInput = input1;
+          }
+          else                                                                      // No input is connected, output is set to zero
+          {
+            output->fill(0.0);
           }
         }
         if(mirrorInput)

@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    TestModifier.hpp
+* file    TestModifierSum.hpp
 *******************************************************************************
-* brief   Virtual base class of all modifier tests
+* brief   Test of Sum Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-07
+* date    2023-04-09
 *******************************************************************************
 * MIT License
 *
@@ -30,45 +30,32 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_MODIFIER_HPP
-#define TEST_MODIFIER_HPP
+#ifndef TEST_MODIFIER_SUM_HPP
+#define TEST_MODIFIER_SUM_HPP
 
 #include "../TestEngine.hpp"
 
-#include "TestModifierAdder.hpp"
-#include "TestModifierSubtractor.hpp"
-#include "TestModifierMultiplier.hpp"
-#include "TestModifierSum.hpp"
-#include "TestModifierProduct.hpp"
-
-
-static bool testModifier(Engine* engine, const char* name)
+class TestModifierSum : public TestEngine
 {
-  if(strcmp(name, TestModifierAdder::TEST_NAME) == 0)
-  {
-    return TestModifierAdder::test(engine);
-  }
-  else if(strcmp(name, TestModifierSubtractor::TEST_NAME) == 0)
-  {
-    return TestModifierSubtractor::test(engine);
-  }
-  else if(strcmp(name, TestModifierMultiplier::TEST_NAME) == 0)
-  {
-    return TestModifierMultiplier::test(engine);
-  }
-  else if(strcmp(name, TestModifierSum::TEST_NAME) == 0)
-  {
-    return TestModifierSum::test(engine);
-  }
-  else if(strcmp(name, TestModifierProduct::TEST_NAME) == 0)
-  {
-    return TestModifierProduct::test(engine);
-  }
-  else
-  {
-    console.error.printf("[TEST_MODIFIER] Modifier '%s' is not supported!\n", name);
-  }
-  return false;
-}
+  public:
+    static constexpr const char* TEST_NAME = "Sum";
+
+    static bool test(Engine* engine)
+    {
+      ModifierSum* sum = new ModifierSum(0);
+      sum->setParameterInput(0, new Coefficient(1000, 0.2));      // input 0
+      sum->setParameterInput(1, new Coefficient(1001, 0.3));      // input 1
+
+      FunctionRect* rect = new FunctionRect(1);
+      rect->setParameterInput(0, new Coefficient(1002, 0.0));     // start
+      rect->setParameterInput(1, sum);                            // stop
+
+      bool status = true;
+      Module* modules[] = {sum, rect};
+      status &= engine->setOutput(rect, 0);
+      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
+      return status;
+    }
+};
 
 #endif

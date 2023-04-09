@@ -157,6 +157,10 @@ class FunctionMixer: public virtual Function
             }
           }
         }
+        else                                                                        // No input is connected -> set output to zero
+        {
+          output->fill(0.0);
+        }
       }
       else error = true;
       return true;

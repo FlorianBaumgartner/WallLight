@@ -114,21 +114,24 @@ class FunctionProduct: public virtual Function
         LedVector* mirrorInput = nullptr;
         if(getOutput(0)->allocated)
         {
+          int numConnectedInputs = 0;
           for(int i = 0; i < getInputCount(); i++)
           {
-            bool otherInputs = false;
-            for(int j = 0; j < getInputCount(); j++)
-            {
-              otherInputs |= LedVector::checkValid(input[j]) && (j != i);
-            }
-            if(LedVector::checkValid(input[i]) && !otherInputs)
+            if(LedVector::checkValid(input[i]))
             {
               mirrorInput = input[i];
-              break;
+              numConnectedInputs++;
             }
           }
+          if(numConnectedInputs > 1)                          // If more then one input is connected, the output cannot be directly mirrored
+          {
+            mirrorInput = nullptr;
+          }
+          else if(numConnectedInputs == 0)                    // If no input is connected -> set output to zero
+          {
+            output->fill(0.0);
+          }
         }
-
         if(mirrorInput)
         {
           output->copy(mirrorInput);                          // Make deep copy of one of the inputs

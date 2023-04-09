@@ -145,6 +145,15 @@ class Parameter
     float value;
     Module* module;
     uint32_t sourceIndex;
+
+    static bool checkValid(const Parameter* parameter)
+    {
+      if(parameter)
+      {
+        return parameter->module != nullptr;
+      }
+      return false;
+    }
 };
 
 class Vector
