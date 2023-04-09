@@ -153,10 +153,12 @@ C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Generator/GeneratorTriangle.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/Modifier.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierAdder.hpp
+ mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierMixer.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierMultiplier.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierProduct.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierSubtractor.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierSum.hpp
+ mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierSwitch.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Module.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.hpp
  mdp:C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/WallLightConfig.hpp

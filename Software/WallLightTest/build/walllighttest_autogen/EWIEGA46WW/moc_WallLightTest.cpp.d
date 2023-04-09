@@ -147,10 +147,12 @@ C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Generator/GeneratorTriangle.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/Modifier.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierAdder.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierMixer.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierMultiplier.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierProduct.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierSubtractor.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierSum.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierSwitch.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Module.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/WallLightConfig.hpp \

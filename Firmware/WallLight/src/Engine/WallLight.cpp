@@ -35,8 +35,6 @@
 #include "utils.hpp"
 #include "freertos/task.h"
 
-#define DEBUG_PIN       16
-
 
 WallLight::WallLight(int8_t rgbPin, int8_t wwaPin, uint16_t count, float updaterate, bool rgbw): rgbPin(rgbPin), wwaPin(wwaPin), WallLightConfig(count, updaterate)
 {
@@ -59,7 +57,8 @@ bool WallLight::begin(void)
   {
     console.error.println("[WALLLIGHT] Could not initialize LEDs");
   }
-  leds->setBrightness(10);
+  leds->fill();
+  leds->stage();      // Prepare buffer for DMA transfer (needs to be called prior to show to supress startup flicker)
   leds->show();
 
   xTaskCreate(update, "task_walllight", 16384, this, 1, NULL);       // TODO: Check if stack size is enough

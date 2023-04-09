@@ -42,6 +42,8 @@
 #include "ModifierMultiplier.hpp"
 #include "ModifierSum.hpp"
 #include "ModifierProduct.hpp"
+#include "ModifierMixer.hpp"
+#include "ModifierSwitch.hpp"
 
 
 static Modifier* allocateModifier(const char* name, int32_t id)
@@ -53,21 +55,29 @@ static Modifier* allocateModifier(const char* name, int32_t id)
   {
     module = new ModifierAdder(id);
   }
-  if(strcmp(name, ModifierSubtractor::MODULE_NAME) == 0)
+  else if(strcmp(name, ModifierSubtractor::MODULE_NAME) == 0)
   {
     module = new ModifierSubtractor(id);
   }
-  if(strcmp(name, ModifierMultiplier::MODULE_NAME) == 0)
+  else if(strcmp(name, ModifierMultiplier::MODULE_NAME) == 0)
   {
     module = new ModifierMultiplier(id);
   }
-  if(strcmp(name, ModifierSum::MODULE_NAME) == 0)
+  else if(strcmp(name, ModifierSum::MODULE_NAME) == 0)
   {
     module = new ModifierSum(id);
   }
-  if(strcmp(name, ModifierProduct::MODULE_NAME) == 0)
+  else if(strcmp(name, ModifierProduct::MODULE_NAME) == 0)
   {
     module = new ModifierProduct(id);
+  }
+  else if(strcmp(name, ModifierMixer::MODULE_NAME) == 0)
+  {
+    module = new ModifierMixer(id);
+  }
+  else if(strcmp(name, ModifierSwitch::MODULE_NAME) == 0)
+  {
+    module = new ModifierSwitch(id);
   }
   else
   {

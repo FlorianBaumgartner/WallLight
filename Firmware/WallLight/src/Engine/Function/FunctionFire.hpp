@@ -123,6 +123,10 @@ class FunctionFire: public virtual Function
       arraySize = pixelcount() + OFFSET;
       heat = new float[arraySize];
       temp = new float[arraySize];
+      for(int i = 0; i < arraySize; i++)
+      {
+        heat[i] = temp[i] = 0.0;
+      }
       return initDone();
     }
 

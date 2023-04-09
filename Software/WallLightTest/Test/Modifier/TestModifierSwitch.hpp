@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    TestModifier.hpp
+* file    TestModifierSwitch.hpp
 *******************************************************************************
-* brief   Virtual base class of all modifier tests
+* brief   Test of Switch Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-07
+* date    2023-04-09
 *******************************************************************************
 * MIT License
 *
@@ -30,55 +30,33 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_MODIFIER_HPP
-#define TEST_MODIFIER_HPP
+#ifndef TEST_MODIFIER_SWITCH_HPP
+#define TEST_MODIFIER_SWITCH_HPP
 
 #include "../TestEngine.hpp"
 
-#include "TestModifierAdder.hpp"
-#include "TestModifierSubtractor.hpp"
-#include "TestModifierMultiplier.hpp"
-#include "TestModifierSum.hpp"
-#include "TestModifierProduct.hpp"
-#include "TestModifierMixer.hpp"
-#include "TestModifierSwitch.hpp"
-
-
-static bool testModifier(Engine* engine, const char* name)
+class TestModifierSwitch : public TestEngine
 {
-  if(strcmp(name, TestModifierAdder::TEST_NAME) == 0)
-  {
-    return TestModifierAdder::test(engine);
-  }
-  else if(strcmp(name, TestModifierSubtractor::TEST_NAME) == 0)
-  {
-    return TestModifierSubtractor::test(engine);
-  }
-  else if(strcmp(name, TestModifierMultiplier::TEST_NAME) == 0)
-  {
-    return TestModifierMultiplier::test(engine);
-  }
-  else if(strcmp(name, TestModifierSum::TEST_NAME) == 0)
-  {
-    return TestModifierSum::test(engine);
-  }
-  else if(strcmp(name, TestModifierProduct::TEST_NAME) == 0)
-  {
-    return TestModifierProduct::test(engine);
-  }
-  else if(strcmp(name, TestModifierMixer::TEST_NAME) == 0)
-  {
-    return TestModifierMixer::test(engine);
-  }
-  else if(strcmp(name, TestModifierSwitch::TEST_NAME) == 0)
-  {
-    return TestModifierSwitch::test(engine);
-  }
-  else
-  {
-    console.error.printf("[TEST_MODIFIER] Modifier '%s' is not supported!\n", name);
-  }
-  return false;
-}
+  public:
+    static constexpr const char* TEST_NAME = "Switch";
+
+    static bool test(Engine* engine)
+    {
+      ModifierSwitch* switchModule = new ModifierSwitch(0);
+      switchModule->setParameterInput(0, new Coefficient(1000, 0.2));     // input 0
+      switchModule->setParameterInput(1, new Coefficient(1001, 0.8));     // input 1
+      switchModule->setParameterInput(2, new Coefficient(1002, 0.0));     // switch
+
+      FunctionRect* rect = new FunctionRect(1);
+      rect->setParameterInput(0, new Coefficient(1003, 0.0));             // start
+      rect->setParameterInput(1, switchModule);                           // stop
+
+      bool status = true;
+      Module* modules[] = {switchModule, rect};
+      status &= engine->setOutput(rect, 0);
+      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
+      return status;
+    }
+};
 
 #endif
