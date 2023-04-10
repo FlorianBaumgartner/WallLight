@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorRamp.hpp
+* file    ModifierEaseInOut.hpp
 *******************************************************************************
-* brief   Ramp Generator
+* brief   EaseInOut Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-03-08
+* date    2023-04-10
 *******************************************************************************
 * MIT License
 *
@@ -30,31 +30,26 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_RAMP_HPP
-#define GENERATOR_RAMP_HPP
+#ifndef MODIFIER_EASE_IN_OUT_HPP
+#define MODIFIER_EASE_IN_OUT_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
-#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class GeneratorRamp: public virtual Generator
+class ModifierEaseInOut: public virtual Modifier
 {
   private:
-    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
-                                    Parameter("freq", 1.0),
-                                    Parameter("rep", -1.0),
-                                    Parameter("start", 0.0),
-                                    Parameter("stop", 1.0),
-                                    Parameter("phase", 0.0)};
+    Parameter parameterInputs[2] = {Parameter("input", 0.0),
+                                    Parameter("type", 0.0)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
 
   public:
-    static constexpr const char* MODULE_NAME = "Ramp";
-    GeneratorRamp(int32_t id): Generator(id, MODULE_NAME) {}
-    ~GeneratorRamp() {}
+    static constexpr const char* MODULE_NAME = "EaseInOut";
+    ModifierEaseInOut(int32_t id): Modifier(id, MODULE_NAME) {}
+    ~ModifierEaseInOut() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -71,45 +66,62 @@ class GeneratorRamp: public virtual Generator
       {
         return true;
       }
-      if(!Generator::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+      if(!Modifier::update(t))     // Check if all sources are available (modules that are connected have output value ready)
       {
         return false;
       }
       t = time;
 
-      bool enable = getParameterValue(0) >= 0.5;
-      float freq = getParameterValue(1);
-      float rep = getParameterValue(2);
-      float start = getParameterValue(3);
-      float stop = getParameterValue(4);
-      float phase = getParameterValue(5);
-      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
-      float amplitude = fabs(start - stop);
-      float slope = amplitude * freq * ((start < stop)? 1.0 : -1.0);
-
+      float x = getParameterValue(0);
+      uint8_t type = (uint8_t)(getParameterValue(1) + 0.5);
       float output = 0.0;
-      if(enable)
+      if(x >= 1.0)
       {
-        t -= enableTime;
-        if(t == 0.0)
-        {
-          output = start;
-        }
-        else if ((rep < 0.0) || ((rep / freq) >= t))
-        {
-          output = min(start, stop) + Utility::mod(((t + (phase / 2.0)) * slope), amplitude);
-        }
-        else
-        {
-          output = min(start, stop) + ((rep / freq + (phase / 2.0)) * slope);   // Stay at last value without modulo -> TODO: Check if this makes sence
-        }
+        output = 1.0;
+      }
+      else if(x <= 0.0)
+      {
+        output = 0.0;
       }
       else
       {
-        enableTime = t;
-        t = 0;
+        switch(type)
+        {
+          case 0:   // Sine
+            output = -(cosf(x * PI) - 1.0) * 0.5;
+            break;
+          case 1:   // Quad
+            output = (x < 0.5)? 2.0 * x * x : x * (4.0 - 2.0 * x) - 1.0;
+            break;
+          case 2:   // Cubic
+            output = (x < 0.5)? 4.0 * x * x * x : 1.0 - (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * 0.5;
+            break;
+          case 3:   // Quart
+            output = (x < 0.5)? 8.0 * x * x * x * x: 1.0 - (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * 0.5;
+            break;
+          case 4:   // Quint
+            output = (x < 0.5)? 16.0 * x * x * x * x * x: 1.0 - (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * (-2.0 * x + 2.0) * 0.5;
+            break;
+          case 5:   // Expo
+            output = (x < 0.5)? powf(2.0, 20.0 * x - 10.0) * 0.5 : (2.0 - powf(2.0, -20.0 * x + 10.0)) * 0.5;
+            break;
+          case 6:   // Circ
+            output = (x < 0.5)? (1.0 - sqrtf(1.0 - (2.0 * x) * (2.0 * x))) * 0.5 : (sqrtf(1.0 - (-2.0 * x + 2.0) * (-2.0 * x + 2.0)) + 1.0) * 0.5;
+            break;
+          case 7:   // Back
+            output = (x < 0.5)? ((2.0 * x) * (2.0 * x) * (7.1898 * x - 2.5949)) * 0.5 : ((2.0 * x - 2.0) * (2.0 * x - 2.0) * (3.5949 * (x * 2.0 - 2.0) + 2.5949) + 2.0) * 0.5;
+            break;
+          case 8:   // Elastic
+            output = (x < 0.5)? -(powf(2.0, (20.0 * x - 10.0))) * sinf((20.0 * x - 11.125) * ((2.0 * PI) / 4.5)) * 0.5 : (powf(2.0, (-20.0 * x + 10.0)) * sinf((20.0 * x - 11.125) * ((2.0 * PI) / 4.5))) * 0.5 + 1.0;
+            break;
+          case 9:   // Bounce
+            output = (x < 0.5)? 8.0 * powf(2.0, 8.0 * (x - 1.0)) * fabs(sinf(x * PI * 7.0)) : 1.0 - 8.0 * powf(2.0, -8.0 * x) * fabs(sinf(x * PI * 7.0));
+            break;
+          default:
+            output = 0.0;
+            break;
+        }
       }
-
       setParameterOutput(0, output);
       return true;
     }

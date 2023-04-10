@@ -47,6 +47,13 @@
 #include "ModifierAbs.hpp"
 #include "ModifierConstrain.hpp"
 #include "ModifierEaseIn.hpp"
+#include "ModifierEaseOut.hpp"
+#include "ModifierEaseInOut.hpp"
+#include "ModifierIntegrator.hpp"
+#include "ModifierDifferentiator.hpp"
+#include "ModifierExpSmoothing.hpp"
+#include "ModifierSampler.hpp"
+#include "ModifierMonoflop.hpp"
 
 
 static Modifier* allocateModifier(const char* name, int32_t id)
@@ -93,6 +100,34 @@ static Modifier* allocateModifier(const char* name, int32_t id)
   else if(strcmp(name, ModifierEaseIn::MODULE_NAME) == 0)
   {
     module = new ModifierEaseIn(id);
+  }
+  else if(strcmp(name, ModifierEaseOut::MODULE_NAME) == 0)
+  {
+    module = new ModifierEaseOut(id);
+  }
+  else if(strcmp(name, ModifierEaseInOut::MODULE_NAME) == 0)
+  {
+    module = new ModifierEaseInOut(id);
+  }
+  else if(strcmp(name, ModifierIntegrator::MODULE_NAME) == 0)
+  {
+    module = new ModifierIntegrator(id);
+  }
+  else if(strcmp(name, ModifierDifferentiator::MODULE_NAME) == 0)
+  {
+    module = new ModifierDifferentiator(id);
+  }
+  else if(strcmp(name, ModifierExpSmoothing::MODULE_NAME) == 0)
+  {
+    module = new ModifierExpSmoothing(id);
+  }
+  else if(strcmp(name, ModifierSampler::MODULE_NAME) == 0)
+  {
+    module = new ModifierSampler(id);
+  }
+  else if(strcmp(name, ModifierMonoflop::MODULE_NAME) == 0)
+  {
+    module = new ModifierMonoflop(id);
   }
   else
   {

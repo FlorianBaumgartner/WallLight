@@ -1,7 +1,7 @@
 /******************************************************************************
-* file    TestModifierEaseIn.hpp
+* file    TestModifierEaseOut.hpp
 *******************************************************************************
-* brief   Test of EaseIn Modifier
+* brief   Test of EaseOut Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -30,15 +30,15 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_MODIFIER_EASE_IN_HPP
-#define TEST_MODIFIER_EASE_IN_HPP
+#ifndef TEST_MODIFIER_EASE_OUT_HPP
+#define TEST_MODIFIER_EASE_OUT_HPP
 
 #include "../TestEngine.hpp"
 
-class TestModifierEaseIn : public TestEngine
+class TestModifierEaseOut : public TestEngine
 {
   public:
-    static constexpr const char* TEST_NAME = "EaseIn";
+    static constexpr const char* TEST_NAME = "EaseOut";
 
     static bool test(Engine* engine)
     {
@@ -52,16 +52,16 @@ class TestModifierEaseIn : public TestEngine
       ramp->setParameterInput(4, new Coefficient(1004, 1.0));                 // stop
       ramp->setParameterInput(5, new Coefficient(1005, 0.0));                 // phase
 
-      ModifierEaseIn* easeIn = new ModifierEaseIn(1);
-      easeIn->setParameterInput(0, ramp);                                     // input
-      easeIn->setParameterInput(1, new Coefficient(1006, easeType));          // type
+      ModifierEaseOut* easeOut = new ModifierEaseOut(1);
+      easeOut->setParameterInput(0, ramp);                                     // input
+      easeOut->setParameterInput(1, new Coefficient(1006, easeType));          // type
 
       FunctionRect* rect = new FunctionRect(2);
-      rect->setParameterInput(0, new Coefficient(1006, 0.0));                 // start
-      rect->setParameterInput(1, easeIn);                                     // stop
+      rect->setParameterInput(0, new Coefficient(1006, 0.0));                  // start
+      rect->setParameterInput(1, easeOut);                                     // stop
 
       bool status = true;
-      Module* modules[] = {ramp, easeIn, rect};
+      Module* modules[] = {ramp, easeOut, rect};
       status &= engine->setOutput(rect, 0);
       status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
       return status;

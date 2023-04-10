@@ -42,7 +42,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "walllighttest::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-walllighttest-Debug-5a7495be9efd309fae8d.json",
+					"jsonFile" : "target-walllighttest-Debug-eded2c3a0fba46626018.json",
 					"name" : "walllighttest",
 					"projectIndex" : 0
 				},
@@ -66,8 +66,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
-		"source" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest"
+		"build" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
+		"source" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest"
 	},
 	"version" : 
 	{

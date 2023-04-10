@@ -80,7 +80,8 @@ if __name__ == '__main__':
     easeIn.setParameterInput(1, Coefficient(9, easeType))
     
     plotter = Analyzer.ParameterPlotter(2, autoMove=False)
-    plotter.setParameterInput(0, easeIn, 0)
+    plotter.setParameterInput(0, ramp)
+    plotter.setParameterInput(1, easeIn)
     
     rect = Function.Rect(3)
     rect.setParameterInput(0, Coefficient(10, 0.0))

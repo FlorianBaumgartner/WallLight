@@ -47,9 +47,9 @@ if __name__ == '__main__':
     enable = 1.0
     freq = 1.0
     rep = 1.0
-    amp = 1.0
+    amp = -1.0
     offset = 0.0
-    phase = -0.25
+    phase = 0.0
     
     triangle = Generator.Triangle(0)
     triangle.setParameterInput(0, Coefficient(2, enable))

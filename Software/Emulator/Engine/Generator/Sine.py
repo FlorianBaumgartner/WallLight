@@ -47,10 +47,10 @@ if __name__ == '__main__':
         
     enable = 1.0
     freq = 0.1
-    rep = -1.0
+    rep = 1.0
     amp = 1.0
     offset = 0.0
-    phase = 0.5
+    phase = -0.5
     
     enableCoeff = Coefficient(2, enable)
     

@@ -107,7 +107,7 @@ class Module: public WallLightConfig
     bool error = false;
     bool initialized = false;
     bool printInfo;
-    float t = NAN;
+    float t = -1.0;       // NAN
 
   protected:
     float getParameterValue(uint32_t index)

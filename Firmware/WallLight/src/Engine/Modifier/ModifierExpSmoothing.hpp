@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorRamp.hpp
+* file    ModifierExpSmoothing.hpp
 *******************************************************************************
-* brief   Ramp Generator
+* brief   Exponential SMoothing Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-03-08
+* date    2023-04-10
 *******************************************************************************
 * MIT License
 *
@@ -30,31 +30,27 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_RAMP_HPP
-#define GENERATOR_RAMP_HPP
+#ifndef MODIFIER_EXP_SMOOTHING_HPP
+#define MODIFIER_EXP_SMOOTHING_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
-#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class GeneratorRamp: public virtual Generator
+class ModifierExpSmoothing: public virtual Modifier
 {
   private:
-    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
-                                    Parameter("freq", 1.0),
-                                    Parameter("rep", -1.0),
-                                    Parameter("start", 0.0),
-                                    Parameter("stop", 1.0),
-                                    Parameter("phase", 0.0)};
+    Parameter parameterInputs[2] = {Parameter("input", 0.0),
+                                    Parameter("alpha", 0.5)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
+    float output = 0.0;
 
   public:
-    static constexpr const char* MODULE_NAME = "Ramp";
-    GeneratorRamp(int32_t id): Generator(id, MODULE_NAME) {}
-    ~GeneratorRamp() {}
+    static constexpr const char* MODULE_NAME = "ExpSmoothing";
+    ModifierExpSmoothing(int32_t id): Modifier(id, MODULE_NAME) {}
+    ~ModifierExpSmoothing() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -71,45 +67,17 @@ class GeneratorRamp: public virtual Generator
       {
         return true;
       }
-      if(!Generator::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+      if(!Modifier::update(t))     // Check if all sources are available (modules that are connected have output value ready)
       {
         return false;
       }
       t = time;
 
-      bool enable = getParameterValue(0) >= 0.5;
-      float freq = getParameterValue(1);
-      float rep = getParameterValue(2);
-      float start = getParameterValue(3);
-      float stop = getParameterValue(4);
-      float phase = getParameterValue(5);
-      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
-      float amplitude = fabs(start - stop);
-      float slope = amplitude * freq * ((start < stop)? 1.0 : -1.0);
+      float input = getParameterValue(0);
+      float alpha = constrain(getParameterValue(1), 0.0, 1.0);
+      alpha = powf(alpha, 0.1) * 0.999;
 
-      float output = 0.0;
-      if(enable)
-      {
-        t -= enableTime;
-        if(t == 0.0)
-        {
-          output = start;
-        }
-        else if ((rep < 0.0) || ((rep / freq) >= t))
-        {
-          output = min(start, stop) + Utility::mod(((t + (phase / 2.0)) * slope), amplitude);
-        }
-        else
-        {
-          output = min(start, stop) + ((rep / freq + (phase / 2.0)) * slope);   // Stay at last value without modulo -> TODO: Check if this makes sence
-        }
-      }
-      else
-      {
-        enableTime = t;
-        t = 0;
-      }
-
+      output = alpha * output + (1.0 - alpha) * input;  
       setParameterOutput(0, output);
       return true;
     }

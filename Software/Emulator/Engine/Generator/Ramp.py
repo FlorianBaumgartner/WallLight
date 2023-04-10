@@ -12,7 +12,6 @@ class Ramp(Generator):
         self.parameterInputs.append({"name": "start", "module": None, "sourceIndex" : 0, "default": 0.0})
         self.parameterInputs.append({"name": "stop", "module": None, "sourceIndex" : 0, "default": 1.0})
         self.parameterInputs.append({"name": "phase", "module": None, "sourceIndex" : 0, "default": 0.0})   # -1 means -180° ... +1 means + 180°  
-        self.outputValue = 0.0
         
     def update(self, t):
         if super().update(t) == False:
@@ -32,14 +31,16 @@ class Ramp(Generator):
         if enable:
             t -= self.enableTime
             if(t == 0):
-                self.outputValue = start
+                output = start
             elif(rep < 0) or ((rep / freq) >= t):            # End value is real end value
-                self.outputValue = min(start, stop) + ((t + (phase / 2.0)) * slope) % amplitude
+                output = min(start, stop) + ((t + (phase / 2.0)) * slope) % amplitude
+            else:
+                output = min(start, stop) + ((rep / freq + (phase / 2.0)) * slope)   # Stay at last value without modulo -> TODO: Check if this makes sence
         else:
             self.enableTime = t
             t = 0
 
-        self.parameterOutputs[0]["value"] = self.outputValue
+        self.parameterOutputs[0]["value"] = output
         return True
     
 

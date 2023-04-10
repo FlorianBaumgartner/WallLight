@@ -45,6 +45,13 @@
 #include "TestModifierAbs.hpp"
 #include "TestModifierConstrain.hpp"
 #include "TestModifierEaseIn.hpp"
+#include "TestModifierEaseOut.hpp"
+#include "TestModifierEaseInOut.hpp"
+#include "TestModifierIntegrator.hpp"
+#include "TestModifierDifferentiator.hpp"
+#include "TestModifierExpSmoothing.hpp"
+#include "TestModifierSampler.hpp"
+#include "TestModifierMonoflop.hpp"
 
 
 static bool testModifier(Engine* engine, const char* name)
@@ -88,6 +95,34 @@ static bool testModifier(Engine* engine, const char* name)
   else if(strcmp(name, TestModifierEaseIn::TEST_NAME) == 0)
   {
     return TestModifierEaseIn::test(engine);
+  }
+  else if(strcmp(name, TestModifierEaseOut::TEST_NAME) == 0)
+  {
+    return TestModifierEaseOut::test(engine);
+  }
+  else if(strcmp(name, TestModifierEaseInOut::TEST_NAME) == 0)
+  {
+    return TestModifierEaseInOut::test(engine);
+  }
+  else if(strcmp(name, TestModifierIntegrator::TEST_NAME) == 0)
+  {
+    return TestModifierIntegrator::test(engine);
+  }
+  else if(strcmp(name, TestModifierDifferentiator::TEST_NAME) == 0)
+  {
+    return TestModifierDifferentiator::test(engine);
+  }
+  else if(strcmp(name, TestModifierExpSmoothing::TEST_NAME) == 0)
+  {
+    return TestModifierExpSmoothing::test(engine);
+  }
+  else if(strcmp(name, TestModifierSampler::TEST_NAME) == 0)
+  {
+    return TestModifierSampler::test(engine);
+  }
+  else if(strcmp(name, TestModifierMonoflop::TEST_NAME) == 0)
+  {
+    return TestModifierMonoflop::test(engine);
   }
   else
   {

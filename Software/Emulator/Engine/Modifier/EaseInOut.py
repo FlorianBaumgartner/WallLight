@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Modifier
 
 class EaseInOut(Modifier):
@@ -51,9 +52,11 @@ class EaseInOut(Modifier):
 
 
 if __name__ == '__main__':
-    import time
-    from Modules import Module, Coefficient, Generator, Modifier, Analyzer
-    Module.framerate = 60
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
     
     enable = 1.0
     freq = 1.0
@@ -62,7 +65,7 @@ if __name__ == '__main__':
     stop = 1.0
     phase = 0.0
     
-    easyType = 9.0
+    easeType = 9.0
     
     ramp = Generator.Ramp(0)
     ramp.setParameterInput(0, Coefficient(3, enable))
@@ -74,16 +77,16 @@ if __name__ == '__main__':
     
     easeInOut = Modifier.EaseInOut(1)
     easeInOut.setParameterInput(0, ramp)
-    easeInOut.setParameterInput(1, Coefficient(8, easyType))
+    easeInOut.setParameterInput(1, Coefficient(9, easeType))
     
-    plotter = Analyzer.ParameterPlotter(2, autoMove=False, standalone=True)
-    plotter.setParameterInput(0, easeInOut, 0)
+    plotter = Analyzer.ParameterPlotter(2, autoMove=False)
+    plotter.setParameterInput(0, ramp)
+    plotter.setParameterInput(1, easeInOut)
     
-    def update(t):
-        ramp.update(t)
-        easeInOut.update(t)
-        plotter.update(t)
-
-    plotter.updateFunction = update
-    while plotter.isRunning():
-        time.sleep(0.1)
+    rect = Function.Rect(3)
+    rect.setParameterInput(0, Coefficient(10, 0.0))
+    rect.setParameterInput(1, easeInOut)
+    
+    wallLight.addModule([ramp, easeInOut, plotter, rect])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

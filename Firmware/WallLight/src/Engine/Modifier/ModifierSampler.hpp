@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    GeneratorRamp.hpp
+* file    ModifierSampler.hpp
 *******************************************************************************
-* brief   Ramp Generator
+* brief   Sampler Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-03-08
+* date    2023-04-10
 *******************************************************************************
 * MIT License
 *
@@ -30,31 +30,30 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GENERATOR_RAMP_HPP
-#define GENERATOR_RAMP_HPP
+#ifndef MODIFIER_SAMPLER_HPP
+#define MODIFIER_SAMPLER_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
-#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class GeneratorRamp: public virtual Generator
+class ModifierSampler: public virtual Modifier
 {
   private:
-    Parameter parameterInputs[6] = {Parameter("enable", 1.0),
-                                    Parameter("freq", 1.0),
-                                    Parameter("rep", -1.0),
-                                    Parameter("start", 0.0),
-                                    Parameter("stop", 1.0),
-                                    Parameter("phase", 0.0)};
+    Parameter parameterInputs[3] = {Parameter("input", 0.0),
+                                    Parameter("trigger", 0.0),
+                                    Parameter("mode", 0.0)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
+    enum Mode {MODE_RISING, MODE_FALLING, MODE_BOTH};
+    float output = 0.0;
+    bool trigger = false;
 
   public:
-    static constexpr const char* MODULE_NAME = "Ramp";
-    GeneratorRamp(int32_t id): Generator(id, MODULE_NAME) {}
-    ~GeneratorRamp() {}
+    static constexpr const char* MODULE_NAME = "Sampler";
+    ModifierSampler(int32_t id): Modifier(id, MODULE_NAME) {}
+    ~ModifierSampler() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -71,45 +70,40 @@ class GeneratorRamp: public virtual Generator
       {
         return true;
       }
-      if(!Generator::update(t))     // Check if all sources are available (modules that are connected have output value ready)
+      if(!Modifier::update(t))     // Check if all sources are available (modules that are connected have output value ready)
       {
         return false;
       }
       t = time;
 
-      bool enable = getParameterValue(0) >= 0.5;
-      float freq = getParameterValue(1);
-      float rep = getParameterValue(2);
-      float start = getParameterValue(3);
-      float stop = getParameterValue(4);
-      float phase = getParameterValue(5);
-      phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
-      float amplitude = fabs(start - stop);
-      float slope = amplitude * freq * ((start < stop)? 1.0 : -1.0);
+      float input = getParameterValue(0);
+      bool triggerInput = getParameterValue(1) >= 0.5;
+      Mode mode = (Mode)(constrain((int)(getParameterValue(2) + 0.5), 0, 2));
 
-      float output = 0.0;
-      if(enable)
+      switch(mode)
       {
-        t -= enableTime;
-        if(t == 0.0)
-        {
-          output = start;
-        }
-        else if ((rep < 0.0) || ((rep / freq) >= t))
-        {
-          output = min(start, stop) + Utility::mod(((t + (phase / 2.0)) * slope), amplitude);
-        }
-        else
-        {
-          output = min(start, stop) + ((rep / freq + (phase / 2.0)) * slope);   // Stay at last value without modulo -> TODO: Check if this makes sence
-        }
+        case MODE_RISING:
+          if(!trigger && triggerInput)
+          {
+            output = input;
+          }
+          break;
+        case MODE_FALLING:
+          if(trigger && !triggerInput)
+          {
+            output = input;
+          }
+          break;
+        case MODE_BOTH:
+          if(trigger != triggerInput)
+          {
+            output = input;
+          }
+          break;
+        default:
+          break;
       }
-      else
-      {
-        enableTime = t;
-        t = 0;
-      }
-
+      trigger = triggerInput;
       setParameterOutput(0, output);
       return true;
     }
