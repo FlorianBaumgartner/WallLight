@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Modifier
 
 class Constrain(Modifier):
@@ -15,11 +16,18 @@ class Constrain(Modifier):
             return False
         
         output = self._getParameterValue(0)
+        minimum = self._getParameterValue(1)
+        maximum = self._getParameterValue(2)
         
-        if self.parameterInputs[1]["module"]:   # Check if minimum value has been set
-            output = max(output, self._getParameterValue(1))
-        if self.parameterInputs[2]["module"]:   # Check if maximum value has been set
-            output = min(output, self._getParameterValue(2))
+        if self._checkParameterValid(1) and self._checkParameterValid(2):  # When both inputs are availabe swap min and max value if they are reversed
+            temp = minimum
+            minimum = maximum
+            maximum = temp
+        
+        if self._checkParameterValid(1):        # Check if minimum value has been set  
+            output = max(output, minimum)
+        if self._checkParameterValid(2):        # Check if maximum value has been set
+            output = min(output, maximum)
         
         self.parameterOutputs[0]["value"] = output
         return True

@@ -42,6 +42,9 @@
 #include "TestModifierProduct.hpp"
 #include "TestModifierMixer.hpp"
 #include "TestModifierSwitch.hpp"
+#include "TestModifierAbs.hpp"
+#include "TestModifierConstrain.hpp"
+#include "TestModifierEaseIn.hpp"
 
 
 static bool testModifier(Engine* engine, const char* name)
@@ -73,6 +76,18 @@ static bool testModifier(Engine* engine, const char* name)
   else if(strcmp(name, TestModifierSwitch::TEST_NAME) == 0)
   {
     return TestModifierSwitch::test(engine);
+  }
+  else if(strcmp(name, TestModifierAbs::TEST_NAME) == 0)
+  {
+    return TestModifierAbs::test(engine);
+  }
+  else if(strcmp(name, TestModifierConstrain::TEST_NAME) == 0)
+  {
+    return TestModifierConstrain::test(engine);
+  }
+  else if(strcmp(name, TestModifierEaseIn::TEST_NAME) == 0)
+  {
+    return TestModifierEaseIn::test(engine);
   }
   else
   {

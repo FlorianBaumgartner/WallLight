@@ -146,7 +146,10 @@ C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Generator/GeneratorSine.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Generator/GeneratorTriangle.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/Modifier.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierAbs.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierAdder.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierConstrain.hpp \
+  C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierEaseIn.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierMixer.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierMultiplier.hpp \
   C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Modifier/ModifierProduct.hpp \

@@ -44,6 +44,9 @@
 #include "ModifierProduct.hpp"
 #include "ModifierMixer.hpp"
 #include "ModifierSwitch.hpp"
+#include "ModifierAbs.hpp"
+#include "ModifierConstrain.hpp"
+#include "ModifierEaseIn.hpp"
 
 
 static Modifier* allocateModifier(const char* name, int32_t id)
@@ -78,6 +81,18 @@ static Modifier* allocateModifier(const char* name, int32_t id)
   else if(strcmp(name, ModifierSwitch::MODULE_NAME) == 0)
   {
     module = new ModifierSwitch(id);
+  }
+  else if(strcmp(name, ModifierAbs::MODULE_NAME) == 0)
+  {
+    module = new ModifierAbs(id);
+  }
+  else if(strcmp(name, ModifierConstrain::MODULE_NAME) == 0)
+  {
+    module = new ModifierConstrain(id);
+  }
+  else if(strcmp(name, ModifierEaseIn::MODULE_NAME) == 0)
+  {
+    module = new ModifierEaseIn(id);
   }
   else
   {

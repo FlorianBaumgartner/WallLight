@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     WallLightTest wallLight;
     wallLight.show();
 
-    wallLight.loadGraph("Modifier.Switch");
+    wallLight.loadGraph("Modifier.EaseIn");
 
     bool res = a.exec();
     wallLight.unloadGraph();

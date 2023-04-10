@@ -52,9 +52,11 @@ class EaseIn(Modifier):
 
 
 if __name__ == '__main__':
-    import time
-    from Modules import Module, Coefficient, Generator, Modifier, Analyzer
-    Module.framerate = 60
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
     
     enable = 1.0
     freq = 1.0
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     stop = 1.0
     phase = 0.0
     
-    easyType = 9.0
+    easeType = 9.0
     
     ramp = Generator.Ramp(0)
     ramp.setParameterInput(0, Coefficient(3, enable))
@@ -75,16 +77,15 @@ if __name__ == '__main__':
     
     easeIn = Modifier.EaseIn(1)
     easeIn.setParameterInput(0, ramp)
-    easeIn.setParameterInput(1, Coefficient(9, easyType))
+    easeIn.setParameterInput(1, Coefficient(9, easeType))
     
-    plotter = Analyzer.ParameterPlotter(2, autoMove=False, standalone=True)
+    plotter = Analyzer.ParameterPlotter(2, autoMove=False)
     plotter.setParameterInput(0, easeIn, 0)
     
-    def update(t):
-        ramp.update(t)
-        easeIn.update(t)
-        plotter.update(t)
-
-    plotter.updateFunction = update
-    while plotter.isRunning():
-        time.sleep(0.1)
+    rect = Function.Rect(3)
+    rect.setParameterInput(0, Coefficient(10, 0.0))
+    rect.setParameterInput(1, easeIn)
+    
+    wallLight.addModule([ramp, easeIn, plotter, rect])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()
