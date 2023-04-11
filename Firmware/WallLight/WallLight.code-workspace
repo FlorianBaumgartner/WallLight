@@ -16,7 +16,8 @@
 			"utility": "cpp",
 			"chrono": "cpp",
 			"algorithm": "cpp",
-			"cmath": "cpp"
+			"cmath": "cpp",
+			"new": "cpp"
 		}
 	}
 }

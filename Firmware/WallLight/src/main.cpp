@@ -50,16 +50,10 @@
 Utils utils;
 WallLight* wallLight;
 
-// const char* file = "rect_triangle_test.json";
-// const char* file = "rect_triangle_color_test.json";
-// const char* file = "Demo_SpeedTest.json";
-// const char* file = "Demo_MultiPath.json";
-// const char* file = "rainbow.json";
-const char* file = "Demo_Fire.json";
-// const char* file = "Animation_Matrix.json";
-// const char* file = "Demo_ModuleTest_Generator.json";
-
-bool loaded = LOAD_DIRECTLY;
+const char* dirName = "graphs/";
+uint32_t fileCount = 0;
+char** files = nullptr;
+bool scanDir(const char* dirName, char*** files, uint32_t* fileCount);
 
 void setup()
 {
@@ -76,41 +70,102 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize WallLight");
   }
-  if(loaded)
-  {
-    wallLight->loadGraph(file);
-  }
   wallLight->setBrightness(utils.getLedBrightness());
   console.log.println("OK, Let's go");
+
+  if(!scanDir(dirName, &files, &fileCount))
+  {
+    console.error.println("[MAIN] Could not scan directory");
+  }
 }
 
 void loop()
 {
   utils.feedWatchdog();
 
+  static bool loadDirectly = LOAD_DIRECTLY;
   static bool btnOld = false, btnNew = false;
   btnOld = btnNew; btnNew = !digitalRead(BUTTON);
-  if(!btnOld && btnNew)
+  if((!btnOld && btnNew) || loadDirectly)
   {
     console.log.println("[MAIN] Button pressed!");
-    if(!loaded)
+    loadDirectly = false;
+    static uint32_t fileIndex = 0;
+    if(files)
     {
-      wallLight->loadGraph(file);
-      loaded = true;
+      if(files[fileIndex])
+      {
+        wallLight->loadGraph(files[fileIndex]);
+      }
+      else
+      {
+        console.error.println("[MAIN] File name is not valid");
+      }
     }
     else
     {
-      wallLight->unloadGraph();
-      loaded = false;
+      console.error.println("[MAIN] No files found to load");
     }
+    fileIndex++;
+    fileIndex %= fileCount;
   }
  
   static int t = 0;
   if(millis() - t > 5000)
   {
     t = millis();
-    console.log.printf("Time: %d\n", t);
+    console.log.printf("[MAIN] Time: %d\n", t);
   }
   digitalWrite(LED, (millis() / BLINK_INTERVAL) & 1);
   delay(10);
+}
+
+bool scanDir(const char* dirName, char*** files, uint32_t* fileCount)
+{
+  char** scan = nullptr;
+  uint32_t count = 0;
+  File dir;
+  if(!dir.open(dirName))
+  {
+    console.error.printf("[MAIN] Could not open directory \"%s\"\n", dirName);
+    return false;
+  }
+  for(int i = 0; i < 2; i++)      // Do twice, first to get file count, secondly to save file names
+  {
+    dir.rewind();
+    while(true)
+    {
+      File file;
+      if(!file.openNext(&dir, O_RDONLY))
+      {
+        break;          // No more files in dir
+      }
+      if(file.isDir())
+      {
+        file.close();   // skip subdirectories
+        continue;
+      }
+      if(i > 0)
+      {
+        size_t dirnameLength = strlen(dirName);
+        const size_t FILE_NAME_LENGTH = 80;       // Max File name legth is 80 characters
+        scan[count] = new char[FILE_NAME_LENGTH];
+        strncpy(scan[count], dirName, min(dirnameLength, FILE_NAME_LENGTH));
+        file.getName(scan[count] + dirnameLength, FILE_NAME_LENGTH);
+        console.log.printf("[MAIN] File found: %s\n", scan[count]);
+      }
+      count++;
+      file.close();
+    }
+    if(i == 0)    // After first round, allocate filename buffer and reset file count as it is counted again
+    {
+      scan = new char*[count];
+      count = 0;
+    }
+  }
+  dir.close();
+  console.log.printf("[MAIN] Total file count in directory \"%s\": %d\n", dirName, count);
+  *fileCount = count;
+  *files = scan;
+  return true;
 }

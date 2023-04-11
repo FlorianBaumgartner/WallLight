@@ -47,7 +47,7 @@ class WallLight: public WallLightConfig
     ~WallLight();
     bool begin(void);
     bool loadGraph(const char* path, uint8_t engineIndex = 0);
-    void unloadGraph(uint8_t engineIndex = 0);
+    void unloadGraph(uint8_t engineIndex = 0, bool waitUntilUnloaded = true);
     void setBrightness(uint8_t brightness) {leds->setBrightness(brightness);}
     
   private:
@@ -57,7 +57,7 @@ class WallLight: public WallLightConfig
     Adafruit_NeoPXL8* leds;
 
     Engine engine[2] = {Engine(), Engine()};
-    bool unloadingGraphPending[2] = {false, false};
+    volatile bool unloadingGraphPending[2] = {false, false};
 
     static void update(void* pvParameter);
 };

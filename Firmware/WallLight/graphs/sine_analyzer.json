@@ -1,0 +1,94 @@
+{
+	"name": "Sine Analyzer",
+	"revision": "0.1",
+	"coefficients": [
+		{
+			"id": 0,
+			"value": 1.0
+		},
+		{
+			"id": 1,
+			"value": 1.0
+		},
+		{
+			"id": 2,
+			"value": 0.5
+		},
+		{
+			"id": 3,
+			"value": 0.5
+		},
+		{
+			"id": 4,
+			"value": 0.0
+		},
+		{
+			"id": 8,
+			"value": 1.0
+		}
+	],
+	"modules": [
+		{
+			"id": 5,
+			"type": "Generator.Sine",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 8,
+					"output": 0
+				},
+		        {
+    		        "index": 1,
+					"id": 0,
+					"output": 0
+				},
+				{
+    				"index": 2,
+					"id": 1,
+					"output": 0
+				},
+				{
+    				"index": 3,
+					"id": 2,
+					"output": 0
+				},
+				{
+    				"index": 4,
+					"id": 3,
+					"output": 0
+				},
+				{
+    				"index": 5,
+					"id": 4,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 6,
+			"type": "Analyzer.ParameterPlotter",
+			"parameter": [
+			    {
+    			    "index": 1,
+					"id": 5,
+					"output": 0
+				},
+				{
+    			    "index": 2,
+					"id": 3,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 7,
+			"type": "Function.Blank",
+			"parameter": [
+			]
+		}
+	],
+	"output": {
+		"id": 7,
+		"output": 0
+	}
+}

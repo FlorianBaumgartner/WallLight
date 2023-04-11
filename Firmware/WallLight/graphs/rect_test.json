@@ -1,0 +1,64 @@
+{
+	"name": "Rect Test",
+	"revision": "0.1",
+	"coefficients": [
+		{
+			"id": 0,
+			"value": 0.2
+		},
+		{
+			"id": 1,
+			"value": 0.8
+		},
+		{
+			"id": 2,
+			"value": 0.0
+		},
+		{
+			"id": 3,
+			"value": 1.0
+		},
+		{
+			"id": 4,
+			"value": 1.0
+		}
+	],
+	"modules": [
+		{
+			"id": 5,
+			"type": "Function.Rect",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 0,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 1,
+					"output": 0
+				},
+				{
+    				"index": 2,
+					"id": 2,
+					"output": 0
+				},
+				{
+    				"index": 3,
+					"id": 3,
+					"output": 0
+				},
+				{
+    				"index": 4,
+					"id": 4,
+					"output": 0
+				}
+			]
+
+		}
+	],
+	"output": {
+		"id": 5,
+		"output": 0
+	}
+}

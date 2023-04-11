@@ -70,14 +70,25 @@ bool WallLight::loadGraph(const char* path, uint8_t engineIndex)
 {
   engineIndex &= 0x01;
   console.log.printf("[WALLLIGHT] Loading graph from file: '%s' to Engine %d\n", path, engineIndex);
+  if(!engine[engineIndex].isReady())    // Check if engine is ready, otherwise unload graph first
+  {
+    unloadGraph(engineIndex, true);
+  }
   return engine[engineIndex].loadGraph(path);
 }
 
-void WallLight::unloadGraph(uint8_t engineIndex)
+void WallLight::unloadGraph(uint8_t engineIndex, bool waitUntilUnloaded)
 {
   engineIndex &= 0x01;
   console.log.printf("[WALLLIGHT] Unloading graph from Engine %d pending...\n", engineIndex);
   unloadingGraphPending[engineIndex] = true;
+  if(waitUntilUnloaded)
+  {
+    while(unloadingGraphPending[engineIndex] && !engine[engineIndex].isReady())
+    {
+      delay(20);
+    }
+  }
 }
 
 void WallLight::update(void* pvParameter)

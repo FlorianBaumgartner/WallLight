@@ -1,5 +1,6 @@
+import os
 import sys
-sys.path.append("../..")
+sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.path.pardir), os.path.pardir)))
 from WallLight_Emulator import WallLight
 from Modules import Coefficient, Generator, Modifier, Function, Analyzer
 

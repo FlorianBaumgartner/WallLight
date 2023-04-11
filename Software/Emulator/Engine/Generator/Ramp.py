@@ -28,6 +28,7 @@ class Ramp(Generator):
         slope = amplitude * freq
         slope *= 1.0 if(start < stop) else -1.0
         
+        output = start
         if enable:
             t -= self.enableTime
             if(t == 0):
