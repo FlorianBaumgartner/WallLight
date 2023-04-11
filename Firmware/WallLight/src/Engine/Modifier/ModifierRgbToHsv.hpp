@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    ModifierExpSmoothing.hpp
+* file    ModifierRgbToHsv.hpp
 *******************************************************************************
-* brief   Exponential Smoothing Modifier
+* brief   RGB-to-HSV Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-10
+* date    2023-04-11
 *******************************************************************************
 * MIT License
 *
@@ -30,27 +30,30 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef MODIFIER_EXP_SMOOTHING_HPP
-#define MODIFIER_EXP_SMOOTHING_HPP
+#ifndef MODIFIER_RGB_TO_HSV_HPP
+#define MODIFIER_RGB_TO_HSV_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
+#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class ModifierExpSmoothing: public virtual Modifier
+class ModifierRgbToHsv: public virtual Modifier
 {
   private:
-    Parameter parameterInputs[2] = {Parameter("input", 0.0),
-                                    Parameter("alpha", 0.5)};
+    Parameter parameterInputs[3] = {Parameter("red", 0.0),
+                                    Parameter("green", 0.0),
+                                    Parameter("blue", 0.0)};
     
-    Parameter parameterOutputs[1] = {Parameter("output")};
-    float output = 0.0;
+    Parameter parameterOutputs[3] = {Parameter("hue"),
+                                     Parameter("sat"),
+                                     Parameter("val")};
 
   public:
-    static constexpr const char* MODULE_NAME = "ExpSmoothing";
-    ModifierExpSmoothing(int32_t id): Modifier(id, MODULE_NAME) {}
-    ~ModifierExpSmoothing() {}
+    static constexpr const char* MODULE_NAME = "RgbToHsv";
+    ModifierRgbToHsv(int32_t id): Modifier(id, MODULE_NAME) {}
+    ~ModifierRgbToHsv() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -73,12 +76,14 @@ class ModifierExpSmoothing: public virtual Modifier
       }
       t = time;
 
-      float input = getParameterValue(0);
-      float alpha = constrain(getParameterValue(1), 0.0, 1.0);
-      alpha = powf(alpha, 0.1) * 0.999;
-
-      output = alpha * output + (1.0 - alpha) * input;  
-      setParameterOutput(0, output);
+      float red = getParameterValue(0);
+      float green = getParameterValue(1);
+      float blue = getParameterValue(2);
+      float hue, sat, val;
+      Utility::rgbToHsv(red, green, blue, &hue, &sat, &val);
+      setParameterOutput(0, hue);
+      setParameterOutput(1, sat);
+      setParameterOutput(2, val);
       return true;
     }
 };

@@ -20,9 +20,10 @@ class Constrain(Modifier):
         maximum = self._getParameterValue(2)
         
         if self._checkParameterValid(1) and self._checkParameterValid(2):  # When both inputs are availabe swap min and max value if they are reversed
-            temp = minimum
-            minimum = maximum
-            maximum = temp
+            if(minimum > maximum):
+                temp = minimum
+                minimum = maximum
+                maximum = temp
         
         if self._checkParameterValid(1):        # Check if minimum value has been set  
             output = max(output, minimum)
@@ -31,3 +32,28 @@ class Constrain(Modifier):
         
         self.parameterOutputs[0]["value"] = output
         return True
+
+
+if __name__ == '__main__':
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
+
+    sine = Generator.Sine(0)
+    sine.setParameterInput(3, Coefficient(1000, 0.5))              # amplitude
+    sine.setParameterInput(4, Coefficient(1001, 0.5))              # offset
+
+    constrainModule = Modifier.Constrain(1)
+    constrainModule.setParameterInput(0, sine)                     # input
+    constrainModule.setParameterInput(1, Coefficient(1002, 0.3))   # minimum
+    constrainModule.setParameterInput(2, Coefficient(1003, 0.7))   # maximum
+
+    rect = Function.Rect(2)
+    rect.setParameterInput(0, Coefficient(1004, 0.0))              # start
+    rect.setParameterInput(1, constrainModule)                     # stop
+
+    wallLight.addModule([sine, constrainModule, rect])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

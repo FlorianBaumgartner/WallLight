@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     WallLightTest wallLight;
     wallLight.show();
 
-    wallLight.loadGraph("Modifier.Monoflop");
+    wallLight.loadGraph("Modifier.Invert");
 
     bool res = a.exec();
     wallLight.unloadGraph();

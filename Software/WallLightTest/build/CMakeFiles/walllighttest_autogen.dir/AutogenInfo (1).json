@@ -1,16 +1,16 @@
 {
-	"BUILD_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen",
-	"CMAKE_BINARY_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
-	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest",
+	"BUILD_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest",
 	"CMAKE_EXECUTABLE" : "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
 	"CMAKE_LIST_FILES" : 
 	[
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/CMakeLists.txt",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeSystem.cmake",
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/CMakeLists.txt",
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeSystem.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeSystemSpecificInitialize.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCCompiler.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCXXCompiler.cmake",
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCCompiler.cmake",
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeCXXCompiler.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeSystemSpecificInformation.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeGenericSystem.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeInitializeConfigs.cmake",
@@ -23,7 +23,7 @@
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Platform/Windows-GNU-C.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Platform/Windows-GNU.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeRCCompiler.cmake",
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/3.19.20122902-MSVC_2/CMakeRCCompiler.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeRCInformation.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Platform/Windows-windres.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/Platform/Windows-GNU-C-ABI.cmake",
@@ -60,7 +60,9 @@
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake",
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake",
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake",
+		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake",
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake",
+		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake",
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake",
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake",
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWindowsIntegrationPlugin.cmake",
@@ -70,52 +72,52 @@
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
 		"C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeParseArguments.cmake",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/resources.qrc"
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/resources.qrc"
 	],
-	"CMAKE_SOURCE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest",
-	"DEP_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/deps",
+	"CMAKE_SOURCE_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest",
+	"DEP_FILE" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "walllighttest_autogen/timestamp",
 	"HEADERS" : 
 	[
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.hpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.hpp",
 			"MU",
-			"JEVY2G67OR/moc_Engine.cpp"
+			"ICLWZXTW53/moc_Engine.cpp"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.hpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.hpp",
 			"MU",
-			"JEVY2G67OR/moc_Utility.cpp"
+			"ICLWZXTW53/moc_Utility.cpp"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.h",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.h",
 			"MU",
 			"5GIRNRSBHG/moc_Print.cpp"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.h",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.h",
 			"MU",
 			"5GIRNRSBHG/moc_Stream.cpp"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.hpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.hpp",
 			"MU",
 			"5GIRNRSBHG/moc_console.cpp"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Test/TestEngine.hpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Test/TestEngine.hpp",
 			"MU",
 			"ISVRB3635B/moc_TestEngine.cpp"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.h",
 			"MU",
 			"EWIEGA46WW/moc_WallLightTest.cpp"
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include",
-	"MOC_COMPILATION_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/include",
+	"MOC_COMPILATION_FILE" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : [ "CONSOLE_HPP", "QT_CORE_LIB", "QT_GUI_LIB", "QT_WIDGETS_LIB" ],
 	"MOC_DEPEND_FILTERS" : 
 	[
@@ -126,8 +128,8 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
-		"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest",
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+		"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest",
 		"C:/Qt/5.15.2/mingw81_64/include",
 		"C:/Qt/5.15.2/mingw81_64/include/QtWidgets",
 		"C:/Qt/5.15.2/mingw81_64/include/QtGui",
@@ -152,49 +154,49 @@
 		"-c",
 		"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.19/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 4,
-	"PARSE_CACHE_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "C:/Qt/5.15.2/mingw81_64/bin/moc.exe",
 	"QT_UIC_EXECUTABLE" : "C:/Qt/5.15.2/mingw81_64/bin/uic.exe",
 	"QT_VERSION_MAJOR" : 5,
 	"QT_VERSION_MINOR" : 15,
-	"SETTINGS_FILE" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Engine.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Firmware/WallLight/src/Engine/Utility.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/Test/TestEngine.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Test/TestEngine.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.cpp",
 			"MU"
 		],
 		[
-			"C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/main.cpp",
+			"C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/main.cpp",
 			"MU"
 		]
 	],

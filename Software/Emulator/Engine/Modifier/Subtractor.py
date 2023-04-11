@@ -19,3 +19,23 @@ class Subtractor(Modifier):
         
         self.parameterOutputs[0]["value"] = minuend - subtrahend
         return True
+    
+
+if __name__ == '__main__':
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
+    
+    subtractor = Modifier.Subtractor(0)
+    subtractor.setParameterInput(0, Coefficient(1000, 0.8))        # minuend
+    subtractor.setParameterInput(1, Coefficient(1001, 0.3))        # subtrahend
+
+    rect = Function.Rect(1)
+    rect.setParameterInput(0, Coefficient(1002, 0.0))              # start
+    rect.setParameterInput(1, subtractor)                          # stop
+
+    wallLight.addModule([subtractor, rect])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

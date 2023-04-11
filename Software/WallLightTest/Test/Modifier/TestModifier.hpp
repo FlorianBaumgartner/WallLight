@@ -52,6 +52,10 @@
 #include "TestModifierExpSmoothing.hpp"
 #include "TestModifierSampler.hpp"
 #include "TestModifierMonoflop.hpp"
+#include "TestModifierHsvToRgb.hpp"
+#include "TestModifierRgbToHsv.hpp"
+#include "TestModifierNegate.hpp"
+#include "TestModifierInvert.hpp"
 
 
 static bool testModifier(Engine* engine, const char* name)
@@ -123,6 +127,22 @@ static bool testModifier(Engine* engine, const char* name)
   else if(strcmp(name, TestModifierMonoflop::TEST_NAME) == 0)
   {
     return TestModifierMonoflop::test(engine);
+  }
+  else if(strcmp(name, TestModifierHsvToRgb::TEST_NAME) == 0)
+  {
+    return TestModifierHsvToRgb::test(engine);
+  }
+  else if(strcmp(name, TestModifierRgbToHsv::TEST_NAME) == 0)
+  {
+    return TestModifierRgbToHsv::test(engine);
+  }
+  else if(strcmp(name, TestModifierNegate::TEST_NAME) == 0)
+  {
+    return TestModifierNegate::test(engine);
+  }
+  else if(strcmp(name, TestModifierInvert::TEST_NAME) == 0)
+  {
+    return TestModifierInvert::test(engine);
   }
   else
   {

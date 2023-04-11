@@ -1,6 +1,7 @@
-import numpy as np
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Modifier
 
 class Invert(Modifier):
@@ -18,3 +19,23 @@ class Invert(Modifier):
         
         self.parameterOutputs[0]["value"] = 1.0 - inputValue if enable else inputValue
         return True
+    
+
+if __name__ == '__main__':
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
+    
+    invert = Modifier.Invert(0)
+    invert.setParameterInput(0, Coefficient(1000, 0.2))         # input
+    invert.setParameterInput(1, Coefficient(1001, 1.0))         # enable
+
+    rect = Function.Rect(1)
+    rect.setParameterInput(0, Coefficient(1002, 0.0))           # start
+    rect.setParameterInput(1, invert)                           # stop
+
+    wallLight.addModule([invert, rect])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

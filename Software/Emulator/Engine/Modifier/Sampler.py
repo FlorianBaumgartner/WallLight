@@ -89,5 +89,3 @@ if __name__ == '__main__':
     wallLight.addModule([sine, rect, sampler, dirac0, dirac1, colorGain0, colorGain1, adder, plotter])
     wallLight.setOutput(adder, 0)
     wallLight.run()
-
-        

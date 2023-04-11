@@ -54,6 +54,10 @@
 #include "ModifierExpSmoothing.hpp"
 #include "ModifierSampler.hpp"
 #include "ModifierMonoflop.hpp"
+#include "ModifierHsvToRgb.hpp"
+#include "ModifierRgbToHsv.hpp"
+#include "ModifierNegate.hpp"
+#include "ModifierInvert.hpp"
 
 
 static Modifier* allocateModifier(const char* name, int32_t id)
@@ -128,6 +132,22 @@ static Modifier* allocateModifier(const char* name, int32_t id)
   else if(strcmp(name, ModifierMonoflop::MODULE_NAME) == 0)
   {
     module = new ModifierMonoflop(id);
+  }
+  else if(strcmp(name, ModifierHsvToRgb::MODULE_NAME) == 0)
+  {
+    module = new ModifierHsvToRgb(id);
+  }
+  else if(strcmp(name, ModifierRgbToHsv::MODULE_NAME) == 0)
+  {
+    module = new ModifierRgbToHsv(id);
+  }
+  else if(strcmp(name, ModifierNegate::MODULE_NAME) == 0)
+  {
+    module = new ModifierNegate(id);
+  }
+  else if(strcmp(name, ModifierInvert::MODULE_NAME) == 0)
+  {
+    module = new ModifierInvert(id);
   }
   else
   {

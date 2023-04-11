@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    ModifierExpSmoothing.hpp
+* file    ModifierNegate.hpp
 *******************************************************************************
-* brief   Exponential Smoothing Modifier
+* brief   Negate Modifier
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-10
+* date    2023-04-11
 *******************************************************************************
 * MIT License
 *
@@ -30,27 +30,26 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef MODIFIER_EXP_SMOOTHING_HPP
-#define MODIFIER_EXP_SMOOTHING_HPP
+#ifndef MODIFIER_NEGATE_HPP
+#define MODIFIER_NEGATE_HPP
 
 #include <Arduino.h>
 #include "../Module.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
-class ModifierExpSmoothing: public virtual Modifier
+class ModifierNegate: public virtual Modifier
 {
   private:
     Parameter parameterInputs[2] = {Parameter("input", 0.0),
-                                    Parameter("alpha", 0.5)};
-    
+                                    Parameter("enable", 1.0)};
+
     Parameter parameterOutputs[1] = {Parameter("output")};
-    float output = 0.0;
 
   public:
-    static constexpr const char* MODULE_NAME = "ExpSmoothing";
-    ModifierExpSmoothing(int32_t id): Modifier(id, MODULE_NAME) {}
-    ~ModifierExpSmoothing() {}
+    static constexpr const char* MODULE_NAME = "Negate";
+    ModifierNegate(int32_t id): Modifier(id, MODULE_NAME) {}
+    ~ModifierNegate() {}
     inline Parameter* getParameterInput(uint16_t index) {return (index < (sizeof(parameterInputs) / sizeof(Parameter)))? &parameterInputs[index] : nullptr;}
     inline Parameter* getParameterOutput(uint16_t index) {return (index < (sizeof(parameterOutputs) / sizeof(Parameter)))? &parameterOutputs[index] : nullptr;}
     inline uint32_t getParameterInputCount() {return (sizeof(parameterInputs) / sizeof(Parameter));}
@@ -74,10 +73,9 @@ class ModifierExpSmoothing: public virtual Modifier
       t = time;
 
       float input = getParameterValue(0);
-      float alpha = constrain(getParameterValue(1), 0.0, 1.0);
-      alpha = powf(alpha, 0.1) * 0.999;
+      bool enable = getParameterValue(1) >= 0.5;
 
-      output = alpha * output + (1.0 - alpha) * input;  
+      float output = (enable)? input * (-1.0) : input;
       setParameterOutput(0, output);
       return true;
     }

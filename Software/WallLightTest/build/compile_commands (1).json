@@ -1,0 +1,52 @@
+[
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\walllighttest_autogen\\mocs_compilation.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\build\\walllighttest_autogen\\mocs_compilation.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/mocs_compilation.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\main.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\main.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/main.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\WallLightTest.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\WallLightTest.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/WallLightTest.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\Arduino\\console.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\Arduino\\console.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/console.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\Arduino\\Print.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\Arduino\\Print.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Print.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\Arduino\\Stream.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\Arduino\\Stream.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Arduino/Stream.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\Test\\TestEngine.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\Test\\TestEngine.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/Test/TestEngine.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\C_\\Users\\flori\\GoogleDrive\\WallLight\\Firmware\\WallLight\\src\\Engine\\Utility.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Firmware\\WallLight\\src\\Engine\\Utility.cpp",
+  "file": "C:\\Users\\flori\\GoogleDrive\\WallLight\\Firmware\\WallLight\\src\\Engine\\Utility.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\C_\\Users\\flori\\GoogleDrive\\WallLight\\Firmware\\WallLight\\src\\Engine\\Engine.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Firmware\\WallLight\\src\\Engine\\Engine.cpp",
+  "file": "C:\\Users\\flori\\GoogleDrive\\WallLight\\Firmware\\WallLight\\src\\Engine\\Engine.cpp"
+},
+{
+  "directory": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DCONSOLE_HPP -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I. -I../ -Iwalllighttest_autogen/include -isystem C:/Qt/5.15.2/mingw81_64/include -isystem C:/Qt/5.15.2/mingw81_64/include/QtWidgets -isystem C:/Qt/5.15.2/mingw81_64/include/QtGui -isystem C:/Qt/5.15.2/mingw81_64/include/QtANGLE -isystem C:/Qt/5.15.2/mingw81_64/include/QtCore -isystem C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++ -g -std=gnu++2a -o CMakeFiles\\walllighttest.dir\\walllighttest_autogen\\EWIEGA46WW\\qrc_resources.cpp.obj -c C:\\Users\\flori\\GoogleDrive\\WallLight\\Software\\WallLightTest\\build\\walllighttest_autogen\\EWIEGA46WW\\qrc_resources.cpp",
+  "file": "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/walllighttest_autogen/EWIEGA46WW/qrc_resources.cpp"
+}
+]
