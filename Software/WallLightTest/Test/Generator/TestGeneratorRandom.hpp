@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    TestGenerator.hpp
+* file    TestGeneratorRandom.hpp
 *******************************************************************************
-* brief   Virtual base class of all generator tests
+* brief   Test of Random Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-07
+* date    2023-04-11
 *******************************************************************************
 * MIT License
 *
@@ -30,50 +30,33 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_GENERATOR_HPP
-#define TEST_GENERATOR_HPP
+#ifndef TEST_GENERATOR_RANDOM_HPP
+#define TEST_GENERATOR_RANDOM_HPP
 
 #include "../TestEngine.hpp"
 
-#include "TestGeneratorSine.hpp"
-#include "TestGeneratorRect.hpp"
-#include "TestGeneratorRamp.hpp"
-#include "TestGeneratorTriangle.hpp"
-#include "TestGeneratorDirac.hpp"
-#include "TestGeneratorRandom.hpp"
-
-
-static bool testGenerator(Engine* engine, const char* name)
+class TestGeneratorRandom : public TestEngine
 {
-  if(strcmp(name, TestGeneratorSine::TEST_NAME) == 0)
-  {
-    return TestGeneratorSine::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorRect::TEST_NAME) == 0)
-  {
-    return TestGeneratorRect::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorRamp::TEST_NAME) == 0)
-  {
-    return TestGeneratorRamp::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorTriangle::TEST_NAME) == 0)
-  {
-    return TestGeneratorTriangle::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorDirac::TEST_NAME) == 0)
-  {
-    return TestGeneratorDirac::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorRandom::TEST_NAME) == 0)
-  {
-    return TestGeneratorRandom::test(engine);
-  }
-  else
-  {
-    console.error.printf("[TEST_GENERATOR] Generator '%s' is not supported!\n", name);
-  }
-  return false;
-}
+  public:
+    static constexpr const char* TEST_NAME = "Random";
+
+    static bool test(Engine* engine)
+    {
+      GeneratorRandom* random = new GeneratorRandom(0);
+      random->setParameterInput(0, new Coefficient(1000, 1.0));           // enable
+      random->setParameterInput(1, new Coefficient(1001, 0.0));           // minimum
+      random->setParameterInput(2, new Coefficient(1002, 1.0));           // maximum
+
+      FunctionRect* rect = new FunctionRect(1);
+      rect->setParameterInput(0, new Coefficient(1003, 0.0));             // start
+      rect->setParameterInput(1, random);                                 // stop
+
+      bool status = true;
+      Module* modules[] = {random, rect};
+      status &= engine->setOutput(rect, 0);
+      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
+      return status;
+    }
+};
 
 #endif

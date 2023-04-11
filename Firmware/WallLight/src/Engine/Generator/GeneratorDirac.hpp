@@ -35,7 +35,6 @@
 
 #include <Arduino.h>
 #include "../Module.hpp"
-#include "../Utility.hpp"
 
 #define log   DISABLE_MODULE_LEVEL
 
@@ -50,6 +49,8 @@ class GeneratorDirac: public virtual Generator
                                     Parameter("phase", 0.0)};
     
     Parameter parameterOutputs[1] = {Parameter("output")};
+    uint32_t periodeCount = 0;
+    uint32_t repetitionCount = 0;
 
   public:
     static constexpr const char* MODULE_NAME = "Dirac";
@@ -78,36 +79,43 @@ class GeneratorDirac: public virtual Generator
       t = time;
 
       bool enable = getParameterValue(0) >= 0.5;
-      float freq = getParameterValue(1);
+      float freq = max(getParameterValue(1), 0.0001f);
       float rep = getParameterValue(2);
       float weight = getParameterValue(3);
       float offset = getParameterValue(4);
       float phase = getParameterValue(5);
       phase = Utility::mod((phase + 1.0), 2.0) - 1.0;
+      if(phase < 0)
+      {
+        phase += 2.0;
+      }
 
-      int discreteinterval = max((int)(framerate() / freq), 1);
-      int discretePhaseDelay = (int)((framerate() * phase * 0.5) / freq + 0.5);
+      float periode = 1.0 / freq;
+      float phaseDelay = -(phase * 0.5) / freq;
 
-      float output = 0.0;
+      float output = offset;
       if(enable)
       {
         t -= enableTime;
-        int x = (int)(t * framerate() + 0.5);
-        if(x < 0)
+        if(t == 0.0 && phaseDelay > 0)
         {
-          x += discreteinterval;
+          periodeCount++;
         }
-        if(x % discreteinterval == discretePhaseDelay)
+        if(t + phaseDelay >= periode * (float)periodeCount)
         {
-          if((rep < 0.0) || (rep / freq) * framerate() > x)
+          periodeCount++;
+          if((rep < 0.0) || repetitionCount < (int32_t)rep)
           {
             output += weight;
+            repetitionCount++;
           }
         }
       }
       else
       {
         enableTime = t;
+        periodeCount = 0;
+        repetitionCount = 0;
         t = 0;
       }
       

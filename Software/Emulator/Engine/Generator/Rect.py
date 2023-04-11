@@ -39,38 +39,31 @@ class Rect(Generator):
         output = (1.0 if((t * freq - (phase / 2.0)) % 1.0 <  dutycicle) else -1.0) * amplitude + offset
         self.parameterOutputs[0]["value"] = output
         return True
-    
-if __name__ == '__main__':
-    import time
-    from Modules import Module, Coefficient, Generator, Analyzer
-    Module.framerate = 60
-    
-    enable = 1.0
-    freq = 1.0
-    rep = -1
-    amp = 0.5
-    offset = 0.5
-    phase = 0.0
-    dutycicle = 0.5
-    
-    enableCoeff = Coefficient(2, enable)
-    
-    ramp = Generator.Rect(0)
-    ramp.setParameterInput(0, Coefficient(2, enable))
-    ramp.setParameterInput(1, Coefficient(3, freq))
-    ramp.setParameterInput(2, Coefficient(4, rep))
-    ramp.setParameterInput(3, Coefficient(5, amp))
-    ramp.setParameterInput(4, Coefficient(6, offset))
-    ramp.setParameterInput(5, Coefficient(7, phase))
-    ramp.setParameterInput(6, Coefficient(8, dutycicle))
-    
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
-    plotter.setParameterInput(0, ramp, 0)
-    
-    def update(t):
-        ramp.update(t)
-        plotter.update(t)
 
-    plotter.updateFunction = update
-    while plotter.isRunning():
-        time.sleep(0.1)
+
+if __name__ == '__main__':
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
+    
+    rectGen = Generator.Rect(0)
+    rectGen.setParameterInput(0, Coefficient(1000, 1.0))           # enable
+    rectGen.setParameterInput(1, Coefficient(1001, 1.0))           # freq
+    rectGen.setParameterInput(2, Coefficient(1002, -1.0))          # rep
+    rectGen.setParameterInput(3, Coefficient(1003, 0.5))           # amp
+    rectGen.setParameterInput(4, Coefficient(1004, 0.5))           # offset
+    rectGen.setParameterInput(5, Coefficient(1005, 0.0))           # phase
+    rectGen.setParameterInput(6, Coefficient(1006, 0.5))           # dutycicle
+
+    rect = Function.Rect(1)
+    rect.setParameterInput(0, Coefficient(1007, 0.0))              # start
+    rect.setParameterInput(1, rectGen)                             # stop
+
+    plotter = Analyzer.ParameterPlotter(2)
+    plotter.setParameterInput(0, rectGen)
+
+    wallLight.addModule([rectGen, rect, plotter])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

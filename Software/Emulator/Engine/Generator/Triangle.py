@@ -38,35 +38,30 @@ class Triangle(Generator):
         output = (x - 0.5) * 2 * amplitude + offset
         self.parameterOutputs[0]["value"] = output
         return True
-    
+
+
 if __name__ == '__main__':
-    import time
-    from Modules import Module, Coefficient, Generator, Analyzer
-    Module.framerate = 60
-    
-    enable = 1.0
-    freq = 1.0
-    rep = 1.0
-    amp = -1.0
-    offset = 0.0
-    phase = 0.0
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
     
     triangle = Generator.Triangle(0)
-    triangle.setParameterInput(0, Coefficient(2, enable))
-    triangle.setParameterInput(1, Coefficient(3, freq))
-    triangle.setParameterInput(2, Coefficient(4, rep))
-    triangle.setParameterInput(3, Coefficient(5, amp))
-    triangle.setParameterInput(4, Coefficient(6, offset))
-    triangle.setParameterInput(5, Coefficient(7, phase))
-    
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
-    plotter.setParameterInput(0, triangle, 0)
-    
-    def update(t):
-        triangle.update(t)
-        plotter.update(t)
+    triangle.setParameterInput(0, Coefficient(1000, 1.0))           # enable
+    triangle.setParameterInput(1, Coefficient(1001, 1.0))           # freq
+    triangle.setParameterInput(2, Coefficient(1002, 1.0))           # rep
+    triangle.setParameterInput(3, Coefficient(1003, -1.0))          # amp
+    triangle.setParameterInput(4, Coefficient(1004, 0.0))           # offset
+    triangle.setParameterInput(5, Coefficient(1005, 0.0))           # phase
 
-    plotter.updateFunction = update
-    while plotter.isRunning():
-        time.sleep(0.1)
-    
+    rect = Function.Rect(1)
+    rect.setParameterInput(0, Coefficient(1006, 0.0))               # start
+    rect.setParameterInput(1, triangle)                             # stop
+
+    plotter = Analyzer.ParameterPlotter(2)
+    plotter.setParameterInput(0, triangle)
+
+    wallLight.addModule([triangle, rect, plotter])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

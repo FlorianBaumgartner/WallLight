@@ -45,33 +45,27 @@ class Ramp(Generator):
     
 
 if __name__ == '__main__':
-    import time
-    from Modules import Module, Coefficient, Generator, Analyzer
-    Module.framerate = 60
-    
-    enable = 1.0
-    freq = 1.0
-    rep = 1.0
-    start = 0.0
-    stop = 1.0
-    phase = 0.0
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
     
     ramp = Generator.Ramp(0)
-    ramp.setParameterInput(0, Coefficient(2, enable))
-    ramp.setParameterInput(1, Coefficient(3, freq))
-    ramp.setParameterInput(2, Coefficient(4, rep))
-    ramp.setParameterInput(3, Coefficient(5, start))
-    ramp.setParameterInput(4, Coefficient(6, stop))
-    ramp.setParameterInput(5, Coefficient(7, phase))
-    
-    plotter = Analyzer.ParameterPlotter(1, autoMove=False, standalone=True)
-    plotter.setParameterInput(0, ramp, 0)
-    
-    def update(t):
-        ramp.update(t)
-        plotter.update(t)
+    ramp.setParameterInput(0, Coefficient(1000, 1.0))           # enable
+    ramp.setParameterInput(1, Coefficient(1001, 1.0))           # freq
+    ramp.setParameterInput(2, Coefficient(1002, 1.0))           # rep
+    ramp.setParameterInput(3, Coefficient(1003, 0.0))           # start
+    ramp.setParameterInput(4, Coefficient(1004, 1.0))           # stop
+    ramp.setParameterInput(5, Coefficient(1005, 0.0))           # phase
 
-    plotter.updateFunction = update
-    while plotter.isRunning():
-        time.sleep(0.1)
-    
+    rect = Function.Rect(1)
+    rect.setParameterInput(0, Coefficient(1006, 0.0))           # start
+    rect.setParameterInput(1, ramp)                             # stop
+
+    plotter = Analyzer.ParameterPlotter(2)
+    plotter.setParameterInput(0, ramp)
+
+    wallLight.addModule([ramp, rect, plotter])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

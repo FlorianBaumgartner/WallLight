@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    TestGenerator.hpp
+* file    TestGeneratorDirac.hpp
 *******************************************************************************
-* brief   Virtual base class of all generator tests
+* brief   Test of Dirac Generator
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-04-07
+* date    2023-04-11
 *******************************************************************************
 * MIT License
 *
@@ -30,50 +30,36 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef TEST_GENERATOR_HPP
-#define TEST_GENERATOR_HPP
+#ifndef TEST_GENERATOR_DIRAC_HPP
+#define TEST_GENERATOR_DIRAC_HPP
 
 #include "../TestEngine.hpp"
 
-#include "TestGeneratorSine.hpp"
-#include "TestGeneratorRect.hpp"
-#include "TestGeneratorRamp.hpp"
-#include "TestGeneratorTriangle.hpp"
-#include "TestGeneratorDirac.hpp"
-#include "TestGeneratorRandom.hpp"
-
-
-static bool testGenerator(Engine* engine, const char* name)
+class TestGeneratorDirac : public TestEngine
 {
-  if(strcmp(name, TestGeneratorSine::TEST_NAME) == 0)
-  {
-    return TestGeneratorSine::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorRect::TEST_NAME) == 0)
-  {
-    return TestGeneratorRect::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorRamp::TEST_NAME) == 0)
-  {
-    return TestGeneratorRamp::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorTriangle::TEST_NAME) == 0)
-  {
-    return TestGeneratorTriangle::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorDirac::TEST_NAME) == 0)
-  {
-    return TestGeneratorDirac::test(engine);
-  }
-  else if(strcmp(name, TestGeneratorRandom::TEST_NAME) == 0)
-  {
-    return TestGeneratorRandom::test(engine);
-  }
-  else
-  {
-    console.error.printf("[TEST_GENERATOR] Generator '%s' is not supported!\n", name);
-  }
-  return false;
-}
+  public:
+    static constexpr const char* TEST_NAME = "Dirac";
+
+    static bool test(Engine* engine)
+    {
+      GeneratorDirac* dirac = new GeneratorDirac(0);
+      dirac->setParameterInput(0, new Coefficient(1000, 1.0));           // enable
+      dirac->setParameterInput(1, new Coefficient(1001, 1.0));           // freq
+      dirac->setParameterInput(2, new Coefficient(1002, -1.0));          // rep
+      dirac->setParameterInput(3, new Coefficient(1003, 1.0));           // weight
+      dirac->setParameterInput(4, new Coefficient(1004, 0.0));           // offset
+      dirac->setParameterInput(5, new Coefficient(1005, 0.0));           // phase
+
+      FunctionRect* rect = new FunctionRect(1);
+      rect->setParameterInput(0, new Coefficient(1006, 0.0));            // start
+      rect->setParameterInput(1, dirac);                                 // stop
+
+      bool status = true;
+      Module* modules[] = {dirac, rect};
+      status &= engine->setOutput(rect, 0);
+      status &= engine->loadGraph(modules, sizeof(modules) / sizeof(Module*));
+      return status;
+    }
+};
 
 #endif

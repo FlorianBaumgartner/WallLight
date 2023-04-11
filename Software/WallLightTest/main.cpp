@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     WallLightTest wallLight;
     wallLight.show();
 
-    wallLight.loadGraph("Modifier.Invert");
+    wallLight.loadGraph("Generator.Random");
 
     bool res = a.exec();
     wallLight.unloadGraph();

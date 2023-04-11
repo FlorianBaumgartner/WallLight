@@ -1,8 +1,9 @@
-import numpy as np
-import time
+import os
 import sys
-sys.path.append("..")
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from Modules import Generator
+import time
 
 class Random(Generator):
     def __init__(self, id=None):
@@ -25,29 +26,27 @@ class Random(Generator):
         
         self.parameterOutputs[0]["value"] = output
         return True
-    
+
+
 if __name__ == '__main__':
-    import time
-    from Modules import Module, Coefficient, Generator, Analyzer
-    Module.framerate = 60
-    
-    enable = 1.0
-    minimum = -1.0
-    maximum = 1.0
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
     
     random = Generator.Random(0)
-    random.setParameterInput(0, Coefficient(2, enable))
-    random.setParameterInput(1, Coefficient(3, minimum))
-    random.setParameterInput(2, Coefficient(4, maximum))
-    
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
-    plotter.setParameterInput(0, random, 0)
-    
-    def update(t):
-        random.update(t)
-        plotter.update(t)
+    random.setParameterInput(0, Coefficient(1000, 1.0))           # enable
+    random.setParameterInput(1, Coefficient(1001, 0.0))           # minimum
+    random.setParameterInput(2, Coefficient(1002, 1.0))           # maximum
 
-    plotter.updateFunction = update
-    while plotter.isRunning():
-        time.sleep(0.1)
-    
+    rect = Function.Rect(1)
+    rect.setParameterInput(0, Coefficient(1003, 0.0))             # start
+    rect.setParameterInput(1, random)                             # stop
+
+    plotter = Analyzer.ParameterPlotter(2)
+    plotter.setParameterInput(0, random)
+
+    wallLight.addModule([random, rect, plotter])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()

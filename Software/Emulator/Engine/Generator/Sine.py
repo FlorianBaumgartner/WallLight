@@ -25,7 +25,6 @@ class Sine(Generator):
         offset = self._getParameterValue(4)
         phase = self._getParameterValue(5)
         phase = (phase + 1.0) % 2.0 - 1.0
-          
         
         if enable:
             t -= self.enableTime
@@ -39,38 +38,31 @@ class Sine(Generator):
         output = np.sin(x) * amplitude + offset
         self.parameterOutputs[0]["value"] = output
         return True
-    
+
+
 if __name__ == '__main__':
-    import time
-    from Modules import Module, Generator, Coefficient, Analyzer
-    Module.framerate = 60
-        
-    enable = 1.0
-    freq = 0.1
-    rep = 1.0
-    amp = 1.0
-    offset = 0.0
-    phase = -0.5
-    
-    enableCoeff = Coefficient(2, enable)
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+    from WallLight_Emulator import WallLight
+    from Modules import Coefficient, Generator, Modifier, Analyzer, Function
+    wallLight = WallLight()
     
     sine = Generator.Sine(0)
-    sine.setParameterInput(0, enableCoeff)
-    sine.setParameterInput(1, Coefficient(3, freq))
-    sine.setParameterInput(2, Coefficient(4, rep))
-    sine.setParameterInput(3, Coefficient(5, amp))
-    sine.setParameterInput(4, Coefficient(6, offset))
-    sine.setParameterInput(5, Coefficient(7, phase))
-    
-    plotter = Analyzer.ParameterPlotter(1, standalone=True)
-    plotter.setParameterInput(0, sine, 0)
-    
-    def update(t):
-        # enableCoeff.updateValue(1.0 if((t % 4.0) >= 2.0) else 0.0)
-        sine.update(t)
-        plotter.update(t)
+    sine.setParameterInput(0, Coefficient(1000, 1.0))           # enable
+    sine.setParameterInput(1, Coefficient(1001, 0.1))           # freq
+    sine.setParameterInput(2, Coefficient(1002, 1.0))           # rep
+    sine.setParameterInput(3, Coefficient(1003, 0.5))           # amp
+    sine.setParameterInput(4, Coefficient(1004, 0.5))           # offset
+    sine.setParameterInput(5, Coefficient(1005, -0.5))          # phase
 
-    plotter.updateFunction = update
-    while plotter.isRunning():
-        time.sleep(0.1)
+    rect = Function.Rect(1)
+    rect.setParameterInput(0, Coefficient(1006, 0.0))           # start
+    rect.setParameterInput(1, sine)                             # stop
+
+    plotter = Analyzer.ParameterPlotter(2)
+    plotter.setParameterInput(0, sine)
+
+    wallLight.addModule([sine, rect, plotter])
+    wallLight.setOutput(rect, 0)
+    wallLight.run()
     
