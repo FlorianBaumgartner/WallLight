@@ -70,7 +70,7 @@ bool WallLight::loadGraph(const char* path, uint8_t engineIndex)
 {
   engineIndex &= 0x01;
   console.log.printf("[WALLLIGHT] Loading graph from file: '%s' to Engine %d\n", path, engineIndex);
-  if(!engine[engineIndex].isReady())    // Check if engine is ready, otherwise unload graph first
+  if(engine[engineIndex].isReady())    // Check if engine is ready, otherwise unload graph first
   {
     unloadGraph(engineIndex, true);
   }
@@ -84,7 +84,7 @@ void WallLight::unloadGraph(uint8_t engineIndex, bool waitUntilUnloaded)
   unloadingGraphPending[engineIndex] = true;
   if(waitUntilUnloaded)
   {
-    while(unloadingGraphPending[engineIndex] && !engine[engineIndex].isReady())
+    while(unloadingGraphPending[engineIndex] || engine[engineIndex].isReady())
     {
       delay(20);
     }

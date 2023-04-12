@@ -39,7 +39,7 @@
 #endif
 
 
-#define ENGINE_VERBOSE (true && !ESP32)
+#define ENGINE_VERBOSE (false || !ESP32)
 
 Engine::Engine()
 {
@@ -186,8 +186,19 @@ bool Engine::loadGraph(const char* path)
       }
       if(!status)
       {
-        console.error.printf("[ENGINE] Error occured while setting Parameter '%d' of %s\n", parameterIndex, mainModules[i]["type"].as<const char*>());
-        moduleError = true;
+        char classType[MODULE_TYPE_LENGTH];
+        strncpy(classType, mainModules[i]["type"].as<const char*>(), MODULE_TYPE_LENGTH);
+        char* moduleType = strtok(classType, ".");
+        if(strncmp(classType, "Generator", MODULE_TYPE_LENGTH) == 0 || strncmp(classType, "Modifier", MODULE_TYPE_LENGTH) == 0 || strncmp(classType, "Function", MODULE_TYPE_LENGTH) == 0)
+        {
+          console.error.printf("[ENGINE] Error occured while setting Parameter '%d' of %s\n", parameterIndex, mainModules[i]["type"].as<const char*>());
+          moduleError = true;
+        }
+        else    // Unknown Module Class Type (propertly type "Analyzer")
+        {
+          console.warning.printf("[ENGINE] Could not set Parameter '%d' of %s\n", parameterIndex, mainModules[i]["type"].as<const char*>());
+          moduleWarning = true;
+        }
       }
     }
 
@@ -221,8 +232,19 @@ bool Engine::loadGraph(const char* path)
         }
         if(!status)
         {
-          console.error.printf("[ENGINE] Error occured while setting Input '%d' of %s\n", inputIndex, mainModules[i]["type"].as<const char*>());
-          moduleError = true;
+          char classType[MODULE_TYPE_LENGTH];
+          strncpy(classType, mainModules[i]["type"].as<const char*>(), MODULE_TYPE_LENGTH);
+          char* moduleType = strtok(classType, ".");
+          if(strncmp(classType, "Generator", MODULE_TYPE_LENGTH) == 0 || strncmp(classType, "Modifier", MODULE_TYPE_LENGTH) == 0 || strncmp(classType, "Function", MODULE_TYPE_LENGTH) == 0)
+          {
+            console.error.printf("[ENGINE] Error occured while setting Input '%d' of %s\n", inputIndex, mainModules[i]["type"].as<const char*>());
+            moduleError = true;
+          }
+          else    // Unknown Module Class Type (propertly type "Analyzer")
+          {
+            console.warning.printf("[ENGINE] Could not set Input '%d' of %s\n", inputIndex, mainModules[i]["type"].as<const char*>());
+            moduleWarning = true;
+          }
         }
       }
     }

@@ -31,6 +31,7 @@
 ******************************************************************************/
 
 #include <Arduino.h>
+#include <Preferences.h>
 #include "console.hpp"
 #include "utils.hpp"
 
@@ -49,9 +50,11 @@
 
 Utils utils;
 WallLight* wallLight;
+Preferences preferences;
 
 const char* dirName = "graphs/";
 uint32_t fileCount = 0;
+uint32_t fileIndex = 0;
 char** files = nullptr;
 bool scanDir(const char* dirName, char*** files, uint32_t* fileCount);
 
@@ -77,6 +80,14 @@ void setup()
   {
     console.error.println("[MAIN] Could not scan directory");
   }
+
+  preferences.begin("WallLight", false);
+  uint32_t bootCount = preferences.getUInt("bootCount", 0);
+  fileIndex = preferences.getUInt("fileIndex", 0) % fileCount;
+  console.log.printf("[MAIN] Boot Count: %d\n", bootCount);
+  bootCount++;
+  preferences.putUInt("bootCount", bootCount);
+  preferences.end();
 }
 
 void loop()
@@ -90,11 +101,13 @@ void loop()
   {
     console.log.println("[MAIN] Button pressed!");
     loadDirectly = false;
-    static uint32_t fileIndex = 0;
     if(files)
     {
       if(files[fileIndex])
       {
+        preferences.begin("WallLight", false);
+        preferences.putUInt("fileIndex", fileIndex);
+        preferences.end();
         wallLight->loadGraph(files[fileIndex]);
       }
       else
