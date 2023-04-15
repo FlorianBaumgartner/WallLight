@@ -56,7 +56,7 @@ class ModifierMultiplier: public virtual Modifier
     inline uint32_t getParameterOutputCount() {return (sizeof(parameterOutputs) / sizeof(Parameter));}
     bool init(bool deepCopy = false)
     {
-      checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
+      checkParameterInputs();       // Iterate over all parameter inputs to check if they are valid
       return initDone();
     }
 

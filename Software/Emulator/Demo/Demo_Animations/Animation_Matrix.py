@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.path.pardir), os.path.pardir)))
 from WallLight_Emulator import WallLight
+from pathlib import Path
 from Modules import Coefficient, Generator, Modifier, Function, Analyzer
 
 
@@ -54,12 +55,18 @@ if __name__ == '__main__':
         greenElement = Function.ColorGain()
         greenElement.setParameterInput(1, Coefficient(1.0))
         greenElement.setInput(0, dropElement)
-        
-        whiteElement = Function.Ramp()
-        whiteElement.setParameterInput(0, dropFrontShort)
-        whiteElement.setParameterInput(1, dropFront)
-        whiteElement.setParameterInput(2, Coefficient(0.0))
-        whiteElement.setParameterInput(3, Coefficient(1.5))
+
+        tipElement = Function.Ramp()
+        tipElement.setParameterInput(0, dropFrontShort)
+        tipElement.setParameterInput(1, dropFront)
+        tipElement.setParameterInput(2, Coefficient(0.0))
+        tipElement.setParameterInput(3, Coefficient(1.5))
+
+        whiteElement = Function.ColorGain()
+        whiteElement.setParameterInput(0, Coefficient(1.0))
+        whiteElement.setParameterInput(1, Coefficient(1.0))
+        whiteElement.setParameterInput(2, Coefficient(1.0))
+        whiteElement.setInput(0, tipElement)
         
         element = Function.Adder()
         element.setInput(0, greenElement)
@@ -98,7 +105,7 @@ if __name__ == '__main__':
     wallLight.loadModules()
     wallLight.setOutput(output, 0)
     wallLight.start()
-    wallLight.saveGraph("Animation_Matrix.json", "Matrix Animation")
+    wallLight.saveGraph(Path(__file__).parent / "Animation_Matrix.json", "Matrix Animation")
     
     # wallLight.listModules()
     # print(colorGain.id)

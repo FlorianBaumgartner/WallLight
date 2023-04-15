@@ -29,7 +29,7 @@ public:
     {
         if (WallLightTest->objectName().isEmpty())
             WallLightTest->setObjectName(QString::fromUtf8("WallLightTest"));
-        WallLightTest->resize(250, 1000);
+        WallLightTest->resize(230, 1000);
         actionExit = new QAction(WallLightTest);
         actionExit->setObjectName(QString::fromUtf8("actionExit"));
         centralWidget = new QWidget(WallLightTest);

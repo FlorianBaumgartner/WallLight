@@ -1,7 +1,9 @@
+import os
 import sys
 import pyaudio
 import numpy as np
-sys.path.append("../..")
+from pathlib import Path
+sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.path.pardir), os.path.pardir)))
 from WallLight_Emulator import WallLight
 
 
@@ -14,8 +16,8 @@ if __name__ == '__main__':
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paInt16, channels=1, rate=RATE, input=True, frames_per_buffer=CHUNK)
 
-    wallLight.loadGraph("Demo_Audio_Analyzer.json")
-    # wallLight.loadGraph("Demo_Audio.json")
+    wallLight.loadGraph(Path(__file__).parent / "Demo_Audio_Analyzer.json")
+    # wallLight.loadGraph(Path(__file__).parent / "Demo_Audio.json")
     wallLight.start()
     while wallLight.isRunning():
         data = np.frombuffer(stream.read(CHUNK), dtype=np.int16)

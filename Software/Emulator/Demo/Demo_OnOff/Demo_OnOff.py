@@ -1,13 +1,14 @@
+import os
 import sys
-import numpy as np
-sys.path.append("../..")
+sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.path.pardir), os.path.pardir)))
+from pathlib import Path
 from pynput import keyboard
 from WallLight_Emulator import WallLight
 
 
 if __name__ == '__main__':
     wallLight = WallLight()    
-    wallLight.loadGraph("Demo_OnOff.json")
+    wallLight.loadGraph(Path(__file__).parent / "Demo_OnOff.json")
     wallLight.start()
     
     onOff = False

@@ -25,9 +25,10 @@ class WallLightTest : public QMainWindow
     explicit WallLightTest(QWidget *parent = 0);
     ~WallLightTest();
 
-    static const int WINDOW_WIDTH = 250;
+    static const int WINDOW_WIDTH = 230;
     static const int WINDOW_HEIGHT = 1000;
     static const int PIXELS_OFFSET = 50;
+    static const int PIXELS_WWA_OFFSET = 50;
         
     static const int FRAMERATE = 50;
     static const int PIXELCOUNT = 288;

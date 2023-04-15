@@ -38,7 +38,7 @@
 #include "Engine/WallLight.hpp"
 
 
-#define BUTTON            47
+#define BUTTON            0
 #define LED               10
 #define BLINK_INTERVAL    200
 #define WATCHDOG_TIMEOUT  30    // [s]
@@ -46,7 +46,7 @@
 #define LOAD_DIRECTLY     true
 
 #define LED_RGB_PIN       17
-#define LED_WWA_PIN       -1
+#define LED_WWA_PIN       18
 
 Utils utils;
 WallLight* wallLight;
@@ -83,8 +83,9 @@ void setup()
 
   preferences.begin("WallLight", false);
   uint32_t bootCount = preferences.getUInt("bootCount", 0);
-  fileIndex = preferences.getUInt("fileIndex", 0) % fileCount;
+  fileIndex = constrain(preferences.getUInt("fileIndex", 0), 0, (fileCount > 0)? fileCount - 1 : 0);
   console.log.printf("[MAIN] Boot Count: %d\n", bootCount);
+  console.log.printf("[MAIN] Current File Index: %d\n", fileIndex);
   bootCount++;
   preferences.putUInt("bootCount", bootCount);
   preferences.end();
@@ -101,7 +102,7 @@ void loop()
   {
     console.log.println("[MAIN] Button pressed!");
     loadDirectly = false;
-    if(files)
+    if(files && fileCount > 0)
     {
       if(files[fileIndex])
       {
@@ -114,13 +115,13 @@ void loop()
       {
         console.error.println("[MAIN] File name is not valid");
       }
+      fileIndex++;
+      fileIndex %= fileCount;
     }
     else
     {
       console.error.println("[MAIN] No files found to load");
     }
-    fileIndex++;
-    fileIndex %= fileCount;
   }
  
   static int t = 0;
@@ -141,6 +142,8 @@ bool scanDir(const char* dirName, char*** files, uint32_t* fileCount)
   if(!dir.open(dirName))
   {
     console.error.printf("[MAIN] Could not open directory \"%s\"\n", dirName);
+    *fileCount = 0;
+    *files = nullptr;
     return false;
   }
   for(int i = 0; i < 2; i++)      // Do twice, first to get file count, secondly to save file names

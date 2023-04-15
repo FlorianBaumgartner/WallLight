@@ -1,6 +1,8 @@
+import os
 import sys
-sys.path.append("../..")
+sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.path.pardir), os.path.pardir)))
 from WallLight_Emulator import WallLight
+from pathlib import Path
 from Modules import Coefficient, Generator, Modifier, Function, Analyzer
 
 
@@ -16,7 +18,7 @@ if __name__ == '__main__':
     rect.setParameterInput(1, Coefficient(0.5))
     rect.setParameterInput(3, Coefficient(0.5))
     rect.setParameterInput(4, Coefficient(0.5))
-    rect.setParameterInput(5, Coefficient(0.5))
+    rect.setParameterInput(5, Coefficient(1.0))
     
     easeIn = Modifier.EaseIn()
     easeIn.setParameterInput(0, triangle)
@@ -37,18 +39,23 @@ if __name__ == '__main__':
     # amplitude.setParameterInput(4, Coefficient(0.05))
     
     amplitude = Generator.Sine()
-    amplitude.setParameterInput(1, Coefficient(0.05))
-    amplitude.setParameterInput(3, Coefficient(0.5))
-    amplitude.setParameterInput(4, Coefficient(0.5))
+    amplitude.setParameterInput(1, Coefficient(0.05))           # freq
+    amplitude.setParameterInput(3, Coefficient(0.4))            # ampitude
+    amplitude.setParameterInput(4, Coefficient(0.45))
+    amplitude.setParameterInput(5, Coefficient(0.5))
     
     
     height = Modifier.Multiplier()
     height.setParameterInput(0, switch)
     height.setParameterInput(1, amplitude)
+
+    heightOffset = Modifier.Adder()
+    heightOffset.setParameterInput(0, height)
+    heightOffset.setParameterInput(1, Coefficient(0.1))
     
-    pulse = Function.Pulse()
-    pulse.setParameterInput(0, height)
-    pulse.setParameterInput(1, Coefficient(0.05))
+    pdf = Function.Pdf()
+    pdf.setParameterInput(0, heightOffset)
+    pdf.setParameterInput(1, Coefficient(0.001))
     
     
     hueRandom = Generator.Random()
@@ -56,7 +63,7 @@ if __name__ == '__main__':
     hue = Modifier.Sampler()
     hue.setParameterInput(0, hueRandom)
     hue.setParameterInput(1, rect)
-    hue.setParameterInput(2, Coefficient(2.0))
+    hue.setParameterInput(2, Coefficient(1.0))      # Falling edge
     
     color = Modifier.HsvToRgb()
     color.setParameterInput(0, hue)
@@ -65,19 +72,20 @@ if __name__ == '__main__':
     output.setParameterInput(0, color, 0)
     output.setParameterInput(1, color, 1)
     output.setParameterInput(2, color, 2)
-    output.setInput(0, pulse)
+    output.setInput(0, pdf)
     
+    plotter = Analyzer.ParameterPlotter()
+    plotter.setParameterInput(0, triangle)
+    plotter.setParameterInput(1, rect)
+    plotter.setParameterInput(2, amplitude)
+    # plotter.setParameterInput(2, easeIn)
+    # plotter.setParameterInput(3, easeOut)
     
-    # plotter = Analyzer.ParameterPlotter()
-    # plotter.setParameterInput(0, amplitude)
-    # plotter.setParameterInput(1, triangle)
-    # plotter.setParameterInput(2, rect)
-    
-    
-    
+
     wallLight.loadModules()
     wallLight.setOutput(output, 0)
     wallLight.start()
+    wallLight.saveGraph(Path(__file__).parent / "Animation_Bounce.json", "Bounce Animation")
     
     # wallLight.listModules()
     # print(colorGain.id)

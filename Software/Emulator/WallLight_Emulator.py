@@ -14,9 +14,10 @@ from Modules import Module
 
 
 class WallLight():
-    WINDOW_WIDTH = 250
+    WINDOW_WIDTH = 230
     WINDOW_HEIGHT = 1000
     PIXELS_OFFSET = 50
+    PIXELS_WWA_OFFSET = 50
     
     framerate = 50
     pixelcount = 288
@@ -95,17 +96,20 @@ class MainWidget(QWidget):
 
         self.outputBuffer = np.zeros((WallLight.pixelcount, 6))        
         self.colors = [QColor(0, 0, 0) for _ in range(WallLight.pixelcount)]
+        self.colorsWWA = [QColor(0, 0, 0) for _ in range(WallLight.pixelcount)]
         self.pixels = []
+        self.pixelsWWA = []
         height = WallLight.WINDOW_HEIGHT - WallLight.PIXELS_OFFSET * 2
         hPixel = int(height / WallLight.pixelcount)
         offset = int((WallLight.WINDOW_HEIGHT - hPixel * WallLight.pixelcount) / 2)
         for i in range(WallLight.pixelcount):
             self.pixels.append((offset, offset + hPixel * i, 20, hPixel))
+            self.pixelsWWA.append((offset + 20 + WallLight.PIXELS_WWA_OFFSET, offset + hPixel * i, 20, hPixel))
         
         self.timer = QTimer()
         self.timer.timeout.connect(self.change_colors)
         
-        self.setStyleSheet("background-color: black;")
+        self.setStyleSheet("background-color: #111111;")
         self.setWindowTitle('WallLight Emulator')
         self.setGeometry(300, 300, WallLight.WINDOW_WIDTH, WallLight.WINDOW_HEIGHT)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
@@ -144,6 +148,8 @@ class MainWidget(QWidget):
         qp.begin(self)
         for pixels, color in zip(self.pixels, self.colors):
             qp.fillRect(*pixels, color)
+        for pixelsWWA, colorWWA in zip(self.pixelsWWA, self.colorsWWA):
+            qp.fillRect(*pixelsWWA, colorWWA)
         qp.end()
         
 
@@ -159,7 +165,11 @@ class MainWidget(QWidget):
             r = int(c[0] * 255)
             g = int(c[1] * 255)
             b = int(c[2] * 255)
+            ww = int(c[3] * 255)
+            cw = int(c[4] * 255)
+            am = int(c[5] * 255)
             self.colors[WallLight.pixelcount - i - 1].setRgb(r, g, b)
+            self.colorsWWA[WallLight.pixelcount - i - 1].setRgb(ww, cw, am)
         self.update()
         
         # print(f"Real FPS: {1 / (time.time() - self.tFps):.2f}")

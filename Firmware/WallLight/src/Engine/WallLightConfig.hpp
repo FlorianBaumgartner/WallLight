@@ -47,7 +47,7 @@ class WallLightConfig
       }
     }
 
-    enum LED_COLOR {LED_R, LED_G, LED_B, LED_WW, LED_CW, LED_AM, COLORCOUNT};
+    enum LED_COLOR {LED_R, LED_G, LED_B, LED_AM, LED_CW, LED_WW, COLORCOUNT};
     inline static uint16_t pixelcount(uint16_t c = 0)
     {
       static uint16_t count = 0;

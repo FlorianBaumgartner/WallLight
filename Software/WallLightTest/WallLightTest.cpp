@@ -16,7 +16,7 @@ WallLightTest::WallLightTest(QWidget *parent) : QMainWindow(parent), ui(new Ui::
   WallLightConfig::pixelcount(PIXELCOUNT);
   output = new LedVector(true);
 
-  ui->centralWidget->setStyleSheet("background-color: black;");
+  ui->centralWidget->setStyleSheet("background-color: #111111;");
   ui->centralWidget->setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT);
   ui->centralWidget->setWindowFlags(Qt::WindowStaysOnTopHint);
   ui->centralWidget->setWindowFlags(ui->centralWidget->windowFlags() & ~Qt::WindowStaysOnTopHint);
@@ -87,7 +87,11 @@ void WallLightTest::changeColors(void)
             uint8_t r = constrain(output->value[WallLightConfig::LED_R][i], 0.0, 1.0) * 255;
             uint8_t g = constrain(output->value[WallLightConfig::LED_G][i], 0.0, 1.0) * 255;
             uint8_t b = constrain(output->value[WallLightConfig::LED_B][i], 0.0, 1.0) * 255;
+            uint8_t ww = constrain(output->value[WallLightConfig::LED_WW][i], 0.0, 1.0) * 255;
+            uint8_t cw = constrain(output->value[WallLightConfig::LED_CW][i], 0.0, 1.0) * 255;
+            uint8_t am = constrain(output->value[WallLightConfig::LED_AM][i], 0.0, 1.0) * 255;
             painter.fillRect(offset, offset + hPixel * (PIXELCOUNT - 1 - i), 20, hPixel, QColor(r, g, b));
+            painter.fillRect(offset + 20 + PIXELS_WWA_OFFSET, offset + hPixel * (PIXELCOUNT - 1 - i), 20, hPixel, QColor(ww, cw, am));
           }
           painter.end();
         }
