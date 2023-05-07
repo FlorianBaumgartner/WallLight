@@ -43,7 +43,7 @@ class TestModifierHsvToRgb : public TestEngine
     static bool test(Engine* engine)
     {
       ModifierHsvToRgb* hsvToRgb = new ModifierHsvToRgb(0);
-      hsvToRgb->setParameterInput(0, new Coefficient(1000, 0.5));               // hue
+      hsvToRgb->setParameterInput(0, new Coefficient(1000, 0.2));               // hue
       hsvToRgb->setParameterInput(1, new Coefficient(1001, 1.0));               // sat
       hsvToRgb->setParameterInput(2, new Coefficient(1002, 1.0));               // val
 

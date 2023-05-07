@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     WallLightTest wallLight;
     wallLight.show();
 
-    wallLight.loadGraph("Function.ColorGain");
+    wallLight.loadGraph("Example.HeartBeat");
 
     bool res = a.exec();
     wallLight.unloadGraph();

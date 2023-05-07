@@ -1,0 +1,394 @@
+{
+    "name": "WWA Animation",
+    "revision": "0.1",
+    "coefficients": [
+        {
+            "id": 1000,
+            "value": 0.08333333333333333
+        },
+        {
+            "id": 1001,
+            "value": 0.5
+        },
+        {
+            "id": 1002,
+            "value": 0.5
+        },
+        {
+            "id": 1003,
+            "value": 0.0
+        },
+        {
+            "id": 1004,
+            "value": 0.16666666666666666
+        },
+        {
+            "id": 1005,
+            "value": 0.08333333333333333
+        },
+        {
+            "id": 1006,
+            "value": 0.5
+        },
+        {
+            "id": 1007,
+            "value": 0.5
+        },
+        {
+            "id": 1008,
+            "value": 0.3333333333333333
+        },
+        {
+            "id": 1009,
+            "value": 0.16666666666666666
+        },
+        {
+            "id": 1010,
+            "value": 0.08333333333333333
+        },
+        {
+            "id": 1011,
+            "value": 0.5
+        },
+        {
+            "id": 1012,
+            "value": 0.5
+        },
+        {
+            "id": 1013,
+            "value": 0.6666666666666666
+        },
+        {
+            "id": 1014,
+            "value": 0.16666666666666666
+        },
+        {
+            "id": 1015,
+            "value": 0.08333333333333333
+        },
+        {
+            "id": 1016,
+            "value": 0.5
+        },
+        {
+            "id": 1017,
+            "value": 0.5
+        },
+        {
+            "id": 1018,
+            "value": 1.0
+        },
+        {
+            "id": 1019,
+            "value": 0.16666666666666666
+        },
+        {
+            "id": 1020,
+            "value": 0.08333333333333333
+        },
+        {
+            "id": 1021,
+            "value": 0.5
+        },
+        {
+            "id": 1022,
+            "value": 0.5
+        },
+        {
+            "id": 1023,
+            "value": 1.3333333333333333
+        },
+        {
+            "id": 1024,
+            "value": 0.16666666666666666
+        },
+        {
+            "id": 1025,
+            "value": 0.08333333333333333
+        },
+        {
+            "id": 1026,
+            "value": 0.5
+        },
+        {
+            "id": 1027,
+            "value": 0.5
+        },
+        {
+            "id": 1028,
+            "value": 1.6666666666666665
+        },
+        {
+            "id": 1029,
+            "value": 0.16666666666666666
+        }
+    ],
+    "modules": [
+        {
+            "id": 0,
+            "type": "Generator.Rect",
+            "parameter": [
+                {
+                    "index": 1,
+                    "id": 1000,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 1001,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1002,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1003,
+                    "output": 0
+                },
+                {
+                    "index": 6,
+                    "id": 1004,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "type": "Generator.Rect",
+            "parameter": [
+                {
+                    "index": 1,
+                    "id": 1005,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 1006,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1007,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1008,
+                    "output": 0
+                },
+                {
+                    "index": 6,
+                    "id": 1009,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "type": "Generator.Rect",
+            "parameter": [
+                {
+                    "index": 1,
+                    "id": 1010,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 1011,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1012,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1013,
+                    "output": 0
+                },
+                {
+                    "index": 6,
+                    "id": 1014,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "type": "Generator.Rect",
+            "parameter": [
+                {
+                    "index": 1,
+                    "id": 1015,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 1016,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1017,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1018,
+                    "output": 0
+                },
+                {
+                    "index": 6,
+                    "id": 1019,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "type": "Generator.Rect",
+            "parameter": [
+                {
+                    "index": 1,
+                    "id": 1020,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 1021,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1022,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1023,
+                    "output": 0
+                },
+                {
+                    "index": 6,
+                    "id": 1024,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "type": "Generator.Rect",
+            "parameter": [
+                {
+                    "index": 1,
+                    "id": 1025,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 1026,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1027,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 1028,
+                    "output": 0
+                },
+                {
+                    "index": 6,
+                    "id": 1029,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "type": "Function.Rect",
+            "parameter": [],
+            "input": []
+        },
+        {
+            "id": 7,
+            "type": "Function.ColorGain",
+            "parameter": [
+                {
+                    "index": 0,
+                    "id": 0,
+                    "output": 0
+                },
+                {
+                    "index": 1,
+                    "id": 1,
+                    "output": 0
+                },
+                {
+                    "index": 2,
+                    "id": 2,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 3,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 4,
+                    "output": 0
+                },
+                {
+                    "index": 5,
+                    "id": 5,
+                    "output": 0
+                }
+            ],
+            "input": [
+                {
+                    "index": 0,
+                    "id": 6,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 5000,
+            "type": "Analyzer.ParameterPlotter",
+            "parameter": [
+                {
+                    "index": 0,
+                    "id": 0,
+                    "output": 0
+                },
+                {
+                    "index": 1,
+                    "id": 1,
+                    "output": 0
+                },
+                {
+                    "index": 2,
+                    "id": 2,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 3,
+                    "output": 0
+                }
+            ],
+            "input": []
+        }
+    ],
+    "output": {
+        "id": 7,
+        "output": 0
+    }
+}

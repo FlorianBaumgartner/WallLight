@@ -35,6 +35,7 @@
 #include "Generator/TestGenerator.hpp"
 #include "Modifier/TestModifier.hpp"
 #include "Function/TestFunction.hpp"
+#include "Example/TestExample.hpp"
 
 bool TestEngine::loadtest(const char* name)
 {
@@ -58,6 +59,10 @@ bool TestEngine::loadtest(const char* name)
   else if(strncmp(name, "Function", prefixLength) == 0)
   {
     return testFunction(engine, moduleType);
+  }
+  else if(strncmp(name, "Example", prefixLength) == 0)
+  {
+    return testExample(engine, moduleType);
   }
   else
   {

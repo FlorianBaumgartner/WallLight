@@ -39,7 +39,7 @@ if __name__ == '__main__':
     wallLight = WallLight()
     
     hsvToRgb = Modifier.HsvToRgb(0)
-    hsvToRgb.setParameterInput(0, Coefficient(1000, 0.5))       # hue
+    hsvToRgb.setParameterInput(0, Coefficient(1000, 0.2))       # hue
     hsvToRgb.setParameterInput(1, Coefficient(1001, 1.0))       # sat
     hsvToRgb.setParameterInput(2, Coefficient(1002, 1.0))       # val
 

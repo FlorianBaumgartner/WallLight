@@ -1,5 +1,0 @@
-C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest.dir
-C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/edit_cache.dir
-C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/rebuild_cache.dir
-C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen_timestamp_deps.dir
-C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build/CMakeFiles/walllighttest_autogen.dir
