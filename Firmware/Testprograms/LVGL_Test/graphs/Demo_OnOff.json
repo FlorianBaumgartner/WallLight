@@ -1,0 +1,247 @@
+{
+	"name": "Demo On-Off",
+	"revision": "0.1",
+	"coefficients": [
+    	{
+			"id": 1000,
+			"value": 0.0
+		},
+		{
+			"id": 1001,
+			"value": 2.0
+		},
+		{
+			"id": 1002,
+			"value": 1.0
+		},
+		{
+			"id": 1003,
+			"value": 1.0
+		},
+		{
+			"id": 1004,
+			"value": 0.0
+		},
+		{
+			"id": 1005,
+			"value": 1.0
+		},
+		{
+			"id": 1006,
+			"value": 0.0
+		},
+		{
+			"id": 1007,
+			"value": 3.0
+		},
+		{
+			"id": 1008,
+			"value": 0.0
+		},
+		{
+			"id": 1009,
+			"value": 0.0
+		},
+		{
+			"id": 1010,
+			"value": 1.0
+		},
+		{
+			"id": 1011,
+			"value": 1.0
+		}
+	],
+	"modules": [
+    	{
+			"id": 0,
+			"type": "Modifier.Multiplier",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 1000,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 1001,
+					"output": 0
+				}
+			]
+		},
+    	{
+			"id": 1,
+			"type": "Modifier.Subtractor",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 0,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 1002,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 2,
+			"type": "Modifier.Integrator",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 1,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 1003,
+					"output": 0
+				},
+				{
+    				"index": 2,
+					"id": 1004,
+					"output": 0
+				},
+				{
+    				"index": 3,
+					"id": 1005,
+					"output": 0
+				},
+				{
+    				"index": 4,
+					"id": 1006,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 3,
+			"type": "Modifier.EaseOut",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 2,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 1007,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 4,
+			"type": "Modifier.EaseIn",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 2,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 1007,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 5,
+			"type": "Modifier.Switch",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 4,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 3,
+					"output": 0
+				},
+				{
+    				"index": 2,
+					"id": 1000,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 6,
+			"type": "Function.Rect",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 1008,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 5,
+					"output": 0
+				},
+				{
+    				"index": 2,
+					"id": 1009,
+					"output": 0
+				},
+				{
+    				"index": 3,
+					"id": 1010,
+					"output": 0
+				},
+				{
+    				"index": 4,
+					"id": 1011,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 7,
+			"type": "Function.Brightness",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 2,
+					"output": 0
+				}
+			],
+			"input": [
+			    {
+    			    "index": 0,
+					"id": 6,
+					"output": 0
+				}
+			]
+		},
+		{
+			"id": 5000,
+			"type": "Analyzer.ParameterPlotter",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 1,
+					"output": 0
+				},
+				{
+    			    "index": 1,
+					"id": 2,
+					"output": 0
+				},
+				{
+    			    "index": 2,
+					"id": 5,
+					"output": 0
+				}
+			]
+		}
+		
+	],
+	"output": {
+		"id": 7,
+		"output": 0
+	}
+}
