@@ -56,10 +56,10 @@ void setup()
 {
   pinMode(BUTTON, INPUT_PULLUP);
   console.begin();
-  if(!gui.begin())
-  {
-    console.error.println("[MAIN] Could not initialize GUI");
-  }
+  // if(!gui.begin())
+  // {
+  //   console.error.println("[MAIN] Could not initialize GUI");
+  // }
   if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
   {
     console.error.println("[MAIN] Could not initialize utilities");
@@ -71,11 +71,14 @@ void setup()
   bootCount++;
   preferences.putUInt("bootCount", bootCount);
   preferences.end();
+
+  gui.begin();
 }
 
 void loop()
 {
   utils.feedWatchdog();
+  gui.update();
 
   static bool btnOld = false, btnNew = false;
   btnOld = btnNew; btnNew = !digitalRead(BUTTON);
@@ -90,8 +93,6 @@ void loop()
     t = millis();
     console.log.printf("[MAIN] Time: %d\n", t);
   }
-  delay(10);
-
-  // gui.update();
+  delay(5);
 }
 
