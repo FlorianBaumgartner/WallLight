@@ -113,7 +113,8 @@ bool Gui::begin(void)
   disp_drv.flush_cb = my_disp_flush;
   disp_drv.draw_buf = &draw_buf;
   disp_drv.user_data = this;
-  lv_disp_drv_register(&disp_drv);
+  disp = lv_disp_drv_register(&disp_drv);
+  lv_timer_set_period(disp->refr_timer, 1000.0 / lvglUpdateRate);
 
   ui_init();
   return true;

@@ -47,7 +47,7 @@ class Gui : public lgfx::LGFX_Device
     static constexpr const uint32_t screenWidth         = 128;
     static constexpr const uint32_t screenHeight        = 128;
     static constexpr const uint32_t screenBufferHeight  = 16;
-    static constexpr const float    lvglUpdateRate      = 20.0;   // Hz
+    static constexpr const float    lvglUpdateRate      = 30.0;   // Hz
 
     static void lvglInit(void);
     static void lvglUpdate(void* pvParameter);
@@ -55,6 +55,7 @@ class Gui : public lgfx::LGFX_Device
     lgfx::Panel_GC9107   _panel_instance;
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
+    lv_disp_t* disp;
 };
 
 static void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)

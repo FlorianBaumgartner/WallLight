@@ -56,10 +56,10 @@ void setup()
 {
   pinMode(BUTTON, INPUT_PULLUP);
   console.begin();
-  // if(!gui.begin())
-  // {
-  //   console.error.println("[MAIN] Could not initialize GUI");
-  // }
+  if(!gui.begin())
+  {
+    console.error.println("[MAIN] Could not initialize GUI");
+  }
   if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
   {
     console.error.println("[MAIN] Could not initialize utilities");
@@ -71,8 +71,6 @@ void setup()
   bootCount++;
   preferences.putUInt("bootCount", bootCount);
   preferences.end();
-
-  gui.begin();
 }
 
 void loop()
