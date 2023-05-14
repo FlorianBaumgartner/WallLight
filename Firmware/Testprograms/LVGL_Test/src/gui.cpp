@@ -99,7 +99,6 @@ bool Gui::begin(void)
   }
   setBrightness(0);
   fillScreen(TFT_BLACK);
-  setBrightness(255);
 
   lvglInit();                             // Initialize global (static) LVGL instance, is ignored if already initialized
   static lv_disp_draw_buf_t draw_buf;
@@ -117,6 +116,7 @@ bool Gui::begin(void)
   lv_timer_set_period(disp->refr_timer, 1000.0 / lvglUpdateRate);
 
   ui_init();
+  setBrightness(255);
   return true;
 }
 
