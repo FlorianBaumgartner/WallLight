@@ -26,7 +26,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_align(ui_Spinner2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_Spinner2, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
-    lv_obj_set_style_arc_color(ui_Spinner2, lv_color_hex(0xFF7F00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_arc_color(ui_Spinner2, lv_color_hex(0x0080FF), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_opa(ui_Spinner2, 255, LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_width(ui_Spinner2, 10, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 

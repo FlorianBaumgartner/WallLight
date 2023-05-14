@@ -42,35 +42,32 @@ class Gui : public lgfx::LGFX_Device
   public:
     Gui(int sclk, int mosi, int dc, int rst, int cs, int bl, int freq = 40000000);
     bool begin(void);
-    void update(void);
 
   private:
+    static constexpr const uint32_t screenWidth         = 128;
+    static constexpr const uint32_t screenHeight        = 128;
+    static constexpr const uint32_t screenBufferHeight  = 16;
+    static constexpr const float    lvglUpdateRate      = 20.0;   // Hz
+
+    static void lvglInit(void);
+    static void lvglUpdate(void* pvParameter);
+
     lgfx::Panel_GC9107   _panel_instance;
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
-
-    static constexpr const uint32_t screenWidth  = 128;
-    static constexpr const uint32_t screenHeight = 128;
-    // lv_disp_draw_buf_t draw_buf;
-    // lv_color_t buf[screenWidth * 10];
-
-    // static void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
 };
-
-static Gui* displayPtr;
 
 static void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
 {
-//    Gui* display = (Gui*)disp->user_data;
-   uint32_t w = (area->x2 - area->x1 + 1);
-   uint32_t h = (area->y2 - area->y1 + 1);
+  Gui* display = (Gui*)disp->user_data;
+  uint32_t w = (area->x2 - area->x1 + 1);
+  uint32_t h = (area->y2 - area->y1 + 1);
 
-   displayPtr->startWrite();
-   displayPtr->setAddrWindow(area->x1, area->y1, w, h);
-   displayPtr->writePixels((lgfx::rgb565_t*)&color_p->full, w * h);
-   displayPtr->endWrite();
-
-   lv_disp_flush_ready(disp);
+  display->startWrite();
+  display->setAddrWindow(area->x1, area->y1, w, h);
+  display->writePixels((lgfx::rgb565_t*)&color_p->full, w * h);
+  display->endWrite();
+  lv_disp_flush_ready(disp);
 }
 
 #endif

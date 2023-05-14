@@ -78,7 +78,6 @@ void setup()
 void loop()
 {
   utils.feedWatchdog();
-  gui.update();
 
   static bool btnOld = false, btnNew = false;
   btnOld = btnNew; btnNew = !digitalRead(BUTTON);
