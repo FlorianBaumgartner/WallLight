@@ -36,7 +36,8 @@
 #include "utils.hpp"
 #include "gui.hpp"
 
-#define BUTTON            0
+#define BUTTON_LEFT       0
+#define BUTTON_RIGHT      47
 #define BLINK_INTERVAL    200
 #define WATCHDOG_TIMEOUT  30    // [s]
 
@@ -54,7 +55,8 @@ Gui gui(DISPLAY_SCLK, DISPLAY_MOSI, DISPLAY_DC, DISPLAY_RST, DISPLAY_CS, DISPLAY
 
 void setup()
 {
-  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(BUTTON_LEFT, INPUT_PULLUP);
+  pinMode(BUTTON_RIGHT, INPUT_PULLUP);
   console.begin();
   if(!gui.begin())
   {
@@ -77,11 +79,17 @@ void loop()
 {
   utils.feedWatchdog();
 
-  static bool btnOld = false, btnNew = false;
-  btnOld = btnNew; btnNew = !digitalRead(BUTTON);
-  if((!btnOld && btnNew))
+  static bool btnLeftOld = false, btnLeftNew = false;
+  static bool btnRightOld = false, btnRightNew = false;
+  btnLeftOld = btnLeftNew; btnLeftNew = !digitalRead(BUTTON_LEFT);
+  btnRightOld = btnRightNew; btnRightNew = !digitalRead(BUTTON_RIGHT);
+  if((!btnLeftOld && btnLeftNew))
   {
-    console.log.println("[MAIN] Button pressed!");
+    console.log.println("[MAIN] Button Left pressed!");
+  }
+  if((!btnRightOld && btnRightNew))
+  {
+    console.log.println("[MAIN] Button Right pressed!");
   }
  
   static int t = 0;
