@@ -310,7 +310,7 @@
               {
                 "nid": -245073242,
                 "strtype": "OBJECT/Name",
-                "strval": "Label2",
+                "strval": "labelId",
                 "InheritedType": 10
               },
               {
@@ -609,7 +609,7 @@
               {
                 "nid": 327238416,
                 "strtype": "OBJECT/Name",
-                "strval": "Label1",
+                "strval": "labelValue",
                 "InheritedType": 10
               },
               {
@@ -1215,7 +1215,7 @@
               {
                 "nid": 1482264083,
                 "strtype": "OBJECT/Name",
-                "strval": "Label4",
+                "strval": "labelStep",
                 "InheritedType": 10
               },
               {

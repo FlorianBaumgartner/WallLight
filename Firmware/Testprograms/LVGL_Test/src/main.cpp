@@ -86,10 +86,12 @@ void loop()
   if((!btnLeftOld && btnLeftNew))
   {
     console.log.println("[MAIN] Button Left pressed!");
+    gui.setId(gui.getId() - 1);
   }
   if((!btnRightOld && btnRightNew))
   {
     console.log.println("[MAIN] Button Right pressed!");
+    gui.setId(gui.getId() + 1);
   }
  
   static int t = 0;

@@ -62,8 +62,8 @@ Gui::Gui(int sclk, int mosi, int dc, int rst, int cs, int bl, int freq)
     cfg.pin_rst          =   rst;
     cfg.pin_busy         =    -1;
 
-    cfg.panel_width      =   128;
-    cfg.panel_height     =   128;
+    cfg.panel_width      =   screenWidth;
+    cfg.panel_height     =   screenHeight;
     cfg.offset_x         =     0;
     cfg.offset_y         =    32;
     cfg.offset_rotation  =     0;
@@ -116,9 +116,20 @@ bool Gui::begin(void)
   lv_timer_set_period(disp->refr_timer, 1000.0 / lvglUpdateRate);
 
   ui_init();
+  setId(id);
+  
   setBrightness(255);
   return true;
 }
+
+void Gui::setId(uint32_t id)
+{
+  this->id = constrain(id, 1000, 1999);
+  char text[10];
+  snprintf(text, sizeof(text), "ID: %04d", this->id);
+  lv_label_set_text(ui_labelId, text);
+}
+
 
 void Gui::lvglInit(void)
 {

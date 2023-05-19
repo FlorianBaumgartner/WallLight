@@ -1,0 +1,73 @@
+Change Value of Parameter ComponentLink1URL in Part S3 Old=https://datasheet.lcsc.com/lcsc/2002271431_XKB-Connectivity-TS-1187A-B-A-B_C318884.pdf New=https://datasheet.lcsc.com/lcsc/1912111437_PANASONIC-EVQQ2U02W_C395227.pdf
+Change Value of Parameter Component Value in Part S3 Old=TS-1187A-B-A-B New=EVQQ2U02W
+Change Value of Parameter Digikey in Part S3 Old=CKN12221-1-ND New=P12954SCT-ND
+Change Value of Parameter Farnell in Part S3 Old=3780596 New=2860932
+Change Value of Parameter JLC-Parts in Part S3 Old=C318884 New=C395227
+Change Value of Parameter Mouser in Part S3 Old=611-PTS526SK15SMR2L New=667-EVQ-Q2U02W
+Change Value of Parameter Unit Price in Part S3 Old=0.02 New=0.19
+Added Parameter aliExpress= to Part C20
+Added Parameter aliExpress= to Part C21
+Added Parameter aliExpress= to Part C23
+Added Parameter aliExpress= to Part C24
+Added Parameter aliExpress= to Part C25
+Added Parameter aliExpress= to Part C32
+Added Parameter aliExpress= to Part C33
+Added Parameter aliExpress= to Part K1
+Added Parameter aliExpress= to Part K2
+Added Parameter aliExpress= to Part K3
+Added Parameter aliExpress= to Part K4
+Added Parameter aliExpress= to Part K5
+Added Parameter aliExpress= to Part K6
+Added Parameter aliExpress= to Part K7
+Added Parameter aliExpress= to Part R7
+Added Parameter aliExpress= to Part R8
+Added Parameter aliExpress= to Part R11
+Added Parameter aliExpress= to Part R12
+Added Parameter aliExpress= to Part R13
+Added Parameter aliExpress= to Part R14
+Added Parameter aliExpress= to Part R15
+Added Parameter aliExpress= to Part R16
+Added Parameter aliExpress= to Part R18
+Added Parameter aliExpress= to Part R20
+Added Parameter aliExpress= to Part S3
+Added Parameter aliExpress= to Part TP13
+Added Parameter aliExpress= to Part TP14
+Added Parameter aliExpress= to Part TP15
+Added Parameter aliExpress= to Part TP16
+Added Parameter aliExpress= to Part TP17
+Added Parameter aliExpress= to Part TP18
+Added Parameter aliExpress= to Part TP19
+Added Parameter aliExpress= to Part TP20
+Added Parameter aliExpress= to Part TP21
+Added Parameter aliExpress= to Part U4
+Added Parameter aliExpress= to Part U5
+Added Parameter aliExpress= to Part U6
+Added Parameter aliExpress= to Part U7
+Added Parameter ComponentLink1Description= to Part D2
+Added Parameter ComponentLink1Description= to Part D3
+Added Parameter ComponentLink1Description= to Part D4
+Added Parameter ComponentLink1Description= to Part D5
+Added Parameter ComponentLink1Description= to Part L2
+Added Parameter ComponentLink1Description= to Part TP13
+Added Parameter ComponentLink1Description= to Part TP14
+Added Parameter ComponentLink1Description= to Part TP15
+Added Parameter ComponentLink1Description= to Part TP16
+Added Parameter ComponentLink1Description= to Part TP17
+Added Parameter ComponentLink1Description= to Part TP18
+Added Parameter ComponentLink1Description= to Part TP19
+Added Parameter ComponentLink1Description= to Part TP20
+Added Parameter ComponentLink1Description= to Part TP21
+Added Parameter ComponentLink1URL= to Part D2
+Added Parameter ComponentLink1URL= to Part D3
+Added Parameter ComponentLink1URL= to Part D4
+Added Parameter ComponentLink1URL= to Part D5
+Added Parameter ComponentLink1URL= to Part L2
+Added Parameter ComponentLink1URL= to Part TP13
+Added Parameter ComponentLink1URL= to Part TP14
+Added Parameter ComponentLink1URL= to Part TP15
+Added Parameter ComponentLink1URL= to Part TP16
+Added Parameter ComponentLink1URL= to Part TP17
+Added Parameter ComponentLink1URL= to Part TP18
+Added Parameter ComponentLink1URL= to Part TP19
+Added Parameter ComponentLink1URL= to Part TP20
+Added Parameter ComponentLink1URL= to Part TP21

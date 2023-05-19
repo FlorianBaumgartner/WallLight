@@ -43,6 +43,10 @@ class Gui : public lgfx::LGFX_Device
     Gui(int sclk, int mosi, int dc, int rst, int cs, int bl, int freq = 40000000);
     bool begin(void);
 
+    void setId(uint32_t id);
+    uint32_t getId(void) {return id;};
+    
+
   private:
     static constexpr const uint32_t screenWidth         = 128;
     static constexpr const uint32_t screenHeight        = 128;
@@ -56,6 +60,8 @@ class Gui : public lgfx::LGFX_Device
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
     lv_disp_t* disp;
+
+    uint32_t id = 1000;
 };
 
 static void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
