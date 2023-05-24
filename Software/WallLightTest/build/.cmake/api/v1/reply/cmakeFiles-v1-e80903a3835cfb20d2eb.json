@@ -847,7 +847,15 @@
 		},
 		{
 			"isExternal" : true,
+			"path" : "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake"
+		},
+		{
+			"isExternal" : true,
 			"path" : "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake"
 		},
 		{
 			"isExternal" : true,
@@ -893,8 +901,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest/build",
-		"source" : "C:/Users/Admin/GoogleDrive/WallLight/Software/WallLightTest"
+		"build" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest/build",
+		"source" : "C:/Users/flori/GoogleDrive/WallLight/Software/WallLightTest"
 	},
 	"version" : 
 	{
