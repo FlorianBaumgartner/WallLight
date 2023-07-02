@@ -1,0 +1,28 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: WallLightRemote_V1.0.PcbDoc   02.07.2023  13:58:51
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : WallLightRemote_V1.0-RoundHoles.TXT
+ASCII SlotHoles File : WallLightRemote_V1.0-SlotHoles.TXT
+ASCII RectHoles File : WallLightRemote_V1.0-RectHoles.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.3mm (12mil)                                             Round             785       PTH        3617.10mm (142.41inch)
+T2      0.6mm (24mil)                                             Slot              4         PTH        38.14mm (1.50inch)
+T3      0.9mm (35mil)                                             Round             24        PTH        181.08mm (7.13inch)
+T4      1mm (39mil)                                               Rectangle         6         PTH        162.41mm (6.39inch)
+T5      2.7mm (106mil)                                            Round             4         PTH        389.00mm (15.31inch)
+T6      0.65mm (26mil)                                            Round             2         NPTH       5.78mm (0.23inch)
+T7      1.152mm (45mil)                                           Round             4         NPTH       389.50mm (15.33inch)
+T8      1.5mm (59mil)                                             Round             4         NPTH       107.50mm (4.23inch)
+T9      1.5mm (59mil)                                             Rectangle         4         NPTH       270.08mm (10.63inch)
+T10     1.55mm (61mil)                                            Slot              1         NPTH       0.65mm (0.03inch)
+T11     2.05mm (81mil)                                            Round             1         NPTH       0.00mm (0.00inch)
+T12     2.2mm (87mil)                                             Rectangle         8         NPTH       309.69mm (12.19inch)
+T13     2.4mm (94mil)                                             Round             1         NPTH       0.00mm (0.00inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              848
+
+Total Processing Time (hh:mm:ss) : 00:00:01

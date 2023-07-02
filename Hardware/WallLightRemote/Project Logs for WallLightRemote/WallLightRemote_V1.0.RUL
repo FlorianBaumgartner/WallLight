@@ -1,0 +1,13 @@
+DRC Rules Export File for PCB: C:\Users\Admin\GoogleDrive\WallLight\Hardware\WallLightRemote\WallLightRemote_V1.0.PcbDoc
+RuleKind=Clearance|RuleName=Stitching GND|Scope=Board|Minimum=5.00
+RuleKind=Clearance|RuleName=Clearance_Poly_GND_Top|Scope=Board|Minimum=12.00
+RuleKind=Clearance|RuleName=Clearance_Poly_GND_Bottom|Scope=Board|Minimum=12.00
+RuleKind=Clearance|RuleName=Clearance_Poly|Scope=Board|Minimum=6.00
+RuleKind=MinimumAnnularRing|RuleName=MinimumAnnularRing|Scope=Board|Minimum=3.50
+RuleKind=Clearance|RuleName=Clearance_Poly_GND_DiffPair|Scope=Board|Minimum=33.00
+RuleKind=Clearance|RuleName=Clearance_Via|Scope=Board|Minimum=9.80
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=4.00
+RuleKind=Width|RuleName=Width|Scope=Board|Minimum=3.50
+RuleKind=Width|RuleName=Logos|Scope=Board|Minimum=0.10
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=3.50
