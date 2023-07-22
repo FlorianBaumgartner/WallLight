@@ -1,0 +1,131 @@
+{
+	"name": "Demo Audio",
+	"revision": "0.1",
+	"coefficients": [
+		{
+			"id": 0,
+			"value": 0.0
+		},
+		{
+			"id": 1,
+			"value": 0.0
+		},
+		{
+			"id": 2,
+			"value": 0.0
+		},
+		{
+			"id": 3,
+			"value": 1.0
+		},
+		{
+			"id": 4,
+			"value": 1.0
+		},
+		{
+			"id": 5,
+			"value": 0.0
+		},
+		{
+			"id": 6,
+			"value": 1.0
+		},
+		{
+			"id": 7,
+			"value": 0.0
+		},
+		{
+			"id": 8,
+			"value": 0.0
+		},
+		{
+			"id": 9,
+			"value": 0.0
+		},
+		{
+			"id": 10,
+			"value": 0.0
+		}
+	],
+	"modules": [
+		{
+			"id": 11,
+			"type": "Function.Rect",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 0,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 1,
+					"output": 0
+				},
+				{
+    				"index": 2,
+					"id": 2,
+					"output": 0
+				},
+				{
+    				"index": 3,
+					"id": 3,
+					"output": 0
+				},
+				{
+    				"index": 4,
+					"id": 4,
+					"output": 0
+				}
+			]
+
+		},
+		{
+			"id": 12,
+			"type": "Function.ColorGain",
+			"parameter": [
+			    {
+    			    "index": 0,
+					"id": 5,
+					"output": 0
+				},
+				{
+    				"index": 1,
+					"id": 6,
+					"output": 0
+				},
+				{
+    				"index": 2,
+					"id": 7,
+					"output": 0
+				},
+				{
+    				"index": 3,
+					"id": 8,
+					"output": 0
+				},
+				{
+    				"index": 4,
+					"id": 9,
+					"output": 0
+				},
+				{
+    				"index": 5,
+					"id": 10,
+					"output": 0
+				}
+			],
+			"input": [
+			    {
+    			    "index": 0,
+					"id": 11,
+					"output": 0
+				}
+			]
+		}
+	],
+	"output": {
+		"id": 12,
+		"output": 0
+	}
+}
