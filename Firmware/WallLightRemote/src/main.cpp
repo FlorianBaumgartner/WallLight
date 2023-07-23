@@ -35,6 +35,8 @@
 #include "console.hpp"
 #include "utils.hpp"
 #include "guiDsa.hpp"
+#include "guiDsm.hpp"
+#include "hmi.hpp"
 
 #define BLINK_INTERVAL    200
 #define WATCHDOG_TIMEOUT  30    // [s]
@@ -79,15 +81,25 @@
 Utils utils;
 Preferences preferences;
 GuiDsa guiDsa(DSA_SCLK, DSA_MOSI, DSA_DC, DSA_RST, DSA_CS, DSA_CS0, DSA_CS1, DSA_CS2, DSA_BL);
+GuiDsm guiDsm(DSM_SCLK, DSM_MOSI, DSM_DC, DSM_RST, DSM_CS, DSM_BL, TCH_SCL, TCH_SDA, TCH_INT, TCH_RST);
+Hmi hmi(HMI_CLK, HMI_DATA, HMI_LD, HMI_ENA, HMI_ENB, HMI_ENS);
 
 
 void setup()
 {
   console.begin();
+  if(!hmi.begin())
+  {
+    console.error.println("[MAIN] Could not initialize HMI");
+  }
   if(!guiDsa.begin())
   {
     console.error.println("[MAIN] Could not initialize DSA GUI");
   }
+  // if(!guiDsm.begin())      // Pinout is reversed --- FUCK ME -.-
+  // {
+  //   console.error.println("[MAIN] Could not initialize DSM GUI");
+  // }
   if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
   {
     console.error.println("[MAIN] Could not initialize utilities");
@@ -119,6 +131,8 @@ void loop()
   //   console.log.println("[MAIN] Button Right pressed!");
   //   gui.setId(gui.getId() + 1);
   // }
+
+  console.log.printf("HMI: %08X\n", hmi.readSerial());
  
   static int t = 0;
   if(millis() - t > 5000)
@@ -126,6 +140,6 @@ void loop()
     t = millis();
     console.log.printf("[MAIN] Time: %d\n", t);
   }
-  delay(5);
+  delay(500);
 }
 

@@ -40,7 +40,7 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
   {
     auto cfg = _bus_instance.config();
 
-    cfg.spi_host = SPI3_HOST;           // SPI2_HOST or SPI3_HOST
+    cfg.spi_host = SPI2_HOST; // SPI3_HOST;           // SPI2_HOST or SPI3_HOST
     cfg.spi_mode = 0;                   // (0 ~ 3)
     cfg.freq_write = freq;              // (40MHz, 80MHz)
     cfg.freq_read  = 16000000;
@@ -93,60 +93,37 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
 
 bool GuiDsm::begin(void)
 {
-  // static Display display[DISPLAY_COUNT];
-  // disp = display;
+  static DisplayDsm display;
+  disp = &display;
 
-  // setBrightness(0);
-  // for(int i = 0; i < DISPLAY_COUNT; i++)
-  // {
-  //   selectDisplay(i);
-  //   if(!init_without_reset())
-  //   {
-  //     return false;
-  //   }
-  // }
+  setBrightness(0);
+  if(!init())
+  {
+    return false;
+  }
 
-  // lvglInit();                             // Initialize global (static) LVGL instance, is ignored if already initialized
-  // for(int i = 0; i < DISPLAY_COUNT; i++)
-  // {
-  //   lv_disp_draw_buf_init(&display[i].draw_buf, display[i].buf, NULL, SCREEN_WIDTH * SCREEN_BUFFER_HEIGHT);
-  //   lv_disp_drv_init(&display[i].disp_drv);
-  //   display[i].gui = this;
-  //   display[i].channel = i;
-  //   display[i].disp_drv.hor_res = SCREEN_WIDTH;
-  //   display[i].disp_drv.ver_res = SCREEN_HEIGHT;
-  //   display[i].disp_drv.flush_cb = my_disp_flush;
-  //   display[i].disp_drv.draw_buf = &display[i].draw_buf;
-  //   display[i].disp_drv.user_data = &display[i];
-  //   display[i].disp = lv_disp_drv_register(&display[i].disp_drv);
-  //   lv_timer_set_period(display[i].disp->refr_timer, 1000.0 / UPDATE_RATE);
+  fillScreen(TFT_RED);                    // TODO: Just for testing
+  setBrightness(255);
+  delay(2000);
 
-  //   lv_disp_set_default(display[i].disp);
-  //   ui_init();
-  //   display[i].ui_labelId = ui_labelId;   // Save all pointers before they get overwritten by the next iteration
-  //   display[i].ui_labelValue = ui_labelValue;
-  //   display[i].ui_labelStep = ui_labelStep;
+  lvglInit();                             // Initialize global (static) LVGL instance, is ignored if already initialized
+  lv_disp_draw_buf_init(&display.draw_buf, display.buf, NULL, SCREEN_WIDTH * SCREEN_BUFFER_HEIGHT);
+  lv_disp_drv_init(&display.disp_drv);
+  display.gui = this;
+  display.disp_drv.hor_res = SCREEN_WIDTH;
+  display.disp_drv.ver_res = SCREEN_HEIGHT;
+  display.disp_drv.flush_cb = lvglFlush;
+  display.disp_drv.draw_buf = &display.draw_buf;
+  display.disp_drv.user_data = &display;
+  display.disp = lv_disp_drv_register(&display.disp_drv);
+  lv_timer_set_period(display.disp->refr_timer, 1000.0 / UPDATE_RATE);
 
-  //   setId(i, id[i]);
-  //   setValue(i, value[i]);
-  //   setStep(i, step[i]);
-  // }
+  lv_disp_set_default(display.disp);
+  ui_init();
   
-  // lvglStart();                            // Start LVGL task if not already started
-  // while(true)                             // Wait until all displays are updated
+  lvglStart();                            // Start LVGL task if not already started
+  // while(!display.initialized)             // Wait until display is updated
   // {
-  //   uint8_t total = 0;
-  //   for(int i = 0; i < DISPLAY_COUNT; i++)
-  //   {
-  //     if(display[i].initialized)
-  //     {
-  //       total++;
-  //     }
-  //   }
-  //   if(total == DISPLAY_COUNT)
-  //   {
-  //     break;
-  //   }
   //   delay(10);
   // }
 
@@ -154,34 +131,16 @@ bool GuiDsm::begin(void)
   return true;
 }
 
-// void GuiDsm::lvglInit(void)
-// {
-//   static bool lvglInitialized = false;
-//   if(!lvglInitialized)
-//   {
-//     lvglInitialized = true;
-//     lv_init();
-//   }
-// }
+void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
+{
+  DisplayDsm* display = (DisplayDsm*)disp->user_data;
+  uint32_t w = (area->x2 - area->x1 + 1);
+  uint32_t h = (area->y2 - area->y1 + 1);
 
-// void GuiDsm::lvglStart(void)
-// {
-//   static bool lvglStarted = false;
-//   if(!lvglStarted)
-//   {
-//     lvglStarted = true;
-//     xTaskCreate(lvglUpdate, "lvgl", 4096, nullptr, 1, nullptr);
-//     console.ok.println("[GUI] Initialization successfull.");
-//   }
-// }
-
-// void GuiDsm::lvglUpdate(void* pvParameter)
-// {
-//   while(1)
-//   {
-//     TickType_t task_last_tick = xTaskGetTickCount();
-//     lv_task_handler();
-//     vTaskDelayUntil(&task_last_tick, (const TickType_t) (1000.0 / LVGL_UPDATE_RATE));
-//   }
-//   vTaskDelete(NULL);
-// }
+  startWrite();
+  setAddrWindow(area->x1, area->y1, w, h);
+  writePixels((lgfx::rgb565_t*)&color_p->full, w * h);
+  endWrite();
+  lv_disp_flush_ready(disp);
+  display->initialized = true;
+}

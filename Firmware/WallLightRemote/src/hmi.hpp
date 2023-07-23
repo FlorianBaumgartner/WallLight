@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    guiDsm.hpp
+* file    hmi.hpp
 *******************************************************************************
-* brief   Graphical User Interface Application Layer
+* brief   Humanmachine interface
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-05-13
+* date    2023-07-23
 *******************************************************************************
 * MIT License
 *
@@ -30,40 +30,31 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GUI_DSM_HPP
-#define GUI_DSM_HPP
+#ifndef HMI_HPP
+#define HMI_HPP
 
 #include <Arduino.h>
-#include <LovyanGFX.hpp>
-#include <lvgl.h>
-#include "guiLvgl.hpp"
+#include <SPI.h>
 
-class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
+class Hmi
 {
   public:
-    static constexpr const uint32_t SCREEN_WIDTH          = 170;
-    static constexpr const uint32_t SCREEN_HEIGHT         = 320;
-    static constexpr const uint32_t SCREEN_BUFFER_HEIGHT  = 80;
-    static constexpr const float    UPDATE_RATE           = 30.0;   // Hz
-
-    GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tech_sda, int tch_irq, int tch_rst, int freq = 40000000);
+    Hmi(int clk, int data, int ld, int ens, int ena, int enb);
     bool begin(void);
+
+    uint32_t readSerial(void);
   
-    
   private:
-    void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
+    const int pin_clk;
+    const int pin_data;
+    const int pin_ld;
+    const int pin_ens;
+    const int pin_ena;
+    const int pin_enb;
 
-    lgfx::Panel_ST7789   _panel_instance;
-    lgfx::Bus_SPI        _bus_instance;
-    lgfx::Light_PWM      _light_instance;
-    Display* disp;
-};
+    // uint32_t readSerial(void);
 
-class DisplayDsm : public Display
-{
-  public:
-    lv_color_t* buf[GuiDsm::SCREEN_WIDTH * GuiDsm::SCREEN_BUFFER_HEIGHT];
-    DisplayDsm(): Display(GuiDsm::SCREEN_WIDTH, GuiDsm::SCREEN_BUFFER_HEIGHT) {};
+    // SPIClass hspi = SPIClass(HSPI);
 };
 
 #endif

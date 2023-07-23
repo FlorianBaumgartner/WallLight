@@ -1,11 +1,11 @@
 /******************************************************************************
-* file    guiDsm.hpp
+* file    hmi.cpp
 *******************************************************************************
-* brief   Graphical User Interface Application Layer
+* brief   Humanmachine interface
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
-* date    2023-05-13
+* date    2023-07-23
 *******************************************************************************
 * MIT License
 *
@@ -30,40 +30,48 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef GUI_DSM_HPP
-#define GUI_DSM_HPP
+#include "hmi.hpp"
+#include "console.hpp"
 
-#include <Arduino.h>
-#include <LovyanGFX.hpp>
-#include <lvgl.h>
-#include "guiLvgl.hpp"
 
-class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
+Hmi::Hmi(int clk, int data, int ld, int ens, int ena, int enb) : pin_clk(clk), pin_data(data), pin_ld(ld), pin_ens(ens), pin_ena(ena), pin_enb(enb)
 {
-  public:
-    static constexpr const uint32_t SCREEN_WIDTH          = 170;
-    static constexpr const uint32_t SCREEN_HEIGHT         = 320;
-    static constexpr const uint32_t SCREEN_BUFFER_HEIGHT  = 80;
-    static constexpr const float    UPDATE_RATE           = 30.0;   // Hz
-
-    GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tech_sda, int tch_irq, int tch_rst, int freq = 40000000);
-    bool begin(void);
   
-    
-  private:
-    void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
+}
 
-    lgfx::Panel_ST7789   _panel_instance;
-    lgfx::Bus_SPI        _bus_instance;
-    lgfx::Light_PWM      _light_instance;
-    Display* disp;
-};
-
-class DisplayDsm : public Display
+bool Hmi::begin(void)
 {
-  public:
-    lv_color_t* buf[GuiDsm::SCREEN_WIDTH * GuiDsm::SCREEN_BUFFER_HEIGHT];
-    DisplayDsm(): Display(GuiDsm::SCREEN_WIDTH, GuiDsm::SCREEN_BUFFER_HEIGHT) {};
-};
+  pinMode(pin_clk, OUTPUT);
+  pinMode(pin_data, INPUT);
+  pinMode(pin_ld, OUTPUT);
+  pinMode(pin_ens, INPUT_PULLUP);
+  pinMode(pin_ena, INPUT_PULLUP);
+  pinMode(pin_enb, INPUT_PULLUP);
 
-#endif
+  // hspi.begin(clk, data, -1, ld);
+  // hspi.setFrequency(1000000);
+
+  // hspi.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
+  // for(int i = 0; i < 4; i++)
+  // {
+  //   console.log.printf("SPI: %d\n", hspi.transfer(0x00));
+  // }
+  // hspi.endTransaction();
+
+  return true;
+}
+
+uint32_t Hmi::readSerial(void)    // Readout frequency: ~ 1 MHz
+{
+  uint32_t data = 0x00000000;
+  digitalWrite(pin_ld, HIGH);
+  for(int i = 0; i < 32; i++)
+  {
+    data <<= 1;
+    data |= digitalRead(pin_data);
+    digitalWrite(pin_clk, HIGH);
+    digitalWrite(pin_clk, LOW);
+  }
+  digitalWrite(pin_ld, LOW);
+  return data;
+}
