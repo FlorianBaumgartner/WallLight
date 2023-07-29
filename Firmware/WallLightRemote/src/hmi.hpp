@@ -1,7 +1,7 @@
 /******************************************************************************
 * file    hmi.hpp
 *******************************************************************************
-* brief   Humanmachine interface
+* brief   Human-Machine interface
 *******************************************************************************
 * author  Florian Baumgartner
 * version 1.0
@@ -34,15 +34,77 @@
 #define HMI_HPP
 
 #include <Arduino.h>
-#include <SPI.h>
+#include "rotaryEncoder.hpp"
+
+#define HMI_UPDATE_RATE                 1000          // [hz]
 
 class Hmi
 {
   public:
+    enum ButtonDirection{UP = 1, DOWN = 0};
+
     Hmi(int clk, int data, int ld, int ens, int ena, int enb);
     bool begin(void);
+    bool getIdButtonState(uint8_t channel, bool direction)   // direction: 0 = up, 1 = down
+    {
+      channel %= 8;
+      return (direction? idButtonUp : idButtonDown) & (0x01 << channel);
+    }
+    bool getIdButtonEdge(uint8_t channel, bool direction)    // direction: 0 = up, 1 = down (clear flag after reading)
+    {
+      bool state = false;
+      channel %= 8;
+      if(direction)
+      {
+        state = idButtonUpEdge & (0x01 << channel);
+        idButtonUpEdge &= ~(0x01 << channel);
+      }
+      else
+      {
+        state = idButtonDownEdge & (0x01 << channel);
+        idButtonDownEdge &= ~(0x01 << channel);
+      }
+      return state;
+    }
+    bool getButtonSwitchState(uint8_t channel)
+    {
+      channel %= 8;
+      return buttonSwitch & (0x01 << channel);
+    }
+    bool getEncoderSwitchState(uint8_t channel)
+    {
+      channel %= 8;
+      return encoderSwitch & (0x01 << channel);
+    }
+    bool getEncoderSwitchEdge(uint8_t channel)
+    {
+      bool state = false;
+      channel %= 8;
+      state = encoderSwitchEdge & (0x01 << channel);
+      encoderSwitchEdge &= ~(0x01 << channel);
+      return state;
+    }
+    int32_t getEncoderValue(uint8_t channel, bool clear = false)
+    {
+      channel %= 8;
+      uint8_t pos = 0;
+      int32_t value = 0;
+      switch(channel)
+      {
+        case 0: pos = 0; break;
+        case 1: pos = 1; break;
+        case 4: pos = 2; break;
+        case 5: pos = 3; break;
+        default: return 0;
+      }
+      value = rollerEncoder[pos].getPosition();
+      if(clear)
+      {
+        rollerEncoder[pos].setPosition(0);
+      }
+      return value;
+    }
 
-    uint32_t readSerial(void);
   
   private:
     const int pin_clk;
@@ -52,9 +114,27 @@ class Hmi
     const int pin_ena;
     const int pin_enb;
 
-    // uint32_t readSerial(void);
+    volatile uint32_t readOut = 0x00000000;
 
-    // SPIClass hspi = SPIClass(HSPI);
+    uint8_t idButtonUp = 0x00, idButtonUpOld = 0x00, idButtonUpEdge = 0x00;
+    uint8_t idButtonDown = 0x00, idButtonDownOld = 0x00, idButtonDownEdge = 0x00;
+    uint8_t encoderSwitch = 0x00, encoderSwitchOld = 0x00, encoderSwitchEdge = 0x00;
+    uint8_t buttonSwitch = 0x00;
+    RotaryEncoder rollerEncoder[4] = {RotaryEncoder(&readOut, 16, 17, RotaryEncoder::LatchMode::TWO03),
+                                      RotaryEncoder(&readOut, 19, 20, RotaryEncoder::LatchMode::TWO03),
+                                      RotaryEncoder(&readOut, 24, 25, RotaryEncoder::LatchMode::TWO03),
+                                      RotaryEncoder(&readOut, 27, 28, RotaryEncoder::LatchMode::TWO03)};
+
+    const uint32_t ID_BUTTON_UP_POS[8] = {0x00000040, 0x00000010, 0x00000004, 0x00000001, 0x00004000, 0x00001000, 0x00000400, 0x00000100};
+    const uint32_t ID_BUTTON_DOWN_POS[8] = {0x00000080, 0x00000020, 0x00000008, 0x00000002, 0x00008000, 0x00002000, 0x00000800, 0x00000200};
+    const uint32_t BUTTON_SWITCH_POS[4] = {0x00400000, 0x00800000, 0x040000000, 0x80000000};
+    const uint32_t ENCODER_SWITCH_POS[4] = {0x00040000, 0x00200000, 0x04000000, 0x20000000};
+
+    volatile bool initialized = false;
+    TaskHandle_t updateTaskHandle = nullptr;
+
+    static void update(void *pvParameter);
+    uint32_t readSerial(void);
 };
 
 #endif

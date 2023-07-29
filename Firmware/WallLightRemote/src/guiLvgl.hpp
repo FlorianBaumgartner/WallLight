@@ -41,7 +41,7 @@
 class GuiLvgl
 {
   public:
-    static constexpr const float LVGL_UPDATE_RATE = 100.0;   // Hz
+    static constexpr const float LVGL_UPDATE_RATE = 200.0;   // Hz
 
     virtual void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
 
@@ -61,7 +61,7 @@ class GuiLvgl
       if(!lvglStarted)
       {
         lvglStarted = true;
-        xTaskCreate(lvglUpdate, "lvgl", 4096, nullptr, 1, nullptr);
+        xTaskCreate(lvglUpdate, "lvgl", 8192, nullptr, 1, nullptr);
         console.ok.println("[GUI] Initialization successfull.");
       }
     }

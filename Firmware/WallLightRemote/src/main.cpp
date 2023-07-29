@@ -78,11 +78,11 @@
 #define PDM_DATA      13
 
 
-Utils utils;
-Preferences preferences;
-GuiDsa guiDsa(DSA_SCLK, DSA_MOSI, DSA_DC, DSA_RST, DSA_CS, DSA_CS0, DSA_CS1, DSA_CS2, DSA_BL);
-GuiDsm guiDsm(DSM_SCLK, DSM_MOSI, DSM_DC, DSM_RST, DSM_CS, DSM_BL, TCH_SCL, TCH_SDA, TCH_INT, TCH_RST);
-Hmi hmi(HMI_CLK, HMI_DATA, HMI_LD, HMI_ENA, HMI_ENB, HMI_ENS);
+static Utils utils;
+static Preferences preferences;
+static GuiDsa guiDsa(DSA_SCLK, DSA_MOSI, DSA_DC, DSA_RST, DSA_CS, DSA_CS0, DSA_CS1, DSA_CS2, DSA_BL);
+static GuiDsm guiDsm(DSM_SCLK, DSM_MOSI, DSM_DC, DSM_RST, DSM_CS, DSM_BL, TCH_SCL, TCH_SDA, TCH_INT, TCH_RST);
+static Hmi hmi(HMI_CLK, HMI_DATA, HMI_LD, HMI_ENA, HMI_ENB, HMI_ENS);
 
 
 void setup()
@@ -117,22 +117,51 @@ void loop()
 {
   utils.feedWatchdog();
 
-  // static bool btnLeftOld = false, btnLeftNew = false;
-  // static bool btnRightOld = false, btnRightNew = false;
-  // btnLeftOld = btnLeftNew; btnLeftNew = !digitalRead(BUTTON_LEFT);
-  // btnRightOld = btnRightNew; btnRightNew = !digitalRead(BUTTON_RIGHT);
-  // if((!btnLeftOld && btnLeftNew))
+  // static int p = 0;
+  // if(millis() - p > 500)
   // {
-  //   console.log.println("[MAIN] Button Left pressed!");
-  //   gui.setId(gui.getId() - 1);
-  // }
-  // if((!btnRightOld && btnRightNew))
-  // {
-  //   console.log.println("[MAIN] Button Right pressed!");
-  //   gui.setId(gui.getId() + 1);
+  //   p = millis();
+  //   console.log.printf("[MAIN] Roller Encoder: %d, %d, %d, %d\n", hmi.getEncoderValue(0), hmi.getEncoderValue(1), hmi.getEncoderValue(4), hmi.getEncoderValue(5));
   // }
 
-  console.log.printf("HMI: %08X\n", hmi.readSerial());
+  for(int i = 0; i < 8; i++)
+  {
+    if(hmi.getIdButtonEdge(i, Hmi::UP))
+    {
+      guiDsa.setId(i, guiDsa.getId(i) + 1);
+    }
+    if(hmi.getIdButtonEdge(i, Hmi::DOWN))
+    {
+      guiDsa.setId(i, guiDsa.getId(i) - 1);
+    }
+  }
+  for(int i = 0; i < 4; i++)
+  {
+    const uint8_t pos[4] = {2, 3, 6, 7};
+    guiDsa.setValue(i[pos], hmi.getButtonSwitchState(i[pos])? guiDsa.getStep(i[pos]) : 0.0);
+  }
+  for(int i = 0; i < 4; i++)
+  {
+    const uint8_t pos[4] = {0, 1, 4, 5};
+    static int32_t encoder[4] = {0, 0, 0, 0};
+    static float value[4] = {0.0, 0.0, 0.0, 0.0};
+    int32_t encoderPos = hmi.getEncoderValue(i[pos]);
+    value[i] += (encoderPos - encoder[i]) * guiDsa.getStep(i[pos]);
+    encoder[i] = encoderPos;
+    guiDsa.setValue(i[pos], value[i]);
+  }
+  for(int i = 0; i < 4; i++)
+  {
+    const uint8_t pos[4] = {0, 1, 4, 5};
+    const float stepSize[4] = {0.01, 0.1, 1.0, 10.0};
+    static uint8_t stepSizeIdx[4] = {1, 1, 1, 1};
+    if(hmi.getEncoderSwitchEdge(i[pos]))
+    {
+      stepSizeIdx[i]++;
+      stepSizeIdx[i] %= sizeof(stepSize) / sizeof(float);
+      guiDsa.setStep(i[pos], stepSize[stepSizeIdx[i]]);
+    }
+  }
  
   static int t = 0;
   if(millis() - t > 5000)
@@ -140,6 +169,6 @@ void loop()
     t = millis();
     console.log.printf("[MAIN] Time: %d\n", t);
   }
-  delay(500);
+  delay(5);
 }
 

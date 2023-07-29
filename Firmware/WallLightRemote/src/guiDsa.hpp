@@ -51,17 +51,19 @@ class GuiDsa : public lgfx::LGFX_Device, public GuiLvgl
     bool begin(void);
     void selectDisplay(uint8_t n = 0);
 
-    inline void setId(uint8_t channel, uint32_t id);
+    void setId(uint8_t channel, uint32_t id, bool force = false);
     inline uint32_t getId(uint8_t channel) {return id[channel];};
-    inline void setValue(uint8_t channel, float value);
+    void setValue(uint8_t channel, float value, bool force = false);
     inline float getValue(uint8_t channel) {return value[channel];};
-    inline void setStep(uint8_t channel, float step);
+    void setStep(uint8_t channel, float step, bool force = false);
     inline float getStep(uint8_t channel) {return step[channel];};
 
   private:
     const int cs_0;
     const int cs_1;
     const int cs_2;
+
+    volatile bool transmitting = false;
 
     void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
 
@@ -74,9 +76,14 @@ class GuiDsa : public lgfx::LGFX_Device, public GuiLvgl
     lv_obj_t* labelValue[DISPLAY_COUNT];
     lv_obj_t* labelStep[DISPLAY_COUNT];
 
-    uint32_t id[DISPLAY_COUNT] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007};
-    float value[DISPLAY_COUNT] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    float step[DISPLAY_COUNT] = {0.1, 0.1, 1.0, 1.0, 0.1, 0.1, 1.0, 1.0};
+    volatile uint32_t id[DISPLAY_COUNT] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007};
+    volatile float value[DISPLAY_COUNT] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    volatile float step[DISPLAY_COUNT] = {0.1, 0.1, 1.0, 1.0, 0.1, 0.1, 1.0, 1.0};
+
+    static const uint8_t LABEL_TEXT_SIZE = 12;
+    char labelTextId[DISPLAY_COUNT][LABEL_TEXT_SIZE];
+    char labelTextValue[DISPLAY_COUNT][LABEL_TEXT_SIZE];
+    char labelTextStep[DISPLAY_COUNT][LABEL_TEXT_SIZE];
 };
 
 class DisplayDsa : public Display

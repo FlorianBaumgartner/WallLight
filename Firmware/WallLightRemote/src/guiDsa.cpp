@@ -31,7 +31,7 @@
 ******************************************************************************/
 
 #include "guiDsa.hpp"
-#include "Gui/ui.h"
+#include "GuiDsa/ui.h"
 #include "console.hpp"
 
 
@@ -136,9 +136,9 @@ bool GuiDsa::begin(void)
     labelValue[i] = ui_labelValue;
     labelStep[i] = ui_labelStep;
 
-    setId(i, id[i]);
-    setValue(i, value[i]);
-    setStep(i, step[i]);
+    setId(i, id[i], true);
+    setValue(i, value[i], true);
+    setStep(i, step[i], true);
   }
   
   GuiLvgl::lvglStart();                   // Start LVGL task if not already started
@@ -170,39 +170,46 @@ void GuiDsa::selectDisplay(uint8_t n)
   delayMicroseconds(10);
 }
 
-void GuiDsa::setId(uint8_t channel, uint32_t id)
+void GuiDsa::setId(uint8_t channel, uint32_t id, bool force)
 {
-  this->id[channel] = constrain(id, 1000, 1999);
-  char text[10];
-  snprintf(text, sizeof(text), "ID: %04d", this->id[channel]);
-  lv_label_set_text(labelId[channel], text);
+  id = constrain(id, 1000, 1999);
+  if(id != this->id[channel] || force)
+  {
+    this->id[channel] = id;
+    snprintf(labelTextId[channel], LABEL_TEXT_SIZE, "ID: %04d", this->id[channel]);
+    lv_label_set_text_static(labelId[channel], labelTextId[channel]);
+  }
 }
 
-void GuiDsa::setValue(uint8_t channel, float value)
+void GuiDsa::setValue(uint8_t channel, float value, bool force)
 {
-  this->value[channel] = value;
-  char text[10];
-  snprintf(text, sizeof(text), "%.2f", this->value[channel]);
-  lv_label_set_text(labelValue[channel], text);
+  if(value != this->value[channel] || force)
+  {
+    this->value[channel] = value;
+    snprintf(labelTextValue[channel], LABEL_TEXT_SIZE, "%.2f", this->value[channel]);
+    lv_label_set_text_static(labelValue[channel], labelTextValue[channel]);
+  }
 }
 
-void GuiDsa::setStep(uint8_t channel, float step)
+void GuiDsa::setStep(uint8_t channel, float step, bool force)
 {
-  this->step[channel] = step;
-  char text[12];
-  if(this->step[channel] >= 1.0)
+  if(step != this->step[channel] || force)
   {
-    snprintf(text, sizeof(text), "Step: %.0f", this->step[channel]);
+    this->step[channel] = step;
+    if(this->step[channel] >= 1.0)
+    {
+      snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.0f", this->step[channel]);
+    }
+    else if(this->step[channel] >= 0.1)
+    {
+      snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.1f", this->step[channel]);
+    }
+    else
+    {
+      snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.2f", this->step[channel]);
+    }
+    lv_label_set_text_static(labelStep[channel], labelTextStep[channel]);
   }
-  else if(this->step[channel] >= 0.1)
-  {
-    snprintf(text, sizeof(text), "Step: %.1f", this->step[channel]);
-  }
-  else
-  {
-    snprintf(text, sizeof(text), "Step: %.2f", this->step[channel]);
-  }
-  lv_label_set_text(labelStep[channel], text);
 }
 
 void GuiDsa::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
@@ -211,6 +218,11 @@ void GuiDsa::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
 
+  while(transmitting)
+  {
+    delayMicroseconds(100);
+  }
+  transmitting = true;
   selectDisplay(display->channel);
   startWrite();
   setAddrWindow(area->x1, area->y1, w, h);
@@ -218,4 +230,5 @@ void GuiDsa::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   endWrite();
   lv_disp_flush_ready(disp);
   display->initialized = true;
+  transmitting = false;
 }
