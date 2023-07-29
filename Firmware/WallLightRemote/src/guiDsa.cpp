@@ -82,7 +82,7 @@ GuiDsa::GuiDsa(int sclk, int mosi, int dc, int rst, int cs, int cs_0, int cs_1, 
     cfg.invert           = false;
     cfg.rgb_order        = false;
     cfg.dlen_16bit       = false;
-    cfg.bus_shared       =  true;
+    cfg.bus_shared       = false;
 
     _panel_instance.config(cfg);
   }
@@ -131,10 +131,10 @@ bool GuiDsa::begin(void)
     lv_timer_set_period(display[i].disp->refr_timer, 1000.0 / UPDATE_RATE);
 
     lv_disp_set_default(display[i].disp);
-    ui_init();
-    labelId[i] = ui_labelId;         // Save all pointers before they get overwritten by the next iteration
-    labelValue[i] = ui_labelValue;
-    labelStep[i] = ui_labelStep;
+    ui_init_dsa();                        // Use custom UI initialization function, since SquareLine Studio does currently not support multiple displays -> ui_init() must be overwritten every time the UI is generated
+    labelId[i] = ui_DSALabelId;           // Save all pointers before they get overwritten by the next iteration
+    labelValue[i] = ui_DSALabelValue;
+    labelStep[i] = ui_DSALabelStep;
 
     setId(i, id[i], true);
     setValue(i, value[i], true);

@@ -31,7 +31,7 @@
 ******************************************************************************/
 
 #include "guiDsm.hpp"
-#include "GuiDsa/ui.h"
+#include "GuiDsm/ui.h"
 #include "console.hpp"
 
 
@@ -40,7 +40,7 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
   {
     auto cfg = _bus_instance.config();
 
-    cfg.spi_host = SPI2_HOST; // SPI3_HOST;           // SPI2_HOST or SPI3_HOST
+    cfg.spi_host = SPI3_HOST;           // SPI2_HOST or SPI3_HOST
     cfg.spi_mode = 0;                   // (0 ~ 3)
     cfg.freq_write = freq;              // (40MHz, 80MHz)
     cfg.freq_read  = 16000000;
@@ -64,16 +64,16 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
 
     cfg.panel_width      =   SCREEN_WIDTH;
     cfg.panel_height     =   SCREEN_HEIGHT;
-    cfg.offset_x         =     0;
-    cfg.offset_y         =    32;
+    cfg.offset_x         =    35;
+    cfg.offset_y         =     0;
     cfg.offset_rotation  =     0;
     cfg.dummy_read_pixel =     8;
     cfg.dummy_read_bits  =     1;
     cfg.readable         =  true;
-    cfg.invert           = false;
+    cfg.invert           =  true;
     cfg.rgb_order        = false;
     cfg.dlen_16bit       = false;
-    cfg.bus_shared       =  true;
+    cfg.bus_shared       = false;
 
     _panel_instance.config(cfg);
   }
@@ -102,10 +102,6 @@ bool GuiDsm::begin(void)
     return false;
   }
 
-  fillScreen(TFT_RED);                    // TODO: Just for testing
-  setBrightness(255);
-  delay(2000);
-
   lvglInit();                             // Initialize global (static) LVGL instance, is ignored if already initialized
   lv_disp_draw_buf_init(&display.draw_buf, display.buf, NULL, SCREEN_WIDTH * SCREEN_BUFFER_HEIGHT);
   lv_disp_drv_init(&display.disp_drv);
@@ -118,14 +114,14 @@ bool GuiDsm::begin(void)
   display.disp = lv_disp_drv_register(&display.disp_drv);
   lv_timer_set_period(display.disp->refr_timer, 1000.0 / UPDATE_RATE);
 
-  lv_disp_set_default(display.disp);
+  // lv_disp_set_default(display.disp);
   ui_init();
   
   lvglStart();                            // Start LVGL task if not already started
-  // while(!display.initialized)             // Wait until display is updated
-  // {
-  //   delay(10);
-  // }
+  while(!display.initialized)             // Wait until display is updated
+  {
+    delay(10);
+  }
 
   setBrightness(255);
   return true;

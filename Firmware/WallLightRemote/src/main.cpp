@@ -92,14 +92,14 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize HMI");
   }
+  if(!guiDsm.begin())
+  {
+    console.error.println("[MAIN] Could not initialize DSM GUI");
+  }
   if(!guiDsa.begin())
   {
     console.error.println("[MAIN] Could not initialize DSA GUI");
   }
-  // if(!guiDsm.begin())      // Pinout is reversed --- FUCK ME -.-
-  // {
-  //   console.error.println("[MAIN] Could not initialize DSM GUI");
-  // }
   if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
   {
     console.error.println("[MAIN] Could not initialize utilities");
@@ -124,44 +124,44 @@ void loop()
   //   console.log.printf("[MAIN] Roller Encoder: %d, %d, %d, %d\n", hmi.getEncoderValue(0), hmi.getEncoderValue(1), hmi.getEncoderValue(4), hmi.getEncoderValue(5));
   // }
 
-  for(int i = 0; i < 8; i++)
-  {
-    if(hmi.getIdButtonEdge(i, Hmi::UP))
-    {
-      guiDsa.setId(i, guiDsa.getId(i) + 1);
-    }
-    if(hmi.getIdButtonEdge(i, Hmi::DOWN))
-    {
-      guiDsa.setId(i, guiDsa.getId(i) - 1);
-    }
-  }
-  for(int i = 0; i < 4; i++)
-  {
-    const uint8_t pos[4] = {2, 3, 6, 7};
-    guiDsa.setValue(i[pos], hmi.getButtonSwitchState(i[pos])? guiDsa.getStep(i[pos]) : 0.0);
-  }
-  for(int i = 0; i < 4; i++)
-  {
-    const uint8_t pos[4] = {0, 1, 4, 5};
-    static int32_t encoder[4] = {0, 0, 0, 0};
-    static float value[4] = {0.0, 0.0, 0.0, 0.0};
-    int32_t encoderPos = hmi.getEncoderValue(i[pos]);
-    value[i] += (encoderPos - encoder[i]) * guiDsa.getStep(i[pos]);
-    encoder[i] = encoderPos;
-    guiDsa.setValue(i[pos], value[i]);
-  }
-  for(int i = 0; i < 4; i++)
-  {
-    const uint8_t pos[4] = {0, 1, 4, 5};
-    const float stepSize[4] = {0.01, 0.1, 1.0, 10.0};
-    static uint8_t stepSizeIdx[4] = {1, 1, 1, 1};
-    if(hmi.getEncoderSwitchEdge(i[pos]))
-    {
-      stepSizeIdx[i]++;
-      stepSizeIdx[i] %= sizeof(stepSize) / sizeof(float);
-      guiDsa.setStep(i[pos], stepSize[stepSizeIdx[i]]);
-    }
-  }
+  // for(int i = 0; i < 8; i++)
+  // {
+  //   if(hmi.getIdButtonEdge(i, Hmi::UP))
+  //   {
+  //     guiDsa.setId(i, guiDsa.getId(i) + 1);
+  //   }
+  //   if(hmi.getIdButtonEdge(i, Hmi::DOWN))
+  //   {
+  //     guiDsa.setId(i, guiDsa.getId(i) - 1);
+  //   }
+  // }
+  // for(int i = 0; i < 4; i++)
+  // {
+  //   const uint8_t pos[4] = {2, 3, 6, 7};
+  //   guiDsa.setValue(i[pos], hmi.getButtonSwitchState(i[pos])? guiDsa.getStep(i[pos]) : 0.0);
+  // }
+  // for(int i = 0; i < 4; i++)
+  // {
+  //   const uint8_t pos[4] = {0, 1, 4, 5};
+  //   static int32_t encoder[4] = {0, 0, 0, 0};
+  //   static float value[4] = {0.0, 0.0, 0.0, 0.0};
+  //   int32_t encoderPos = hmi.getEncoderValue(i[pos]);
+  //   value[i] += (encoderPos - encoder[i]) * guiDsa.getStep(i[pos]);
+  //   encoder[i] = encoderPos;
+  //   guiDsa.setValue(i[pos], value[i]);
+  // }
+  // for(int i = 0; i < 4; i++)
+  // {
+  //   const uint8_t pos[4] = {0, 1, 4, 5};
+  //   const float stepSize[4] = {0.01, 0.1, 1.0, 10.0};
+  //   static uint8_t stepSizeIdx[4] = {1, 1, 1, 1};
+  //   if(hmi.getEncoderSwitchEdge(i[pos]))
+  //   {
+  //     stepSizeIdx[i]++;
+  //     stepSizeIdx[i] %= sizeof(stepSize) / sizeof(float);
+  //     guiDsa.setStep(i[pos], stepSize[stepSizeIdx[i]]);
+  //   }
+  // }
  
   static int t = 0;
   if(millis() - t > 5000)

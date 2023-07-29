@@ -15,7 +15,7 @@
               {
                 "nid": -75573842,
                 "strtype": "OBJECT/Name",
-                "strval": "Panel2",
+                "strval": "DSAIdPanel",
                 "InheritedType": 10
               },
               {
@@ -322,7 +322,7 @@
               {
                 "nid": -245073242,
                 "strtype": "OBJECT/Name",
-                "strval": "labelId",
+                "strval": "DSALabelId",
                 "InheritedType": 10
               },
               {
@@ -633,7 +633,7 @@
               {
                 "nid": 327238416,
                 "strtype": "OBJECT/Name",
-                "strval": "labelValue",
+                "strval": "DSALabelValue",
                 "InheritedType": 10
               },
               {
@@ -951,7 +951,7 @@
               {
                 "nid": -190833965,
                 "strtype": "OBJECT/Name",
-                "strval": "Panel1",
+                "strval": "DSABottomPanel",
                 "InheritedType": 10
               },
               {
@@ -1263,7 +1263,7 @@
               {
                 "nid": 1482264083,
                 "strtype": "OBJECT/Name",
-                "strval": "labelStep",
+                "strval": "DSALabelStep",
                 "InheritedType": 10
               },
               {
@@ -1574,7 +1574,7 @@
           {
             "nid": -1983651747,
             "strtype": "OBJECT/Name",
-            "strval": "Screen1",
+            "strval": "DSAMainScreen",
             "InheritedType": 10
           },
           {
@@ -1797,9 +1797,9 @@
     "offset_y": 0,
     "shape": "RECTANGLE",
     "multilang": "DISABLE",
-    "description": "",
-    "board": "VS Code with SDL for development on PC",
-    "board_version": "v1.0.1",
+    "description": "********* IMPORTANT: Rename ui_init() to ui_init_dsa() *********",
+    "board": "Arduino with TFT_eSPI",
+    "board_version": "v1.1.0",
     "editor_version": "1.3.1",
     "image": "",
     "force_export_images": false,
@@ -1810,7 +1810,7 @@
     "theme_color2": 0,
     "exportFolderPath": "C:\\Users\\Admin\\GoogleDrive\\WallLight\\Firmware\\WallLightRemote\\src\\GuiDsa",
     "projectExportFolderPath": "C:\\Users\\Admin\\GoogleDrive\\WallLight\\Firmware\\WallLightRemote\\UI\\DSA",
-    "backup_cnt": 36,
+    "backup_cnt": 39,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.6",
     "callfuncsexport": "CPP_FILE",

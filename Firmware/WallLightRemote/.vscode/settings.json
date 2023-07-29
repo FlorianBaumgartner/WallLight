@@ -23,6 +23,8 @@
         "optional": "cpp",
         "system_error": "cpp",
         "cmath": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "lvgl.h": "c",
+        "ui_helpers_custom.h": "c"
     }
 }
