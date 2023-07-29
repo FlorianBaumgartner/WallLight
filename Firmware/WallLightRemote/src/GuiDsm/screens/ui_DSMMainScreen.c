@@ -10,52 +10,52 @@ void ui_DSMMainScreen_screen_init(void)
     ui_DSMMainScreen = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_DSMMainScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_DSMTopBar = lv_obj_create(ui_DSMMainScreen);
-    lv_obj_set_height(ui_DSMTopBar, 27);
-    lv_obj_set_width(ui_DSMTopBar, lv_pct(100));
-    lv_obj_set_x(ui_DSMTopBar, 0);
-    lv_obj_set_y(ui_DSMTopBar, -147);
-    lv_obj_set_align(ui_DSMTopBar, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_DSMTopBar, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
+    ui_DSMTopBar1 = lv_obj_create(ui_DSMMainScreen);
+    lv_obj_set_height(ui_DSMTopBar1, 27);
+    lv_obj_set_width(ui_DSMTopBar1, lv_pct(100));
+    lv_obj_set_x(ui_DSMTopBar1, 0);
+    lv_obj_set_y(ui_DSMTopBar1, -147);
+    lv_obj_set_align(ui_DSMTopBar1, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_DSMTopBar1, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
                       LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC |
                       LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN);     /// Flags
-    lv_obj_set_scrollbar_mode(ui_DSMTopBar, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_radius(ui_DSMTopBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_DSMTopBar, lv_color_hex(0x3D3D3D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_DSMTopBar, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_DSMTopBar, lv_color_hex(0xC4C4C4), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_DSMTopBar, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_side(ui_DSMTopBar, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_scrollbar_mode(ui_DSMTopBar1, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_radius(ui_DSMTopBar1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_DSMTopBar1, lv_color_hex(0x3D3D3D), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_DSMTopBar1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_DSMTopBar1, lv_color_hex(0xC4C4C4), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_DSMTopBar1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_DSMTopBar1, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_DSMTestLabel = lv_label_create(ui_DSMMainScreen);
-    lv_obj_set_width(ui_DSMTestLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_DSMTestLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_DSMTestLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_DSMTestLabel, "Display DSM");
+    ui_DSMTestLabel1 = lv_label_create(ui_DSMMainScreen);
+    lv_obj_set_width(ui_DSMTestLabel1, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_DSMTestLabel1, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_DSMTestLabel1, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_DSMTestLabel1, "Display DSM");
 
-    ui_DSMSpinner = lv_spinner_create(ui_DSMMainScreen, 1000, 90);
-    lv_obj_set_width(ui_DSMSpinner, 50);
-    lv_obj_set_height(ui_DSMSpinner, 50);
-    lv_obj_set_x(ui_DSMSpinner, 0);
-    lv_obj_set_y(ui_DSMSpinner, 90);
-    lv_obj_set_align(ui_DSMSpinner, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_DSMSpinner, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+    ui_DSMSpinner1 = lv_spinner_create(ui_DSMMainScreen, 1000, 90);
+    lv_obj_set_width(ui_DSMSpinner1, 50);
+    lv_obj_set_height(ui_DSMSpinner1, 50);
+    lv_obj_set_x(ui_DSMSpinner1, 0);
+    lv_obj_set_y(ui_DSMSpinner1, 90);
+    lv_obj_set_align(ui_DSMSpinner1, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_DSMSpinner1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
-    ui_DSMButton = lv_btn_create(ui_DSMMainScreen);
-    lv_obj_set_width(ui_DSMButton, 100);
-    lv_obj_set_height(ui_DSMButton, 50);
-    lv_obj_set_x(ui_DSMButton, 0);
-    lv_obj_set_y(ui_DSMButton, -80);
-    lv_obj_set_align(ui_DSMButton, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_DSMButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_DSMButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_DSMButton1 = lv_btn_create(ui_DSMMainScreen);
+    lv_obj_set_width(ui_DSMButton1, 100);
+    lv_obj_set_height(ui_DSMButton1, 50);
+    lv_obj_set_x(ui_DSMButton1, 0);
+    lv_obj_set_y(ui_DSMButton1, -80);
+    lv_obj_set_align(ui_DSMButton1, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_DSMButton1, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_DSMButton1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_DSMButtonLabel = lv_label_create(ui_DSMMainScreen);
-    lv_obj_set_width(ui_DSMButtonLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_DSMButtonLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_DSMButtonLabel, 0);
-    lv_obj_set_y(ui_DSMButtonLabel, -80);
-    lv_obj_set_align(ui_DSMButtonLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_DSMButtonLabel, "Press me!");
+    ui_DSMButtonLabel1 = lv_label_create(ui_DSMMainScreen);
+    lv_obj_set_width(ui_DSMButtonLabel1, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_DSMButtonLabel1, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_DSMButtonLabel1, 0);
+    lv_obj_set_y(ui_DSMButtonLabel1, -80);
+    lv_obj_set_align(ui_DSMButtonLabel1, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_DSMButtonLabel1, "Press me!");
 
 }

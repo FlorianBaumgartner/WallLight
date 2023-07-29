@@ -47,16 +47,21 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     static constexpr const float    UPDATE_RATE           = 30.0;   // Hz
 
     GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tech_sda, int tch_irq, int tch_rst, int freq = 40000000);
-    bool begin(void);
+    bool begin(bool startLvglTask = false);
+    void loadMainUi(void);
   
     
   private:
     void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
+    void formatDate(char* date);
 
     lgfx::Panel_ST7789   _panel_instance;
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
     Display* disp;
+
+    const char labelVersion[5] = "V" FIRMWARE_VERSION;
+    char labelDate[10] = "DD.MM.YY";
 };
 
 class DisplayDsm : public Display

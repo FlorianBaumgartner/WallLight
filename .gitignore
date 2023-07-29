@@ -1,2 +1,3 @@
 *.pyc
 __pycache__
+Firmware/Bootloader/WallLightRemote/tinyuf2/

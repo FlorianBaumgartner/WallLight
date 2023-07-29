@@ -49,7 +49,7 @@ GuiDsa::GuiDsa(int sclk, int mosi, int dc, int rst, int cs, int cs_0, int cs_1, 
   {
     auto cfg = _bus_instance.config();
 
-    cfg.spi_host = SPI2_HOST;           // SPI2_HOST or SPI3_HOST
+    cfg.spi_host = SPI3_HOST;           // SPI2_HOST or SPI3_HOST
     cfg.spi_mode = 0;                   // (0 ~ 3)
     cfg.freq_write = freq;              // (40MHz, 80MHz)
     cfg.freq_read  = 16000000;
@@ -92,7 +92,7 @@ GuiDsa::GuiDsa(int sclk, int mosi, int dc, int rst, int cs, int cs_0, int cs_1, 
     cfg.pin_bl = bl;
     cfg.invert = false;
     cfg.freq   = 44100;
-    cfg.pwm_channel = 7;
+    cfg.pwm_channel = 6;
 
     _light_instance.config(cfg);
     _panel_instance.setLight(&_light_instance);
@@ -218,11 +218,7 @@ void GuiDsa::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
 
-  while(transmitting)
-  {
-    delayMicroseconds(100);
-  }
-  transmitting = true;
+  waitDMA();
   selectDisplay(display->channel);
   startWrite();
   setAddrWindow(area->x1, area->y1, w, h);
@@ -230,5 +226,4 @@ void GuiDsa::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   endWrite();
   lv_disp_flush_ready(disp);
   display->initialized = true;
-  transmitting = false;
 }

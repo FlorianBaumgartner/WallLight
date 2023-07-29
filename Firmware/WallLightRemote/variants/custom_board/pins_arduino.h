@@ -17,11 +17,6 @@
 #define digitalPinToInterrupt(p)    (((p)<48)?(p):-1)
 #define digitalPinHasPWM(p)         (p < 46)
 
-// #define PIN_NEOPIXEL        39
-// #define NEOPIXEL_NUM        1     // number of neopixels
-// #define NEOPIXEL_POWER      38    // power pin
-// #define NEOPIXEL_POWER_ON   HIGH  // power pin state when on
-
 static const uint8_t TX = 5;
 static const uint8_t RX = 16;
 #define TX1 TX

@@ -14,15 +14,23 @@ extern "C" {
 
 #include "ui_helpers.h"
 #include "ui_events.h"
+// SCREEN: ui_DSMInitScreen
+void ui_DSMInitScreen_screen_init(void);
+extern lv_obj_t * ui_DSMInitScreen;
+extern lv_obj_t * ui_DSMInitImage;
+extern lv_obj_t * ui_DSMVersionLabel;
+extern lv_obj_t * ui_DSMDateLabel;
 // SCREEN: ui_DSMMainScreen
 void ui_DSMMainScreen_screen_init(void);
 extern lv_obj_t * ui_DSMMainScreen;
-extern lv_obj_t * ui_DSMTopBar;
-extern lv_obj_t * ui_DSMTestLabel;
-extern lv_obj_t * ui_DSMSpinner;
-extern lv_obj_t * ui_DSMButton;
-extern lv_obj_t * ui_DSMButtonLabel;
+extern lv_obj_t * ui_DSMTopBar1;
+extern lv_obj_t * ui_DSMTestLabel1;
+extern lv_obj_t * ui_DSMSpinner1;
+extern lv_obj_t * ui_DSMButton1;
+extern lv_obj_t * ui_DSMButtonLabel1;
 extern lv_obj_t * ui____initial_actions0;
+
+LV_IMG_DECLARE(ui_img_walllight_remote_loadingscreen_png);    // assets\WallLight Remote_LoadingScreen.png
 
 void ui_init(void);
 

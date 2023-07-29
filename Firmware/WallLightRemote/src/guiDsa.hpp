@@ -63,8 +63,6 @@ class GuiDsa : public lgfx::LGFX_Device, public GuiLvgl
     const int cs_1;
     const int cs_2;
 
-    volatile bool transmitting = false;
-
     void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
 
     lgfx::Panel_GC9107   _panel_instance;

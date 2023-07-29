@@ -8,14 +8,21 @@
 
 ///////////////////// VARIABLES ////////////////////
 
+// SCREEN: ui_DSMInitScreen
+void ui_DSMInitScreen_screen_init(void);
+lv_obj_t * ui_DSMInitScreen;
+lv_obj_t * ui_DSMInitImage;
+lv_obj_t * ui_DSMVersionLabel;
+lv_obj_t * ui_DSMDateLabel;
+
 // SCREEN: ui_DSMMainScreen
 void ui_DSMMainScreen_screen_init(void);
 lv_obj_t * ui_DSMMainScreen;
-lv_obj_t * ui_DSMTopBar;
-lv_obj_t * ui_DSMTestLabel;
-lv_obj_t * ui_DSMSpinner;
-lv_obj_t * ui_DSMButton;
-lv_obj_t * ui_DSMButtonLabel;
+lv_obj_t * ui_DSMTopBar1;
+lv_obj_t * ui_DSMTestLabel1;
+lv_obj_t * ui_DSMSpinner1;
+lv_obj_t * ui_DSMButton1;
+lv_obj_t * ui_DSMButtonLabel1;
 lv_obj_t * ui____initial_actions0;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
@@ -38,7 +45,8 @@ void ui_init(void)
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
                                                true, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
+    ui_DSMInitScreen_screen_init();
     ui_DSMMainScreen_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_DSMMainScreen);
+    lv_disp_load_scr(ui_DSMInitScreen);
 }

@@ -40,7 +40,7 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
   {
     auto cfg = _bus_instance.config();
 
-    cfg.spi_host = SPI3_HOST;           // SPI2_HOST or SPI3_HOST
+    cfg.spi_host = SPI2_HOST;           // SPI2_HOST or SPI3_HOST
     cfg.spi_mode = 0;                   // (0 ~ 3)
     cfg.freq_write = freq;              // (40MHz, 80MHz)
     cfg.freq_read  = 16000000;
@@ -89,9 +89,11 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
     _panel_instance.setLight(&_light_instance);
   }
   setPanel(&_panel_instance);
+
+  formatDate(labelDate);
 }
 
-bool GuiDsm::begin(void)
+bool GuiDsm::begin(bool startLvglTask)
 {
   static DisplayDsm display;
   disp = &display;
@@ -114,17 +116,53 @@ bool GuiDsm::begin(void)
   display.disp = lv_disp_drv_register(&display.disp_drv);
   lv_timer_set_period(display.disp->refr_timer, 1000.0 / UPDATE_RATE);
 
-  // lv_disp_set_default(display.disp);
+  lv_disp_set_default(display.disp);
   ui_init();
-  
-  lvglStart();                            // Start LVGL task if not already started
-  while(!display.initialized)             // Wait until display is updated
-  {
-    delay(10);
-  }
 
+  lv_label_set_text_static(ui_DSMVersionLabel, labelVersion);
+  lv_label_set_text_static(ui_DSMDateLabel, labelDate);
+
+  lv_task_handler();                        // Call LVGL task handler once to initialize display
+
+  if(startLvglTask)
+  {
+    lvglStart();                            // Start LVGL task if not already started
+    while(!display.initialized)             // Wait until display is updated
+    {
+      delay(10);
+    }
+  }
+  
   setBrightness(255);
   return true;
+}
+
+void GuiDsm::loadMainUi(void)
+{
+  lv_disp_set_default(disp->disp);
+  lv_disp_load_scr(ui_DSMMainScreen);
+}
+
+void GuiDsm::formatDate(char* date)
+{
+  char s_month[4];
+  int month, day, year;
+  sscanf(__DATE__, "%s %d %d", s_month, &day, &year);
+
+  if (strcmp(s_month, "Jan") == 0) month = 1;
+  else if (strcmp(s_month, "Feb") == 0) month = 2;
+  else if (strcmp(s_month, "Mar") == 0) month = 3;
+  else if (strcmp(s_month, "Apr") == 0) month = 4;
+  else if (strcmp(s_month, "May") == 0) month = 5;
+  else if (strcmp(s_month, "Jun") == 0) month = 6;
+  else if (strcmp(s_month, "Jul") == 0) month = 7;
+  else if (strcmp(s_month, "Aug") == 0) month = 8;
+  else if (strcmp(s_month, "Sep") == 0) month = 9;
+  else if (strcmp(s_month, "Oct") == 0) month = 10;
+  else if (strcmp(s_month, "Nov") == 0) month = 11;
+  else if (strcmp(s_month, "Dec") == 0) month = 12;
+
+  snprintf(date, 10, "%02d.%02d.%02d", day, month, year - 2000);
 }
 
 void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
@@ -133,6 +171,7 @@ void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
 
+  waitDMA();
   startWrite();
   setAddrWindow(area->x1, area->y1, w, h);
   writePixels((lgfx::rgb565_t*)&color_p->full, w * h);

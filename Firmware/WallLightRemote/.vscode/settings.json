@@ -25,6 +25,7 @@
         "cmath": "cpp",
         "limits": "cpp",
         "lvgl.h": "c",
-        "ui_helpers_custom.h": "c"
+        "ui_helpers_custom.h": "c",
+        "list": "cpp"
     }
 }

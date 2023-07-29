@@ -136,7 +136,7 @@ bool Utils::begin(uint32_t watchdogTimeout, const char* labelName, bool forceFor
   usb_msc.setCapacity(flash.size() / 512, 512);     // Set disk size, block size should be 512 regardless of spi flash page size
   usb_msc.begin();
 
-  xTaskCreate(update, "task_utils", 2048, this, 1, NULL);
+  xTaskCreate(update, "task_utils", 4096, this, 1, NULL);
   delay(200);   // TODO: Check if delay helps
   return status;
 }
