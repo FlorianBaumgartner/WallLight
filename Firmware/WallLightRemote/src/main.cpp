@@ -38,6 +38,7 @@
 #include "guiDsm.hpp"
 #include "hmi.hpp"
 
+
 #define BLINK_INTERVAL    200
 #define WATCHDOG_TIMEOUT  30    // [s]
 
@@ -105,7 +106,7 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize utilities");
   }
-
+  
   preferences.begin("WallLightRemote", false);
   uint32_t bootCount = preferences.getUInt("bootCount", 0);
   console.log.printf("[MAIN] Boot Count: %d\n", bootCount);
@@ -120,12 +121,14 @@ void loop()
 {
   utils.feedWatchdog();
 
-  // static int p = 0;
-  // if(millis() - p > 500)
-  // {
-  //   p = millis();
-  //   console.log.printf("[MAIN] Roller Encoder: %d, %d, %d, %d\n", hmi.getEncoderValue(0), hmi.getEncoderValue(1), hmi.getEncoderValue(4), hmi.getEncoderValue(5));
-  // }
+  static uint32_t touchTimer = 0;
+  if(millis() - touchTimer > 500)
+  {
+    touchTimer = millis();
+    lgfx::touch_point_t point;
+    guiDsm.getTouchPoints(&point);
+    console.log.printf("[MAIN] Touch: %d, %d\n", point.x, point.y);
+  }
 
   for(int i = 0; i < 8; i++)
   {

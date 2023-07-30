@@ -35,8 +35,23 @@
 #include "console.hpp"
 
 
-GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tech_sda, int tch_irq, int tch_rst, int freq)
+GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tch_sda, int tch_irq, int tch_rst, int freq)
 {
+  pinMode(tch_irq, OUTPUT);
+  pinMode(tch_rst, OUTPUT);
+
+  digitalWrite(tch_irq, LOW);
+  digitalWrite(tch_rst, LOW);
+
+  delay(11);
+  digitalWrite(tch_irq, HIGH);
+  delayMicroseconds(110);
+  pinMode(tch_rst, INPUT);
+
+  delay(6);
+  digitalWrite(tch_irq, LOW);
+  delay(51);
+
   {
     auto cfg = _bus_instance.config();
 
@@ -78,6 +93,27 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
     _panel_instance.config(cfg);
   }
   {
+    auto cfg = _touch_instance.config();
+
+    cfg.x_min      = 0;
+    cfg.x_max      = SCREEN_WIDTH;
+    cfg.y_min      = 0;
+    cfg.y_max      = SCREEN_HEIGHT;
+    cfg.pin_int    = -1;  //tch_irq;    // Don't use interrupt, use polling 
+    cfg.pin_rst    = tch_rst;
+    cfg.bus_shared = true;
+    cfg.offset_rotation = 0;
+
+    cfg.i2c_port   = 1;
+    cfg.pin_sda    = tch_sda;
+    cfg.pin_scl    = tch_scl;
+    cfg.freq       = 400000;
+    cfg.i2c_addr   = 0x14;
+
+    _touch_instance.config(cfg);
+    _panel_instance.setTouch(&_touch_instance);
+  }
+  {
     auto cfg = _light_instance.config();
 
     cfg.pin_bl = bl;
@@ -103,6 +139,8 @@ bool GuiDsm::begin(bool startLvglTask)
   {
     return false;
   }
+
+  pinMode(_touch_instance.config().pin_int, INPUT_PULLUP);
 
   lvglInit();                             // Initialize global (static) LVGL instance, is ignored if already initialized
   lv_disp_draw_buf_init(&display.draw_buf, display.buf, NULL, SCREEN_WIDTH * SCREEN_BUFFER_HEIGHT);
@@ -132,7 +170,7 @@ bool GuiDsm::begin(bool startLvglTask)
       delay(10);
     }
   }
-  
+
   setBrightness(255);
   return true;
 }

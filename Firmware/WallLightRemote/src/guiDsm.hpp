@@ -43,12 +43,14 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
   public:
     static constexpr const uint32_t SCREEN_WIDTH          = 170;
     static constexpr const uint32_t SCREEN_HEIGHT         = 320;
-    static constexpr const uint32_t SCREEN_BUFFER_HEIGHT  = 80;
+    static constexpr const uint32_t SCREEN_BUFFER_HEIGHT  = 60;
     static constexpr const float    UPDATE_RATE           = 30.0;   // Hz
 
-    GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tech_sda, int tch_irq, int tch_rst, int freq = 40000000);
+    GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tch_sda, int tch_irq, int tch_rst, int freq = 40000000);
     bool begin(bool startLvglTask = false);
     void loadMainUi(void);
+
+    uint_fast8_t getTouchPoints(lgfx::touch_point_t *tp, uint_fast8_t count = 1) {return getTouch(tp, count);}
   
     
   private:
@@ -58,6 +60,7 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     lgfx::Panel_ST7789   _panel_instance;
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
+    lgfx::Touch_GT911    _touch_instance;
     Display* disp;
 
     const char labelVersion[5] = "V" FIRMWARE_VERSION;

@@ -48,7 +48,7 @@ bool Hmi::begin(void)
   pinMode(pin_enb, INPUT_PULLUP);
 
   initialized = true;
-  xTaskCreate(update, "task_updateHmi", 4096, this, 1, &updateTaskHandle);
+  xTaskCreate(update, "task_updateHmi", 2048, this, 1, &updateTaskHandle);
   return true;
 }
 
@@ -112,6 +112,7 @@ void Hmi::update(void *pvParameter)
 
 uint32_t Hmi::readSerial(void)    // Readout frequency: ~ 1 MHz
 {
+  vTaskSuspendAll();              // Enter critical section
   uint32_t data = 0x00000000;
   digitalWrite(pin_ld, HIGH);
   for(int i = 0; i < 32; i++)
@@ -122,5 +123,6 @@ uint32_t Hmi::readSerial(void)    // Readout frequency: ~ 1 MHz
     digitalWrite(pin_clk, LOW);
   }
   digitalWrite(pin_ld, LOW);
+  xTaskResumeAll();               // Exit critical section
   return data;
 }
