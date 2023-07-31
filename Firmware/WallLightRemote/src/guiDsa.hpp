@@ -38,6 +38,8 @@
 #include <lvgl.h>
 #include "guiLvgl.hpp"
 
+class DisplayDsa;
+
 class GuiDsa : public lgfx::LGFX_Device, public GuiLvgl
 {
   public:
@@ -64,11 +66,12 @@ class GuiDsa : public lgfx::LGFX_Device, public GuiLvgl
     const int cs_2;
 
     void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
+    void touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {};
 
     lgfx::Panel_GC9107   _panel_instance;
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
-    Display* disp;
+    DisplayDsa* disp;
 
     lv_obj_t* labelId[DISPLAY_COUNT];
     lv_obj_t* labelValue[DISPLAY_COUNT];

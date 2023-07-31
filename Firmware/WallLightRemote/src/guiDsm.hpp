@@ -38,6 +38,8 @@
 #include <lvgl.h>
 #include "guiLvgl.hpp"
 
+class DisplayDsm;
+
 class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
 {
   public:
@@ -51,17 +53,32 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     void loadMainUi(void);
 
     uint_fast8_t getTouchPoints(lgfx::touch_point_t *tp, uint_fast8_t count = 1) {return getTouch(tp, count);}
+    // lgfx::touch_point_t point;
+    // volatile bool isrFlag = false;
   
     
   private:
+    const int tch_scl;
+    const int tch_sda;
+    const int tch_irq;
+    const int tch_rst;
+
     void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
+    void touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data);
     void formatDate(char* date);
+    void initTouch(void);
+    void startTouch(void);
+    static void IRAM_ATTR touchInterrupt(void);
 
     lgfx::Panel_ST7789   _panel_instance;
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
     lgfx::Touch_GT911    _touch_instance;
-    Display* disp;
+    DisplayDsm* disp;
+
+    static GuiDsm* staticRef;
+    
+    // lgfx::touch_point_t point;
 
     const char labelVersion[5] = "V" FIRMWARE_VERSION;
     char labelDate[10] = "DD.MM.YY";
@@ -70,6 +87,8 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
 class DisplayDsm : public Display
 {
   public:
+    volatile bool isrFlag = false;
+    lv_indev_drv_t indev_drv;       // Touch input device driver
     lv_color_t* buf[GuiDsm::SCREEN_WIDTH * GuiDsm::SCREEN_BUFFER_HEIGHT];
     DisplayDsm(): Display(GuiDsm::SCREEN_WIDTH, GuiDsm::SCREEN_BUFFER_HEIGHT) {};
 };

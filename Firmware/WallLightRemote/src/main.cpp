@@ -121,15 +121,6 @@ void loop()
 {
   utils.feedWatchdog();
 
-  static uint32_t touchTimer = 0;
-  if(millis() - touchTimer > 500)
-  {
-    touchTimer = millis();
-    lgfx::touch_point_t point;
-    guiDsm.getTouchPoints(&point);
-    console.log.printf("[MAIN] Touch: %d, %d\n", point.x, point.y);
-  }
-
   for(int i = 0; i < 8; i++)
   {
     if(hmi.getIdButtonEdge(i, Hmi::UP))

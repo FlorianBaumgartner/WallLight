@@ -186,7 +186,12 @@ void GuiDsa::setValue(uint8_t channel, float value, bool force)
   if(value != this->value[channel] || force)
   {
     this->value[channel] = value;
-    snprintf(labelTextValue[channel], LABEL_TEXT_SIZE, "%.2f", this->value[channel]);
+    float dispValue = this->value[channel];
+    if(fabs(dispValue) < 0.001)     // Prevent negative zero "-0.00"
+    {
+      dispValue = 0.0;
+    }
+    snprintf(labelTextValue[channel], LABEL_TEXT_SIZE, "%.2f", dispValue);
     lv_label_set_text_static(labelValue[channel], labelTextValue[channel]);
   }
 }

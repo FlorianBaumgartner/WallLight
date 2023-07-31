@@ -35,22 +35,12 @@
 #include "console.hpp"
 
 
-GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tch_sda, int tch_irq, int tch_rst, int freq)
+GuiDsm* GuiDsm::staticRef = nullptr;
+
+
+GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tch_sda, int tch_irq, int tch_rst, int freq) : tch_scl(tch_scl), tch_sda(tch_sda), tch_irq(tch_irq), tch_rst(tch_rst)
 {
-  pinMode(tch_irq, OUTPUT);
-  pinMode(tch_rst, OUTPUT);
-
-  digitalWrite(tch_irq, LOW);
-  digitalWrite(tch_rst, LOW);
-
-  delay(11);
-  digitalWrite(tch_irq, HIGH);
-  delayMicroseconds(110);
-  pinMode(tch_rst, INPUT);
-
-  delay(6);
-  digitalWrite(tch_irq, LOW);
-  delay(51);
+  staticRef = this;
 
   {
     auto cfg = _bus_instance.config();
@@ -99,9 +89,9 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
     cfg.x_max      = SCREEN_WIDTH;
     cfg.y_min      = 0;
     cfg.y_max      = SCREEN_HEIGHT;
-    cfg.pin_int    = -1;  //tch_irq;    // Don't use interrupt, use polling 
+    cfg.pin_int    = -1;            // Use custom implementation of interrupt handling
     cfg.pin_rst    = tch_rst;
-    cfg.bus_shared = true;
+    cfg.bus_shared = false;
     cfg.offset_rotation = 0;
 
     cfg.i2c_port   = 1;
@@ -135,12 +125,18 @@ bool GuiDsm::begin(bool startLvglTask)
   disp = &display;
 
   setBrightness(0);
+  initTouch();
   if(!init())
   {
     return false;
   }
 
-  pinMode(_touch_instance.config().pin_int, INPUT_PULLUP);
+  // _touch_instance.setTouchNums(1);        // Set number of touch points to 1
+  // delay(300);
+  // pinMode(tch_irq, INPUT_PULLUP);
+  // attachInterrupt(tch_irq, touchInterrupt, RISING);
+  // lgfx::touch_point_t point;
+  // getTouch(&point);
 
   lvglInit();                             // Initialize global (static) LVGL instance, is ignored if already initialized
   lv_disp_draw_buf_init(&display.draw_buf, display.buf, NULL, SCREEN_WIDTH * SCREEN_BUFFER_HEIGHT);
@@ -153,6 +149,13 @@ bool GuiDsm::begin(bool startLvglTask)
   display.disp_drv.user_data = &display;
   display.disp = lv_disp_drv_register(&display.disp_drv);
   lv_timer_set_period(display.disp->refr_timer, 1000.0 / UPDATE_RATE);
+
+  lv_indev_drv_init(&display.indev_drv);
+  display.indev_drv.type = LV_INDEV_TYPE_POINTER;
+  display.indev_drv.read_cb = lvglTouchRead;
+  display.indev_drv.user_data = &display;
+  lv_indev_drv_register(&display.indev_drv);
+  startTouch();
 
   lv_disp_set_default(display.disp);
   ui_init();
@@ -203,6 +206,37 @@ void GuiDsm::formatDate(char* date)
   snprintf(date, 10, "%02d.%02d.%02d", day, month, year - 2000);
 }
 
+void GuiDsm::initTouch(void)
+{
+  pinMode(tch_irq, OUTPUT);
+  pinMode(tch_rst, OUTPUT);
+
+  digitalWrite(tch_irq, LOW);
+  digitalWrite(tch_rst, LOW);
+
+  delay(11);
+  digitalWrite(tch_irq, HIGH);
+  delayMicroseconds(110);
+  pinMode(tch_rst, INPUT);
+
+  delay(6);
+  digitalWrite(tch_irq, LOW);
+  delay(51);
+}
+
+void GuiDsm::startTouch(void)
+{
+  _touch_instance.setTouchNums(1);        // Set number of touch points to 1
+  delay(300);
+  pinMode(tch_irq, INPUT_PULLUP);
+  attachInterrupt(tch_irq, touchInterrupt, RISING);
+}
+
+void IRAM_ATTR GuiDsm::touchInterrupt(void)
+{
+  staticRef->disp->isrFlag = true;
+}
+
 void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
 {
   DisplayDsm* display = (DisplayDsm*)disp->user_data;
@@ -216,4 +250,27 @@ void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   endWrite();
   lv_disp_flush_ready(disp);
   display->initialized = true;
+}
+
+void GuiDsm::touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
+{
+   DisplayDsm* display = (DisplayDsm*)indev_driver->user_data;
+
+    if(display->isrFlag)
+    {
+      display->isrFlag = false;
+      lgfx::touch_point_t point;
+      uint8_t count = ((GuiDsm*)display->gui)->getTouch(&point);
+      if(count > 0)
+      {
+        data->state = LV_INDEV_STATE_PR;
+        data->point.x = point.x;
+        data->point.y = point.y;
+      }
+      else
+      {
+        data->state = LV_INDEV_STATE_REL;
+      }
+    }
+    // TODO: Check if touch state should be released if flag is not set
 }

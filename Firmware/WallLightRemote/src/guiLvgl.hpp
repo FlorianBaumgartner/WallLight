@@ -44,6 +44,7 @@ class GuiLvgl
     static constexpr const float LVGL_UPDATE_RATE = 200.0;   // Hz
 
     virtual void flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
+    virtual void touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data);
 
     static void lvglInit(void)
     {
@@ -96,6 +97,12 @@ static void lvglFlush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *co
 {
   Display* display = (Display*)disp->user_data;
   display->gui->flush(disp, area, color_p);
+}
+
+static void lvglTouchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
+{
+  Display* display = (Display*)indev_driver->user_data;
+  display->gui->touchRead(indev_driver, data);
 }
 
 #endif
