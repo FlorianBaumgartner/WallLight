@@ -62,7 +62,7 @@ class GuiLvgl
       if(!lvglStarted)
       {
         lvglStarted = true;
-        xTaskCreate(lvglUpdate, "lvgl", 4096, nullptr, 1, nullptr);
+        xTaskCreate(lvglUpdate, "lvgl", 4096, nullptr, 30, nullptr);
         console.ok.println("[GUI] Initialization successfull.");
       }
     }

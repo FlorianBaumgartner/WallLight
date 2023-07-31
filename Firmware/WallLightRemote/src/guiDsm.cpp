@@ -91,10 +91,10 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
     cfg.y_max      = SCREEN_HEIGHT;
     cfg.pin_int    = -1;            // Use custom implementation of interrupt handling
     cfg.pin_rst    = tch_rst;
-    cfg.bus_shared = false;
+    cfg.bus_shared = true;
     cfg.offset_rotation = 0;
 
-    cfg.i2c_port   = 1;
+    cfg.i2c_port   = 0;
     cfg.pin_sda    = tch_sda;
     cfg.pin_scl    = tch_scl;
     cfg.freq       = 400000;
@@ -130,13 +130,6 @@ bool GuiDsm::begin(bool startLvglTask)
   {
     return false;
   }
-
-  // _touch_instance.setTouchNums(1);        // Set number of touch points to 1
-  // delay(300);
-  // pinMode(tch_irq, INPUT_PULLUP);
-  // attachInterrupt(tch_irq, touchInterrupt, RISING);
-  // lgfx::touch_point_t point;
-  // getTouch(&point);
 
   lvglInit();                             // Initialize global (static) LVGL instance, is ignored if already initialized
   lv_disp_draw_buf_init(&display.draw_buf, display.buf, NULL, SCREEN_WIDTH * SCREEN_BUFFER_HEIGHT);
@@ -254,23 +247,25 @@ void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 
 void GuiDsm::touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
 {
-   DisplayDsm* display = (DisplayDsm*)indev_driver->user_data;
+  static uint32_t t = 0;
+  DisplayDsm* display = (DisplayDsm*)indev_driver->user_data;
 
-    if(display->isrFlag)
+  if(display->isrFlag && (millis() - t > (1000 / MAX_TOUCH_UPDATE_RATE)))   // Limit touch update rate
+  {
+    t = millis();
+    display->isrFlag = false;
+    lgfx::touch_point_t point;
+    uint8_t count = ((GuiDsm*)display->gui)->getTouch(&point);
+    if(count > 0)
     {
-      display->isrFlag = false;
-      lgfx::touch_point_t point;
-      uint8_t count = ((GuiDsm*)display->gui)->getTouch(&point);
-      if(count > 0)
-      {
-        data->state = LV_INDEV_STATE_PR;
-        data->point.x = point.x;
-        data->point.y = point.y;
-      }
-      else
-      {
-        data->state = LV_INDEV_STATE_REL;
-      }
+      data->state = LV_INDEV_STATE_PR;
+      data->point.x = point.x;
+      data->point.y = point.y;
     }
-    // TODO: Check if touch state should be released if flag is not set
+    else
+    {
+      data->state = LV_INDEV_STATE_REL;
+    }
+  }
+  // TODO: Check if touch state should be released if flag is not set
 }

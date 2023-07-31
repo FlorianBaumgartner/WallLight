@@ -38,6 +38,8 @@
 #include <lvgl.h>
 #include "guiLvgl.hpp"
 
+#define MAX_TOUCH_UPDATE_RATE           20            // [hz]
+
 class DisplayDsm;
 
 class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
@@ -53,8 +55,6 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     void loadMainUi(void);
 
     uint_fast8_t getTouchPoints(lgfx::touch_point_t *tp, uint_fast8_t count = 1) {return getTouch(tp, count);}
-    // lgfx::touch_point_t point;
-    // volatile bool isrFlag = false;
   
     
   private:
@@ -77,9 +77,6 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     DisplayDsm* disp;
 
     static GuiDsm* staticRef;
-    
-    // lgfx::touch_point_t point;
-
     const char labelVersion[5] = "V" FIRMWARE_VERSION;
     char labelDate[10] = "DD.MM.YY";
 };

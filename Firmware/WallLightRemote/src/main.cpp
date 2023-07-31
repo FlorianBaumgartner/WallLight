@@ -37,6 +37,7 @@
 #include "guiDsa.hpp"
 #include "guiDsm.hpp"
 #include "hmi.hpp"
+#include "ambientSensor.hpp"
 
 
 #define BLINK_INTERVAL    200
@@ -59,8 +60,8 @@
 #define DSM_RST       33
 #define DSM_BL        38
 
-#define TCH_SCL       15
-#define TCH_SDA       16
+#define TCH_SCL       SCL       // 15
+#define TCH_SDA       SDA       // 16
 #define TCH_RST       17
 #define TCH_INT       18
 
@@ -84,11 +85,14 @@ static Preferences preferences;
 static GuiDsa guiDsa(DSA_SCLK, DSA_MOSI, DSA_DC, DSA_RST, DSA_CS, DSA_CS0, DSA_CS1, DSA_CS2, DSA_BL);
 static GuiDsm guiDsm(DSM_SCLK, DSM_MOSI, DSM_DC, DSM_RST, DSM_CS, DSM_BL, TCH_SCL, TCH_SDA, TCH_INT, TCH_RST);
 static Hmi hmi(HMI_CLK, HMI_DATA, HMI_LD, HMI_ENA, HMI_ENB, HMI_ENS);
+static AmbientSensor ambientSensor(TCH_SCL, TCH_SDA);
 
 
 void setup()
 {
   console.begin();
+
+  // TODO: Get reset reason if possible
 
   if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
   {
@@ -106,6 +110,11 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize DSA GUI");
   }
+  if(!ambientSensor.begin())
+  {
+    console.error.println("[MAIN] Could not initialize ambient sensor");
+  }
+  
   
   preferences.begin("WallLightRemote", false);
   uint32_t bootCount = preferences.getUInt("bootCount", 0);
@@ -115,11 +124,44 @@ void setup()
   preferences.end();
   
   guiDsm.loadMainUi();
+
+  
+
+  // Wire.begin(); 
+  // Wire.setPins(TCH_SDA, TCH_SCL);
+  // if(!RGBWSensor.begin())
+  // {
+  //   console.error.println("ERROR: couldn't detect the sensor");
+  // }
+
+  // RGBWSensor.setConfiguration(VEML6040_IT_320MS + VEML6040_AF_AUTO + VEML6040_SD_ENABLE);
+
+  // console.log.print("RED: ");
+  // console.log.print(RGBWSensor.getRed());  
+  // console.log.print(" GREEN: ");
+  // console.log.print(RGBWSensor.getGreen());  
+  // console.log.print(" BLUE: ");
+  // console.log.print(RGBWSensor.getBlue());  
+  // console.log.print(" WHITE: ");
+  // console.log.print(RGBWSensor.getWhite()); 
+  // console.log.print(" CCT: ");
+  // console.log.print(RGBWSensor.getCCT());  
+  // console.log.print(" AL: ");
+  // console.log.println(RGBWSensor.getAmbientLight()); 
 }
 
 void loop()
 {
   utils.feedWatchdog();
+
+  static uint32_t p = 0;
+  if(millis() - p > 200)
+  {
+    p = millis();
+    AmbientColor color;
+    ambientSensor.getColor(&color);
+    console.log.printf("[MAIN] Color Sensor: R: %.2f, G: %.2f, B: %.2f, W: %.2f, CCT: %.2f, AL: %.2f\n", color.red, color.green, color.blue, color.white, color.cct, color.ambient);
+  }
 
   for(int i = 0; i < 8; i++)
   {

@@ -48,7 +48,7 @@ bool Hmi::begin(void)
   pinMode(pin_enb, INPUT_PULLUP);
 
   initialized = true;
-  xTaskCreate(update, "task_updateHmi", 2048, this, 1, &updateTaskHandle);
+  xTaskCreate(update, "task_updateHmi", 2048, this, 5, &updateTaskHandle);
   return true;
 }
 

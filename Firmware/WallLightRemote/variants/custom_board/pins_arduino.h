@@ -22,8 +22,8 @@ static const uint8_t RX = 16;
 #define TX1 TX
 #define RX1 RX
 
-static const uint8_t SDA = 7;
-static const uint8_t SCL = 6;
+static const uint8_t SDA = 16;
+static const uint8_t SCL = 15;
 
 #define WIRE1_PIN_DEFINED 1             // See Wire.cpp at bool TwoWire::initPins(int sdaPin, int sclPin)
 static const uint8_t SDA1 = 41;
