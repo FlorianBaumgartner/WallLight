@@ -90,6 +90,10 @@ void setup()
 {
   console.begin();
 
+  if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
+  {
+    console.error.println("[MAIN] Could not initialize utilities");
+  }
   if(!hmi.begin())
   {
     console.error.println("[MAIN] Could not initialize HMI");
@@ -101,10 +105,6 @@ void setup()
   if(!guiDsa.begin())
   {
     console.error.println("[MAIN] Could not initialize DSA GUI");
-  }
-  if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
-  {
-    console.error.println("[MAIN] Could not initialize utilities");
   }
   
   preferences.begin("WallLightRemote", false);
