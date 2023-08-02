@@ -98,6 +98,10 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize utilities");
   }
+  if(!ambientSensor.begin())
+  {
+    console.error.println("[MAIN] Could not initialize ambient sensor");
+  }
   if(!hmi.begin())
   {
     console.error.println("[MAIN] Could not initialize HMI");
@@ -110,10 +114,7 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize DSA GUI");
   }
-  if(!ambientSensor.begin())
-  {
-    console.error.println("[MAIN] Could not initialize ambient sensor");
-  }
+  
   
   
   preferences.begin("WallLightRemote", false);

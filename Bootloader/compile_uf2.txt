@@ -1,0 +1,23 @@
+remove existing C:\Espressif folder
+
+check if current path is not too long... (compiler will warn you if it is critical)
+
+comment out lines 22-24 in C:\Users\Admin\GoogleDrive\WallLight\Firmware\Bootloader\WallLightRemote\tinyuf2\ports\espressif\CMakeList.txt
+#string(REPLACE ../ "" GIT_SUBMODULE_VERSIONS ${GIT_SUBMODULE_VERSIONS})
+#string(REPLACE lib/ "" GIT_SUBMODULE_VERSIONS ${GIT_SUBMODULE_VERSIONS})
+#string(STRIP ${GIT_SUBMODULE_VERSIONS} GIT_SUBMODULE_VERSIONS)
+
+use Windows PowerShell (installing must only be done once):
+cd C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\ports\espressif
+
+C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\lib\esp-idf\install.ps1
+C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\lib\esp-idf\export.ps1
+
+test if idf.py can be run
+
+make BOARD=adafruit_qtpy_esp32s3 all
+
+cd C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\ports\espressif\_build\adafruit_qtpy_esp32s3
+python C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\lib\uf2\utils\uf2conv.py tinyuf2.bin -c -b 0x00 -f 0xC47E5767
+
+UF2-File can be found at: C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\ports\espressif\_build\adafruit_qtpy_esp32s3
