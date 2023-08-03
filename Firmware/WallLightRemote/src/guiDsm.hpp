@@ -38,7 +38,6 @@
 #include <lvgl.h>
 #include "guiLvgl.hpp"
 
-#define MAX_TOUCH_UPDATE_RATE           20            // [hz]
 
 class DisplayDsm;
 
@@ -49,13 +48,11 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     static constexpr const uint32_t SCREEN_HEIGHT         = 320;
     static constexpr const uint32_t SCREEN_BUFFER_HEIGHT  = 60;
     static constexpr const float    UPDATE_RATE           = 30.0;   // Hz
+    static constexpr const float    TOUCH_UPDATE_RATE     = 30.0;   // [Hz]
 
     GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tch_sda, int tch_irq, int tch_rst, int freq = 40000000);
-    bool begin(bool startLvglTask = false);
+    bool begin(SemaphoreHandle_t* i2cMutex = nullptr, bool startLvglTask = false);
     void loadMainUi(void);
-
-    uint_fast8_t getTouchPoints(lgfx::touch_point_t *tp, uint_fast8_t count = 1) {return getTouch(tp, count);}
-  
     
   private:
     const int tch_scl;
@@ -75,6 +72,8 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     lgfx::Light_PWM      _light_instance;
     lgfx::Touch_GT911    _touch_instance;
     DisplayDsm* disp;
+
+    SemaphoreHandle_t* i2cMutex = nullptr;
 
     static GuiDsm* staticRef;
     const char labelVersion[5] = "V" FIRMWARE_VERSION;

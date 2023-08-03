@@ -15,9 +15,17 @@ C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\lib\esp-idf\export.ps1
 
 test if idf.py can be run
 
-make BOARD=adafruit_qtpy_esp32s3 all
+make BOARD=wall_light_remote_esp32s3 all
 
-cd C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\ports\espressif\_build\adafruit_qtpy_esp32s3
+cd C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\ports\espressif\_build\wall_light_remote_esp32s3
 python C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\lib\uf2\utils\uf2conv.py tinyuf2.bin -c -b 0x00 -f 0xC47E5767
 
-UF2-File can be found at: C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\ports\espressif\_build\adafruit_qtpy_esp32s3
+UF2-File can be found at: C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf2\ports\espressif\_build\wall_light_remote_esp32s3
+
+
+**** UPLOADING
+First upload combined.bin
+Then replace uf2 section at offset 0x410000
+
+**** Get FLash Content
+C:\Users\Admin\GoogleDrive\WallLight\Bootloader\esptool\esptool.exe read_flash 0 8388607 wall_light_remote_combined.bin

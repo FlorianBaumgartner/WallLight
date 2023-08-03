@@ -106,7 +106,7 @@ void setup()
   {
     console.error.println("[MAIN] Could not initialize HMI");
   }
-  if(!guiDsm.begin())
+  if(!guiDsm.begin(ambientSensor.getI2cMutex()))
   {
     console.error.println("[MAIN] Could not initialize DSM GUI");
   }

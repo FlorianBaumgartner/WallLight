@@ -53,9 +53,10 @@ class AmbientColor
 class AmbientSensor
 {
   public:
-    AmbientSensor(int scl, int sda, int freq = 1000000);
+    AmbientSensor(int scl, int sda, int freq = 400000);
     bool begin(uint8_t config = VEML6040_IT_320MS + VEML6040_AF_AUTO + VEML6040_SD_ENABLE);
     void getColor(AmbientColor* color) {*color = this->color;}
+    SemaphoreHandle_t* getI2cMutex(void) {return &i2cMutex;}
   
   private:
     const int pin_scl;
@@ -66,13 +67,14 @@ class AmbientSensor
     AmbientColor color;
 
     volatile bool initialized = false;
+    SemaphoreHandle_t i2cMutex;
 
     uint16_t getCCT(int red, int green, int blue, float offset = 0.5)
     {
-      float ccti = ((float)red-(float)blue) / ((float)green + 1);
-      ccti = ccti + offset; 
-      float cct = 4278.6 * pow(ccti,-1.2455);
-      return((uint16_t)cct);
+      float ccti = ((float)red-(float)blue) / ((float)green + 1);   // 0 ... 131070
+      ccti = ccti + offset;                                         // 0.5 ... 131070.5
+      float cct = 4278.6 * pow(ccti,-1.2455);                       // 0.0018 ... 10144.59
+      return((uint16_t)cct);                                        // 0 ... 10144
     }
     static void update(void *pvParameter);
 };

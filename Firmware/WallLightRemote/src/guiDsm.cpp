@@ -34,9 +34,7 @@
 #include "GuiDsm/ui.h"
 #include "console.hpp"
 
-
 GuiDsm* GuiDsm::staticRef = nullptr;
-
 
 GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tch_sda, int tch_irq, int tch_rst, int freq) : tch_scl(tch_scl), tch_sda(tch_sda), tch_irq(tch_irq), tch_rst(tch_rst)
 {
@@ -119,8 +117,9 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
   formatDate(labelDate);
 }
 
-bool GuiDsm::begin(bool startLvglTask)
+bool GuiDsm::begin(SemaphoreHandle_t* i2cMutex, bool startLvglTask)
 {
+  this->i2cMutex = i2cMutex;
   static DisplayDsm display;
   disp = &display;
 
@@ -148,6 +147,7 @@ bool GuiDsm::begin(bool startLvglTask)
   display.indev_drv.read_cb = lvglTouchRead;
   display.indev_drv.user_data = &display;
   lv_indev_drv_register(&display.indev_drv);
+  lv_timer_set_period(display.indev_drv.read_timer, 1000.0 / TOUCH_UPDATE_RATE);
   startTouch();
 
   lv_disp_set_default(display.disp);
@@ -247,15 +247,27 @@ void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 
 void GuiDsm::touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
 {
-  static uint32_t t = 0;
   DisplayDsm* display = (DisplayDsm*)indev_driver->user_data;
+  GuiDsm* ref = (GuiDsm*)display->gui;
 
-  if(display->isrFlag && (millis() - t > (1000 / MAX_TOUCH_UPDATE_RATE)))   // Limit touch update rate
+  if(display->isrFlag)
   {
-    t = millis();
     display->isrFlag = false;
     lgfx::touch_point_t point;
-    uint8_t count = ((GuiDsm*)display->gui)->getTouch(&point);
+    uint8_t count = 0;
+
+    if(ref->i2cMutex)
+    {
+      if(xSemaphoreTake(*ref->i2cMutex, portMAX_DELAY) == pdTRUE)
+      {
+        count = ref->getTouch(&point);
+        xSemaphoreGive(*ref->i2cMutex);
+      }
+    }
+    else
+    {
+      count = ref->getTouch(&point);
+    }
     if(count > 0)
     {
       data->state = LV_INDEV_STATE_PR;
@@ -267,5 +279,4 @@ void GuiDsm::touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
       data->state = LV_INDEV_STATE_REL;
     }
   }
-  // TODO: Check if touch state should be released if flag is not set
 }

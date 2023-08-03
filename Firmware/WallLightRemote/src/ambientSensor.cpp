@@ -50,6 +50,7 @@ bool AmbientSensor::begin(uint8_t config)
   sensor.setConfiguration(config);
 
   initialized = true;
+  i2cMutex = xSemaphoreCreateMutex();
   xTaskCreate(update, "task_updateAmbientSensor", 4096, this, 1, nullptr);
   return true;
 }
@@ -62,20 +63,23 @@ void AmbientSensor::update(void *pvParameter)
   {
     TickType_t task_last_tick = xTaskGetTickCount();
 
-    uint16_t red = ref->sensor.getRed();
-    uint16_t green = ref->sensor.getGreen();
-    uint16_t blue = ref->sensor.getBlue();
-    uint16_t white = ref->sensor.getWhite();
-    uint16_t ambient = ref->sensor.getAmbientLight();
+    if(xSemaphoreTake(ref->i2cMutex, portMAX_DELAY) == pdTRUE)
+    {
+      uint16_t red = ref->sensor.getRed();
+      uint16_t green = ref->sensor.getGreen();
+      uint16_t blue = ref->sensor.getBlue();
+      uint16_t white = ref->sensor.getWhite();
+      uint16_t ambient = ref->sensor.getAmbientLight();
 
-    ref->color.red = (float)red / 65535.0;
-    ref->color.green = (float)green / 65535.0;
-    ref->color.blue = (float)blue / 65535.0;
-    ref->color.white = (float)white / 65535.0;
-    ref->color.ambient = (float)ambient / 2061.0;
-    ref->color.cct = ref->getCCT(red, green, blue) / 65535.0;
+      ref->color.red = (float)red / 65535.0;
+      ref->color.green = (float)green / 65535.0;
+      ref->color.blue = (float)blue / 65535.0;
+      ref->color.white = (float)white / 65535.0;
+      ref->color.ambient = (float)ambient / 2061.0;
+      ref->color.cct = ref->getCCT(red, green, blue) / 10144.0;
+    }
+    xSemaphoreGive(ref->i2cMutex);
     
-
     vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / AMBIENT_SENSOR_UPDATE_RATE);
   }
   vTaskDelete(NULL);
