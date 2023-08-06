@@ -72,7 +72,7 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     lgfx::Light_PWM      _light_instance;
     lgfx::Touch_GT911    _touch_instance;
     DisplayDsm* disp;
-
+    SemaphoreHandle_t dispMutex;
     SemaphoreHandle_t* i2cMutex = nullptr;
 
     static GuiDsm* staticRef;

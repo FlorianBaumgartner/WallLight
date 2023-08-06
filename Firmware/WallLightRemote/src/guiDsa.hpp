@@ -72,6 +72,7 @@ class GuiDsa : public lgfx::LGFX_Device, public GuiLvgl
     lgfx::Bus_SPI        _bus_instance;
     lgfx::Light_PWM      _light_instance;
     DisplayDsa* disp;
+    SemaphoreHandle_t dispMutex;
 
     lv_obj_t* labelId[DISPLAY_COUNT];
     lv_obj_t* labelValue[DISPLAY_COUNT];

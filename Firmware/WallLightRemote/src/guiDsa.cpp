@@ -98,6 +98,7 @@ GuiDsa::GuiDsa(int sclk, int mosi, int dc, int rst, int cs, int cs_0, int cs_1, 
     _panel_instance.setLight(&_light_instance);
   }
   setPanel(&_panel_instance);
+  vSemaphoreCreateBinary(dispMutex);
 }
 
 bool GuiDsa::begin(void)
@@ -175,9 +176,13 @@ void GuiDsa::setId(uint8_t channel, uint32_t id, bool force)
   id = constrain(id, 1000, 1999);
   if(id != this->id[channel] || force)
   {
-    this->id[channel] = id;
-    snprintf(labelTextId[channel], LABEL_TEXT_SIZE, "ID: %04d", this->id[channel]);
-    lv_label_set_text_static(labelId[channel], labelTextId[channel]);
+    if(xSemaphoreTake(dispMutex, portMAX_DELAY) == pdTRUE)
+    {
+      this->id[channel] = id;
+      snprintf(labelTextId[channel], LABEL_TEXT_SIZE, "ID: %04d", this->id[channel]);
+      lv_label_set_text_static(labelId[channel], labelTextId[channel]);
+      xSemaphoreGive(dispMutex);
+    }
   }
 }
 
@@ -185,35 +190,43 @@ void GuiDsa::setValue(uint8_t channel, float value, bool force)
 {
   if(value != this->value[channel] || force)
   {
-    this->value[channel] = value;
-    float dispValue = this->value[channel];
-    if(fabs(dispValue) < 0.001)     // Prevent negative zero "-0.00"
+    if(xSemaphoreTake(dispMutex, portMAX_DELAY) == pdTRUE)
     {
-      dispValue = 0.0;
+      this->value[channel] = value;
+      float dispValue = this->value[channel];
+      if(fabs(dispValue) < 0.001)     // Prevent negative zero "-0.00"
+      {
+        dispValue = 0.0;
+      }
+      snprintf(labelTextValue[channel], LABEL_TEXT_SIZE, "%.2f", dispValue);
+      lv_label_set_text_static(labelValue[channel], labelTextValue[channel]);
+      xSemaphoreGive(dispMutex);
     }
-    snprintf(labelTextValue[channel], LABEL_TEXT_SIZE, "%.2f", dispValue);
-    lv_label_set_text_static(labelValue[channel], labelTextValue[channel]);
   }
 }
 
 void GuiDsa::setStep(uint8_t channel, float step, bool force)
-{
+{ 
   if(step != this->step[channel] || force)
   {
-    this->step[channel] = step;
-    if(this->step[channel] >= 1.0)
+    if(xSemaphoreTake(dispMutex, portMAX_DELAY) == pdTRUE)
     {
-      snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.0f", this->step[channel]);
+      this->step[channel] = step;
+      if(this->step[channel] >= 1.0)
+      {
+        snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.0f", this->step[channel]);
+      }
+      else if(this->step[channel] >= 0.1)
+      {
+        snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.1f", this->step[channel]);
+      }
+      else
+      {
+        snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.2f", this->step[channel]);
+      }
+      lv_label_set_text_static(labelStep[channel], labelTextStep[channel]);
+      xSemaphoreGive(dispMutex);
     }
-    else if(this->step[channel] >= 0.1)
-    {
-      snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.1f", this->step[channel]);
-    }
-    else
-    {
-      snprintf(labelTextStep[channel], LABEL_TEXT_SIZE, "Step: %.2f", this->step[channel]);
-    }
-    lv_label_set_text_static(labelStep[channel], labelTextStep[channel]);
   }
 }
 
@@ -225,10 +238,17 @@ void GuiDsa::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 
   waitDMA();
   selectDisplay(display->channel);
-  startWrite();
-  setAddrWindow(area->x1, area->y1, w, h);
-  writePixels((lgfx::rgb565_t*)&color_p->full, w * h);
-  endWrite();
+  if(getStartCount() <= 0)
+  {
+    xSemaphoreTake(dispMutex, portMAX_DELAY);
+    startWrite();
+  }
+  pushImageDMA(area->x1, area->y1, w, h, (lgfx::rgb565_t*)color_p);
+  if(lv_disp_flush_is_last(disp))
+  {
+    endWrite();
+    xSemaphoreGive(dispMutex);
+  }
   lv_disp_flush_ready(disp);
   display->initialized = true;
 }

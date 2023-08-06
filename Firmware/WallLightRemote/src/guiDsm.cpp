@@ -113,8 +113,8 @@ GuiDsm::GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl,
     _panel_instance.setLight(&_light_instance);
   }
   setPanel(&_panel_instance);
-
   formatDate(labelDate);
+  vSemaphoreCreateBinary(dispMutex);
 }
 
 bool GuiDsm::begin(SemaphoreHandle_t* i2cMutex, bool startLvglTask)
@@ -237,10 +237,17 @@ void GuiDsm::flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   uint32_t h = (area->y2 - area->y1 + 1);
 
   waitDMA();
-  startWrite();
-  setAddrWindow(area->x1, area->y1, w, h);
-  writePixels((lgfx::rgb565_t*)&color_p->full, w * h);
-  endWrite();
+  if(getStartCount() <= 0)
+  {
+    xSemaphoreTake(dispMutex, portMAX_DELAY);
+    startWrite();
+  }
+  pushImageDMA(area->x1, area->y1, w, h, (lgfx::rgb565_t*)color_p);
+  if(lv_disp_flush_is_last(disp))
+  {
+    endWrite();
+    xSemaphoreGive(dispMutex);
+  }
   lv_disp_flush_ready(disp);
   display->initialized = true;
 }
