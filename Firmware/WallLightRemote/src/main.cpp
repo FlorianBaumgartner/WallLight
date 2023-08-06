@@ -37,6 +37,7 @@
 #include "guiDsa.hpp"
 #include "guiDsm.hpp"
 #include "hmi.hpp"
+#include "powerMgmt.hpp"
 #include "ambientSensor.hpp"
 
 
@@ -73,7 +74,7 @@
 #define HMI_DATA      48
 
 #define PWR_OFF       11
-#define PWM_SW        12
+#define PWR_SW        12
 #define BAT_MSR       4
 
 #define PDM_CLK       14
@@ -82,9 +83,10 @@
 
 static Utils utils;
 static Preferences preferences;
+static PowerMgmt powerMgmt(PWR_SW, PWR_OFF, BAT_MSR);
 static GuiDsa guiDsa(DSA_SCLK, DSA_MOSI, DSA_DC, DSA_RST, DSA_CS, DSA_CS0, DSA_CS1, DSA_CS2, DSA_BL);
 static GuiDsm guiDsm(DSM_SCLK, DSM_MOSI, DSM_DC, DSM_RST, DSM_CS, DSM_BL, TCH_SCL, TCH_SDA, TCH_INT, TCH_RST);
-static Hmi hmi(HMI_CLK, HMI_DATA, HMI_LD, HMI_ENA, HMI_ENB, HMI_ENS);
+static Hmi hmi(HMI_CLK, HMI_DATA, HMI_LD, HMI_ENS, HMI_ENA, HMI_ENB);
 static AmbientSensor ambientSensor(TCH_SCL, TCH_SDA);
 
 
@@ -93,7 +95,10 @@ void setup()
   console.begin();
 
   // TODO: Get reset reason if possible
-
+  if(!powerMgmt.begin())
+  {
+    console.error.println("[MAIN] Could not initialize power management");
+  }
   if(!utils.begin(WATCHDOG_TIMEOUT, "DRIVE"))
   {
     console.error.println("[MAIN] Could not initialize utilities");
@@ -116,7 +121,6 @@ void setup()
   }
   
   
-  
   preferences.begin("WallLightRemote", false);
   uint32_t bootCount = preferences.getUInt("bootCount", 0);
   console.log.printf("[MAIN] Boot Count: %d\n", bootCount);
@@ -125,44 +129,38 @@ void setup()
   preferences.end();
   
   guiDsm.loadMainUi();
-
-  
-
-  // Wire.begin(); 
-  // Wire.setPins(TCH_SDA, TCH_SCL);
-  // if(!RGBWSensor.begin())
-  // {
-  //   console.error.println("ERROR: couldn't detect the sensor");
-  // }
-
-  // RGBWSensor.setConfiguration(VEML6040_IT_320MS + VEML6040_AF_AUTO + VEML6040_SD_ENABLE);
-
-  // console.log.print("RED: ");
-  // console.log.print(RGBWSensor.getRed());  
-  // console.log.print(" GREEN: ");
-  // console.log.print(RGBWSensor.getGreen());  
-  // console.log.print(" BLUE: ");
-  // console.log.print(RGBWSensor.getBlue());  
-  // console.log.print(" WHITE: ");
-  // console.log.print(RGBWSensor.getWhite()); 
-  // console.log.print(" CCT: ");
-  // console.log.print(RGBWSensor.getCCT());  
-  // console.log.print(" AL: ");
-  // console.log.println(RGBWSensor.getAmbientLight()); 
 }
 
 void loop()
 {
   utils.feedWatchdog();
 
-  static uint32_t p = 0;
-  if(millis() - p > 200)
-  {
-    p = millis();
-    AmbientColor color;
-    ambientSensor.getColor(&color);
-    console.log.printf("[MAIN] Color Sensor: R: %.2f, G: %.2f, B: %.2f, W: %.2f, CCT: %.2f, AL: %.2f\n", color.red, color.green, color.blue, color.white, color.cct, color.ambient);
-  }
+  // static uint32_t p = 0;
+  // if(millis() - p > 200)
+  // {
+  //   p = millis();
+  //   AmbientColor color;
+  //   ambientSensor.getColor(&color);
+  //   console.log.printf("[MAIN] Color Sensor: R: %.2f, G: %.2f, B: %.2f, W: %.2f, CCT: %.2f, AL: %.2f\n", color.red, color.green, color.blue, color.white, color.cct, color.ambient);
+  // }
+
+  // static uint32_t p = 0;
+  // if(millis() - p > 200)
+  // {
+  //   p = millis();
+  //   int32_t rotaryEncoder = hmi.getRotaryEncoderValue();
+  //   bool rotaryEncoderSwitchEdge = hmi.getRotaryEncoderSwitchEdge();
+  //   console.log.printf("[MAIN] Rotary Encoder: %d, Switch: %d\n", rotaryEncoder, rotaryEncoderSwitchEdge);
+  // }
+
+  // static uint32_t p = 0;
+  // if(millis() - p > 1000)
+  // {
+  //   p = millis();
+  //   float batteryVoltage = powerMgmt.getBatteryVoltage();
+  //   uint8_t batteryPercentage = powerMgmt.getBatteryPercentage();
+  //   console.log.printf("[MAIN] Battery: %.2f V, %d %%\n", batteryVoltage, batteryPercentage);
+  // }
 
   for(int i = 0; i < 8; i++)
   {
@@ -185,7 +183,7 @@ void loop()
     const uint8_t pos[4] = {0, 1, 4, 5};
     static int32_t encoder[4] = {0, 0, 0, 0};
     static float value[4] = {0.0, 0.0, 0.0, 0.0};
-    int32_t encoderPos = hmi.getEncoderValue(i[pos]);
+    int32_t encoderPos = hmi.getRollerEncoderValue(i[pos]);
     value[i] += (encoderPos - encoder[i]) * guiDsa.getStep(i[pos]);
     encoder[i] = encoderPos;
     guiDsa.setValue(i[pos], value[i]);
@@ -195,7 +193,7 @@ void loop()
     const uint8_t pos[4] = {0, 1, 4, 5};
     const float stepSize[4] = {0.01, 0.1, 1.0, 10.0};
     static uint8_t stepSizeIdx[4] = {1, 1, 1, 1};
-    if(hmi.getEncoderSwitchEdge(i[pos]))
+    if(hmi.getRollerEncoderSwitchEdge(i[pos]))
     {
       stepSizeIdx[i]++;
       stepSizeIdx[i] %= sizeof(stepSize) / sizeof(float);

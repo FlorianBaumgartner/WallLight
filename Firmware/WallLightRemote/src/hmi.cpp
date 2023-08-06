@@ -94,16 +94,25 @@ void Hmi::update(void *pvParameter)
       const uint8_t pos[4] = {0, 1, 4, 5};
       encSwitch |= ((~ref->readOut & ref->ENCODER_SWITCH_POS[i])? 0x01 : 0x00) << pos[i];
     }
-    ref->encoderSwitchOld = ref->encoderSwitch;
-    ref->encoderSwitch = encSwitch;
+    ref->rollerEncoderSwitchOld = ref->rollerEncoderSwitch;
+    ref->rollerEncoderSwitch = encSwitch;
     for(int i = 0; i < 8; i++)
     {
-      ref->encoderSwitchEdge |= (!(ref->encoderSwitchOld & (0x01 << i)) && (ref->encoderSwitch & (0x01 << i))) << i;
+      ref->rollerEncoderSwitchEdge |= (!(ref->rollerEncoderSwitchOld & (0x01 << i)) && (ref->rollerEncoderSwitch & (0x01 << i))) << i;
     }
     for(int i = 0; i < 4; i++)
     {
       ref->rollerEncoder[i].tick();
     }
+
+    // Handle Rotary Encoder
+    ref->rotaryEncoderSwitchOld = ref->rotaryEncoderSwitch;
+    ref->rotaryEncoderSwitch = !digitalRead(ref->pin_ens);
+    if(!ref->rotaryEncoderSwitchOld && ref->rotaryEncoderSwitch)
+    {
+      ref->rotaryEncoderSwitchEdge = true;
+    }
+    ref->rotaryEncoder.tick();
 
     vTaskDelayUntil(&task_last_tick, (const TickType_t) 1000 / HMI_UPDATE_RATE);
   }

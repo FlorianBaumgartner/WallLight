@@ -71,20 +71,20 @@ class Hmi
       channel %= 8;
       return buttonSwitch & (0x01 << channel);
     }
-    bool getEncoderSwitchState(uint8_t channel)
+    bool getRollerEncoderSwitchState(uint8_t channel)
     {
       channel %= 8;
-      return encoderSwitch & (0x01 << channel);
+      return rollerEncoderSwitch & (0x01 << channel);
     }
-    bool getEncoderSwitchEdge(uint8_t channel)
+    bool getRollerEncoderSwitchEdge(uint8_t channel)
     {
       bool state = false;
       channel %= 8;
-      state = encoderSwitchEdge & (0x01 << channel);
-      encoderSwitchEdge &= ~(0x01 << channel);
+      state = rollerEncoderSwitchEdge & (0x01 << channel);
+      rollerEncoderSwitchEdge &= ~(0x01 << channel);
       return state;
     }
-    int32_t getEncoderValue(uint8_t channel, bool clear = false)
+    int32_t getRollerEncoderValue(uint8_t channel, bool clear = false)
     {
       channel %= 8;
       uint8_t pos = 0;
@@ -104,6 +104,22 @@ class Hmi
       }
       return value;
     }
+    bool getRotaryEncoderSwitchState(void) {return rotaryEncoderSwitch;}
+    bool getRotaryEncoderSwitchEdge(void)
+    {
+      bool state = rotaryEncoderSwitchEdge;
+      rotaryEncoderSwitchEdge = false;
+      return state;
+    }
+    int32_t getRotaryEncoderValue(bool clear = false)
+    {
+      int32_t value = rotaryEncoder.getPosition();
+      if(clear)
+      {
+        rotaryEncoder.setPosition(0);
+      }
+      return value;
+    }
 
   
   private:
@@ -118,12 +134,14 @@ class Hmi
 
     uint8_t idButtonUp = 0x00, idButtonUpOld = 0x00, idButtonUpEdge = 0x00;
     uint8_t idButtonDown = 0x00, idButtonDownOld = 0x00, idButtonDownEdge = 0x00;
-    uint8_t encoderSwitch = 0x00, encoderSwitchOld = 0x00, encoderSwitchEdge = 0x00;
+    uint8_t rollerEncoderSwitch = 0x00, rollerEncoderSwitchOld = 0x00, rollerEncoderSwitchEdge = 0x00;
+    bool rotaryEncoderSwitch = false, rotaryEncoderSwitchOld = false, rotaryEncoderSwitchEdge = false;
     uint8_t buttonSwitch = 0x00;
     RotaryEncoder rollerEncoder[4] = {RotaryEncoder(&readOut, 16, 17, RotaryEncoder::LatchMode::TWO03),
                                       RotaryEncoder(&readOut, 19, 20, RotaryEncoder::LatchMode::TWO03),
                                       RotaryEncoder(&readOut, 24, 25, RotaryEncoder::LatchMode::TWO03),
                                       RotaryEncoder(&readOut, 27, 28, RotaryEncoder::LatchMode::TWO03)};
+    RotaryEncoder rotaryEncoder = RotaryEncoder(pin_enb, pin_ena, RotaryEncoder::LatchMode::TWO03);
 
     const uint32_t ID_BUTTON_UP_POS[8] = {0x00000040, 0x00000010, 0x00000004, 0x00000001, 0x00004000, 0x00001000, 0x00000400, 0x00000100};
     const uint32_t ID_BUTTON_DOWN_POS[8] = {0x00000080, 0x00000020, 0x00000008, 0x00000002, 0x00008000, 0x00002000, 0x00000800, 0x00000200};
