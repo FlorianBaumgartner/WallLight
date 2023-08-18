@@ -27,5 +27,5 @@ UF2-File can be found at: C:\Users\Admin\GoogleDrive\WallLight\Bootloader\tinyuf
 First upload combined.bin
 Then replace uf2 section at offset 0x410000
 
-**** Get FLash Content
+**** Get Flash Content
 C:\Users\Admin\GoogleDrive\WallLight\Bootloader\esptool\esptool.exe read_flash 0 8388607 wall_light_remote_combined.bin
