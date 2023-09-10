@@ -1,178 +1,82 @@
-// Copyright (c) M5Stack. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+/******************************************************************************
+* file    mic.hpp
+*******************************************************************************
+* brief   PDM Microphone Driver
+*******************************************************************************
+* author  Florian Baumgartner
+* version 1.0
+* date    2023-09-10
+*******************************************************************************
+* Library is based on: https://github.com/m5stack
+*******************************************************************************
+* MIT License
+*
+* Copyright (c) 2023 Crelin - Florian Baumgartner
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell          
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+******************************************************************************/
 
-#ifndef __Mic_H__
-#define __Mic_H__
+#ifndef MIC_HPP
+#define MIC_HPP
 
-// #include "m5unified_common.h"
+#include <Arduino.h>
+#include <driver/i2s.h>
 
-#if defined ( ESP_PLATFORM )
+#define MIC_MAGNIFICATION                   64            // Multiplier for input value
+#define MIC_OVERSAMPLING                    4             // Oversampling factor (1, 2, 4, 8)
+#define MIC_DMA_BUFFER_SIZE                 512           // I2S Buffer size
+#define MIC_DMA_BUFFER_COUNT                2             // I2S Buffer count
+#define MIC_TASK_PRIORITY                   2             // Task priority
 
-#include <freertos/FreeRTOS.h>
-#include <freertos/semphr.h>
-#include <freertos/task.h>
-#include <soc/i2s_struct.h>
+#define COMM_FORMAT_I2S (I2S_COMM_FORMAT_STAND_I2S)
+#define COMM_FORMAT_MSB (I2S_COMM_FORMAT_I2S_MSB)
 
-#if __has_include(<driver/i2s_std.h>)
- #include <driver/i2s_std.h>
-#else
- #include <driver/i2s.h>
-#endif
 
-#endif
-
-#include <stdint.h>
-
-#ifndef I2S_PIN_NO_CHANGE
-#define I2S_PIN_NO_CHANGE (-1)
-#endif
-
-struct mic_config_t
-{
-  /// i2s_data_in (for mic)
-  int pin_data_in = -1;
-
-  /// i2s_bclk
-  int pin_bck = I2S_PIN_NO_CHANGE;
-
-  /// i2s_mclk
-  int pin_mck = I2S_PIN_NO_CHANGE;
-
-  /// i2s_ws (lrck)
-  int pin_ws = I2S_PIN_NO_CHANGE;
-
-  /// input sampling rate (Hz)
-  uint32_t sample_rate = 16000;
-
-  /// use stereo output
-  bool stereo = false;
-
-  /// <<This value is no longer used>>
-  int input_offset = 0;
-
-  /// Sampling times of obtain the average value
-  uint8_t over_sampling = 2;
-
-  /// multiplier for input value
-  uint8_t magnification = 16;
-
-  /// Coefficient of the previous value, used for noise filtering.
-  uint8_t noise_filter_level = 0;
-
-  /// use analog input mic ( need only pin_data_in )
-  bool use_adc = false;
-
-  /// for I2S dma_buf_len
-  size_t dma_buf_len = 256;
-
-  /// for I2S dma_buf_count
-  size_t dma_buf_count = 3;
-
-  /// background task priority
-  uint8_t task_priority = 2;
-
-  /// background task pinned core
-  uint8_t task_pinned_core = -1;
-
-  /// I2S port
-  i2s_port_t i2s_port = i2s_port_t::I2S_NUM_0;
-};
-
-class Mic_Class
+class Mic 
 {
   public:
-
-    mic_config_t config(void) const { return _cfg; }
-    void config(const mic_config_t& cfg) { _cfg = cfg; }
-
-    bool begin(void);
-
+    Mic(int pdmClk, int pdmData);
+    bool begin(uint16_t sampleRate = 16000, float updateRate = 20);
     void end(void);
+    float getAmplitude(void) {return amplitude;}
+    void setCallback(void(*func)(float)) {callback = func;}
 
-    bool isRunning(void) const { return _task_running; }
+  
+  private:
+    const int pin_pdmClk;
+    const int pin_pdmData;
 
-    bool isEnabled(void) const { return _cfg.pin_data_in >= 0; }
+    uint16_t sampleRate;
+    float updateRate;
+    volatile float amplitude = 0.0f;
+    i2s_port_t i2sPort = i2s_port_t::I2S_NUM_0;
 
-    /// now in recording or not.
-    /// @return 0=not recording / 1=recording (There's room in the queue) / 2=recording (There's no room in the queue.)
-    size_t isRecording(void) const { return _is_recording ? ((bool)_rec_info[0].length) + ((bool)_rec_info[1].length) : 0; }
+    int16_t dmaInputBuffer[MIC_DMA_BUFFER_SIZE];
+    int32_t sumBuffer[MIC_DMA_BUFFER_SIZE];
 
-    /// set recording sampling rate.
-    /// @param sample_rate the sampling rate (Hz)
-    void setSampleRate(uint32_t sample_rate) { _cfg.sample_rate = sample_rate; }
+    volatile bool initialized = false;
+    volatile SemaphoreHandle_t taskSemaphore = nullptr;
+    TaskHandle_t taskHandle = nullptr;
+    void (*callback)(float amplitude) = nullptr;
 
-    /// record raw sound wave data.
-    /// @param rec_data Recording destination array.
-    /// @param array_len Number of data array elements.
-    /// @param sample_rate the sampling rate (Hz)
-    /// @param stereo true=data is stereo / false=data is monaural.
-    bool record(uint8_t* rec_data, size_t array_len, uint32_t sample_rate, bool stereo = false)
-    {
-        return _rec_raw(rec_data, array_len, false, sample_rate, stereo);
-    }
-
-    /// record raw sound wave data.
-    /// @param rec_data Recording destination array.
-    /// @param array_len Number of data array elements.
-    /// @param sample_rate the sampling rate (Hz)
-    /// @param stereo true=data is stereo / false=data is monaural.
-    bool record(int16_t* rec_data, size_t array_len, uint32_t sample_rate, bool stereo = false)
-    {
-        return _rec_raw(rec_data, array_len,  true, sample_rate, stereo);
-    }
-
-    /// record raw sound wave data.
-    /// @param rec_data Recording destination array.
-    /// @param array_len Number of data array elements.
-    bool record(uint8_t* rec_data, size_t array_len)
-    {
-        return _rec_raw(rec_data, array_len, false, _cfg.sample_rate, false);
-    }
-
-    /// record raw sound wave data.
-    /// @param rec_data Recording destination array.
-    /// @param array_len Number of data array elements.
-    bool record(int16_t* rec_data, size_t array_len)
-    {
-        return _rec_raw(rec_data, array_len,  true, _cfg.sample_rate, false);
-    }
-
-  protected:
-
-    void setCallback(void* args, bool(*func)(void*, bool)) { _cb_set_enabled = func; _cb_set_enabled_args = args; }
-
-    struct recording_info_t
-    {
-        void* data = nullptr;
-        size_t length = 0;
-        size_t index = 0;
-        bool is_stereo = false;
-        bool is_16bit = false;
-    };
-
-    recording_info_t _rec_info[2];
-    volatile bool _rec_flip = false;
-
-    static void mic_task(void* args);
-
-    uint32_t _calc_rec_rate(void) const;
-    esp_err_t _setup_i2s(void);
-    bool _rec_raw(void* recdata, size_t array_len, bool flg_16bit, uint32_t sample_rate, bool stereo);
-
-    mic_config_t _cfg;
-    uint32_t _rec_sample_rate = 0;
-
-    bool (*_cb_set_enabled)(void* args, bool enabled) = nullptr;
-    void* _cb_set_enabled_args = nullptr;
-
-    volatile bool _task_running = false;
-    volatile bool _is_recording = false;
-    #if defined (SDL_h_)
-    SDL_Thread* _task_handle = nullptr;
-    #else
-    TaskHandle_t _task_handle = nullptr;
-    volatile SemaphoreHandle_t _task_semaphore = nullptr;
-    #endif
+    bool setupI2s(void);
+    static void update(void *pvParameter);
 };
 
 #endif

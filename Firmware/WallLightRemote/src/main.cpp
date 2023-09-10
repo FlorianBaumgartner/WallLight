@@ -39,7 +39,6 @@
 #include "hmi.hpp"
 #include "powerMgmt.hpp"
 #include "ambientSensor.hpp"
-
 #include "mic.hpp"
 
 
@@ -90,14 +89,23 @@ static GuiDsa guiDsa(DSA_SCLK, DSA_MOSI, DSA_DC, DSA_RST, DSA_CS, DSA_CS0, DSA_C
 static GuiDsm guiDsm(DSM_SCLK, DSM_MOSI, DSM_DC, DSM_RST, DSM_CS, DSM_BL, TCH_SCL, TCH_SDA, TCH_INT, TCH_RST);
 static Hmi hmi(HMI_CLK, HMI_DATA, HMI_LD, HMI_ENS, HMI_ENA, HMI_ENB);
 static AmbientSensor ambientSensor(TCH_SCL, TCH_SDA);
-static Mic_Class mic;
+static Mic mic(PDM_CLK, PDM_DATA);
 
-static constexpr const size_t record_size = 256;
-static constexpr const size_t record_samplerate = 16000;
-static size_t rec_record_idx = 2;
-static size_t draw_record_idx = 0;
-static int16_t rec_data[record_size];
 
+static void updateMicAmplitude(float amplitude)
+{
+  amplitude = (log10f(fmax(amplitude, 0.01)) + 2.0) / 2.0;
+
+  //guiDsm.setMicLevel(amplitude);
+
+  uint8_t barGraphWidth = 50;
+  console.log.printf("[MAIN] Mic: [");
+  for(int i = 0; i < barGraphWidth; i++)
+  {
+    console.log.printf("%c", i < amplitude * barGraphWidth? '*' : ' ');
+  }
+  console.log.printf("] %.5f\n", amplitude);
+}
 
 void setup()
 {
@@ -139,53 +147,16 @@ void setup()
   
   guiDsm.loadMainUi();
 
-  mic_config_t mic_config;
-  mic_config.pin_data_in = PDM_DATA;
-  mic_config.pin_ws = PDM_CLK;
-  // .pin_mck = -1,
-  // .pin_ws = -1,
-  // .sample_rate = 16000,
-  // .stereo = false,
-  // .input_offset = 0,
-  // .over_sampling = 2,
-  // .magnification = 16,
-  // .noise_filter_level = 0,
-  // .use_adc = false,
-  // .dma_buf_len = 256,
-  // .dma_buf_count = 3,
-  // .task_priority = 2,
-
-  mic.config(mic_config);
-  if(!mic.begin())
+  mic.setCallback(updateMicAmplitude);
+  if(!mic.begin(16000, 30.0))
   {
     console.error.println("[MAIN] Could not initialize mic");
   }
-  else
-  {
-    console.log.println("[MAIN] Mic initialized");
-  }
-
 }
 
 void loop()
 {
   utils.feedWatchdog();
-
-  if (mic.isEnabled())
-  {
-    static constexpr int shift = 6;
-    if (mic.record(rec_data, record_size, record_samplerate))
-    {
-      float n = 0.0;
-      for(int i = 0; i < record_size; i++)
-      {
-        n += (float)abs(rec_data[i]);
-      }
-      n /= (float)record_size * 32768.0;
-      n = ((log10f(fmax(n, 0.001)) + 3.0) / 3.0);
-      guiDsm.setMicLevel(n);
-    }
-  }
 
   // static uint32_t p = 0;
   // if(millis() - p > 200)
@@ -257,7 +228,7 @@ void loop()
   if(millis() - t > 5000)
   {
     t = millis();
-    console.log.printf("[MAIN] Time: %d\n", t);
+    // console.log.printf("[MAIN] Time: %d\n", t);
   }
   delay(5);
 }

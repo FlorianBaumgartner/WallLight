@@ -30,8 +30,8 @@
 * SOFTWARE.
 ******************************************************************************/
 
-#ifndef POWER_MGMT__HPP
-#define POWER_MGMT__HPP
+#ifndef POWER_MGMT_HPP
+#define POWER_MGMT_HPP
 
 #include <Arduino.h>
 

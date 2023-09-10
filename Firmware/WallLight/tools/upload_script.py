@@ -39,7 +39,7 @@ import time
 import glob
 import shutil
 import subprocess
-from packet_installer import installPackages
+from packet_installer import installPackages, get_python_path
 from uf2_loader import UF2Loader
 from dfu_reboot import DFU_Reboot
 
@@ -113,7 +113,8 @@ def on_upload(source, target, env):
     
     if(enable_automatic_console):
         if sys.platform.startswith('win'):
-            command = ["cd", "tools", "&&", "python", "serial_terminal.py"]
+            pythonInterpreter = get_python_path()
+            command = ["cd", "tools", "&&", pythonInterpreter, "serial_terminal.py"]
             command += [str(use_tabs_console), str(compare_vid_pid_console), str(compare_Serial), str(usb_vid), str(usb_pid), str(usb_serial)]
             CREATE_NO_WINDOW = 0x08000000
             res = subprocess.Popen(command, close_fds=True, creationflags=CREATE_NO_WINDOW, shell = True)

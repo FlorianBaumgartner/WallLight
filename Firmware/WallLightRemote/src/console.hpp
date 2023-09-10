@@ -259,6 +259,7 @@ class Console: public Stream
 
 
 #ifndef USE_CUSTOM_CONSOLE
+  // extern USBCDC USBSerial;
   extern Console console;
 #endif
 

@@ -58,8 +58,8 @@ bool Console::initialize(void)
 {
   initialized = true;
   bufferAccessSemaphore = xSemaphoreCreateMutex();
-  xTaskCreate(writeTask, "task_consoleWrite", 4096, this, 5, &writeTaskHandle);
-  xTaskCreate(interfaceTask, "task_consoleIface", 4096, this, 100, nullptr);    // TODO: Stack size must be that large?!
+  xTaskCreate(writeTask, "task_consoleWrite", 4096, this, 2, &writeTaskHandle);
+  xTaskCreate(interfaceTask, "task_consoleIface", 4096, this, 3, nullptr);    // TODO: Stack size must be that large?!
   return true;
 }
 
@@ -188,7 +188,7 @@ void Console::printStartupMessage(void)
   stream.print(CONSOLE_CLEAR);
   stream.print(CONSOLE_COLOR_BOLD_CYAN CONSOLE_BACKGROUND_DEFAULT);
   stream.println("****************************************************");
-  stream.println("*                     WallLight                    *");
+  stream.println("*                  WallLight-Remote                *");
   stream.println("*             2023, Florian Baumgartner            *");
   stream.println("****************************************************");
   stream.println(CONSOLE_LOG);

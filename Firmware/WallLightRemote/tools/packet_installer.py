@@ -30,10 +30,29 @@
 # SOFTWARE.
 ###############################################################################
 
+import os
+import sys
+import time
+import threading
+import subprocess
+
+PYTHON_INTERPRETER_PATH = os.path.join(os.path.expanduser("~"), ".platformio", "python3", "python.exe")
+
+def install_pip():
+    subprocess.check_call([PYTHON_INTERPRETER_PATH, "-m", "ensurepip"])
+
+def get_python_path():
+    return PYTHON_INTERPRETER_PATH
+
 def installPackages():
-    import sys
-    import time
-    import threading
+    try:
+        import pip
+    except ModuleNotFoundError:
+        print("PIP not found, try to install it...")
+        install_pip()
+        import pip
+        print("PIP successfully installed, please restart upload script...")
+
     try:
         import serial
         import serial.tools.list_ports
@@ -101,7 +120,6 @@ def installPackages():
                     pip._internal.main(['install', package])
 
             install("pywin32")      # Needs to be installed first
-            install("win32gui")     # TODO: Check if this is working
             import win32gui
             print("Win32 GUI Module successfully installed and imported!")
 
