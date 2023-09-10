@@ -28,6 +28,7 @@ extern lv_obj_t * ui_DSMTestLabel1;
 extern lv_obj_t * ui_DSMSpinner1;
 extern lv_obj_t * ui_DSMButton1;
 extern lv_obj_t * ui_DSMButtonLabel1;
+extern lv_obj_t * ui_BarVu;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_walllight_remote_loadingscreen_png);    // assets\WallLight Remote_LoadingScreen.png

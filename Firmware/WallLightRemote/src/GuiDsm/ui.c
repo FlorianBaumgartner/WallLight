@@ -23,6 +23,7 @@ lv_obj_t * ui_DSMTestLabel1;
 lv_obj_t * ui_DSMSpinner1;
 lv_obj_t * ui_DSMButton1;
 lv_obj_t * ui_DSMButtonLabel1;
+lv_obj_t * ui_BarVu;
 lv_obj_t * ui____initial_actions0;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////

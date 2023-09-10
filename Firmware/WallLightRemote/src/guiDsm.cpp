@@ -177,6 +177,15 @@ void GuiDsm::loadMainUi(void)
   lv_disp_load_scr(ui_DSMMainScreen);
 }
 
+void GuiDsm::setMicLevel(float level)
+{
+  // if(xSemaphoreTake(dispMutex, portMAX_DELAY) == pdTRUE)
+  // {
+    lv_bar_set_value(ui_BarVu, constrain((int)(level * 1000.0), 0, 1000), LV_ANIM_OFF);
+  //   xSemaphoreGive(dispMutex);
+  // }
+}
+
 void GuiDsm::formatDate(char* date)
 {
   char s_month[4];

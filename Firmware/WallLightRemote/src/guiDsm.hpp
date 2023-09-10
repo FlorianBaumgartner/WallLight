@@ -53,6 +53,8 @@ class GuiDsm : public lgfx::LGFX_Device, public GuiLvgl
     GuiDsm(int sclk, int mosi, int dc, int rst, int cs, int bl, int tch_scl, int tch_sda, int tch_irq, int tch_rst, int freq = 40000000);
     bool begin(SemaphoreHandle_t* i2cMutex = nullptr, bool startLvglTask = false);
     void loadMainUi(void);
+
+    void setMicLevel(float level);
     
   private:
     const int tch_scl;

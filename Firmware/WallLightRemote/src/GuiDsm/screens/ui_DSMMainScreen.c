@@ -58,4 +58,12 @@ void ui_DSMMainScreen_screen_init(void)
     lv_obj_set_align(ui_DSMButtonLabel1, LV_ALIGN_CENTER);
     lv_label_set_text(ui_DSMButtonLabel1, "Press me!");
 
+    ui_BarVu = lv_bar_create(ui_DSMMainScreen);
+    lv_bar_set_range(ui_BarVu, 0, 1000);
+    lv_obj_set_width(ui_BarVu, 150);
+    lv_obj_set_height(ui_BarVu, 10);
+    lv_obj_set_x(ui_BarVu, 0);
+    lv_obj_set_y(ui_BarVu, 36);
+    lv_obj_set_align(ui_BarVu, LV_ALIGN_CENTER);
+
 }
