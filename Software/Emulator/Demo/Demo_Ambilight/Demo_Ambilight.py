@@ -1,14 +1,16 @@
+import os
 import sys
 import dxcam
 import numpy as np
+from pathlib import Path
 from scipy import interpolate, signal
-sys.path.append("../..")
+sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.path.pardir), os.path.pardir)))
 from WallLight_Emulator import WallLight
 
 
 if __name__ == '__main__':
     wallLight = WallLight()    
-    wallLight.loadGraph("Demo_Ambilight.json")
+    wallLight.loadGraph(Path(__file__).parent / "Demo_Ambilight.json")
     wallLight.start()
     
     
