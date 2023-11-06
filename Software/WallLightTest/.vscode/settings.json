@@ -1,6 +1,8 @@
 {
     "files.associations": {
+        "*.py": "python",
         "*.tcc": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "qdatetime": "cpp"
     }
 }

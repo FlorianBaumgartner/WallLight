@@ -7,6 +7,7 @@ from scipy import interpolate, signal
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.path.pardir), os.path.pardir)))
 from WallLight_Emulator import WallLight
 
+from PIL import Image
 
 if __name__ == '__main__':
     wallLight = WallLight()    
@@ -20,7 +21,13 @@ if __name__ == '__main__':
     
     try:
         while wallLight.isRunning():
-            ambilightRow = np.flip(camera.get_latest_frame() / 255, axis=0)
+            frame = camera.get_latest_frame()
+            image = Image.fromarray(np.uint8(frame))
+
+            # Save the captured image to a file
+            image.save('screen_capture.png')
+            
+            ambilightRow = np.flip(frame / 255, axis=0)
             ambilightRow = np.mean(ambilightRow, axis=1)
             
             padding = np.zeros((250, 3))
