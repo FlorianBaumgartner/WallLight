@@ -10,7 +10,6 @@ from Modules import Coefficient, Generator, Modifier, Function, Analyzer
 if __name__ == '__main__':
     wallLight = WallLight()
 
-    
     dots = []
     for i in range(4):          # Why the fuck do more than 4 crash the firmware ?!
         sine = Generator.Sine()

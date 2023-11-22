@@ -45,6 +45,16 @@ class Module: public WallLightConfig
     struct Revision{int16_t major; int16_t minor;};
     static constexpr const Revision revision = {.major = 0, .minor = 1};     // TODO: Get from global configuration
 
+    const ModuleClass moduleClass;
+    const char* className;
+    const char* moduleName;
+    const int32_t id;
+    bool ready = false;
+    bool error = false;
+    bool initialized = false;
+    bool printInfo;
+    float t = -1.0;       // NAN
+
     Module(int32_t id, ModuleClass moduleClass, const char* moduleName = nullptr, bool printInfo = true): id(id), moduleClass(moduleClass), moduleName(moduleName), printInfo(printInfo)
     {
       switch(moduleClass)
@@ -64,6 +74,8 @@ class Module: public WallLightConfig
     virtual uint32_t getParameterOutputCount() = 0;
     virtual bool init(bool deepCopy = false) = 0;
     virtual bool deinit(void) = 0;
+
+    void clearReadyState(void) {ready = false;}
 
     void printName() const
     {
@@ -98,16 +110,6 @@ class Module: public WallLightConfig
       console.error.printf("[MODULE] Could not set parameter input of '%s.%s' [sourceIndex: %d] (Module not correctly initialized or value out of bound)\n", className, moduleName, sourceIndex);
       return false;
     }
-
-    const ModuleClass moduleClass;
-    const char* className;
-    const char* moduleName;
-    const int32_t id;
-    bool ready = false;
-    bool error = false;
-    bool initialized = false;
-    bool printInfo;
-    float t = -1.0;       // NAN
 
   protected:
     float getParameterValue(uint32_t index)
@@ -259,9 +261,31 @@ class Function: public Module
         if(getInput(i)->module)
         {
           status &= getInput(i)->module->ready;
+          if(!status)
+          {
+            break;
+          }
         }
       }
       return status;
+    }
+
+    bool checkInputs(void)
+    {
+      bool valid = true;
+      for(int i = 0; i < getInputCount(); i++)
+      {
+        LedVector* input = getInputValue(i, true);    // Silent info
+        if(input)                                     // Check if input is connected (do nothing for default values)
+        {
+          if(!LedVector::checkValid(input))           // Check if input is not valid yet (has allocated memory)
+          {
+            valid = false;
+            break;
+          }
+        }
+      }
+      return valid;
     }
 
     bool update(float time)
@@ -288,7 +312,7 @@ class Function: public Module
 
     
   protected:
-    LedVector* getInputValue(uint32_t index)
+    LedVector* getInputValue(uint32_t index, bool silentInfo = false)
     {
       Vector* input = getInput(index);
       if(input)
@@ -314,7 +338,7 @@ class Function: public Module
             console.error.printf("[MODULE] Requested Module '%s.%s' is not of type 'Function' and has no Vector Outputs\n", className, moduleName);
           }
         }
-        if(printInfo)
+        if(printInfo && !silentInfo)
         {
           console.printf("[MODULE] INFO: Input '%d' of ", index); 
           printName();     

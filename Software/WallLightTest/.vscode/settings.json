@@ -4,5 +4,6 @@
         "*.tcc": "cpp",
         "new": "cpp",
         "qdatetime": "cpp"
-    }
+    },
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe"
 }

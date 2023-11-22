@@ -156,7 +156,7 @@ CMAKE_PROJECT_NAME:STATIC=walllighttest
 CMAKE_RANLIB:FILEPATH=C:/msys64/mingw64/bin/ranlib.exe
 
 //RC compiler
-CMAKE_RC_COMPILER:FILEPATH=C:/Strawberry/c/bin/windres.exe
+CMAKE_RC_COMPILER:FILEPATH=C:/msys64/mingw64/bin/windres.exe
 
 //Flags for Windows Resource Compiler during all build types.
 CMAKE_RC_FLAGS:STRING=

@@ -327,35 +327,53 @@ bool Engine::loadGraph(Module** modules, uint16_t moduleCount)
     this->modules[i] = modules[i];
   }
 
-// Initialize all modules (allocate output vector buffers if necessary)
-  for(int i = 0; i < moduleCount; i++)
+  // Initialize all modules (allocate output vector buffers if necessary)
+  int tryAttemps = 0;
+  bool allModulesInitialized = false;
+  while(!allModulesInitialized)
   {
-    if(modules[i])
+    tryAttemps++;
+    allModulesInitialized = true;
+    for(int i = 0; i < moduleCount; i++)
     {
-      bool deepCopy = false;
-      if(modules[i]->moduleClass == Module::MODULE_FUNCTION)
+      if(modules[i])
       {
-        Function* function = (Function*)modules[i];
-        for(int p = 0; p < function->getInputCount(); p++)
+        bool deepCopy = false;
+        if(modules[i]->moduleClass == Module::MODULE_FUNCTION)
         {
-          if(getInputConnectionCount(function, p) > 1)
+          Function* function = (Function*)modules[i];
+          for(int p = 0; p < function->getInputCount(); p++)
           {
-            deepCopy = true;
+            if(getInputConnectionCount(function, p) > 1)
+            {
+              deepCopy = true;
+              #if ENGINE_VERBOSE
+                console.print("[ENGINE] INFO: Multiple connections found of ");
+                function->getInput(p)->module->printName(); console.printf(" [ID: %d] output '%d' -> ", function->getInput(p)->module->id, function->getInput(p)->sourceIndex);
+                function->printName(); console.printf(" [ID: %d] input '%d'\n", function->id, p);
+              #endif
+            }
+          }
+          if(deepCopy)
+          {
             #if ENGINE_VERBOSE
-              console.print("[ENGINE] INFO: Multiple connections found of ");
-              function->getInput(p)->module->printName(); console.printf(" [ID: %d] output '%d' -> ", function->getInput(p)->module->id, function->getInput(p)->sourceIndex);
-              function->printName(); console.printf(" [ID: %d] input '%d'\n", function->id, p);
+              console.print("[ENGINE] INFO: Make deep copy of "); modules[i]->printName(); console.printf(" [ID: %d]\n", modules[i]->id);
+          
             #endif
           }
         }
-        if(deepCopy)
-        {
-          #if ENGINE_VERBOSE
-            console.print("[ENGINE] INFO: Make deep copy of "); modules[i]->printName(); console.printf(" [ID: %d]\n", modules[i]->id);
-          #endif
-        }
+        allModulesInitialized &= modules[i]->init(deepCopy);    // Check if output buffer needs to be allocated
       }
-      modules[i]->init(deepCopy);    // Check if output buffer needs to be allocated
+    }
+    if(allModulesInitialized)
+    {
+      console.log.println("[ENGINE] All modules initialized");
+      break;
+    }
+    if(tryAttemps > moduleCount)
+    {
+      console.error.println("[ENGINE] Not all modules could be initialized");
+      return false;
     }
   }
   
@@ -489,8 +507,16 @@ Module* Engine::getModuleFromId(int32_t moduleId)
 
 bool Engine::update(float t)
 {
+  for(int i = 0; i < moduleCount; i++)        // At start of each update cycle, clear ready state of all modules to make sure tat all modules recalculate all values
+  {
+    if(modules[i])
+    {
+      modules[i]->clearReadyState();
+    }
+  }
+
   int temp = 0;
-  while(graphLoaded)
+  while(graphLoaded)                          // Do as long as not all modules are ready and the graph is loaded
   {
     bool allReady = true;
     for(int i = 0; i < moduleCount; i++)

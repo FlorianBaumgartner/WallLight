@@ -24,7 +24,8 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++.exe Aktive Datei kompilieren"
+            "preLaunchTask": "C/C++: g++.exe Aktive Datei kompilieren",
+            "visualizerFile": "c:\\Users\\flori\\AppData\\Roaming\\Code\\User\\workspaceStorage\\a8b0da5b443a1042704c1485381cbb1c\\tonka3000.qtvsctools\\qt.natvis.xml"
         }
     ],
     "version": "2.0.0"
