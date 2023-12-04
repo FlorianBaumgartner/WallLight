@@ -10,7 +10,8 @@ from Modules import Coefficient, Generator, Modifier, Function, Analyzer
 if __name__ == '__main__':
     wallLight = WallLight()
 
-    dots = []
+    merge = Function.ColorBlend()
+
     for i in range(4):          # Why the fuck do more than 4 crash the firmware ?!
         sine = Generator.Sine()
         sine.setParameterInput(1, Coefficient(0.03 * (i + 1)))    # Frequency
@@ -32,11 +33,7 @@ if __name__ == '__main__':
         color.setParameterInput(1, hsvToRgb, 1)
         color.setParameterInput(2, hsvToRgb, 2)
         
-        dots.append(color)
-    
-    merge = Function.ColorBlend()
-    for i, d in enumerate(dots):
-        merge.setInput(i, d)
+        merge.setInput(i, color)
     
     wallLight.loadModules()
     wallLight.setOutput(merge, 0)

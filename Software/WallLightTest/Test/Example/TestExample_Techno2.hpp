@@ -41,7 +41,7 @@ class TestExample_Techno2 : public TestEngine
     static constexpr const char* TEST_NAME = "Techno2";
     static const int MAX_DOTS = 4; // Maximum number of dots
 
-    static bool testWorking(Engine* engine)
+    static bool testOld(Engine* engine)
     {
       Module* modules[MAX_DOTS * 4 + 1]; // Adjust the size based on the number of modules
       int moduleIndex = 0;

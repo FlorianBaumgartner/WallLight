@@ -44,7 +44,7 @@
         },
         {
             "id": 2,
-            "type": "Function.Triangle",
+            "type": "Function.Ramp",
             "parameter": [
                 {
                     "index": 0,

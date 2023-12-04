@@ -196,7 +196,7 @@ class Coefficient: public Module
     ~Coefficient() {}
     void setValue(float v) {value[0].value = v;};
     float getValue(void) {return value[0].value;};
-    bool update(float time) {return ready;}
+    bool update(float time) {ready = initialized; return ready;}
     Parameter* getParameterInput(uint16_t index) {return nullptr;}
     Parameter* getParameterOutput(uint16_t index) {return &value[0];}
     uint32_t getParameterInputCount() {return 0;}

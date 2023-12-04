@@ -64,9 +64,6 @@ class FunctionColorBlend: public virtual Function
 
     bool init(bool deepCopy = false)
     {
-      // deepCopy = true; // TODO: Remove this line
-
-
       if(initialized) return true;    // Do not initialize twice  (TODO: Add this to all modules!)
       checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
       if(!checkInputs())
@@ -85,11 +82,7 @@ class FunctionColorBlend: public virtual Function
           if(LedVector::checkValid(input[i]))
           {
             allUnconnected = false;
-            setOutput(0, input[i]);           // TODO: Remove later if not needed
-            // outputs[0].value = getInputValue(i);
-            // outputs[0].module = inputs[i].module;
-            // outputs[0].name = inputs[i].name;
-            // outputs[0].sourceIndex = inputs[i].sourceIndex;
+            setOutput(0, input[i]);
             console.log.printf("[FUNCTION_COLOR_BLEND] Connect module output to input %d\n", i);
             break;
           }
