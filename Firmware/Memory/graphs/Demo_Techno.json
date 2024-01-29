@@ -1,0 +1,62 @@
+{
+    "name": "Demo Techno",
+    "revision": "0.1",
+    "coefficients": [
+        {
+            "id": 1000,
+            "value": 0.2
+        },
+        {
+            "id": 1001,
+            "value": 0.0
+        },
+        {
+            "id": 1002,
+            "value": 5.0
+        }
+    ],
+    "modules": [
+        {
+            "id": 0,
+            "type": "Generator.Ramp",
+            "parameter": [
+                {
+                    "index": 1,
+                    "id": 1000,
+                    "output": 0
+                },
+                {
+                    "index": 3,
+                    "id": 1001,
+                    "output": 0
+                },
+                {
+                    "index": 4,
+                    "id": 1002,
+                    "output": 0
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "type": "Generator.Ramp",
+            "parameter": []
+        },
+        {
+            "id": 2,
+            "type": "Function.Ramp",
+            "parameter": [
+                {
+                    "index": 0,
+                    "id": 0,
+                    "output": 0
+                }
+            ],
+            "input": []
+        }
+    ],
+    "output": {
+        "id": 2,
+        "output": 0
+    }
+}

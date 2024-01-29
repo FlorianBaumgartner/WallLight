@@ -47,6 +47,7 @@ class FunctionColorBlend: public virtual Function
     LedVector outputVectors[1] = {LedVector()};
     Vector outputs[1] = {Vector("output", &outputVectors[0])};
     LedVector* input[8] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+    bool deepCopy = false;
 
   public:
     static constexpr const char* MODULE_NAME = "ColorBlend";
@@ -63,7 +64,12 @@ class FunctionColorBlend: public virtual Function
 
     bool init(bool deepCopy = false)
     {
+      if(initialized) return true;    // Do not initialize twice  (TODO: Add this to all modules!)
       checkParameterInputs();         // Iterate over all parameter inputs to check if they are valid
+      if(!checkInputs())
+      {
+        return false;
+      }
       for(int i = 0; i < getInputCount(); i++)
       {
         input[i] = getInputValue(i);
@@ -89,6 +95,7 @@ class FunctionColorBlend: public virtual Function
       }
       if(deepCopy)
       {
+        this->deepCopy = true;
         getOutput(0)->allocate(0.0);
         setOutput(0, getOutputValue(0));
         console.log.println("[FUNCTION_COLOR_BLEND] Allocate local output buffer");
@@ -143,7 +150,10 @@ class FunctionColorBlend: public virtual Function
               if(firstSummand)
               {
                 firstSummand = false;
-                output->copy(input[inp]);                     // Use first valid input as base for addition
+                if(deepCopy)
+                {
+                  output->copy(input[inp]);                   // Make deep copy of first valid input, as we are not allowed to modify the input vector -> TODO: Change in all other modules
+                }
               }
               else
               {

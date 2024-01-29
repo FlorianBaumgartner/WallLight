@@ -1,6 +1,9 @@
 {
     "files.associations": {
+        "*.py": "python",
         "*.tcc": "cpp",
-        "new": "cpp"
-    }
+        "new": "cpp",
+        "qdatetime": "cpp"
+    },
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe"
 }

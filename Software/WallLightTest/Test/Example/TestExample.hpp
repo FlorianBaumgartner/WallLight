@@ -36,12 +36,17 @@
 #include "../TestEngine.hpp"
 
 #include "TestExample_HeartBeat.hpp"
+#include "TestExample_Techno2.hpp"
 
 static bool testExample(Engine* engine, const char* name)
 {
   if(strcmp(name, TestExample_HeartBeat::TEST_NAME) == 0)
   {
     return TestExample_HeartBeat::test(engine);
+  }
+  else if(strcmp(name, TestExample_Techno2::TEST_NAME) == 0)
+  {
+    return TestExample_Techno2::test(engine);
   }
   else
   {
